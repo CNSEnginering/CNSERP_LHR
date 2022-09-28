@@ -1,0 +1,93 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #costCenterForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("CostCenter")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="CCId" class="col-sm-2 col-form-label">{{l("CostCenterId")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="ccid" name="ccid"
+                                [(ngModel)]="costCenterDto.ccid" type="text" required maxlength="10" required
+                                [disabled]="edit" (change)="checkCostCenterId()">
+                        </div>
+                        <label for="CCName" class="col-sm-2 col-form-label">{{l("CostCenterName")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="ccName" name="ccName"
+                                [(ngModel)]="costCenterDto.ccName" type="text" required maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="priceList" class="col-sm-2 col-form-label">{{l("AccountID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accountID" name="accountID"
+                                    [(ngModel)]="costCenterDto.accountID" type="text" required [disabled]="true" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openlookUpModal('Account')" type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="desc" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control-sm" id="accountName" name="accountName"
+                                [(ngModel)]="costCenterDto.accountName" type="text" disabled required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="priceList" class="col-sm-2 col-form-label">{{l("SubAccID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="subAccId" name="subAccId"
+                                    [(ngModel)]="costCenterDto.subAccId" type="text" required [disabled]="true" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openlookUpModal('SubAccount')" type="button"><i
+                                            class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="desc" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control-sm" id="subAccName" name="subAccName"
+                                [(ngModel)]="costCenterDto.subAccName" type="text" disabled required />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="m-checkbox-list">
+                                <label for="itemPricing_Active" class="kt-checkbox">
+                                    <input id="itemPricing_Active" type="checkbox" name="active"
+                                        [(ngModel)]="costCenterDto.active">
+                                    {{l("Active")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()"
+                        [disabled]=" costCenterDto.ccid == '' || costCenterDto.ccName == '' || costCenterDto.accountID == '' "
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ <CostCenterLookupTableModal #CostCenterLookupTableModal (modalSave)="getLookUpData()"></CostCenterLookupTableModal>

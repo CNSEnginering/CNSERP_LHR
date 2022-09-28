@@ -1,0 +1,104 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #arOptionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="arOption.id">{{l("EditAROption")}}</span>
+                        <span *ngIf="!arOption.id">{{l("CreateNewAROption")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="AROption_ContactPerson">{{l("ContactPerson")}}</label>
+                            <input type="text" id="AROption_ContactPerson" class="form-control form-control-sm" [(ngModel)]="ContactPerson" name="ContactPerson"   readonly />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="AROption_PhoneNo">{{l("PhoneNo")}}</label>
+                            <input type="text" id="AROption_PhoneNo" class="form-control form-control-sm" [(ngModel)]="PhoneNo" name="PhoneNo"    readonly/>
+                        </div>
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="AROption_DEFCURRCODE">{{l("DEFCURRCODE")}}<span class="require-field"></span></label>
+                            <div class="input-group">
+                                <input class="form-control" id="CurrencyRateId" name="currencyRateId" [(ngModel)]="currencyRateId" type="text" hidden>     
+                                <input type="text" id="AROption_DEFCURRCODE" class="form-control form-control-sm" [(ngModel)]="arOption.defcurrcode" name="DEFCURRCODE"   readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectCurrencyRateModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div> <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCurrencyRateIdNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="arOption.currencyRateId" [(ngModel)]="arOption.currencyRateId" type="text"  hidden>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="AROption_DEFBANKID">{{l("DEFBANKID")}}<span class="require-field"></span></label>
+                            <div class="input-group">
+                                <input type="text" id="AROption_DEFBANKID" class="form-control form-control-sm" [(ngModel)]="arOption.defbankid" name="DEFBANKID"  readonly />    
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectBankModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div> <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBankIdNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="arOption.bankId" [(ngModel)]="arOption.bankId" type="text"  hidden>
+                        <div class="form-group col-md-8">
+                            <label for="BankBANKID">{{l("")}}&nbsp;</label>
+                            <input class="form-control form-control-sm" id="BankBANKID" name="bankBANKID" [(ngModel)]="bankBANKID" type="text" readonly> 
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="AROption_DEFPAYCODE">{{l("DEFPAYCODE")}}<span class="require-field">*</span></label>
+                            <select id="AROption_DEFPAYCODE" class="form-control form-control-sm" [(ngModel)]="arOption.defpaycode" name="DEFPAYCODE" required>
+                                <option value="1">Bank</option>
+                                <option value="2">Cash</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="AROption_DEFCUSCTRLACC">{{l("DEFCUSCTRLACC")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="AROption_DEFCUSCTRLACC" class="form-control form-control-sm" [(ngModel)]="arOption.defcusctrlacc" name="DEFCUSCTRLACC"   required readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectChartofControlModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div> <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setChartofControlIdNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="arOption.chartofControlId" [(ngModel)]="arOption.chartofControlId" type="text"  hidden>
+                        <div class="form-group col-md-8">
+                            <label for="ChartofControlId">{{l("")}}&nbsp;</label>
+                            <input class="form-control form-control-sm" id="ChartofControlId" name="chartofControlId" [(ngModel)]="chartofControlId" type="text" readonly> 
+                        </div>
+
+                    </div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!arOptionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()"></commonServiceLookupTableModal>
+		 <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+</div>
+
+<style>
+.form-group {
+    margin-bottom: 0.8rem;
+}
+</style>

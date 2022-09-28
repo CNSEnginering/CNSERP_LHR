@@ -1,0 +1,384 @@
+﻿<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Employee")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("EmployeeHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar" >
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown *ngIf="isGranted('PayRoll.Employees.Setup.ShowLoader')">
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        <a class="dropdown-item" id="ExportEmployeeToExcelButton" (click)="exportToExcel()" href="javascript:;">
+                            <i class="fa fa-download" style="font-size: 1rem;"></i>
+                            {{'ExportToExcel' | localize}}
+                        </a>
+                        <a href="javascript:;" *ngIf="isGranted('PayRoll.Employees.Setup.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true"
+                                        name="ExcelFileUpload"
+                                        #ExcelFileUpload
+                                        maxFileSize="10000000"
+                                        auto="auto"
+                                        accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)"
+                                        (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload> 
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportEmployeeSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+
+
+               
+                <button *ngIf="isGranted('PayRoll.Employees.Setup.Create')" (click)="createEmployee()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewEmployee")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getEmployee()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinEmployeeIDFilter">{{l("MinMax")}} {{l("EmployeeID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinEmployeeIDFilter"
+                                            [(ngModel)]="minEmployeeIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minEmployeeIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxEmployeeIDFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxEmployeeIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="employeeNameFilter">{{l("EmployeeName")}}</label>
+                                    <input type="text" class="form-control" id="employeeNameFilter" name="employeeNameFilter"
+                                        [(ngModel)]="employeeNameFilter">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <label for="ActiveFilterSelect">{{l("Active")}}</label>
+                                <select class="form-control" name="ActiveFilter" id="ActiveFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("False")}}</option>
+                                    <option value="1">{{l("True")}}</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getEmployee($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.Employees.Setup.Edit', 'PayRoll.Employees.Setup.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="employeeID">
+                                        {{l('EmployeeID')}}
+                                        <p-sortIcon field="employees.employeeID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 180px" pSortableColumn="employeeName">
+                                        {{l('EmployeeName')}}
+                                        <p-sortIcon field="employees.employeeName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="fatherName">
+                                        {{l('F/H')}}
+                                        <p-sortIcon field="employees.fatherName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="employees.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="cnic">
+                                        {{l('Cnic')}}
+                                        <p-sortIcon field="employees.cnic"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="date_of_joining">
+                                        {{l('DateOfJoining')}}
+                                        <p-sortIcon field="employees.date_of_joining"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="date_of_birth">
+                                        {{l('DateofBirth')}}
+                                        <p-sortIcon field="employees.date_of_birth"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="department">
+                                        {{l('Department')}}
+                                        <p-sortIcon field="employees.department"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="designation">
+                                        {{l('Designation')}}
+                                        <p-sortIcon field="employees.designation"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="ntn">
+                                        {{l('Ntn')}}
+                                        <p-sortIcon field="employees.ntn"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="gender">
+                                        {{l('Gender')}}
+                                        <p-sortIcon field="employees.gender"></p-sortIcon>
+                                    </th>
+                                  
+                                    <!-- <th style="width: 150px" pSortableColumn="edID">
+                                        {{l('EducationID')}}
+                                        <p-sortIcon field="employees.edID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="religionID">
+                                        {{l('ReligionID')}}
+                                        <p-sortIcon field="employees.religionID"></p-sortIcon>
+                                    </th> -->
+                                
+                                    <!-- <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="employees.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="employees.audtDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="employees.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="employees.createDate"></p-sortIcon>
+                                    </th> -->
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.Employees.Setup.Edit', 'PayRoll.Employees.Setup.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewEmployeeModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.Employees.Setup.Edit')"
+                                                        (click)="createOrEditEmployeeModal.show(record.employees.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <!-- <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.Employees.Setup.Delete')"
+                                                        (click)="deleteEmployee(record.employees)">{{l('Delete')}}</a>
+                                                </li> -->
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('EmployeeID')}}</span>
+                                        {{record.employees.employeeID}}
+                                    </td>
+                                    <td style="width:180px">
+                                        <span class="ui-column-title"> {{l('EmployeeName')}}</span>
+                                        {{record.employees.employeeName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('FatherName')}}</span>
+                                        {{record.employees.fatherName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.employees.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.employees.active">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Cnic')}}</span>
+                                        {{record.employees.cnic}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DateOfJoining')}}</span>
+                                        {{record.employees.date_of_joining | momentFormat:'DD/MM/YYYY'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DateofBirth')}}</span>
+                                        {{record.employees.date_of_birth | momentFormat:'DD/MM/YYYY'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Department')}}</span>
+                                        {{record.employees.department}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Designation')}}</span>
+                                        {{record.employees.designation}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Ntn')}}</span>
+                                        {{record.employees.ntn}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Gender')}}</span>
+                                        <span *ngIf="record.employees.gender=='M'">{{'Male' | localize}}</span>
+                                        <span *ngIf="record.employees.gender=='F'">{{'Female' | localize}}</span>
+
+                                    </td>
+                                    <!-- <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('EducationID')}}</span>
+                                        {{record.employees.edID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ReligionID')}}</span>
+                                        {{record.employees.religionID}}
+                                    </td> -->
+                                
+                                    <!-- <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.employees.audtUser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.employees.audtDate">
+                                            {{record.employees.audtDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employees.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.employees.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.employees.createDate">
+                                            {{record.employees.createDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employees.createDate">-</span>
+                                    </td> -->
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getEmployee($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditEmployeesModal #createOrEditEmployeeModal (modalSave)="getEmployee()"></createOrEditEmployeesModal>
+    <viewEmployeeModal #viewEmployeeModal></viewEmployeeModal>
+
+
+</div>

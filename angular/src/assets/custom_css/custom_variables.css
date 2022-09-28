@@ -1,0 +1,31 @@
+:root {
+    --default_primary: #0375b1;
+    --default_gen_black: #000000;
+    --default_heading: #045c8a;
+    --default_btn_primary: #42ade2;
+    --default_btn_primary_hover: #189cd8;
+    --default_secondary: #189cd8;
+    --default_white_color: #ffffff;
+    --default_Persian_Blue_color: #1d4cb6;
+    --default_btn_default: #f42c3f;
+/* for Purple theme */
+    --indego_black: #000000;
+    --indego_bg: #042a5a;
+    --indego_hover_bg: #012a5d;
+    --indego_secondary: #032856;
+    --indego_TotalProfit_bg: #0b3d7d;
+    --indego_main: #01316d;
+    --indego_White: #ffffff;
+    --indego_light_gray: #f0f1f7;
+
+/* for Aqua */
+    --Aqua_main: #32c1c7;
+    --Aqua_black: #000000;
+    --Aqua_main_hover: #299ea3;
+    --Aqua_inner_hover: #299ea3;
+    --Aqua_Secondary: #21a3a9;
+    --Aqua_White: #ffffff;
+    --Aqua_Primary: #a8dee3;
+    --Aqua_Background: #0c9aa0;
+
+}

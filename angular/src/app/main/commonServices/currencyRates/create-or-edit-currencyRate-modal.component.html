@@ -1,0 +1,249 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #currencyRateForm="ngForm" validate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mode=='edit'">{{
+                            l("Edit Currency Codes")
+                            }}</span>
+                        <span *ngIf="mode=='add'">{{
+                            l("Create Currency Codes")
+                            }}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <div class="row">   
+								<div class="col-md-6">
+										<div class="form-group m-form__group">
+												<label for="CompanyProfileCompanyName">{{l("CompanyProfile")}}</label>
+												<div class="input-group">
+													<input class="form-control" id="CompanyProfileCompanyName" name="companyProfileCompanyName" [(ngModel)]="companyProfileCompanyName" type="text" disabled>     
+													<div class="input-group-append">
+														<button class="btn btn-primary blue" (click)="openSelectCompanyProfileModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+													</div> <div class="input-group-prepend">
+														<button class="btn btn-danger btn-icon" type="button" (click)="setCompanyProfileIdNull()"><i class="fa fa-times"></i></button>
+													</div>
+												</div>
+											</div>
+								</div>
+								<div class="col-md-6">
+									
+								<div class="form-group">
+										<label for="CurrencyRate_CMPID">{{l("CMPID")}} *</label>
+										<input type="text" id="CurrencyRate_CMPID" class="form-control" [(ngModel)]="currencyRate.cmpid" name="CMPID"     required/>
+									</div>
+								 </div>
+							 </div> -->
+                    <tabset>
+                        <tab heading="Currency Setup">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <label for="CurrencyRate_CURID">{{
+                                                l("Currency Code")
+                                                }}
+                                                *</label>
+                                            <input type="text" id="CurrencyRate_ID" (focusout)="codeLength()"
+                                                class="form-control" [(ngModel)]="currencyRate.id" name="CURID" required
+                                                maxlength="3" [disabled]="isCodeLength" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <label for="CurrencyRate_CURNAME">{{ l("Discription") }} *</label>
+                                            <input type="text" id="CurrencyRate_CURNAME" class="form-control"
+                                                [(ngModel)]="
+                                                    currencyRate.curname
+                                                " name="Discription" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <label for="CurrencyRate_Narration">{{
+                                                l("CurrNarration")
+                                                }}
+                                                *</label>
+                                            <input type="text" id="CurrencyRate_Narration" class="form-control"
+                                                [(ngModel)]="currencyRate.narration" name="CurrencyRate_Narration"
+                                                placeholder="e.g Rupees / Dollar / Pounds" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <label for="CurrencyRate_Unit">{{ l("CurrUnit") }} *</label>
+                                            <input type="text" id="CurrencyRate_Unit" class="form-control" [(ngModel)]="
+                                                    currencyRate.unit
+                                                " placeholder="e.g Paise / Cent / Penny" name="CurrencyRate_Unit"
+                                                required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-sm">
+                                            <label for="CurrencyRate_SYMBOL">{{ l("SYMBOL") }} *</label>
+                                            <!-- <select
+                                                id="CurrencyRate_SYMBOL"
+                                                class="form-control"
+                                                [(ngModel)]="
+                                                    currencyRate.symbol
+                                                "
+                                                name="symbol"
+                                                required
+                                            >
+                                                <option value="Rs">Rs</option>
+                                                <option value="$">$</option>
+                                                <option value="£">£</option>
+                                                <option value="£">₺</option>
+                                                <option value="€">€</option>
+                                            </select> -->
+                                            <input type="text" id="CurrencyRate_SYMBOL" class="form-control"
+                                                [(ngModel)]="currencyRate.symbol" name="SYMBOL" required
+                                                maxlength="4" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-sm">
+                                            <label for="CurrencyRate_CURRATE">{{ l("Rate") }}*</label>
+                                            <input type="text" id="CurrencyRate_CURRATE" class="form-control"
+                                                [(ngModel)]="
+                                                    currencyRate.currate
+                                                " name="CURRATE" currencyMask [options]="{
+                                                    prefix: ' ',
+                                                    thousands: ','
+                                                }" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+							<div class="col-md-4">
+								<div class="form-group form-group-sm">
+									<label for="CurrencyRate_DE">{{l("Decimal")}}</label>
+									<select id="CurrencyRate_DECIMAL" class="form-control form-control-sm" [(ngModel)]="currencyRate.decimal" name="DECIMAL">
+										<option value="0" disabled>Choose Decimal</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+									</select>
+								</div>
+							</div>
+						</div> -->
+                                <div class="row">
+                                   
+                                </div>
+                            </fieldset>
+                        </tab>
+                        <tab heading="Currency History" *ngIf="mode=='edit'">
+                            <fieldset>
+                                <div class="row align-items-center">
+                                    <!--<Primeng-Datatable-Start>-->
+                                    <div class="primeng-datatable-container col-12"
+                                        [busyIf]="primengTableHelper.isLoading">
+                                        <p-table #dataTable [value]="primengTableHelper.records" [rows]="5"
+                                            [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [scrollable]="true"
+                                            ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                                            [resizableColumns]="primengTableHelper.resizableColumns">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+                                                    <th style="width: 150px" pSortableColumn="curid">
+                                                        {{l('CURID')}}
+                                                        <p-sortIcon field="currencyRate.curid"></p-sortIcon>
+                                                    </th>
+
+                                                    <th style="width: 150px" pSortableColumn="curname">
+                                                        {{l('CURNAME')}}
+                                                        <p-sortIcon field="currencyRate.curname"></p-sortIcon>
+                                                    </th>
+                                                    <th style="width: 150px" pSortableColumn="symbol">
+                                                        {{l('SYMBOL')}}
+                                                        <p-sortIcon field="currencyRate.symbol"></p-sortIcon>
+                                                    </th>
+
+                                                    <th style="width: 150px" pSortableColumn="currate">
+                                                        {{l('CURRATE')}}
+                                                        <p-sortIcon field="currencyRate.currate"></p-sortIcon>
+                                                    </th>
+                                                    <th style="width: 150px" pSortableColumn="rateDate">
+                                                        {{l('RATEDATE')}}
+                                                        <p-sortIcon field="currencyRate.rateDate"></p-sortIcon>
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-record="$implicit">
+                                                <tr>
+
+                                                    <td style="width:150px">
+                                                        <span class="ui-column-title"> {{l('CURID')}}</span>
+                                                        {{record.curID}}
+                                                    </td>
+
+                                                    <td style="width:150px">
+                                                        <span class="ui-column-title"> {{l('CURNAME')}}</span>
+                                                        {{record.curName}}
+                                                    </td>
+                                                    <td style="width:150px">
+                                                        <span class="ui-column-title"> {{l('SYMBOL')}}</span>
+                                                        {{record.symbol}}
+                                                    </td>
+
+                                                    <td style="width:150px">
+                                                        <span class="ui-column-title"> {{l('CURRATE')}}</span>
+                                                        {{record.curRate}}
+                                                    </td>
+                                                    <td style="width:150px">
+                                                        <span class="ui-column-title"> {{l('RATEDATE')}}</span>
+                                                        {{record.rateDate | date }}
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                            {{l('NoData')}}
+                                        </div>
+                                        <!-- <div class="primeng-paging-container">
+                                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                         #paginator
+                                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                            </p-paginator>
+                                            <span class="total-records-count">
+                                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                            </span>
+                                        </div> -->
+                                    </div>
+                                    <!--<Primeng-Datatable-End>-->
+                                </div>
+
+
+                            </fieldset>
+                        </tab>
+                    </tabset>
+                    <!-- <input class="form-control" name="currencyRate.companyProfileId"
+						[(ngModel)]="currencyRate.companyProfileId" type="text" hidden> -->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l("Cancel") }}
+                    </button>
+                    <button type="submit" class="btn btn-primary blue"
+                        [disabled]="currencyRateForm.invalid || !isCodeLength" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <currencyRateCompanyProfileLookupTableModal #currencyRateCompanyProfileLookupTableModal
+        (modalSave)="getNewCompanyProfileId()"></currencyRateCompanyProfileLookupTableModal>
+</div>

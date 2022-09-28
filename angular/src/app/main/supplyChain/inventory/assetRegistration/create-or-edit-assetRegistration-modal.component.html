@@ -1,0 +1,588 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #assetRegistrationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="assetRegistration.id">{{l("EditAssetRegistration")}}</span>
+						<span *ngIf="!assetRegistration.id">{{l("CreateNewAssetRegistration")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+
+
+					<div class="form-group form-group-sm">
+						<div class="row">
+							<!-- <div class="col-md-4">
+								<label for="AssetRegistration_AssetID">{{l("AssetID")}}</label>
+								<input type="number" id="AssetRegistration_AssetID" class="form-control form-control-sm"
+									[(ngModel)]="assetRegistration.assetID" name="AssetID" />
+							</div> -->
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_FmtAssetID"
+										class="col-md-6">{{l("FmtAssetID")}}</label>
+									<div class="col-md-6">
+										<input type="text" id="AssetRegistration_FmtAssetID"
+											class="form-control form-control-sm"
+											[(ngModel)]="assetRegistration.fmtAssetID" name="FmtAssetID" disabled />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_RegDate" class="col-md-6">{{l("RegDate")}}</label>
+									<div class="col-md-6">
+										<input class="form-control form-control-sm m-input" [disabled]="checkedval"
+											type="datetime" bsDatepicker [(ngModel)]="regDate"
+											id="AssetRegistration_RegDate" name="AssetRegistration_RegDate"
+											[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="form-group form-group-sm">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="row">
+									<label for="AssetRegistration_AssetName" class="col-md-3">{{l("AssetName")}}</label>
+									<div class="col-md-9">
+										<input type="text" id="AssetRegistration_AssetName"
+											class="form-control form-control-sm"
+											[(ngModel)]="assetRegistration.assetName" name="AssetName" required />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_AssetType" class="col-md-5">{{l("AssetType")}}</label>
+									<div class="col-md-7">
+										<select type="number" id="AssetRegistration_AssetType"
+											class="form-control form-control-sm"
+											[(ngModel)]="assetRegistration.assetType" name="AssetType">
+											<option value="1">Computer Equipment</option>
+											<option value="2">Office Equipment</option>
+											<option value="3">Plant/Machine</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group form-group-sm">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_Warranty" class="col-md-6">{{"Warranty"}}</label>
+									<div class="col-md-6">
+										<div class="m-checkbox-list">
+											<label for="AssetRegistration_Warranty" class="kt-checkbox">
+												<input id="AssetRegistration_Warranty" type="checkbox" name="Warranty"
+													[(ngModel)]="assetRegistration.warranty">
+												{{l("Yes/No")}}
+												<span></span>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_ExpiryDate"
+										class="col-md-6">{{l("ExpiryDate")}}</label>
+									<div class="col-md-6">
+										<input class="form-control form-control-sm m-input" type="datetime" bsDatepicker
+											[(ngModel)]="expiryDate" id="AssetRegistration_ExpiryDate"
+											name="AssetRegistration_ExpiryDate">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+
+								<div class="m-checkbox-list">
+									<label for="AssetRegistration_Insurance" class="kt-checkbox">
+										<input id="AssetRegistration_Insurance" type="checkbox" name="insurance"
+											[(ngModel)]="assetRegistration.insurance">
+										{{"Insurance"}}
+										<span></span>
+									</label>
+								</div>
+
+							</div>
+
+							<div class="col-md-2">
+
+
+
+								<div class="m-checkbox-list">
+									<label for="AssetRegistration_Finance" class="kt-checkbox">
+										<input id="AssetRegistration_Finance" type="checkbox" name="finance"
+											[(ngModel)]="assetRegistration.finance">
+										{{"Finance"}}
+										<span></span>
+									</label>
+								</div>
+
+
+							</div>
+
+						</div>
+					</div>
+
+					<div class="form-group form-group-sm">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_PurchaseDate"
+										class="col-md-6">{{l("PurchaseDate")}}</label>
+									<div class="col-md-6">
+										<input class="form-control form-control-sm m-input" type="datetime" bsDatepicker
+											[(ngModel)]="purchaseDate" [maxDate]="expiryDate"
+											id="AssetRegistration_PurchaseDate" name="AssetRegistration_PurchaseDate">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_PurchasePrice"
+										class="col-md-6">{{l("PurchasePrice")}}</label>
+									<div class="col-md-6">
+										<input type="number" id="AssetRegistration_PurchasePrice"
+											class="form-control form-control-sm"
+											[(ngModel)]="assetRegistration.purchasePrice"
+											(ngModelChange)="CalBookValue($event)" name="PurchasePrice" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row">
+									<label for="AssetRegistration_SerialNumber"
+										class="col-md-5">{{l("SerialNumber")}}</label>
+									<div class="col-md-7">
+										<input type="text" id="AssetRegistration_SerialNumber"
+											class="form-control form-control-sm"
+											[(ngModel)]="assetRegistration.serialNumber" name="SerialNumber" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group form-group-sm">
+						<div class="m-form__group">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="row">
+										<label for="AssetRegistration_LocID" class="col-md-4">{{l("Locations")}}</label>
+										<div class="col-md-8">
+											<div class="input-group">
+												<input class="form-control form-control-sm" id="AssetRegistration_LocID"
+													name="locID" [(ngModel)]="assetRegistration.locID" type="text"
+													readonly required>
+												<div class="input-group-append" *ngIf="LocCheckVal">
+													<button class="btn btn-sm btn-primary blue"
+														(click)="openLocationFinder()" type="button"
+														[disabled]="flag"><i class="fa fa-search"></i>
+														{{l("Pick")}}</button>
+												</div>
+												<div class="input-group-prepend" *ngIf="LocCheckVal">
+													<button class="btn btn-danger btn-icon" type="button"
+														(click)="setLocationFinder()" [disabled]="flag"><i
+															class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<input class="form-control form-control-sm" name="LocationName"
+										[(ngModel)]="locationName" type="text" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<div class="m-form__group">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="row">
+										<label for="ReferenceID" class="col-md-4">{{l("Reference")}}</label>
+										<div class="col-md-8">
+
+											<div class="input-group">
+												<input type="text" id="ReferenceID" class="form-control form-control-sm"
+													[(ngModel)]="assetRegistration.refID" name="ReferenceID" readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm"
+														(click)="openSelectReferenceModal()" type="button"><i
+															class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div>
+												<div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button"
+														(click)="setReferenceIDNull()"><i
+															class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<input class="form-control form-control-sm" name="refName"
+										[(ngModel)]="refName" type="text" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<div class="m-form__group">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="row">
+										<label for="AssetRegistration_ItemID" class="col-md-4">{{l("ItemID")}}</label>
+										<div class="col-md-8">
+											<div class="input-group">
+												<input class="form-control form-control-sm"
+													id="AssetRegistration_ItemID" name="ItemID"
+													[(ngModel)]="assetRegistration.itemID" type="text" readonly
+													required>
+												<div class="input-group-append">
+													<button class="btn btn-sm btn-primary blue"
+														(click)="openItemFinder()" type="button" [disabled]="flag"><i
+															class="fa fa-search"></i>
+														{{l("Pick")}}</button>
+												</div>
+												<div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon" type="button"
+														(click)="setItemFinder()" [disabled]="flag"><i
+															class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<input class="form-control form-control-sm" name="ItemName" [(ngModel)]="itemName"
+										type="text" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<tabset>
+						<tab heading="Accounts Info">
+
+							<div class="form-group form-group-sm">
+								<div class="m-form__group">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="row">
+												<label for="AssetRegistration_AccAsset"
+													class="col-md-4">{{l("AccAsset")}}</label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<input class="form-control form-control-sm"
+															id="AssetRegistration_AccAsset" name="AccAsset"
+															[(ngModel)]="assetRegistration.accAsset" type="text"
+															readonly required>
+														<div class="input-group-append">
+															<button class="btn btn-sm btn-primary blue"
+																(click)="openAccountsFinder('accAsset')" type="button"
+																[disabled]="flag"><i class="fa fa-search"></i>
+																{{l("Pick")}}</button>
+														</div>
+														<div class="input-group-prepend">
+															<button class="btn btn-danger btn-icon" type="button"
+																(click)="setAccountsFinder('accAsset')"
+																[disabled]="flag"><i class="fa fa-times"></i></button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<input class="form-control form-control-sm" name="assetAccName"
+												[(ngModel)]="assetAccName" type="text" disabled>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group form-group-sm">
+								<div class="m-form__group">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="row">
+												<label for="AssetRegistration_AccDepr"
+													class="col-md-4">{{l("AccDepr")}}</label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<input class="form-control form-control-sm"
+															id="AssetRegistration_AccDepr" name="AccDepr"
+															[(ngModel)]="assetRegistration.accDepr" type="text" readonly
+															required>
+														<div class="input-group-append">
+															<button class="btn btn-sm btn-primary blue"
+																(click)="openAccountsFinder('accDepr')" type="button"
+																[disabled]="flag"><i class="fa fa-search"></i>
+																{{l("Pick")}}</button>
+														</div>
+														<div class="input-group-prepend">
+															<button class="btn btn-danger btn-icon" type="button"
+																(click)="setAccountsFinder('accDepr')"
+																[disabled]="flag"><i class="fa fa-times"></i></button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<input class="form-control form-control-sm" name="AccDeprName"
+												[(ngModel)]="accDeprName" type="text" disabled>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group form-group-sm">
+								<div class="m-form__group">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="row">
+												<label for="AssetRegistration_AccExp"
+													class="col-md-4">{{l("AccExp")}}</label>
+												<div class="col-md-8">
+													<div class="input-group">
+														<input class="form-control form-control-sm"
+															id="AssetRegistration_AccExp" name="AccExp"
+															[(ngModel)]="assetRegistration.accExp" type="text" readonly
+															required>
+														<div class="input-group-append">
+															<button class="btn btn-sm btn-primary blue"
+																(click)="openAccountsFinder('accExp')" type="button"
+																[disabled]="flag"><i class="fa fa-search"></i>
+																{{l("Pick")}}</button>
+														</div>
+														<div class="input-group-prepend">
+															<button class="btn btn-danger btn-icon" type="button"
+																(click)="setAccountsFinder('accExp')"
+																[disabled]="flag"><i class="fa fa-times"></i></button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<input class="form-control form-control-sm" name="AccExpName"
+												[(ngModel)]="accExpName" type="text" disabled>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group form-group-sm">
+								<div class="row">
+									<label for="AssetRegistration_DepRate" class="col-md-2">{{l("DepRate")}}</label>
+									<div class="col-md-10">
+										<input type="number" id="AssetRegistration_DepRate"
+											class="form-control form-control-sm" [(ngModel)]="assetRegistration.depRate"
+											name="DepRate" />
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group form-group-sm">
+								<div class="row">
+									<label for="AssetRegistration_Narration" class="col-md-2">{{l("Narration")}}</label>
+									<div class="col-md-10">
+										<input type="text" id="AssetRegistration_Narration"
+											class="form-control form-control-sm"
+											[(ngModel)]="assetRegistration.narration" name="Narration" />
+									</div>
+								</div>
+							</div>
+						</tab>
+						<tab heading="Book Value">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group form-group-sm">
+										<div class="row">
+											<label for="AssetRegistration_DepStartDate"
+												class="col-md-4">{{l("DepStartDate")}}</label>
+											<div class="col-md-8">
+												<input class="form-control form-control-sm m-input" type="datetime"
+													bsDatepicker [(ngModel)]="depStartDate"
+													id="AssetRegistration_DepStartDate"
+													name="AssetRegistration_DepStartDate">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group form-group-sm">
+										<div class="row">
+
+											<label for="AssetRegistration_DepMethod"
+												class="col-md-4">{{l("DepMethod")}}</label>
+											<div class="col-md-8">
+												<select type="number" id="AssetRegistration_DepMethod"
+													class="form-control form-control-sm"
+													[(ngModel)]="assetRegistration.depMethod" name="DepMethod">
+													<option value="1" selected>Straight Line Methods</option>
+													<option value="2">Declining Methods</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group form-group-sm">
+										<div class="row">
+											<label for="AssetRegistration_AssetLife"
+												class="col-md-4">{{l("AssetLife")}}</label>
+											<div class="col-md-8">
+												<input type="number" id="AssetRegistration_AssetLife"
+													class="form-control form-control-sm"
+													[(ngModel)]="assetRegistration.assetLife" name="AssetLife" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group form-group-sm">
+										<div class="row">
+											<label for="AssetRegistration_BookValue"
+												class="col-md-4">{{l("BookValue")}}</label>
+											<div class="col-md-8">
+												<input type="number" id="AssetRegistration_BookValue"
+													class="form-control form-control-sm"
+													[(ngModel)]="assetRegistration.bookValue" name="BookValue" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group form-group-sm">
+										<div class="row">
+											<label for="AssetRegistration_LastDepAmount"
+												class="col-md-4">{{l("LastDepAmount")}}</label>
+											<div class="col-md-8">
+												<input type="number" id="AssetRegistration_LastDepAmount"
+													class="form-control form-control-sm"
+													[(ngModel)]="assetRegistration.lastDepAmount" name="LastDepAmount"
+													disabled />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group form-group-sm">
+										<div class="row">
+											<label for="AssetRegistration_LastDepDate"
+												class="col-md-4">{{l("LastDepDate")}}</label>
+											<div class="col-md-8">
+												<input class="form-control form-control-sm m-input" type="datetime"
+													bsDatepicker [(ngModel)]="lastDepDate"
+													id="AssetRegistration_LastDepDate"
+													name="AssetRegistration_LastDepDate" disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group form-group-sm">
+								<label for="AssetRegistration_AccumulatedDepAmt">{{l("Accumolated Dep")}}</label>
+								<input type="number" id="AssetRegistration_AccumulatedDepAmt"
+									class="form-control form-control-sm"
+									[(ngModel)]="assetRegistration.accumulatedDepAmt" name="AccumulatedDepAmt"
+									disabled />
+							</div>
+						</tab>
+					</tabset>
+
+					<!-- <br />
+					<div class="m-checkbox-list">
+						<label for="AssetRegistration_Disolved" class="kt-checkbox">
+							<input id="AssetRegistration_Disolved" type="checkbox" name="Disolved"
+								[(ngModel)]="assetRegistration.disolved">
+							{{l("Disolved")}}
+							<span></span>
+						</label>
+					</div>
+
+					<div class="form-group form-group-sm">
+						<label for="AssetRegistration_Active">{{l("Active")}}</label>
+						<input type="number" id="AssetRegistration_Active" class="form-control form-control-sm"
+							[(ngModel)]="assetRegistration.active" name="Active" />
+					</div>
+
+					<div class="form-group form-group-sm">
+						<label for="AssetRegistration_AudtUser">{{l("AudtUser")}}</label>
+						<input type="text" id="AssetRegistration_AudtUser" class="form-control form-control-sm"
+							[(ngModel)]="assetRegistration.audtUser" name="AudtUser" />
+					</div>
+
+					<div class="form-group form-group-sm">
+						<label for="AssetRegistration_AudtDate">{{l("AudtDate")}}</label>
+						<input class="form-control form-control-sm m-input" type="datetime" bsDatepicker [(ngModel)]="audtDate"
+							id="AssetRegistration_AudtDate" name="AssetRegistration_AudtDate">
+					</div>
+
+					<div class="form-group form-group-sm">
+						<label for="AssetRegistration_CreatedBy">{{l("CreatedBy")}}</label>
+						<input type="text" id="AssetRegistration_CreatedBy" class="form-control form-control-sm"
+							[(ngModel)]="assetRegistration.createdBy" name="CreatedBy" />
+					</div>
+
+					<div class="form-group form-group-sm">
+						<label for="AssetRegistration_CreateDate">{{l("CreateDate")}}</label>
+						<input class="form-control form-control-sm m-input" type="datetime" bsDatepicker [(ngModel)]="createDate"
+							id="AssetRegistration_CreateDate" name="AssetRegistration_CreateDate">
+					</div> -->
+
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button [disabled]="saving" [disabled]="!assetRegistrationForm.form.valid || !depProcess"
+						type="button" class="btn btn-success green" (click)="getDepreciation()">{{l("Start
+						Depreciation")}}</button>
+					<button type="submit" class="btn btn-primary blue"
+						[disabled]="!assetRegistrationForm.form.valid && !assetRegistration.id" [buttonBusy]="saving"
+						[busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+<inventoryLookupTableModal #LocationFinder (modalSave)="getNewLocationId()"></inventoryLookupTableModal>
+<financeLookupTableModal #accAssetFinder (modalSave)="getNewAccountsId('accAsset')"></financeLookupTableModal>
+<financeLookupTableModal #accDeprFinder (modalSave)="getNewAccountsId('accDepr')"></financeLookupTableModal>
+<financeLookupTableModal #accExpFinder (modalSave)="getNewAccountsId('accExp')"></financeLookupTableModal>
+<inventoryLookupTableModal #ItemFinder (modalSave)="getNewItemId()"></inventoryLookupTableModal>
+<salesLookupTableModal #SalesLookupTableModal (modalSave)="getNewReference()"></salesLookupTableModal>

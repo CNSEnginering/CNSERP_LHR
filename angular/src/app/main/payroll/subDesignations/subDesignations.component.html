@@ -1,0 +1,280 @@
+﻿<div [@routerTransition]>
+
+
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("SubDesignations")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("SubDesignationsHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('PayRoll.SubDesignations.Setup.Create')" (click)="createSubDesignations()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewSubDesignations")}}</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getSubDesignations()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSubDesignationIDFilter">{{l("MinMax")}}
+                                        {{l("SubDesignationID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSubDesignationIDFilter"
+                                            [(ngModel)]="minSubDesignationIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minSubDesignationIDFilter" />
+                                        <input type="number" class="form-control"
+                                            [(ngModel)]="maxSubDesignationIDFilter" placeholder="{{l('MaxValue')}}"
+                                            name="maxSubDesignationIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="SubDesignationFilter">{{l("SubDesignation")}}</label>
+                                    <input type="text" class="form-control" id="SubDesignationFilter"
+                                        name="subDesignationFilter" [(ngModel)]="subDesignationFilter">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <label for="ActiveFilterSelect">{{l("Active")}}</label>
+                                <select class="form-control" name="ActiveFilter" id="ActiveFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("False")}}</option>
+                                    <option value="1">{{l("True")}}</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div> -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getSubDesignations($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.SubDesignations.Setup.Edit', 'PayRoll.SubDesignations.Setup.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 180px" pSortableColumn="subDesignationID">
+                                        {{l('SubDesignationID')}}
+                                        <p-sortIcon field="subDesignations.subDesignationID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 180px" pSortableColumn="subDesignation">
+                                        {{l('SubDesignation')}}
+                                        <p-sortIcon field="subDesignations.subDesignation"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="subDesignations.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="subDesignations.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="subDesignations.audtDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="subDesignations.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="subDesignations.createDate"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.SubDesignations.Setup.Edit', 'PayRoll.SubDesignations.Setup.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewSubDesignationsModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.SubDesignations.Setup.Edit')"
+                                                        (click)="createOrEditSubDesignationsModal.show(record.subDesignations.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.SubDesignations.Setup.Delete')"
+                                                        (click)="deleteSubDesignations(record.subDesignations)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:180px">
+                                        <span class="ui-column-title"> {{l('SubDesignationID')}}</span>
+                                        {{record.subDesignations.subDesignationID}}
+                                    </td>
+                                    <td style="width:180px">
+                                        <span class="ui-column-title"> {{l('SubDesignation')}}</span>
+                                        {{record.subDesignations.subDesignation}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.subDesignations.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.subDesignations.active">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.subDesignations.audtUser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.subDesignations.audtDate">
+                                            {{record.subDesignations.audtDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.subDesignations.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.subDesignations.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.subDesignations.createDate">
+                                            {{record.subDesignations.createDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.subDesignations.createDate">-</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getSubDesignations($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditSubDesignationsModal #createOrEditSubDesignationsModal (modalSave)="getSubDesignations()">
+    </createOrEditSubDesignationsModal>
+    <viewSubDesignationsModal #viewSubDesignationsModal></viewSubDesignationsModal>
+
+
+</div>

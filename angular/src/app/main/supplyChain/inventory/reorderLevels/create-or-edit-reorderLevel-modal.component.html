@@ -1,0 +1,101 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #reorderLevelForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="reorderLevel.id">{{l("EditReorderLevel")}}</span>
+                        <span *ngIf="!reorderLevel.id">{{l("CreateNewReorderLevel")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="ReorderLevel_LocId">{{l("LocId")}} <span class="require-field">*</span></label>
+								<select id="ReorderLevel_LocId" class="form-control form-control-sm" [(ngModel)]="reorderLevel.locId" name="LocId"  required>
+									<option value=0>Choose Location</option>
+									<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+								</select>
+							</div>
+				
+							<div class="form-group col-md-6">
+							</div>
+
+							<div class="form-group m-form__group col-md-5" >
+								<label for="ReorderLevel_ItemId">{{l("ItemId")}}<span class="require-field">*</span></label>
+								<div class="input-group">
+									<input type="text" id="ReorderLevel_ItemId" class="form-control form-control-sm" [(ngModel)]="reorderLevel.itemId" name="ItemId"  required readonly/>
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectItemModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div> <div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setItemIdNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-md-7">
+								<label for="ReorderLevel_ItemName">{{l("")}}&nbsp;</label>
+								<input class="form-control form-control-sm" id="ReorderLevel_ItemName" name="ItemName" [(ngModel)]="itemName" type="text" readonly>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="ReorderLevel_MinLevel">{{l("MinLevel")}}</label>
+								<input type="number" id="ReorderLevel_MinLevel" class="form-control form-control-sm" [(ngModel)]="reorderLevel.minLevel" name="MinLevel"  required/>
+							</div>
+				
+							<div class="form-group col-md-3">
+								<label for="ReorderLevel_MaxLevel">{{l("MaxLevel")}}</label>
+								<input type="number" id="ReorderLevel_MaxLevel" class="form-control form-control-sm" [(ngModel)]="reorderLevel.maxLevel" name="MaxLevel" required />
+							</div>
+				
+							<div class="form-group col-md-6">
+								<label for="ReorderLevel_OrdLevel">{{l("OrdLevel")}}</label>
+								<input type="number" id="ReorderLevel_OrdLevel" class="form-control form-control-sm" [(ngModel)]="reorderLevel.ordLevel" name="OrdLevel"  required/>
+							</div>
+						</div>
+
+								
+					
+								<!-- <div class="form-group">
+									<label for="ReorderLevel_CreatedBy">{{l("CreatedBy")}}</label>
+									<input type="text" id="ReorderLevel_CreatedBy" class="form-control" [(ngModel)]="reorderLevel.createdBy" name="CreatedBy"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ReorderLevel_CreateDate">{{l("CreateDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="createDate" id="ReorderLevel_CreateDate" name="ReorderLevel_CreateDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="ReorderLevel_AudtUser">{{l("AudtUser")}}</label>
+									<input type="text" id="ReorderLevel_AudtUser" class="form-control" [(ngModel)]="reorderLevel.audtUser" name="AudtUser"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ReorderLevel_AudtDate">{{l("AudtDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="audtDate" id="ReorderLevel_AudtDate" name="ReorderLevel_AudtDate">
+								</div> -->
+					
+								
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!reorderLevelForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getNewItemId()"></ItemPricingLookupTableModal> 
+
+<style>
+		.form-group {
+			margin-bottom: 0.8rem;
+		}
+	</style>

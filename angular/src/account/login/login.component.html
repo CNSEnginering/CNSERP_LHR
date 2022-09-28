@@ -1,0 +1,63 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title">
+        <h3 class="m-0 login-custom-heading">
+        e-Resource Planning
+            <!-- {{ 'LogIn' | localize }} -->
+        </h3>
+    </div>
+  
+
+
+
+    <form #loginForm="ngForm" class="kt-form n-custom-login-form" method="post" novalidate (ngSubmit)="login()">
+
+        <div class="form-group">
+            <input #userNameOrEmailAddressInput="ngModel" [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" autoFocus class="form-control m-input" type="text" autocomplete="new-password" placeholder="{{'UserNameOrEmail' | localize}} *" name="userNameOrEmailAddress" required />
+            <validation-messages [formCtrl]="userNameOrEmailAddressInput" *ngIf="!userNameOrEmailAddressInput.touched"></validation-messages>
+        </div>
+
+        <div class="form-group">
+            <input #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.password" class="form-control m-input" type="password" autocomplete="new-password" placeholder="{{'Password' | localize}} *" name="password" required maxlength="32" />
+            <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
+        </div>
+
+        <div class="form-group mt-4">
+            <label class="kt-checkbox" style="color:black;">
+                <input class="form-control" [(ngModel)]="loginService.rememberMe" type="checkbox" name="rememberMe" value="true" />{{"RememberMe" | localize}}
+                <span></span>
+            </label>
+        </div>
+
+        <div class="kt-login__actions">
+            <a routerLink="/account/forgot-password" id="forget-password" class="kt-link kt-login__link-forgot" style="color:black; font-weight:bold ">{{"ForgotPassword" | localize}}</a>
+            <button type="submit" class="btn btn-primary btn-elevate kt-login__btn-primary login-custom-btn" [disabled]="!loginForm.form.valid">{{"LogIn" | localize}}</button>
+        </div>
+    </form>
+
+    <div class="kt-login__divider">
+        <div class="kt-divider">
+            <span></span>
+            <span style="color:black">{{"LoginWith" | localize}}</span>
+            <span></span>
+        </div>
+    </div>
+
+    <div class="kt-login__options" *ngIf="(multiTenancySideIsTeanant || !isMultiTenancyEnabled) && loginService.externalLoginProviders.length > 0">
+        <a *ngFor="let provider of loginService.externalLoginProviders" class="btn btn-outline-secondary kt-btn btn-sm" (click)="externalLogin(provider)" title="{{provider.name}}">
+            <i class="fab fa-{{provider.icon}}"></i>
+            {{provider.name}}
+        </a>
+    </div>
+
+</div>
+<div class="kt-login__account">
+    <span class="creant-account-text" *ngIf="isSelfRegistrationAllowed">
+        <a routerLink="/account/register">{{"CreateAnAccount" | localize}}</a>
+        <span style="color: #fff;"> | </span>
+    </span>
+    <span class="creant-account-text" *ngIf="!multiTenancySideIsTeanant && isTenantSelfRegistrationAllowed">
+        <a routerLink="/account/select-edition">{{"NewTenant" | localize}}</a>
+        <span style="color: #fff;"> | </span>
+    </span>
+    <a routerLink="/account/email-activation" id="email-activation-btn" class="acount-activation">{{"EmailActivation" | localize}}</a>
+</div>

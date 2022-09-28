@@ -1,0 +1,71 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocID")}} :</h6>
+                        {{ item.allowances.docID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Docdate")}} :</h6>
+                        {{ item.allowances.docdate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocMonth")}} :</h6>
+                        <span *ngIf="item.allowances.docMonth==1">{{'January'}}</span>
+                        <span *ngIf="item.allowances.docMonth==2">{{'February'}}</span>
+                        <span *ngIf="item.allowances.docMonth==3">{{'March'}}</span>
+                        <span *ngIf="item.allowances.docMonth==4">{{'April'}}</span>
+                        <span *ngIf="item.allowances.docMonth==5">{{'May'}}</span>
+                        <span *ngIf="item.allowances.docMonth==6">{{'June'}}</span>
+                        <span *ngIf="item.allowances.docMonth==7">{{'July'}}</span>
+                        <span *ngIf="item.allowances.docMonth==8">{{'August'}}</span>
+                        <span *ngIf="item.allowances.docMonth==9">{{'September'}}</span>
+                        <span *ngIf="item.allowances.docMonth==10">{{'October'}}</span>
+                        <span *ngIf="item.allowances.docMonth==11">{{'November'}}</span>
+                        <span *ngIf="item.allowances.docMonth==12">{{'December'}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocYear")}} :</h6>
+                        {{ item.allowances.docYear }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.allowances.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.allowances.audtDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.allowances.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.allowances.createDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

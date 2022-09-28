@@ -1,0 +1,26 @@
+<div class="kt-footer kt-grid__item" id="kt_footer">
+    <div class="kt-container" *ngIf="useBottomDiv">
+        <div class="kt-footer__bottom">
+            <div class="kt-footer__copyright">
+                ERP <span
+                    *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName">
+                    {{appSession.tenant.edition.displayName}}</span> | v{{appSession.application.version}}
+                [{{releaseDate}}]
+            </div>
+            <div class="kt-footer__menu">
+            </div>
+        </div>
+    </div>
+    <div class="kt-container" *ngIf="!useBottomDiv">
+        <div class="kt-footer__wrapper">
+            <div class="kt-footer__copyright">
+                ERP <span
+                    *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName">
+                    {{appSession.tenant.edition.displayName}}</span> | v{{appSession.application.version}}
+                [{{releaseDate}}]
+            </div>
+            <div class="kt-footer__menu">
+            </div>
+        </div>
+    </div>
+</div>

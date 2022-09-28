@@ -1,0 +1,268 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl custom_model_width">
+        <div class="modal-content">
+            <form *ngIf="active" #knockForm="ngForm" (ngSubmit)="save()" autocomplete="off" _ngcontent-bmt-c20 >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                       
+                        <span *ngIf="invoiceKnockOffH.id">{{l("EditInvoiceKnockOff")}}</span>
+						<span *ngIf="!invoiceKnockOffH.id">{{l("CreateNewInvoiceKnockOff")}}</span>
+				
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                  <div col-md-12>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="docNo">{{l("DocNo")}}<span class="require-field">*</span></label>
+                            <input type="text" id="docNo" class="form-control form-control-sm"
+                                [(ngModel)]="invoiceKnockOffH.docNo" name="priceList" maxlength="10" required disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docDate">{{l("DocDate")}}<span class="require-field">*</span></label>
+                                <input type="text" min="1" id="docDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" 
+                                bsDatepicker class="form-control form-control-sm" [(ngModel)]="this.invoiceKnockOffH.docDate"
+                                 name="docDate" [disabled]="checkedval" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docDate">{{l("Post Date")}}<span class="require-field">*</span></label>
+                                <input type="text" min="1" id="postDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" 
+                                bsDatepicker class="form-control form-control-sm" [(ngModel)]="this.invoiceKnockOffH.postDate"
+                                 name="postDate" [disabled]="checkedval" />
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label for="gLLOCID">{{l("LocID")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="gLLOCID" class="form-control form-control-sm"
+                                    [(ngModel)]="invoiceKnockOffH.gllocid" name="gLLOCID" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openLocationModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setLocationNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="CRDRNote_LocDesc">{{l("LocationDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_LocDesc"
+                                name="CRDRNote_LocDesccription" [(ngModel)]="locDesc" type="text" disabled />
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                      
+                        <div class="col-sm-3 ">
+                            <label for="debtorCtrlAc" >{{l("Debtor")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="debtorCtrlAc" name="debtorCtrlAc"
+                                    [(ngModel)]="invoiceKnockOffH.debtorCtrlAc" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('chAccountID')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setCAIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <label for="Description" >{{l("Description")}}</label>
+                            <input type="text" disabled  class="form-control form-control-sm" id="chAccountIDDesc"
+                                name="chAccountIDDesc" [(ngModel)]="chAccountIDDesc" />
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label for="SaleEntry_CustomerID">{{l("CustomerID")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="number" id="SaleEntry_CustomerID" class="form-control form-control-sm"
+                                    [(ngModel)]="invoiceKnockOffH.custID" name="custID"  required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectCustomerModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setCustomerIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="CustomerName">{{l("")}}&nbsp;</label>
+                            <input class="form-control form-control-sm" id="CustomerName" name="CustomerName"
+                                [(ngModel)]="customerName" type="text" disabled >
+                        </div>
+                    </div>
+                    
+                    
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="GLINVHeader_PaymentOptions">{{l("PaymentOption")}}<span class="require-field">*</span></label>
+                    <select id="GLINVHeader_PaymentOptions" class="form-control form-control-sm" [(ngModel)]="invoiceKnockOffH.paymentOption" name="PaymentOption"
+                    (ngModelChange)="changeOption(invoiceKnockOffH.paymentOption)">
+                        <option value="Bank">Bank</option>
+                        <option value="Cash">Cash</option>
+                    </select>
+                </div>
+                
+                <div class="form-group m-form__group col-md-3">
+                    <label for="GLINVHeader_BankID">{{invoiceKnockOffH.paymentOption}}<span class="require-field" >*</span></label>
+                    <div class="input-group">
+                        <input type="text" id="GLINVHeader_BankID" class="form-control form-control-sm" [(ngModel)]="invoiceKnockOffH.bankID" name="BankID" required readonly/>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary blue btn-sm" (click)="openSelectBankIdModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                        </div> <div class="input-group-prepend">
+                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBankIdNull()"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="GLINVHeader_accountID">{{l("")}}&nbsp;</label>
+                    <input class="form-control form-control-sm" id="GLINVHeader_accountID" name="accountID" [(ngModel)]="invoiceKnockOffH.bAccountID" type="text" readonly>
+                </div>
+
+                <div class="form-group col-md-3" *ngIf="invoiceKnockOffH.paymentOption.toLowerCase() == 'bank'"> 
+                    <label for="GLTRDetail_ChequeType">{{l("InstrumentType")}}</label>
+                    <select type="text" id="GLTRDetail_ChequeType" 
+                     class="form-control form-control-sm" [(ngModel)]="invoiceKnockOffH.insType"
+                     name="chequeType" 
+                     >
+                     <option value="1">Cheque-Cash</option>
+                     <option value="2">Cheque-Cross</option>
+                     <option value="3">P.O.</option>
+                     <option value="4">Online</option>
+                     <option value="5">Other</option>
+                     </select>
+                </div>	
+
+
+                <div class="form-group m-form__group col-md-3" *ngIf="invoiceKnockOffH.paymentOption.toLowerCase() == 'bank'">
+                    <label for="InstrumentNo">{{l("InstrumentNo")}}</label>
+                    <div class="input-group">
+                        <input type="text" id="InstrumentNo" class="form-control form-control-sm" [(ngModel)]="invoiceKnockOffH.insNo" name="InstrumentNo"/>
+                        <div class="input-group-append" >
+                            <button class="btn btn-primary blue btn-sm" (click)="openInstrumentNo('Tab2')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                        </div> <div class="input-group-prepend">
+                            <!-- <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setInstrumentNoNull()"><i class="fa fa-times"></i></button> -->
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+
+
+            <div class="row">
+                <!-- <div class="form-group m-form__group col-md-3">
+                    <label for="GLINVHeader_CurrencyId">{{l("Currency")}}<span class="require-field">*</span></label>
+                    <div class="input-group">
+                        <input type="text" id="GLINVHeader_CurrencyId" class="form-control form-control-sm" [(ngModel)]="invoiceKnockOffH.curID" name="CurID" readonly/>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary blue btn-sm" (click)="openSelectCurrencyRateModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                        </div> <div class="input-group-prepend">
+                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCurrencyRateIdNull()"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group col-md-2">
+                    <label for="GLINVHeader_CurRate">{{l("Rate")}}&nbsp;<span class="require-field">*</span></label>
+                    <input type="number" class="form-control form-control-sm" id="GLINVHeader_CurRate" name="CurRate" [(ngModel)]="invoiceKnockOffH.curRate" readonly>
+                </div> -->
+                <div class="col-md-7">
+                    <label for="fromLocDesc">{{l("Narration")}}</label>
+                    <input class="form-control form-control-sm" id="narration" name="narration"
+                        [(ngModel)]="invoiceKnockOffH.narration" type="text" maxlength="100"/>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="Amount">{{l("Amount")}}<span
+                            class="require-field">*</span></label>
+                    <input type="number" id="Amount" class="form-control form-control-sm"
+                        [(ngModel)]="invoiceKnockOffH.amount" name="Amount" min="0"
+                        required />
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary blue"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="GetPostedInvoices()"  ><i class="fa fa-save"></i>
+						Process</button>
+            </div>
+
+                 
+                </div>
+                    <!-- <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="removeRecordFromGrid()">Remove</button> -->
+
+                    <div class="row com-md-12" style="margin-top:10px;">
+                        <br>
+                        <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                        [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                        [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                        [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                        (cellClicked)="onCellClicked($event)"
+                        (cellValueChanged)="onCellValueChanged($event)"
+                        (cellEditingStarted)="cellEditingStarted($event)">
+                        </ag-grid-angular>
+                    </div>
+
+                    <!-- <tabset >
+                        <tab heading="Invoices Detail">
+                            <fieldset>
+                                
+                            </fieldset>
+                        </tab>
+                         
+                    </tabset> -->
+
+                    <div class="form-group col-md-2">
+                        <label for="totalAdjust">{{l("Adjust Total")}}<span
+                                class="require-field">*</span></label>
+                        <input type="text" id="totalAdjust"
+                            class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="invoiceKnockOffH.totalAdjust" name="totalAdjust"
+                            readonly required currencyMask  
+                            [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" 
+                             #currency/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()"  *ngIf="!this.isButtonVisible" [disabled]="!knockForm.form.valid" 
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                        <!-- <button type="button" class="btn btn-primary blue" *ngIf="this.invoiceKnockOffH.id && !this.invoiceKnockOffH.posted"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="approveDoc(this.invoiceKnockOffH.id,'Approve',true)"  ><i class="fa fa-save"></i>
+						Approved</button>
+						<button type="button" class="btn btn-primary blue" *ngIf="this.invoiceKnockOffH.id && this.invoiceKnockOffH.posted"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="approveDoc(this.invoiceKnockOffH.id,'UnApproval',false)"  ><i class="fa fa-save"></i>
+						UnApproved</button> -->
+                        <button type="button" *ngIf="invoiceKnockOffH.id && !invoiceKnockOffH.posted" class="btn btn-success green"
+					    [buttonBusy]="saving" (click)="processInv('Invoice')" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <InventoryGlLinkLookupTableModal #InventoryGlLinkLookupTableModal (modalSave)="getLookUpData()">
+</InventoryGlLinkLookupTableModal>
+<ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getLookUpData()"></ItemPricingLookupTableModal> -->
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getLookUpData()"></financeLookupTableModal>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()"></commonServiceLookupTableModal>
+<!-- <app-log #LogTableModal ></app-log> -->

@@ -1,0 +1,102 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeID")}} :</h6>
+                        {{ item.employeeLeaves.employeeID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LeaveID")}} :</h6>
+                        {{ item.employeeLeaves.leaveID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SalaryYear")}} :</h6>
+                        {{ item.employeeLeaves.salaryYear }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SalaryMonth")}} :</h6>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==1">{{'January'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==2">{{'February '}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==3">{{'March'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==4">{{'April'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==5">{{'May'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==6">{{'June'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==7">{{'July'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==8">{{'August'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==9">{{'September'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==10">{{'October'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==11">{{'November'}}</span>
+                        <span *ngIf="item.employeeLeaves.salaryMonth==12">{{'December'}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("StartDate")}} :</h6>
+                        {{ item.employeeLeaves.startDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Leave Type")}} :</h6>
+                        <span *ngIf="item.employeeLeaves.leaveType==1">{{"Full Leave"}}</span>
+                        <span *ngIf="item.employeeLeaves.leaveType==0.5">{{"Half Leave"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Casual")}} :</h6>
+                        <span *ngIf="item.employeeLeaves.casual==1">{{"Yes"}}</span>
+                        <span *ngIf="item.employeeLeaves.casual==0">{{"No"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Sick")}} :</h6>
+                        <span *ngIf="item.employeeLeaves.sick==1">{{"Yes"}}</span>
+                        <span *ngIf="item.employeeLeaves.sick==0">{{"No"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Annual")}} :</h6>
+                        <span *ngIf="item.employeeLeaves.annual==1">{{"Yes"}}</span>
+                        <span *ngIf="item.employeeLeaves.annual==0">{{"No"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PayType")}} :</h6>
+                        {{ item.employeeLeaves.payType }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Remarks")}} :</h6>
+                        {{ item.employeeLeaves.remarks }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.employeeLeaves.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.employeeLeaves.audtDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.employeeLeaves.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.employeeLeaves.createDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

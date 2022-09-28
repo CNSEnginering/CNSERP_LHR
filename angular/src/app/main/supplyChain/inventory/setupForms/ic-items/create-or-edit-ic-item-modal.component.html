@@ -1,0 +1,771 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #IcItemsForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="flag">{{l("EditIcItem")}}</span>
+                        <span *ngIf="!flag">{{l("CreateNewIcItem")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-group-sm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="m-form__group">
+                                    <div class="row">
+                                        <label for="IcItems_Seg1ID"
+                                            class="col-md-4">{{seg1Setup != '' ? seg1Setup: l("ICSeg1Name")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="IcItems_Seg1ID"
+                                                    name="IcItems_Seg1ID" [(ngModel)]="icItem.seg1Id" type="text"
+                                                    required readonly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue "
+                                                        (click)="openSelectICSegment1Modal()" type="button"
+                                                        [disabled]="flag"><i class="fa fa-search"></i>
+                                                        {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setICSegment1IdNull()" [disabled]="flag"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control form-control-sm" name="IcItems_Seg1Name"
+                                    [(ngModel)]="seg1Name" type="text" required disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-group-sm">
+                        <div class="m-form__group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="IcItems_Seg2ID"
+                                            class="col-md-4">{{seg2Setup != '' ? seg2Setup: l("ICSeg2Name")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="IcItems_Seg2ID"
+                                                    name="IcItems_Seg2ID" [(ngModel)]="icItem.seg2Id" type="text"
+                                                    readonly required>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue"
+                                                        (click)="openSelectICSegment2Modal()" type="button"
+                                                        [disabled]="!icItem.seg1Id || flag == true"><i
+                                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setICSegment2IdNull()" [disabled]="flag"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" name="IcItems_Seg2Name"
+                                        [(ngModel)]="seg2Name" type="text" required disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm">
+                        <div class="m-form__group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="IcItems_Seg3ID"
+                                            class="col-md-4">{{seg3Setup != '' ? seg3Setup: l("ICSeg3Name")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="IcItems_Seg3ID"
+                                                    name="IcItems_Seg3ID" [(ngModel)]="icItem.seg3Id" type="text"
+                                                    readonly required>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue"
+                                                        (click)="openSelectICSegment3Modal()" type="button"
+                                                        [disabled]="!icItem.seg2Id || flag == true"><i
+                                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setICSegment3IdNull()" [disabled]="flag"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" name="IcItems_Seg3Name"
+                                        [(ngModel)]="seg3Name" type="text" required disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group form-group-sm">
+                                <label for="IcItems_ItemId">{{l("IcItemId")}} *</label>
+                                <input type="text" id="IcItems_ItemId" class="form-control form-control-sm"
+                                    [(ngModel)]="icItem.itemId" name="ItemId" minlength="4" maxlength="4"
+                                    pattern="^\d{4}$" [disabled]="flag" required />
+                            </div>
+                            <div class="from-group form-group-sm">
+                                <label for="IcItems_Descp">{{l("ICItemName")}} *</label>
+                                <input type="text" id="IcItems_Descp" class="form-control form-control-sm"
+                                    [(ngModel)]="icItem.descp" name="Descp" maxlength="200" required />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3 text-center">
+                            <!-- <img src="{{profilePicture}}" width="128" height="128" class="img-thumbnail img-rounded" /> -->
+                            <img [src]="croppedImage" width="128" height="128" class="img-thumbnail img-rounded" />
+                            <!-- <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="openImageModal()">{{l("choose Image")}}</button> -->
+                        </div>
+                    </div>
+                   <br>
+                    <tabset>
+                        <tab heading="Basic">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <div class="row">
+                                                <label for="IcItems_opt1"
+                                                    class="col-md-3">{{l("Alternate Item")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm" id="IcItems_opt1"
+                                                            name="IcItems_opt1" [(ngModel)]="icItem.alternateItemID" type="text" maxlength="10">
+                                                        <!-- <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openSelectICSegment2Modal()" type="button"
+                                                                [disabled]="flag"><i class="fa fa-search"></i>
+                                                            </button>
+                                                           {{l("Pick")}} 
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setICSegment2IdNull()" [disabled]="flag"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-5">
+                                                    <input class="form-control form-control-sm" name="IcItems_opt1"
+                                                        [(ngModel)]="opt1Name" type="text"  disabled>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <div class="row">
+                                                <label for="IcItems_opt2"
+                                                    class="col-md-2">{{l("Option 2")}}</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm" id="IcItems_opt2"
+                                                            name="IcItems_opt2" [(ngModel)]="icItem.opt2" type="text">
+                                                        <!-- <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openSelectICSegment2Modal()" type="button"
+                                                                [disabled]="flag"><i class="fa fa-search"></i>
+                                                            </button>
+                                                            {{l("Pick")}}
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setICSegment2IdNull()" [disabled]="flag"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-5">
+                                                    <input class="form-control form-control-sm" name="IcItems_opt2"
+                                                        [(ngModel)]="opt2Name" type="text"  disabled>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <div class="row">
+                                                <label for="IcItems_opt3" class="col-md-2">{{l("Option 3")}}</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm" id="IcItems_opt3"
+                                                            name="IcItems_opt3" [(ngModel)]="icItem.opt3" type="text">
+                                                        <!-- <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openSelectICSegment2Modal()" type="button"
+                                                                [disabled]="flag"><i class="fa fa-search"></i>
+                                                            </button>
+                                                             {{l("Pick")}} 
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setICSegment2IdNull()" [disabled]="flag"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-5">
+                                                    <input class="form-control form-control-sm" name="IcItems_opt3"
+                                                        [(ngModel)]="opt3Name" type="text"  disabled>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <div class="row">
+                                                <label for="IcItems_opt4" class="col-md-2">
+                                                    {{l("Item Status")}}</label>
+                                                <div class="col-md-5">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm" id="IcItems_opt4"
+                                                            name="IcItems_opt4" [(ngModel)]="icItem.opt4" type="text"
+                                                            disabled>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openOption4()" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                            </button>
+                                                            <!-- {{l("Pick")}} -->
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setOpt4Null()"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input class="form-control form-control-sm" name="IcItems_opt4Name"
+                                                        [(ngModel)]="opt4Name" type="text" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <div class="row">
+                                                <label for="IcItems_opt5" class="col-md-2">{{l("Option 5")}}</label>
+                                                <div class="col-md-5">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm" id="IcItems_opt5"
+                                                            name="IcItems_opt5" [(ngModel)]="icItem.opt5" type="text"
+                                                            disabled>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openOption5()" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                            </button>
+                                                            <!-- {{l("Pick")}} -->
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setOpt5Null()"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input class="form-control form-control-sm" name="IcItems_opt5Name"
+                                                        [(ngModel)]="opt5Name" type="text" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_Barcode" class="col-md-2">{{l("Barcode")}} </label>
+                                            <div class="col-md-10">
+                                                <input type="text" id="IcItems_Barcode"
+                                                    class="form-control form-control-sm" [(ngModel)]="icItem.barcode"
+                                                    name="Barcode" maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_SerialNo" class="col-md-4">{{l("SerialNo")}} </label>
+                                            <div class="col-md-8">
+                                                <input type="text" id="IcItems_SerialNo"
+                                                    class="form-control form-control-sm" [(ngModel)]="icItem.itemSrNo"
+                                                    name="SerialNo" maxlength="4" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_Type" class="col-md-4">{{l("ItemType")}} *</label>
+                                            <div class="col-md-8">
+                                                <select type="text" id="IcItems_Type"
+                                                    class="form-control form-control-sm" [(ngModel)]="icItem.itemType"
+                                                    name="Type"  >
+                                                    <!-- <option value="0" disabled >Select Item Type</option> -->
+                                                    <option value="1">Manufactured</option>
+                                                    <option value="2">Purchased</option>
+                                                    <option value="3">Service</option>
+                                                    <option value="4">Stock</option>
+                                                    <option value="5">Non Stock</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_Status" class="col-md-4">{{l("ItemStatus")}} *</label>
+                                            <div class="col-md-8">
+                                                <select type="text" id="IcItems_Status"
+                                                    class="form-control form-control-sm" [(ngModel)]="icItem.itemStatus"
+                                                    name="Status" maxlength="200" required>
+                                                    <option value="0" selected>Active</option>
+                                                    <option value="1">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_Packing" class="col-md-4">{{l("Packing")}} </label>
+                                            <div class="col-md-8">
+                                                <input type="number" id="IcItems_Packing"
+                                                    class="form-control form-control-sm" [(ngModel)]="icItem.packing"
+                                                    name="Packing" maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label *ngIf="flag" for="IcItems_stockingUnit"
+                                                class="col-md-4">{{l("stocking Unit")}} </label>
+                                            <div class="col-md-8">
+                                                <input *ngIf="flag" type="text" id="IcItems_stockingUnit"
+                                                    class="form-control form-control-sm" [(ngModel)]="icItem.stockUnit"
+                                                    name="stockingUnit" disabled maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="Tax">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <label for="IcItems_DefTaxAuth">{{l("Defualt Tax Class")}}</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm"
+                                                            id="IcItems_DefTaxAuth" name="IcItems_DefTaxAuth"
+                                                            [(ngModel)]="icItem.defTaxAuth" type="text" readonly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openTaxAuthorityModal()" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                            </button>
+                                                            <!-- {{l("Pick")}} -->
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setTaxAuthorityNull()"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm"
+                                                            name="IcItems_DefTaxAuthDesc" [(ngModel)]="defTaxAuthDesc"
+                                                            type="text" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group form-group-sm">
+                                        <label for="taxClasses">{{"Tax Classes" | localize}}</label>
+
+                                        <select id="taxClasses" name="taxClasses" class="form-control form-control-sm"
+                                            [(ngModel)]="icItem.defTaxClassID">
+                                            <option *ngFor="let classes of TaxClasses" [ngValue]="classes.value" >
+                                                {{classes.displayText}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <label for="DefPriceList">{{"Defualt Price List" | localize}}</label>
+                                <select id="DefPriceList" name="DefPriceList" class="form-control form-control-sm"
+                                    [(ngModel)]="icItem.defPriceList" >
+                                    <option *ngFor="let price of priceListDetail" [ngValue]="price.priceList.priceList">
+                                        {{price.priceList.priceListName}}</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <label for="IcItems_DefCustAC">{{l("Defualt Customer A/c")}}</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm"
+                                                            id="IcItems_DefCustAC" name="IcItems_DefCustAC"
+                                                            [(ngModel)]="icItem.defCustAC" type="text" readonly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openCustomerAccountModal()" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                            </button>
+                                                            <!-- {{l("Pick")}} -->
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setCustomerAccountNull()"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm"
+                                                            name="IcItems_DefCustACdesc" [(ngModel)]="defCustACDesc"
+                                                            type="text" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label for="DefCustID">{{"Customer" | localize}}</label>
+                                        <select id="DefCustID" name="taxClasses" class="form-control form-control-sm"
+                                            [(ngModel)]="icItem.defCustID">
+                                            <option *ngFor="let customer of customerSubLedgers" [value]="customer.id">
+                                                {{customer.displayName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group form-group-sm">
+                                        <div class="m-form__group">
+                                            <label for="IcItems_DefVendorAC">{{l("Defualt Vendor Account")}}</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm"
+                                                            id="IcItems_DefVendorAC" name="IcItems_DefVendorAC"
+                                                            [(ngModel)]="icItem.defVendorAC" type="text" readonly>
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-sm btn-primary btn-icon blue"
+                                                                (click)="openVendorAccountModal()" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                            </button>
+                                                            <!-- {{l("Pick")}} -->
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                                                (click)="setVendorAccountNull()"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <input class="form-control form-control-sm"
+                                                            name="IcItems_DefVendorACDesc" [(ngModel)]="defVendorACDesc"
+                                                            type="text" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label for="DefVendorID">{{"Vendor" | localize}}</label>
+                                        <select id="DefVendorID" name="DefVendor" class="form-control form-control-sm"
+                                            [(ngModel)]="icItem.defVendorID">
+                                            <option *ngFor="let vendor of vendorSubLedger" [value]="vendor.id">
+                                                {{vendor.displayName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </tab>
+                        <tab heading="Unit of Measure">
+                            <p-table #dt [value]="records" selectionMode="single" [(selection)]="selectedUnit"
+                                (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+                                <ng-template pTemplate="caption">
+                                    List of units
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>
+                                            {{"Unit"}}
+                                        </th>
+                                        <th>
+                                            {{"Conversion"}}
+                                        </th>
+                                        <th>
+                                            {{"stocking unit"}}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData>
+                                    <tr [pSelectableRow]="rowData">
+                                        <td>
+                                            {{rowData.unit}}
+                                        </td>
+                                        <td>
+                                            {{rowData.conver}}
+                                        </td>
+                                        <td>
+                                            <span class="kt-badge kt-badge--success kt-badge--inline"
+                                                *ngIf="rowData.active">{{'Yes' | localize}}</span>
+                                            <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                                *ngIf="!rowData.active">{{'No' | localize}}</span>
+                                            <!-- {{rowData.active}} -->
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="summary">
+                                    <div style="text-align:left">
+                                        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()"
+                                            label="Add"></button>
+                                    </div>
+                                </ng-template>
+                            </p-table>
+
+                            <p-dialog header="Unit Details" [(visible)]="displayDialog" [focusOnShow]="false"
+                                [responsive]="true" showEffect="fade" [closeOnEscape]="true" [modal]="true"
+                                [style]="{width: '300px'}">
+                                <div class="ui-g ui-fluid" *ngIf="unitMeasure">
+                                    <div class="ui-g-12">
+                                        <div class="ui-g-4">
+                                            <label for="IcItems_StockUnit">{{l("StockUnit")}} *</label>
+                                        </div>
+                                        <div class="ui-g-8">
+                                            <select type="text" id="IcItems_StockUnit"
+                                                class="form-control form-control-sm" (change)="GetConversions($event)"
+                                                [(ngModel)]="defSelectedUnit" name="StockUnit" [disabled]="!newUnit">
+                                                <option [value]="0" disabled>Choose Units</option>
+                                                <option *ngFor="let unit of unitOfmeasure" [value]="unit.value">
+                                                    {{unit.displayText}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="ui-g-12">
+                                        <div class="ui-g-4">
+                                            <label for="IcItems_Convertion">{{l("Conversion")}}</label>
+                                        </div>
+                                        <div class="ui-g-8">
+                                            <input type="text" id="IcItems_Convertion"
+                                                class="form-control form-control-sm" number
+                                                [(ngModel)]="unitMeasure.conver" name="conversion" maxlength="200"
+                                                readonly [disabled]="!newUnit" />
+                                        </div>
+                                    </div>
+                                    <div class="ui-g-12">
+                                        <div class="ui-g-8">
+                                            <div class="m-checkbox-list">
+                                                <label for="IcItem_Active" class="kt-checkbox">
+                                                    <input id="IcItem_Active" type="checkbox" name="Active"
+                                                        [(ngModel)]="unitMeasure.active"  >
+                                                    {{l("Active")}}
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <p-footer>
+                                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                        <button type="button" pButton icon="fa fa-close" (click)="deleteUnit()"
+                                            label="Delete">
+                                        </button>
+                                        <button type="button" pButton icon="fa fa-check" (click)="saveUnit()"
+                                            label="Save">
+                                        </button>
+                                    </div>
+                                </p-footer>
+                            </p-dialog>                            
+                        </tab>
+                        <tab heading="Warranty">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItem_ManufacturingDate"
+                                                class="col-md-5">{{l("ManufacturingDate")}}</label>
+                                            <div class="col-md-7">
+                                                <input class="form-control form-control-sm m-input" type="datetime"
+                                                    bsDatepicker [(ngModel)]="manufectureDate"
+                                                    id="IcItem_ManufacturingDate" name="IcItem_ManufacturingDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItem_ExpiryDate" class="col-md-5">{{l("ExpiryDate")}}</label>
+                                            <div class="col-md-7">
+                                                <input class="form-control form-control-sm m-input" type="datetime"
+                                                    bsDatepicker [(ngModel)]="expirydate" id="IcItem_ExpiryDate"
+                                                    name="IcItem_ExpiryDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_VendorSerialNo"
+                                                class="col-md-5">{{l("VendorSerialNo")}}</label>
+                                            <div class="col-md-7">
+                                                <input type="text" id="IcItems_VendorSerialNo"
+                                                    class="form-control form-control-sm"
+                                                    [(ngModel)]="icItem.venSrNo" name="VendorSerialNo"
+                                                    maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_WarrantyInfo"
+                                                class="col-md-5">{{l("WarrantyInfo")}}</label>
+                                            <div class="col-md-7">
+                                                <input type="text" id="IcItems_WarrantyInfo"
+                                                    class="form-control form-control-sm"
+                                                    [(ngModel)]="icItem.warrantyinfo" name="WarrantyInfo"
+                                                    maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_VendorItemCode"
+                                                class="col-md-5">{{l("VendorItemCode")}}</label>
+                                            <div class="col-md-7">
+                                                <input type="text" id="IcItems_VendorItemCode"
+                                                    class="form-control form-control-sm"
+                                                    [(ngModel)]="icItem.venitemcode" name="VendorItemCode"
+                                                    maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-group-sm">
+                                        <div class="row">
+                                            <label for="IcItems_VendorLotNo"
+                                                class="col-md-5">{{l("VendorLotNo")}}</label>
+                                            <div class="col-md-7">
+                                                <input type="text" id="IcItems_VendorLotNo"
+                                                    class="form-control form-control-sm"
+                                                    [(ngModel)]="icItem.venLotNo" name="VendorLotNo"
+                                                    maxlength="200" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="Image Selection">
+                            <input type="file" class="btn green btn-file" accept="image/*" (change)="fileChangeEvent($event)" />
+                            <button type="button" (click)="ClearIamge()">Clear</button>
+                            <image-cropper 
+                            [imageChangedEvent]="imageChangedEvent" 
+                            [maintainAspectRatio]="true"
+                            [aspectRatio]="4/3" 
+                            [resizeToWidth]="128" 
+                            format="png,jpg,jpeg"
+                            (imageCroppedFile)="imageCroppedFile($event)" 
+                            (imageCropped)="imageCropped($event)"
+                            [maintainAspectRatio]="true"
+                            [containWithinAspectRatio]="containWithinAspectRatio"
+                            [style.display]="showCropper ? null : 'none'" 
+                            (imageLoaded)="imageLoaded()"
+                            (cropperReady)="cropperReady($event)" 
+                            (loadImageFailed)="loadImageFailed()">
+                            </image-cropper>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!IcItemsForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<icsegmentfindermodal #ICSegment1FinderModal (modalSelect)="getNewICSegment1Id()"></icsegmentfindermodal>
+<icsegment2findermodal #ICSegment2FinderModal (modalSelect)="getNewICSegment2Id()"></icsegment2findermodal>
+<icsegment3findermodal #ICSegment3FinderModal (modalSelect)="getNewICSegment3Id()"></icsegment3findermodal>
+<taxAuthorityFinderModal #TaxAuthorityFinderModal (modalSave)="getNewTaxAuthority()"></taxAuthorityFinderModal>
+<ChartofAccountFinder #ChartofAccountFinderModalForCustomer (modalSelect)="getCustomerAccount()"></ChartofAccountFinder>
+<ChartofAccountFinder #ChartofAccountFinderModalForVendor (modalSelect)="getVendorAccount()"></ChartofAccountFinder>
+<opt4LookupTableModal #opt4LookupTableModal (modalSave)="getOpt4()"></opt4LookupTableModal>
+<opt5LookupTableModal #opt5LookupTableModal (modalSave)="getOpt5()"></opt5LookupTableModal>
+<!-- <icuomLookupTableModal #unitofMeasureModal (modalSave)="getUnitofMeasureModal()"></icuomLookupTableModal> -->
+<!-- <icItemPrictureMmodal #ChangeItemPictureModal ></icItemPrictureMmodal> -->

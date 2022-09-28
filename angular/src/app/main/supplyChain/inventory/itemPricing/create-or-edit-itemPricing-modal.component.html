@@ -1,0 +1,255 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #itemPricingForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+                autocomplete="off"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ l("ItemPricing") }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="docDate" class="col-sm-2 col-form-label">{{
+                            l("DocDate")
+                        }}</label>
+                        <div class="col-md-4">
+                            <input
+                                (ngModelChange)="dateChange($event)"
+                                type="datetime"
+                                bsDatepicker
+                                id="docDate"
+                                class="form-control form-control-sm"
+                                [(ngModel)]="docDate"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" 
+                                name="docDate"
+                                maxlength="50"
+                                required
+                                [(bsValue)]="docDate"
+                                value="{{ docDate | date: 'dd/MM/yyyy' }}"
+                            />
+                        </div>
+                        <label
+                            for="priceList"
+                            class="col-sm-2 col-form-label"
+                            >{{ l("PriceList") }}</label
+                        >
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input
+                                    class="form-control form-control-sm"
+                                    id="priceList"
+                                    name="priceList"
+                                    [(ngModel)]="priceList"
+                                    type="text"
+                                    disabled
+                                    required
+                                />
+                                <div class="input-group-append">
+                                    <button
+                                        class="btn btn-primary blue btn-sm btn-pick"
+                                        [disabled]="this.editMode"
+                                        (click)="openlookUpModal('PriceList')"
+                                        type="button"
+                                    >
+                                        <i class="fa fa-search"></i>
+                                        {{ l("Pick") }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="m-checkbox-list">
+                                <label
+                                    for="itemPricing_Active"
+                                    class="kt-checkbox"
+                                >
+                                    <input
+                                        id="itemPricing_Active"
+                                        type="checkbox"
+                                        name="active"
+                                        [(ngModel)]="activeNew"
+                                        (change)="activeNewChange()"
+                                    />
+                                    {{ l("Active") }}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <label for="priceList" class="col-sm-2 col-form-label">{{l("PriceList")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="priceList" name="priceList"
+                                    [(ngModel)]="itemPricingDto.priceList" type="text" disabled required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openlookUpModal('PriceList')" type="button"><i
+                                            class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Item"  class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control-sm" id="priceListDesc" name="priceListDesc"
+                                [(ngModel)]="itemPricingDto.priceListDesc" type="text" required min="0" disabled/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="Item" class="col-sm-2 col-form-label">{{l("Item")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="itemID" name="itemID"
+                                    [(ngModel)]="itemPricingDto.itemID" type="text" disabled required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openlookUpModal('Item')" type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Item"  class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control-sm" id="itemDesc" name="itemDesc"
+                                [(ngModel)]="itemPricingDto.itemDesc" type="text" required min="0" disabled/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="price" class="col-sm-2 col-form-label">{{l("Price")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="price" name="price"
+                                [(ngModel)]="itemPricingDto.price" type="number" required 
+                                min="0" oninput="validity.valid||(value='');"
+                                maxlength="18"
+                                (change)="calculateNetPrice()">
+                        </div>
+                        <label for="discValue" class="col-sm-2 col-form-label">{{l("DiscValue")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="discValue" name="discValue"
+                                [(ngModel)]="itemPricingDto.discValue" type="number" required
+                                min="0" oninput="validity.valid||(value='');"
+                                maxlength="18"
+                                (change)="calculateNetPrice()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="netPrice" class="col-sm-2 col-form-label">{{l("NetPrice")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="netPrice" name="netPrice"
+                                [(ngModel)]="itemPricingDto.netPrice" type="number" required min="0" disabled
+                                (change)="checkValidForm()">
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="m-checkbox-list">
+                                <label for="itemPricing_Active" class="kt-checkbox">
+                                    <input id="itemPricing_Active" type="checkbox" name="active"
+                                        [(ngModel)]="itemPricingDto.active">
+                                    {{l("Active")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div> -->
+                    <button
+                        class="btn btn-primary mt-4 mb-3 btn-sm"
+                        type="button"
+                        (click)="addRecordToGrid()"
+                    >
+                        Add
+                    </button>
+                    <button
+                        class="btn btn-primary mt-4 mb-3 btn-sm"
+                        type="button"
+                        (click)="removeRecordFromGrid()"
+                    >
+                        Remove
+                    </button>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ag-grid-angular
+                                style="width: 100%; height: 200px;"
+                                class="ag-theme-balham"
+                                [rowData]="rowData"
+                                [columnDefs]="columnDefs"
+                                [animateRows]="true"
+                                [suppressDragLeaveHidesColumns]="true"
+                                [rowSelection]="rowSelection"
+                                [singleClickEdit]="true"
+                                (gridReady)="onGridReady($event)"
+                                (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                (cellValueChanged)="cellValueChanged($event)"
+                                
+                                (cellEditingStarted)="
+                                    cellEditingStarted($event)
+                                "
+                            >
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="close()"
+                    >
+                        {{ l("Cancel") }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        (click)="save()"
+                        [disabled]="!formValid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<ItemPricingLookupTableModal
+    #ItemPricingLookupTableModal
+    (modalSave)="getLookUpData()"
+></ItemPricingLookupTableModal>
+
+<inventoryLookupTableModal
+    #inventoryLookupTableModal
+    (modalSave)="getItemLookUpData()"
+></inventoryLookupTableModal>

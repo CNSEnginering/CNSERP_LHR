@@ -1,0 +1,62 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #holidaysForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="holidays.id">{{l("EditHolidays")}}</span>
+                        <span *ngIf="!holidays.id">{{l("CreateNewHolidays")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="Holidays_HolidayID">{{l("HolidayID")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="Holidays_HolidayID" class="form-control form-control-sm"
+                                [(ngModel)]="holidays.holidayID" name="HolidayID" disabled required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="Holidays_HolidayDate">{{l("HolidayDate")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="text" class="form-control form-control-sm" bsDatepicker
+                                [(ngModel)]="holidayDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                id="Holidays_HolidayDate" name="Holidays_HolidayDate" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Holidays_HolidayName">{{l("HolidayName")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="text" id="Holidays_HolidayName" class="form-control form-control-sm"
+                                [(ngModel)]="holidays.holidayName" name="HolidayName" minlength="0" maxlength="100"
+                                required />
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Holidays_Active" class="kt-checkbox">
+                            <input id="Holidays_Active" type="checkbox" name="Active" [(ngModel)]="holidays.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!holidaysForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

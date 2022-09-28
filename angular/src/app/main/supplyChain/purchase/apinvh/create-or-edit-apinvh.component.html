@@ -1,0 +1,328 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #directInvoiceForm="ngForm" novalidate #f="ngForm" (ngSubmit)="saveAfter()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="apinvDto.id">Update Receipt Invoices</span>
+                        <span *ngIf="!apinvDto.id">Create Receipt Invoices</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+						<div class="form-group col-md-3">
+							<label for="ReceiptEntry_LocID">{{l("Location")}}<span
+									class="require-field">*</span></label>
+							<select id="ReceiptEntry_LocID" class="form-control form-control-sm"
+								[(ngModel)]="apinvDto.LocId" name="LocId"  [disabled]="apinvDto.id" required>
+								<option value=0>Choose Location</option>
+								<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+							</select>
+						</div>
+                        <div class="form-group col-md-2">
+                            <label for="apinvDto_DocNo">{{l("DocNo")}}<span class="require-field">*</span></label>
+                            <input type="number" id="apinvDto_DocNo" class="form-control form-control-sm" [(ngModel)]="apinvDto.docNo" name="DocNo"  disabled/>
+                        </div>
+                        
+                        <div class="form-group col-md-2">
+                            <label for="apinvDto_DocDate">{{l("InvoiceDate")}}<span class="require-field">*</span></label>
+                            
+							<input type="text" min="1" id="docDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker class="form-control form-control-sm" [(ngModel)]="this.apinvDto.docDate" name="docDate"  />
+                        </div>
+    
+                        <div class="form-group col-md-2">
+                            <label for="apinvDto_PostDate">{{l("PostDate")}}<span class="require-field">*</span></label>
+							<input type="text" min="1" id="postDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker class="form-control form-control-sm" [(ngModel)]="this.apinvDto.postDate" name="postDate"  />
+						
+						</div>
+                    </div>
+                  
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="CRDRNote_AccountID">{{l("PartyAccountID")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CRDRNote_AccountID" class="form-control form-control-sm" required
+                                    [(ngModel)]="apinvDto.vAccountID" name="AccountID" readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openAccountIDModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="CRDRNote_AccDesc">{{l("PartyAccDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_AccDesc"
+                                name="CRDRNote_AccDescription" [(ngModel)]="accountDesc" type="text" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="CRDRNote_SubAccID">{{l("PartyID")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CRDRNote_SubAccID" class="form-control form-control-sm"
+                                    [(ngModel)]="apinvDto.subAccID" name="SubAccID" readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openSubAccIDModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setSubAccIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="CRDRNote_PartyDesc">{{l("PartyDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_PartyDesc"
+                                name="CRDRNote_PartyDescription" [(ngModel)]="subAccDesc" type="text" disabled />
+                        </div>
+					
+						<div class="col-md-4">
+                            <label for="CRDRNote_InvoiceNo">{{l("InvoiceNo")}}</label>
+                            <div class="input-group">
+                                <input type="number" id="CRDRNote_InvoiceNo" class="form-control form-control-sm"
+                                    [(ngModel)]="apinvDto.partyInvNo" name="InvoiceNo" readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openInvoiceNoModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setInvoiceNoNull()"><i class="fa fa-times"></i></button>
+
+                                </div>
+								<div class="input-group-append">
+									<button class="btn btn-primary green btn-sm" *ngIf="isGranted('Purchase.APINVH.Edit')" (click)="GetAmount()"  type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+								</div>
+                            </div>
+							
+                        </div>
+                        
+                            <div class="col-md-2">
+                                <label for="apinvDto_Debit">{{l("Date")}}<span class="require-field">*</span></label>
+                                
+                                <!-- <input 
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                type="text" id="apinvDto_PostDate" class="form-control form-control-sm" bsDatepicker [ngModel]="apinvDto.partyInvDate" name="PostDate" disabled/> -->
+								<input type="text" name="partyInvDate" min="1" id="partyInvDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker class="form-control form-control-sm" [(ngModel)]="apinvDto.partyInvDate" disabled readonly />
+							
+							</div>
+                            
+                            <div class="col-md-2"> 
+                                <label for="apinvDto_recAmt">{{l("Received Amount")}}</label>
+                                <input type="text" id="apinvDto_recAmt" class="form-control form-control-sm" 
+                                readonly [(ngModel)]="apinvDto.recAmt" name="recAmt"   
+                                currencyMask  [options]="{ prefix: ' ', thousands: ',' }" disabled/>
+                            </div>
+							<div class="col-md-2"> 
+                                <label for="apinvDto_retAmt">{{l("Return Amount")}}</label>
+                                <input type="text" id="apinvDto_retAmt" class="form-control form-control-sm" 
+                                readonly [(ngModel)]="apinvDto.retAmt" name="retAmt"   
+                                currencyMask  [options]="{ prefix: ' ', thousands: ',' }" disabled/>
+                            </div>
+							<div class="col-md-2"> 
+                                <label for="apinvDto_amount">{{l("Balance Amount")}}</label>
+                                <input type="text" id="apinvDto_amount" class="form-control form-control-sm" 
+                                readonly [(ngModel)]="apinvDto.amount" name="amount"   
+                                currencyMask  [options]="{ prefix: ' ', thousands: ',' }" disabled/>
+                            </div>
+                            <div class="col-md-2"> 
+                                <label for="apinvDto_">{{l("Discount")}}</label>
+                                <input type="text" id="apinvDto_" class="form-control form-control-sm" 
+                                 [(ngModel)]="apinvDto.discAmount" name="discAmount"   
+                                 (keyup)="CalculateDiscAmt()" />
+                            </div>
+                            <div class="col-md-2"> 
+                                <label for="apinvDto_tot">{{l("totalAmount")}}</label>
+                                <input type="text" id="apinvDto_tot" class="form-control form-control-sm" 
+                                 [(ngModel)]="totalAmount" name="totalAmount"   
+                                currencyMask  [options]="{ prefix: ' ', thousands: ',' }" readonly/>
+                            </div>
+							<div class="col-md-2"> 
+                                <label for="apinvDto_tot1">{{l("Paid Amount")}}</label>
+                                <input type="text" id="apinvDto_tot1" class="form-control form-control-sm" 
+                                 [(ngModel)]="apinvDto.paidAmt" name="paidAmt"   
+                                currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+                            </div>
+							<div class="col-md-2"> 
+                                <label for="apinvDto_tot2">{{l("Pending Amount")}}</label>
+                                <input type="text" id="apinvDto_tot2" class="form-control form-control-sm" 
+                                 [(ngModel)]="apinvDto.pendingAmt" name="pendingAmt"   
+                                currencyMask  [options]="{ prefix: ' ', thousands: ',' }" disabled />
+                            </div>
+                    </div>
+					<div class="row mt-2">
+              
+						<div class="form-group m-form__group col-md-3" style="margin-top: 30px;">
+							<h4>{{l("IncomeTaxDetail")}}</h4>
+							<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+							<div class="input-group">    
+								<input type="text" id="GLINVHeader_icTaxAuth" class="form-control form-control-sm" [(ngModel)]="apinvDto.taxAuth" name="icTaxAuth"   readonly />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxAuthorityModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div> <div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-3"  style="margin-top: 58px;">
+							<label for="GLINVHeader_TAXAUTHDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="GLINVHeader_ictaxAuthDesc" name="ictaxAuthDesc" [(ngModel)]="ictaxAuthDesc" type="text" readonly>  
+						</div>
+						<div class="form-group m-form__group col-md-3" style="margin-top: 58px;"  >
+							<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+							<div class="input-group">    
+								<input 
+								type="text" id="GLINVHeader_icTaxClass" class="form-control form-control-sm"
+								 [(ngModel)]="apinvDto.taxClass"
+								 name="icTaxClass"   readonly />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxClassModal('Tab2','IncomeTax')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div> <div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxClassIdNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-3" style="margin-top: 58px;">
+							<label for="GLINVHeader_taxClassDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="GLINVHeader_ictaxClassDesc" name="ictaxClassDesc" [(ngModel)]="ictaxClassDesc" type="text" readonly>  
+						</div>
+						
+						<div class="form-group col-md-3" >
+							<label for="GLINVHeader_ACCode">{{l("TAXACCID")}}<span class="require-field" >*</span></label>
+							<input 	type="text" id="GLINVHeader_icTaxAccID" 
+							class="form-control form-control-sm" [(ngModel)]="apinvDto.taxAccID" 
+							name="icTaxAccID" 
+							readonly/>
+						</div>
+						
+						<div class="form-group col-md-3" >
+							<label for="GLINVHeader_icTaxRate">{{l("TaxRate")}}<span class="require-field">*</span></label>
+							<input 
+							
+							type="text" id="GLINVHeader_icTaxRate" 
+							class="form-control form-control-sm" 
+							currencyMask  [options]="{ prefix: ' ', thousands: ',' }"
+							 [(ngModel)]="apinvDto.taxRate"  name="icTaxRate" readonly/>								
+						</div>
+						<div class="form-group col-md-3" >
+							<label for="GLINVHeader_VenderTax">{{l("TaxAmount")}}<span class="require-field">*</span></label>
+							<input
+							type="text" id="GLINVHeader_icTaxAmount" class="form-control form-control-sm" [(ngModel)]="apinvDto.taxAmount"
+							name="icTaxAmount" readonly currencyMask  [options]="{ prefix: ' ', thousands: ',' }"/>
+						</div>
+					</div>
+                    
+                    <div class="row mt-2">
+	<div class="form-group col-md-2" style="margin-top: 30px;">
+		<h4>{{l("Payment Mode")}}</h4>
+
+		<label for="GLINVHeader_PaymentOptions">{{l("PaymentOption")}}<span class="require-field">*</span></label>
+		<!-- <select id="GLINVHeader_PaymentOptions" class="form-control form-control-sm" [(ngModel)]="apinvDto.paymentOption" name="PaymentOption" [required]="(apinvDto.id) ? 'required' : null"> -->
+			<select id="apinvDto_PaymentOptions" class="form-control form-control-sm" [(ngModel)]="apinvDto.paymentOption" name="PaymentOption" >
+			<option value="Bank">Bank</option>
+			<option value="Cash">Cash</option>
+		</select>
+	</div>
+	<div class="form-group m-form__group col-md-3" style="margin-top: 58px;">
+		<label for="apinvDto_BankID">{{apinvDto.paymentOption}}<span class="require-field" >*</span></label>
+		<div class="input-group">
+			<input type="text" id="apinvDto_BankID" class="form-control form-control-sm" [(ngModel)]="apinvDto.bankID" name="BankID" readonly required />
+			<div class="input-group-append">
+				<button class="btn btn-primary blue btn-sm" (click)="openSelectBankIdModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+			</div> <div class="input-group-prepend">
+				<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBankIdNull()"><i class="fa fa-times"></i></button>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-md-7" style="margin-top: 58px;">
+		<label for="apinvDto_bAccountID">{{l("")}}&nbsp;</label>
+		<input class="form-control form-control-sm" id="apinvDto_bAccountID" name="bAccountID" [(ngModel)]="apinvDto.bAccountID" type="text" readonly>
+	</div>
+	<div class="form-group col-md-2" *ngIf="apinvDto.paymentOption.toLowerCase() == 'bank'" > 
+		
+		<label for="apinvDto_ChequeType">{{l("InstrumentType")}}
+		<span class="require-field">*</span></label>
+		<select type="text" id="apinvDto_ChequeType" 
+		 class="form-control form-control-sm" [(ngModel)]="apinvDto.chType"
+		 name="chequeType" (change)='onOptionsSelected($event)'
+		 required>
+		
+		 <option value="1">Cheque-Cash</option>
+		 <option value="2">Cheque-Cross</option>
+		 <option value="3">P.O.</option>
+		 <option value="4">Online</option>
+		 <option value="5">Other</option>						
+		 <option value="6">Banker's Cheque</option>
+		 <option value="7">RTGS</option>
+		 <option value="8">Digital Payment</option>
+		 <option value="9">Demand Draft</option>
+		 </select>
+	</div>
+	<div class="form-group m-form__group col-md-2" *ngIf="apinvDto.paymentOption.toLowerCase() == 'bank'"  >
+		<label for="InstrumentNo">{{l("InstrumentNo")}}<span class="require-field">*</span></label>
+		<div class="input-group">
+			<input type="text" id="InstrumentNo"  class="form-control form-control-sm" [(ngModel)]="apinvDto.chequeNo" name="InstrumentNo"  readonly/>
+			<div class="input-group-append" >
+				<button class="btn btn-primary blue btn-sm" (click)="openInstrumentNo()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+			</div> <div class="input-group-prepend">
+				<!-- <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setInstrumentNoNull()"><i class="fa fa-times"></i></button> -->
+			</div>
+		</div>
+	</div>
+	<div *ngIf="apinvDto.paymentOption.toLowerCase() == 'cash'" class="form-group m-form__group" ></div> 
+	<div class="form-group m-form__group col-md-3"   >
+		<label for="GLINVHeader_CurrencyId">{{l("Currency")}}<span class="require-field">*</span></label>
+		<div class="input-group">
+			<input type="text" id="GLINVHeader_CurrencyId" class="form-control form-control-sm" [(ngModel)]="apinvDto.curID" name="CurID" required readonly/>
+			<div class="input-group-append">
+				<button class="btn btn-primary blue btn-sm" (click)="openSelectCurrencyRateModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+			</div> <div class="input-group-prepend">
+				<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCurrencyRateIdNull()"><i class="fa fa-times"></i></button>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-md-2"  >
+		<label for="GLINVHeader_CurRate">{{l("Rate")}}&nbsp;<span class="require-field">*</span></label>
+		<input type="number" class="form-control form-control-sm" id="GLINVHeader_CurRate" name="CurRate" [(ngModel)]="apinvDto.curRate" readonly>
+	</div>
+            </div>
+				</div>
+				
+                <div class="modal-footer" >
+                   
+					<button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+					
+						<button type="submit"  class="btn btn-primary blue"  *ngIf="!apinvDto.approved && !apinvDto.posted" [disabled]="!directInvoiceForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+						<button type="button"  class="btn btn-success green"  *ngIf="!apinvDto.approved && !apinvDto.posted && apinvDto.id" (click)="approveDoc(apinvDto.id,'Approval',true)" [disabled]="!directInvoiceForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Approve")}}</span></button>
+				    	
+						<button type="button"  class="btn btn-danger "  *ngIf="apinvDto.approved && !apinvDto.posted && apinvDto.id" (click)="approveDoc(apinvDto.id,'UnApproval',false)" [disabled]="!directInvoiceForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("UnApprove")}}</span></button>
+						<button type="button"  class="btn btn-success green"  *ngIf="apinvDto.approved && !apinvDto.posted && apinvDto.id" (click)="processReceiptEntry()" [disabled]="!directInvoiceForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Process")}}</span></button>
+				
+				    	
+					</div>
+            </form>
+        </div>
+    </div>
+
+	<commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()"></commonServiceLookupTableModal>
+	
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+</div>
+
+<style>
+.form-group {
+    margin-bottom: 0.8rem;
+}
+.modal-dialog.modal-xl {
+    max-width: 90%;
+}
+</style>

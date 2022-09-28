@@ -1,0 +1,444 @@
+﻿<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Openings")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("OpeningsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar" >
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown *ngIf="isGranted('Inventory.Openings.ShowLoader')">
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        
+                        <a href="javascript:;" *ngIf="isGranted('Inventory.Openings.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true"
+                                        name="ExcelFileUpload"
+                                        #ExcelFileUpload
+                                        maxFileSize="10000000"
+                                        auto="auto"
+                                        accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)"
+                                        (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload> 
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportInventoryOpeningSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+				<!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button> -->
+                <button *ngIf="isGranted('Inventory.Openings.Create')" (click)="createOpening()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewOpening")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getOpenings()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinDocNoFilter">{{l("MinMax")}} {{l("DocNo")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinDocNoFilter" [(ngModel)]="minDocNoFilter" placeholder="{{l('MinValue')}}" name="minDocNoFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter" placeholder="{{l('MaxValue')}}" name="maxDocNoFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinDocDateFilter">{{l("DocDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minDocDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDocDateFilter">
+									</div>
+                                </div>
+                            </div>
+							<!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="NarrationFilter">{{l("Narration")}}</label>
+									<input type="text" class="form-control" id="NarrationFilter" name="narrationFilter" [(ngModel)]="narrationFilter">
+								</div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinLocIDFilter">{{l("MinMax")}} {{l("LocID")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinLocIDFilter" [(ngModel)]="minLocIDFilter" placeholder="{{l('MinValue')}}" name="minLocIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLocIDFilter" placeholder="{{l('MaxValue')}}" name="maxLocIDFilter" />
+									</div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinTotalQtyFilter">{{l("MinMax")}} {{l("TotalQty")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinTotalQtyFilter" [(ngModel)]="minTotalQtyFilter" placeholder="{{l('MinValue')}}" name="minTotalQtyFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxTotalQtyFilter" placeholder="{{l('MaxValue')}}" name="maxTotalQtyFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinTotalAmtFilter">{{l("MinMax")}} {{l("TotalAmt")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinTotalAmtFilter" [(ngModel)]="minTotalAmtFilter" placeholder="{{l('MinValue')}}" name="minTotalAmtFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxTotalAmtFilter" placeholder="{{l('MaxValue')}}" name="maxTotalAmtFilter" />
+									</div>
+                                </div>
+                            </div>	 -->
+							<!-- <div class="col-md-3">
+								<label for="PostedFilterSelect">{{l("Posted")}}</label>
+								<select class="form-control" name="PostedFilter" id="PostedFilterSelect" [(ngModel)]="postedFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinLinkDetIDFilter">{{l("MinMax")}} {{l("LinkDetID")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinLinkDetIDFilter" [(ngModel)]="minLinkDetIDFilter" placeholder="{{l('MinValue')}}" name="minLinkDetIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLinkDetIDFilter" placeholder="{{l('MaxValue')}}" name="maxLinkDetIDFilter" />
+									</div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="OrdNoFilter">{{l("OrdNo")}}</label>
+									<div class="input-group">
+                                        <input type="text" class="form-control" id="OrdNoFilter" [(ngModel)]="ordNoFilter" placeholder="{{l('OrderNo')}}" name="ordNoFilter" />
+									</div>
+                                </div>
+                            </div>	 -->
+							<!-- <div class="col-md-3">
+								<label for="ActiveFilterSelect">{{l("Active")}}</label>
+								<select class="form-control" name="ActiveFilter" id="ActiveFilterSelect" [(ngModel)]="activeFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div> -->
+							<!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+									<input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter" [(ngModel)]="createdByFilter">
+								</div>
+                            </div> -->
+                            <div class="form-group col-md-3">
+                                <label for="ReceiptEntry_LocID">{{l("Location")}}</label>
+                                <select id="ReceiptEntry_LocID" class="form-control form-control-sm"
+                                    [(ngModel)]="minLocIDFilter" name="LocID" >
+                                    <option value=0>Choose Location</option>
+                                    <option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="ReceiptEntry_Users">{{l("Create By")}}</label>
+                                <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                    [(ngModel)]="createdByFilter" name="createdByFilter" >
+                                    <option value=''>Choose User</option>
+                                    <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}</option>
+                                </select>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter" name="MinCreateDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter" name="MaxCreateDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+									</div>
+                                </div>
+                            </div> -->
+                            <div class="form-group col-md-3">
+                                <label for="ReceiptEntry_Users">{{l("Approved By")}}</label>
+                                <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                    [(ngModel)]="audtUserFilter" name="audtUserFilter" >
+                                    <option value=''>Choose User</option>
+                                    <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+								<label for="PostedFilterSelect">{{l("Voucher Status")}}</label>
+								<select class="form-control" name="PostedFilter" id="PostedFilterSelect" [(ngModel)]="postedFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("UnApproved")}}</option>
+								<option value="1">{{l("Approve")}}</option>
+								</select>
+                            </div>
+                            
+							<!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="AudtUserFilter">{{l("AudtUser")}}</label>
+									<input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter" [(ngModel)]="audtUserFilter">
+								</div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter" name="MinAudtDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter" name="MaxAudtDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+									</div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getOpenings($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Inventory.Openings.Edit', 'Inventory.Openings.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="docNo">
+                                        {{l('DOCNO')}}
+                                        <p-sortIcon field="opening.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('DOCDATE')}}
+                                        <p-sortIcon field="opening.docDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="narration">
+                                        {{l('Narration')}}
+                                        <p-sortIcon field="opening.narration"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="locID">
+                                        {{l('Location')}}
+                                        <p-sortIcon field="opening.locID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="totalQty">
+                                        {{l('Quantity')}}
+                                        <p-sortIcon field="opening.totalQty"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 100px" pSortableColumn="totalAmt">
+                                        {{l('Amount')}}
+                                        <p-sortIcon field="opening.totalAmt"></p-sortIcon>
+                                    </th> -->
+                                    <!-- <th style="width: 100px" pSortableColumn="posted">
+                                        {{l('Posted')}}
+                                        <p-sortIcon field="opening.posted"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 120px" pSortableColumn="ordNo">
+                                        {{l('OrdNo')}}
+                                        <p-sortIcon field="opening.ordNo"></p-sortIcon>
+                                    </th> -->
+                                    <!-- <th style="width: 150px" pSortableColumn="linkDetID">
+                                        {{l('LinkDetID')}}
+                                        <p-sortIcon field="opening.linkDetID"></p-sortIcon>
+                                    </th> -->
+                                    <th style="width: 100px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="opening.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 130px" pSortableColumn="approved">
+                                        {{l('Approved')}}
+                                        <p-sortIcon field="opening.approved"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="opening.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="opening.createDate"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="opening.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="opening.audtDate"></p-sortIcon>
+                                    </th> -->
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Inventory.Openings.Edit', 'Inventory.Openings.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li hidden>
+													<a href="javascript:;"
+														(click)="viewOpeningModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Inventory.Openings.Edit')"
+														(click)="createOrEditOpeningModal.show(record.docNo)">{{l('Edit')}}</a>
+												</li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Inventory.Openings.Print')"
+                                                        (click)="getReport(record)">{{l('Print')}}</a>
+                                                </li>
+												<li>
+											        <a href="javascript:;" *ngIf="!record.approved && !record.posted && permission.isGranted('Inventory.Openings.Delete')"
+														(click)="deleteOpening(record)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('DOCNO')}}</span>
+											{{record.docNo}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('DOCDATE')}}</span>
+                                        <span *ngIf="record.docDate">
+											{{record.docDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.docDate">-</span>
+                                    </td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('Narration')}}</span>
+											{{record.narration}}
+										</td>
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('Location')}}</span>
+											{{record.locID}}
+										</td>
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('Quantity')}}</span>
+											{{record.totalQty  | number: '.2'}}
+                                        </td>
+                                    <!-- <td style="width:100px">
+											<span class="ui-column-title"> {{l('Amount')}}</span>
+											{{record.totalAmt}}
+										</td> -->
+                                    <!-- <td style="width:100px">
+										<span class="ui-column-title"> {{l('Posted')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.posted">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.posted">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:120px">
+                                        <span class="ui-column-title"> {{l('OrdNo')}}</span>
+                                        {{record.ordNo}}
+                                    </td> -->
+                                    <!-- <td style="width:150px">
+											<span class="ui-column-title"> {{l('LinkDetID')}}</span>
+											{{record.linkDetID}}
+										</td> -->
+                                    <td style="width:100px">
+										<span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.active">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:130px">
+										<span class="ui-column-title"> {{l('Approved')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.approved">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.approved">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('CreatedBy')}}</span>
+											{{record.createdBy}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.createDate">
+											{{record.createDate | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.createDate">-</span>
+                                    </td>
+                                    <!-- <td style="width:150px">
+											<span class="ui-column-title"> {{l('AudtUser')}}</span>
+											{{record.audtUser}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.audtDate">
+											{{record.audtDate | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.audtDate">-</span>
+                                    </td> -->
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getOpenings($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditOpeningModal #createOrEditOpeningModal (modalSave)="getOpenings()"></createOrEditOpeningModal>
+    <viewOpeningModal #viewOpeningModal></viewOpeningModal>
+    <app-reportviewr-modal #reportviewrModalComponent></app-reportviewr-modal>
+    
+  
+</div>

@@ -1,0 +1,157 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                Voucher Reversable
+            </h3>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+
+                <button (click)="createVoucherReversal()" class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                    {{("CreateNewVoucherReversable")}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('SetupForms.VoucherReversal.Edit', 'SetupForms.VoucherReversal.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="Doc No">
+                                        {{l('Doc No')}}
+                                        <p-sortIcon field="glDocRev.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="BookId">
+                                        {{l('BookId')}}
+                                        <p-sortIcon field="glDocRev.bookID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="DocMonth">
+                                        {{l('DocMonth')}}
+                                        <p-sortIcon field="glDocRev.newDocMonth"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="ReversalDate">
+                                        {{l('ReversalDate')}}
+                                        <p-sortIcon field="glDocRev.newDocDate"></p-sortIcon>
+                                    </th>
+                                     <!-- <th style="width: 150px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="designation.active"></p-sortIcon>
+                                    </th> 
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="designation.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreatedDate')}}
+                                        <p-sortIcon field="designation.createDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="designation.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="designation.audtDate"></p-sortIcon>
+                                    </th> -->
+  
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('SetupForms.VoucherReversal.Edit', 'SetupForms.VoucherReversal.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                           
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('SetupForms.VoucherReversal.Edit')"
+                                                        (click)="createOrEditVoucherReversal.show(record.glDocRev.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf=" !record.glDocRev.posted &&permission.isGranted('SetupForms.VoucherReversal.Delete')"
+                                                        (click)="delete(record.glDocRev)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                        {{record.glDocRev.docNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('BookId')}}</span>
+                                        {{record.glDocRev.bookID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocMonth')}}</span>
+                                        {{record.glDocRev.newDocMonth}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ReversalDate')}}</span>
+                                        {{record.glDocRev.newDocDate | momentFormat:'L'  | date: 'dd/MM/yyyy'}}
+                                    </td>
+                                  
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAll($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <app-create-or-editvoucher-reversal #createOrEditVoucherReversal (modalSave)="getAll()"> </app-create-or-editvoucher-reversal>
+</div>

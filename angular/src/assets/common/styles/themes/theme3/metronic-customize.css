@@ -1,0 +1,35 @@
+.cc-window {
+    background-color: #282a3a;
+}
+
+.cc-btn {
+    background-color: #5867dd;
+    border-color: #5867dd;
+    color: #ffffff;
+}
+
+.cc-message {
+    color: #fefefe;
+}
+
+.kt-header__topbar-username {
+    color: #c7c7de !important;
+}
+
+.kt-menu__link-text {
+    text-align: center;
+}
+
+body .kt-header__topbar .subscription-warning {
+    padding-top: 32px;
+}
+
+body.kt-header--minimize .kt-header__topbar .subscription-warning {
+    padding-top: 18px;
+}
+
+@media (max-width: 1024px) {
+    .kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--user .kt-header__topbar-wrapper {
+        height: auto;
+    }
+}

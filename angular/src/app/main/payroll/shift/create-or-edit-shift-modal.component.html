@@ -1,0 +1,85 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #shiftForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="shift.id">{{l("EditShift")}}</span>
+                        <span *ngIf="!shift.id">{{l("CreateNewShift")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+
+                        <div class="col-md-6">
+                            <label for="Shift_ShiftID">{{l("ShiftID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="Shift_ShiftID" min="1" class="form-control form-control-sm"
+                                [(ngModel)]="shift.shiftID" name="ShiftID" disabled required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Shift_Shift">{{l("Shift")}}<span class="require-field">*</span></label>
+                            <input type="text" id="Shift_Shift" class="form-control form-control-sm"
+                                [(ngModel)]="shift.shiftName" name="Shift" required />
+                        </div>
+
+
+                    </div>
+                    <ng-template #popTemplate>
+                        <timepicker [(ngModel)]="shift.startTime" [showMeridian]="true" name="MyTime"
+                            (ngModelChange)="onChange($event)"></timepicker>
+                    </ng-template>
+                    <ng-template #popTemplate1>
+                        <timepicker [(ngModel)]="shift.endTime" [showMeridian]="true" name="MyTime1"
+                            (ngModelChange)="onChange1($event)"></timepicker>
+                    </ng-template>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <label for="Shift_StartTime">{{l("StartTime")}}</label>
+                            <input type="text" id="Shift_StartTime" class="form-control form-control-sm"
+                                [popover]="popTemplate" [outsideClick]="true" placement="bottom" [(ngModel)]="myTime"
+                                name="StartTime" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="Shift_EndTime">{{l("EndTime")}}</label>
+                            <input type="text" id="Shift_EndTime" class="form-control form-control-sm"
+                                [popover]="popTemplate1" [outsideClick]="true" placement="bottom" [(ngModel)]="myTime1"
+                                name="EndTime" (change)="totalHours()" />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="Shift_totalHour">{{l("TotalHour")}}</label>
+                            <input type="text" id="Shift_totalHour" class="form-control form-control-sm"
+                                [(ngModel)]="shift.totalHour" name="Shift_totalHour" disabled />
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Shift_Active" class="kt-checkbox">
+                            <input id="Shift_Active" type="checkbox" name="Active" [(ngModel)]="shift.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!shiftForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

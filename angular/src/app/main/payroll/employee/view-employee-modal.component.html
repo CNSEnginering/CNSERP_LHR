@@ -1,0 +1,92 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeID")}} :</h6>
+                        {{ item.employees.employeeID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeName")}} :</h6>
+                        {{ item.employees.employeeName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("FatherName")}} :</h6>
+                        {{ item.employees.fatherName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DateofBirth")}} :</h6>
+                        {{ item.employees.date_of_birth | momentFormat:'DD/MM/YYYY'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("HomeAddress")}} :</h6>
+                        {{ item.employees.home_address }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PhoneNo")}} :</h6>
+                        {{ item.employees.phoneNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Ntn")}} :</h6>
+                        {{ item.employees.ntn }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Gender")}} :</h6>
+                        <span *ngIf="item.employees.gender=='M'">{{"Male"}}</span>
+                        <span *ngIf="item.employees.gender=='F'">{{"Female"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Cnic")}} :</h6>
+                        {{ item.employees.cnic }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EducationID")}} :</h6>
+                        {{ item.employees.edID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ReligionID")}} :</h6>
+                        {{ item.employees.religionID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Active")}} :</h6>
+                        <span *ngIf="item.employees.active">{{"Yes"}}</span>
+                        <span *ngIf="!item.employees.active">{{"No"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.employees.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.employees.audtDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.employees.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.employees.createDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

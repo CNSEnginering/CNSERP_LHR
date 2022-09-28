@@ -1,0 +1,284 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{ l("Attendance") }}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("AttendanceHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <!-- <button (click)="markBulkAttendanceV2Modal.show()" class="btn btn-primary blue"><i
+                        class="fa fa-plus"></i> {{l("MarkBulkAttendance")}}</button> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="kt-content" style="width: 70%; margin: auto">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <tabset>
+                    <tab heading="Single Attendance">
+                        <div class="form-group">
+                            <!--<Primeng-Template-Start>-->
+                            <ng-template #popTemplate1>
+                                <timepicker [(ngModel)]="input.timeIn" [showMeridian]="true" name="MyTime1">
+                                </timepicker>
+                            </ng-template>
+                            <ng-template #popTemplate2>
+                                <timepicker [(ngModel)]="input.timeOut" [showMeridian]="true" name="MyTime2">
+                                </timepicker>
+                            </ng-template>
+                            <!-- <ng-template #popTemplate3>
+                        <timepicker [(ngModel)]="input.breakOut" [showMeridian]="true" name="MyTime3"></timepicker>
+                    </ng-template>
+                    <ng-template #popTemplate4>
+                        <timepicker [(ngModel)]="input.breakIn" [showMeridian]="true" name="MyTime4"></timepicker>
+                    </ng-template> -->
+                            <!--<Primeng-Template-End>-->
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="Attendance_AttendanceDate">{{ l("AttendanceDate")
+                                        }}<span class="require-field">*</span></label>
+                                    <input type="text" name="AttendanceDate" id="Attendance_AttendanceDate"
+                                        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                        class="form-control form-control-sm" bsDatepicker [maxDate]="todayDate"
+                                        [(ngModel)]="attendanceDate" required />
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="Attendance_EmployeeID">{{ l("EmployeeID")
+                                        }}<span class="require-field">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" style="background-color: #f4f4f4" id="Attendance_EmployeeID"
+                                            class="form-control form-control-sm" [(ngModel)]="input.employeeID"
+                                            name="EmployeeID" readonly required />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                (click)="openEmployeeModal()">
+                                                <i class="fa fa-search"></i>
+                                                {{ l("Pick") }}
+                                            </button>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                (click)="setDataNull()">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Attendance_EmployeeName">{{
+                                        l("EmployeeName")
+                                        }}</label>
+                                    <input class="form-control form-control-sm" id="Attendance_EmployeeName"
+                                        name="EmployeeName" [(ngModel)]="input.employeeName" type="text" disabled />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="Attendance_ShiftID">{{
+                                        l("ShiftID")
+                                        }}</label>
+                                    <div class="input-group">
+                                        <input type="text" id="Attendance_ShiftID" class="form-control form-control-sm"
+                                            [(ngModel)]="shiftID" name="ShiftID" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Attendance_ShiftName">{{
+                                        l("ShiftName")
+                                        }}</label>
+                                    <input type="text" id="Attendance_ShiftName" class="form-control form-control-sm"
+                                        [(ngModel)]="shiftName" name="ShiftName" disabled />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="Attendance_DesignationID">{{
+                                        l("DesignationID")
+                                        }}</label>
+                                    <div class="input-group">
+                                        <input type="text" id="Attendance_DesignationID"
+                                            class="form-control form-control-sm" [(ngModel)]="designationID"
+                                            name="DesignationID" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Attendance_DesignationName">{{
+                                        l("DesignationName")
+                                        }}</label>
+                                    <input type="text" id="Attendance_DesignationName"
+                                        class="form-control form-control-sm" [(ngModel)]="designationName"
+                                        name="DesignationName" disabled />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="Attendance_TimeIn">{{
+                                        l("TimeIn")
+                                        }}</label>
+                                    <input type="text" id="Attendance_TimeIn" class="form-control form-control-sm"
+                                        [popover]="popTemplate1" [outsideClick]="true" placement="bottom" [ngModel]="
+                                    input.timeIn | momentFormat: 'hh:mm A'
+                                " name="TimeIn" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Attendance_TimeOut">{{
+                                        l("TimeOut")
+                                        }}</label>
+                                    <input type="text" id="Attendance_TimeOut" class="form-control form-control-sm"
+                                        [popover]="popTemplate2" [outsideClick]="true" placement="bottom" [ngModel]="
+                                    input.timeOut | momentFormat: 'hh:mm A'
+                                " name="TimeOut" />
+                                </div>
+                            </div>
+
+                            <!-- <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="Attendance_BreakOut">{{l("BreakOut")}}</label>
+                            <input type="text" id="Attendance_BreakOut" class="form-control form-control-sm"
+                                [popover]="popTemplate3" [outsideClick]="true" placement="bottom"
+                                [ngModel]="input.breakOut | momentFormat:'hh:mm A'" name="BreakOut" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Attendance_BreakIn">{{l("BreakIn")}}</label>
+                            <input type="text" id="Attendance_BreakIn" class="form-control form-control-sm"
+                                [popover]="popTemplate4" [outsideClick]="true" placement="bottom"
+                                [ngModel]="input.breakIn | momentFormat:'hh:mm A'" name="BreakIn" />
+                        </div>
+                    </div> -->
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="Attendance_Reason">{{
+                                        l("Reason")
+                                        }}</label>
+                                    <input type="text" id="Attendance_Reason" class="form-control form-control-sm"
+                                        [(ngModel)]="input.reason" name="Reason" />
+                                </div>
+
+                                <span class="col-md-1">
+                                    <label for="Attendance_Absent">{{
+                                        l("Absent")
+                                        }}</label>
+                                    <input type="checkbox" id="Attendance_Absent" class="form-control form-control-sm"
+                                        name="Absent" [(ngModel)]="absent" />
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="kt-portlet__foot footerSection">
+                            <div class="col-lg-12" style="text-align: right">
+                                <button type="submit" class="btn btn-success green"
+                                    [busyText]="l('ProcessingWithThreeDot')" [buttonBusy]="processing"
+                                    [disabled]="!input.employeeID || !attendanceDate" (click)="updateAttendance()">
+                                    <i class="fa fa-spinner"></i>
+                                    <span>{{ l("Update Attendance") }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Bulk Absence">
+                        <div class="form-group">
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="AttendanceDateBulk">{{ l("AttendanceDate")
+                                        }}<span class="require-field">*</span></label>
+                                    <input type="text" name="AttendanceDateBulk" id="AttendanceDateBulk"
+                                        [bsConfig]="{ dateInputFormat: 'MM/YYYY' }" class="form-control form-control-sm"
+                                        bsDatepicker [maxDate]="todayDate" [(ngModel)]="attedanceBulk" required
+                                        (onShown)="onOpenCalendar($event)" />
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="AttendanceBulk_EmployeeID">{{ l("EmployeeID")
+                                        }}<span class="require-field">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" style="background-color: #f4f4f4"
+                                            id="AttendanceBulk_EmployeeID" class="form-control form-control-sm"
+                                            [(ngModel)]="input.employeeID" name="AttendanceBulk_EmployeeID" readonly
+                                            required />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                (click)="openEmployeeModal()">
+                                                <i class="fa fa-search"></i>
+                                                {{ l("Pick") }}
+                                            </button>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                (click)="setDataNull()">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="AttendanceBulk_EmployeeName">{{
+                                        l("EmployeeName")
+                                        }}</label>
+                                    <input class="form-control form-control-sm" id="AttendanceBulk_EmployeeName"
+                                        name="AttendanceBulk_EmployeeName" [(ngModel)]="input.employeeName" type="text"
+                                        disabled />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary"
+                                        [busyText]="l('ProcessingWithThreeDot')" [buttonBusy]="processing"
+                                        [disabled]="!input.employeeID || !attendanceDate" (click)="fetchAttendance()">
+                                        <i class="fa fa-spinner"></i>
+                                        <span>{{ l("Fetch") }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                        [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary"
+                                        [busyText]="l('ProcessingWithThreeDot')" [buttonBusy]="processing"
+                                        [disabled]="!input.employeeID || !attendanceDate || rowData.length == 0"
+                                        (click)="updateAbsences()">
+                                        <i class="fa fa-spinner"></i>
+                                        <span>{{ l("Mark Absence") }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+    <!-- 
+    <markBulkAttendanceV2Modal
+        #markBulkAttendanceV2Modal
+    ></markBulkAttendanceV2Modal> -->
+</div>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

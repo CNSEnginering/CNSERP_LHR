@@ -1,0 +1,55 @@
+<div>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Recurring Vouchers")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("VoucherPostingInfo")}}
+            </span> -->
+        </div>
+    </div>
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+			<form  class="kt-form" 			
+			autocomplete="off">
+				<!-- <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("STARTPOSTING")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+				<div class="modal-body">
+					<div class="form-group m-form__group col-md-4">
+						<label for="voucher">{{l("Select Voucher No")}}<span class="require-field"></span></label>
+						<div class="input-group">
+							<input type="text" id="voucher" class="form-control form-control-sm" [(ngModel)]="fromDoc" name="fromDoc"  required readonly/>
+							<div class="input-group-append">
+								<button class="btn btn-primary blue btn-sm" (click)="openVoucher()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+							</div> <div class="input-group-prepend">
+								<button class="btn btn-danger btn-icon btn-sm" type="button"><i class="fa fa-times"></i></button>
+							</div>
+						</div>
+						<label for="voucher">{{l("Narration")}}</label>
+						<input type="text" id="desc" class="form-control col-sm-12" [(ngModel)]="desc" name="desc" disabled/>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary blue" 
+				    	(click)="save()"
+					    [buttonBusy]="saving"
+						[busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Process")}}</span></button>  
+				</div>
+			</form>
+		</div>
+	</div>
+   </div>
+</div>
+<commonServiceLookupTableModal #CommonServiceLookupTableModal 
+(modalSave)="getNewCommonServiceModal()"></commonServiceLookupTableModal>

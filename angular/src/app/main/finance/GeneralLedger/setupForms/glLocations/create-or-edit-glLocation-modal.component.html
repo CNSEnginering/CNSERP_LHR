@@ -1,0 +1,63 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #glLocationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glLocation.id">{{l("EditGLLocation")}}</span>
+                        <span *ngIf="!glLocation.id">{{l("CreateNewGLLocation")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            <label for="GLLocation_LocId">{{l("LocId")}}<span class="require-field">*</span></label>
+                            <input type="number" *ngIf="!glLocation.id" id="GLLocation_LocId"
+                                class="form-control form-control-sm" [(ngModel)]="locMaxId" name="LocMaxId" readonly />
+                            <input type="number" *ngIf="glLocation.id" id="GLLocation_LocId"
+                                class="form-control form-control-sm" [(ngModel)]="glLocation.locId" name="LocId"
+                                readonly required />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="GLLocation_City">{{l("City")}}</label>
+                            <select type="text" id="GLLocation_City" class="form-control form-control-sm"
+                                [(ngModel)]="glLocation.cityID" (ngModelChange)="updatePrefix($event)" name="City">
+                                <option value=0 disabled selected>Choose City</option>
+                                <option *ngFor="let city of cities" [value]="city.city.cityID">{{city.city.name}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label for="GLLocation_PreFix">{{l("Prefix")}}</label>
+                            <input type="text" id="GLLocation_PreFix" class="form-control form-control-sm"
+                                [(ngModel)]="glLocation.preFix" name="Prefix" disabled />
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="GLLocation_LocDesc">{{l("LocDesc")}}<span class="require-field">*</span></label>
+                            <input type="text" id="GLLocation_LocDesc" class="form-control form-control-sm"
+                                [(ngModel)]="glLocation.locDesc" (ngModelChange)="updateDesc($event)" name="LocDesc"
+                                required />
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!glLocationForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

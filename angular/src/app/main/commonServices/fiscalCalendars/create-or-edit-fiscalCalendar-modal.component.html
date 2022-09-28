@@ -1,0 +1,272 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #fiscalCalendarForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="fiscalCalendar.id">{{l("EditFiscalCalendar")}}</span>
+						<span *ngIf="!fiscalCalendar.id">{{l("CreateNewFiscalCalendar")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+
+
+					<div class="form-group">
+						<label for="FiscalCalendar_AUDTDATE">{{l("AUDTDATE")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.audtdate._d" id="FiscalCalendar_AUDTDATE"
+							name="FiscalCalendar_AUDTDATE">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_AUDTUSER">{{l("AUDTUSER")}}</label>
+						<input type="text" id="FiscalCalendar_AUDTUSER" class="form-control"
+							[(ngModel)]="fiscalCalendar.audtuser" name="AUDTUSER" />
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_PERIODS">{{l("PERIODS")}}</label>
+						<input type="number" id="FiscalCalendar_PERIODS" class="form-control"
+							[(ngModel)]="fiscalCalendar.periods" name="PERIODS" />
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_QTR4PERD">{{l("QTR4PERD")}}</label>
+						<input type="number" id="FiscalCalendar_QTR4PERD" class="form-control"
+							[(ngModel)]="fiscalCalendar.qtR4PERD" name="QTR4PERD" />
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ACTIVE">{{l("ACTIVE")}}</label>
+						<input type="number" id="FiscalCalendar_ACTIVE" class="form-control"
+							[(ngModel)]="fiscalCalendar.active" name="ACTIVE" />
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE1">{{l("BGNDATE1")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE1._d" id="FiscalCalendar_BGNDATE1"
+							name="FiscalCalendar_BGNDATE1">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE2">{{l("BGNDATE2")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE2._d" id="FiscalCalendar_BGNDATE2"
+							name="FiscalCalendar_BGNDATE2">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE3">{{l("BGNDATE3")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE3._d" id="FiscalCalendar_BGNDATE3"
+							name="FiscalCalendar_BGNDATE3">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE4">{{l("BGNDATE4")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE4._d" id="FiscalCalendar_BGNDATE4"
+							name="FiscalCalendar_BGNDATE4">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE5">{{l("BGNDATE5")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE5._d" id="FiscalCalendar_BGNDATE5"
+							name="FiscalCalendar_BGNDATE5">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE6">{{l("BGNDATE6")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE6._d" id="FiscalCalendar_BGNDATE6"
+							name="FiscalCalendar_BGNDATE6">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE7">{{l("BGNDATE7")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE7._d" id="FiscalCalendar_BGNDATE7"
+							name="FiscalCalendar_BGNDATE7">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE8">{{l("BGNDATE8")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE8._d" id="FiscalCalendar_BGNDATE8"
+							name="FiscalCalendar_BGNDATE8">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE9">{{l("BGNDATE9")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE9._d" id="FiscalCalendar_BGNDATE9"
+							name="FiscalCalendar_BGNDATE9">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE10">{{l("BGNDATE10")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE10._d" id="FiscalCalendar_BGNDATE10"
+							name="FiscalCalendar_BGNDATE10">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE11">{{l("BGNDATE11")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE11._d" id="FiscalCalendar_BGNDATE11"
+							name="FiscalCalendar_BGNDATE11">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE12">{{l("BGNDATE12")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE12._d" id="FiscalCalendar_BGNDATE12"
+							name="FiscalCalendar_BGNDATE12">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_BGNDATE13">{{l("BGNDATE13")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.bgndatE13._d" id="FiscalCalendar_BGNDATE13"
+							name="FiscalCalendar_BGNDATE13">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE1">{{l("ENDDATE1")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE1._d" id="FiscalCalendar_ENDDATE1"
+							name="FiscalCalendar_ENDDATE1">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE2">{{l("ENDDATE2")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE2._d" id="FiscalCalendar_ENDDATE2"
+							name="FiscalCalendar_ENDDATE2">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE3">{{l("ENDDATE3")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE3._d" id="FiscalCalendar_ENDDATE3"
+							name="FiscalCalendar_ENDDATE3">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE4">{{l("ENDDATE4")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE4._d" id="FiscalCalendar_ENDDATE4"
+							name="FiscalCalendar_ENDDATE4">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE5">{{l("ENDDATE5")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE5._d" id="FiscalCalendar_ENDDATE5"
+							name="FiscalCalendar_ENDDATE5">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE6">{{l("ENDDATE6")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE6._d" id="FiscalCalendar_ENDDATE6"
+							name="FiscalCalendar_ENDDATE6">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE7">{{l("ENDDATE7")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE7._d" id="FiscalCalendar_ENDDATE7"
+							name="FiscalCalendar_ENDDATE7">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE8">{{l("ENDDATE8")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE8._d" id="FiscalCalendar_ENDDATE8"
+							name="FiscalCalendar_ENDDATE8">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE9">{{l("ENDDATE9")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE9._d" id="FiscalCalendar_ENDDATE9"
+							name="FiscalCalendar_ENDDATE9">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE10">{{l("ENDDATE10")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE10._d" id="FiscalCalendar_ENDDATE10"
+							name="FiscalCalendar_ENDDATE10">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE11">{{l("ENDDATE11")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE11._d" id="FiscalCalendar_ENDDATE11"
+							name="FiscalCalendar_ENDDATE11">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE12">{{l("ENDDATE12")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE12._d" id="FiscalCalendar_ENDDATE12"
+							name="FiscalCalendar_ENDDATE12">
+					</div>
+
+					<div class="form-group">
+						<label for="FiscalCalendar_ENDDATE13">{{l("ENDDATE13")}}</label>
+						<input required class="form-control m-input" type="datetime" bsDatepicker
+							[(ngModel)]="fiscalCalendar.enddatE13._d" id="FiscalCalendar_ENDDATE13"
+							name="FiscalCalendar_ENDDATE13">
+					</div>
+
+				</div>
+				<h6>Table Fiscal Period</h6>
+
+
+				<ag-grid-angular style="width: 500px; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
+					[columnDefs]="columnDefs">
+				</ag-grid-angular>
+
+				<!-- <table class="table-striped table-hover custom-table">
+					<thead>
+						<tr>
+							<th class="th-checkbox">
+
+							</th>
+							<th>
+
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="td-checkbox">
+								<input type="checkbox" [(ngModel)]="row.isSelected">
+							</td>
+							<td *ngFor="let column of options.columns">{{getCellValue(row, column)}}</td>
+						</tr>
+					</tbody>
+				</table> -->
+
+
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!fiscalCalendarForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

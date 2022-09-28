@@ -1,0 +1,87 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ArrearID")}} :</h6>
+                        {{ item.employeeArrears.arrearID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeID")}} :</h6>
+                        {{ item.employeeArrears.employeeID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeName")}} :</h6>
+                        {{ item.employeeArrears.employeeName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SalaryYear")}} :</h6>
+                        {{ item.employeeArrears.salaryYear }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SalaryMonth")}} :</h6>
+                        <span *ngIf="item.employeeArrears.salaryMonth==1">{{'January'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==2">{{'February'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==3">{{'March'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==4">{{'April'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==5">{{'May'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==6">{{'June'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==7">{{'July'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==8">{{'August'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==9">{{'September'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==10">{{'October'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==11">{{'November'}}</span>
+                        <span *ngIf="item.employeeArrears.salaryMonth==12">{{'December'}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ArrearDate")}} :</h6>
+                        {{ item.employeeArrears.arrearDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Amount")}} :</h6>
+                        {{ item.employeeArrears.amount | number: '.2'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Active")}} :</h6>
+                        {{ item.employeeArrears.active==true? "Yes" : "No"  }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.employeeArrears.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.employeeArrears.audtDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.employeeArrears.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.employeeArrears.createDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

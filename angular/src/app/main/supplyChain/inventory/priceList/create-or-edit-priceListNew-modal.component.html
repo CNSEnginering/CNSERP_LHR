@@ -1,0 +1,53 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #priceListForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="priceList.id">{{l("PriceList")}}</span>
+                        <span *ngIf="!priceList.id">{{l("PriceList")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="priceList">{{l("PriceList")}}</label>
+                            <input type="text" id="priceList" class="form-control form-control-sm"
+                                [(ngModel)]="priceList.priceList" name="priceList" (change)="priceListCheckIfExists()"
+                                maxlength="10" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="priceListName">{{l("PriceListName")}}</label>
+                            <input type="text" id="priceListName" class="form-control form-control-sm"
+                                [(ngModel)]="priceList.priceListName" name="priceListName" maxlength="50" required />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="m-checkbox-list">
+                                <label for="Pricelist_Active" class="kt-checkbox">
+                                    <input id="Pricelist_Active" type="checkbox" name="active"
+                                        [(ngModel)]="priceList.active">
+                                    {{l("Active")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()"
+                        [disabled]="priceListChk || !priceListForm.form.valid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,195 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #lcExpensesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="lcExpensesHeader.id">{{l("EditLCExpenses")}}</span>
+						<span *ngIf="!lcExpensesHeader.id">{{l("CreateNewLCExpenses")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body form-group">
+					<div class="row mt-2">
+						<div class="col-md-3">
+							<label for="LCExpenses_LocID">{{l("LocID")}}<span class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="LCExpenses_LocID" class="form-control form-control-sm"
+									[(ngModel)]="lcExpensesHeader.locID" name="LocID" required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openLocationModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setLocationNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<label for="LCExpenses_LocDesc">{{l("LocationDesc")}}</label>
+							<input class="form-control form-control-sm" id="LCExpenses_LocDesc"
+								name="LCExpenses_LocDesccription" [(ngModel)]="locDesc" type="text" disabled />
+						</div>
+						<div class="col-md-3">
+							<label for="LCExpenses_DocNo">{{l("DocNo")}}<span class="require-field">*</span></label>
+							<input class="form-control form-control-sm" id="LCExpenses_DocNo" name="LCExpenses_DocNo"
+								[(ngModel)]="lcExpensesHeader.docNo" type="text" disabled required />
+						</div>
+						<div class="col-md-3">
+							<label for="LCExpenses_DocDate">{{l("DocDate")}}</label>
+							<input class="form-control form-control-sm" id="LCExpenses_DocDate"
+								name="LCExpenses_DocDate" [(ngModel)]="docDate" type="text"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker />
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-4">
+							<label for="LCExpenses_AccountID">{{l("AccountID")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="LCExpenses_AccountID" class="form-control form-control-sm"
+									[(ngModel)]="lcExpensesHeader.accountID" name="AccountID" required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openAccountIDModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<label for="Narration">{{l("Narration")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="LCExpenses_Narration" class="form-control form-control-sm"
+									[(ngModel)]="lcExpensesHeader.narration" name="Narration" required />
+
+							</div>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-4">
+							<label for="LCExpenses_LCSL">{{l("LCSL")}}<span class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="LCExpenses_LCSL" class="form-control form-control-sm"
+									[(ngModel)]="lcExpensesHeader.subAccID" name="LCSL" required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openLCSubModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setLCSubNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label for="LCNumber">{{l("LCNumber")}}</label>
+							<input class="form-control form-control-sm" id="LCExpenses_LCNumber" name="LCNumber"
+								[(ngModel)]="lcExpensesHeader.lcNumber" type="text" disabled />
+						</div>
+						<div class="col-md-4">
+							<label for="LCExpenses_PayAcc">{{l("PayableAcc")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="LCExpenses_PayAcc" class="form-control form-control-sm"
+									[(ngModel)]="lcExpensesHeader.payableAccID" name="PayAcc" required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openPayableAccModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setPayableAccNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label for="PayableAccDesc">{{l("PayableAccDesc")}}</label>
+							<input class="form-control form-control-sm" id="LCExpenses_PayableAccDesc"
+								name="PayableAccDesc" [(ngModel)]="payableAccDesc" type="text" disabled />
+						</div>
+					</div>
+					<div class="row mt-2">
+						
+					</div>
+					<!-- <div class="row mt-2">
+						<div class="col-md-6">
+							<label for="expDetail">{{l("ExpDetail")}}</label>
+							<input class="form-control form-control-sm" id="LCExpenses_ExpDetail"
+								name="expDetail" [(ngModel)]="lcExpensesHeader.expDetail" type="text" disabled />
+						</div>
+					</div> -->
+					<br>
+					<div class="m-checkbox-list">
+						<label for="LCExpensesHeader_Active" class="kt-checkbox">
+							<input id="LCExpensesHeader_Active" type="checkbox" name="Active"
+								[(ngModel)]="lcExpensesHeader.active">
+							{{l("Active")}}
+							<span></span>
+						</label>
+					</div>
+					<div class="row-mt-2">
+						<!-- <div class="float-left">
+							<button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+								(click)="onAddRow()">Add</button>
+							<button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+								(click)="onRemoveSelected()">Remove</button>
+						</div> -->
+						<div class="float-left">
+							<button type="button" class="btn btn-primary mt-4 mb-3 btn-sm"
+								(click)="processLCExpenses()">
+								Process
+							</button>
+						</div>
+					</div>
+					<div class="row col-md-12">
+						<br>
+						<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [rowData]="rowData"
+							[columnDefs]="columnDefs" [animateRows]="true" [suppressDragLeaveHidesColumns]="true"
+							[rowSelection]="rowSelection" [singleClickEdit]="true"
+							(cellValueChanged)="onCellValueChanged($event)"
+							(cellEditingStarted)="onCellEditingStarted($event)" (gridReady)="onGridReady($event)"
+							(cellClicked)="onCellClicked($event)">
+						</ag-grid-angular>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-4">
+							<label for="LCExpensesHeader_Total">{{l("Total")}}</label>
+							<input type="text" id="LCExpensesHeader_Total" class="form-control form-control-sm inputFormBoldSize" readonly
+								[(ngModel)]="totalAmount" name="TotalAmount" currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="button" *ngIf="lcExpensesHeader.id && !lcExpensesHeader.linkDetID" (click)="approve()"
+						class="btn btn-success green" [buttonBusy]="processing" [busyText]="l('ApprovingWithThreeDot')">
+						<i class="fa fa-check"></i> <span>{{l("Process")}}</span>
+					</button>
+					<button type="submit" class="btn btn-primary blue" [buttonBusy]="saving"
+						*ngIf="!lcExpensesHeader.linkDetID" [disabled]="!lcExpensesForm.form.valid"
+						[busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>

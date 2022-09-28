@@ -1,0 +1,198 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{GloptionSetup != '' ? GloptionSetup :  l("Level1")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("Gl Level 1")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown>
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        <a class="dropdown-item" id="ExportUsersToExcelButton" (click)="exportToExcel()" href="javascript:;">
+                            <i class="fa fa-download" style="font-size: 1rem;"></i>
+                            {{'ExportToExcel' | localize}}
+                        </a>
+                        <a href="javascript:;" *ngIf="isGranted('SetupForms.ControlDetails.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true"
+                                        name="ExcelFileUpload"
+                                        #ExcelFileUpload
+                                        maxFileSize="10000000"
+                                        auto="auto"
+                                        accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)"
+                                        (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload>
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportControlDetailsSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+				<!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button> -->
+                <button *ngIf="isGranted('SetupForms.ControlDetails.Create')" (click)="createControlDetail()"
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{ GloptionSetup != '' ? ("Create New ") + GloptionSetup : l("CreateLevel1")}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getControlDetails()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="Seg1IDFilter"> {{l("Level1")}} {{l("Id")}}</label>
+									<input type="text" class="form-control" id="Seg1IDFilter" name="seg1IDFilter" [(ngModel)]="seg1IDFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="SegmentNameFilter">{{l("Level1")}} {{l("Description")}}</label>
+									<input type="text" class="form-control" id="SegmentNameFilter" name="segmentNameFilter" [(ngModel)]="segmentNameFilter">
+								</div>
+                            </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="GroupCategoryIdFilter">{{l("Class")}}</label>
+									<input type="text" class="form-control" id="GroupCategoryIdFilter" name="groupCategoryIdFilter" [(ngModel)]="FamilyFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getControlDetails($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 50px" [hidden]="!isGrantedAny('SetupForms.ControlDetails.Edit', 'SetupForms.ControlDetails.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 80px" pSortableColumn="seg1ID">
+                                        {{l("Level1")}} {{l("Id")}}
+                                        <p-sortIcon field="controlDetail.seg1ID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 500px" pSortableColumn="segmentName">
+                                        {{l("Level1")}} {{l("Description")}}
+                                        <p-sortIcon field="controlDetail.segmentName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 80px" pSortableColumn="family">
+                                        {{l('Class')}}
+                                        <p-sortIcon field="controlDetail.Family"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 50px"
+                                        [hidden]="!isGrantedAny('SetupForms.ControlDetails.Edit', 'SetupForms.ControlDetails.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewControlDetailModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('SetupForms.ControlDetails.Edit')"
+														(click)="createOrEditControlDetailModal.show(true, record.controlDetail.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('SetupForms.ControlDetails.Delete')"
+														(click)="deleteControlDetail(record.controlDetail)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:80px">
+											<span class="ui-column-title"> {{l("Level1")}} {{l("Id")}}</span>
+											{{record.controlDetail.seg1ID}}
+										</td>
+                                    <td style="width:500px">
+											<span class="ui-column-title"> {{l("Level1")}} {{l("Description")}}</span>
+											{{record.controlDetail.segmentName}}
+										</td>
+                                    <td style="width:80px">
+											<span class="ui-column-title"> {{l('Class')}}</span>
+											{{record.familyDesc}}
+										</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getControlDetails($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditControlDetailModal #createOrEditControlDetailModal (modalSave)="getControlDetails()"></createOrEditControlDetailModal>
+    <viewControlDetailModal #viewControlDetailModal></viewControlDetailModal>
+
+</div>

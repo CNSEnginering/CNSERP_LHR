@@ -1,0 +1,56 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #projectTMForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="OeroutesDto.id">{{l("EditRout")}}</span>
+                        <span *ngIf="!OeroutesDto.id">{{l("CreateRout")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+
+                        <div class="form-group col-md-3">
+                            <label for="routId">{{l("RoutID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="routId" min="1" class="form-control"
+                            [(ngModel)]="OeroutesDto.routID" name="RoutID" disabled required />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="routId">{{l("RoutDesc")}}<span class="require-field">*</span></label>
+                            <input type="text" maxlength="30" id="routId" min="1" class="form-control" name="RoutDesc" #RoutDesc="ngModel" 
+                              [(ngModel)]="OeroutesDto.routDesc" (change)="OeroutesDto.routDesc=OeroutesDto.routDesc.trim()"  required/>
+                        </div>
+
+                    </div>
+
+
+                    <div class="m-checkbox-list">
+                        <label for="Active" class="kt-checkbox">
+                            <input id="Active" type="checkbox" name="Active" [(ngModel)]="OeroutesDto.active">
+                            {{l("ACTIVE")}}
+                            <span></span>
+                        </label>
+                    </div>
+                
+                </div>
+
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!projectTMForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,46 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title">
+        <h3>
+            {{"PaymentInfo" | localize}}
+        </h3>
+    </div>
+
+    <form class="kt-form" method="post">
+        <h4 class="text-center mb-2">
+            {{"Upgrade_Edition_Description" | localize:edition.displayName}}
+        </h4>
+
+        <div class="kt-separator kt-separator--border-dashed"></div>
+
+        <div *ngIf="hasRecurringSubscription()">
+            <div class="form-group row">
+                <label class="col-sm-12">
+                    {{"RecurringSubscriptionUpgradeNote" | localize}}
+                </label>
+            </div>
+        </div>
+
+        <div *ngIf="!hasRecurringSubscription()">
+            <div class="form-group row">
+                <label class="col-sm-8">
+                    {{"Total" | localize}}
+                </label>
+
+                <div class="col-sm-4 text-right">
+                    <p class="kt-font-bold" id="totalPrice">
+                        {{appSession.application.currencySign}}{{additionalPrice | number : '1.2-2'}}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-form__actions mt-4">
+            <button *ngFor="let paymentGateway of paymentGateways"
+                    (click)="checkout(paymentGateway.gatewayType)"
+                    class="btn btn-success btn-block">
+                {{"CheckoutWith" + getPaymentGatewayType(paymentGateway.gatewayType) | localize}}
+            </button>
+        </div>
+
+    </form>
+</div>

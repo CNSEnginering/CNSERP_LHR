@@ -1,0 +1,80 @@
+<!-- begin::Quick Sidebar -->
+<div ktOffcanvas [options]="offcanvasOptions" id="kt_theme_selection_panel" class="kt-demo-panel">
+    <div class="kt-demo-panel__head">
+        <h5 class="kt-demo-panel__title">{{'SelectATheme' | localize}}</h5>
+        <a href="#" class="kt-demo-panel__close" id="kt-theme_selection_panel_close"><i class="flaticon2-delete"></i></a>
+    </div>
+    <div class="kt-demo-panel__body">
+        <perfect-scrollbar #themeSelectionPanelScrollBar style="height: 88vh">
+            <ul class="nav nav-tabs kt-tabs-line kt-tabs-line--2x kt-tabs-line--primary" role="tablist">
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('default')" data-theme="default" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'default' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/default.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('default')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme2')" data-theme="theme2" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme2' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme2.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme2')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme3')" data-theme="theme3" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme3' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme3.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme3')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme5')" data-theme="theme5" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme5' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme5.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme5')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme6')" data-theme="theme6" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme6' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme6.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme6')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme7')" data-theme="theme7" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme7' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme7.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme7')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme8')" data-theme="theme8" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme8' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme8.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme8')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme9')" data-theme="theme9" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme9' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme9.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme9')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme10')" data-theme="theme10" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme10' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme10.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme10')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme11')" data-theme="theme11" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme11' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme11.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme11')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item kt-tabs__item">
+                    <a href="javascript:;" (click)="changeTheme('theme12')" data-theme="theme12" class="nav-link kt-tabs__link text-center theme-selection-link" [ngClass]="currentThemeName == 'theme12' ? 'active' : ''" data-toggle="tab" role="tab">
+                        <img [src]="'/assets/common/images/metronic-themes/theme12.png'" />
+                        <span class="theme-name">{{getLocalizedThemeName('theme12')}}</span>
+                    </a>
+                </li>
+            </ul>
+        </perfect-scrollbar>
+    </div>
+</div>
+<!-- end::Quick Sidebar -->

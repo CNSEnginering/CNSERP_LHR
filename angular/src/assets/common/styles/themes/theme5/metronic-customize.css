@@ -1,0 +1,26 @@
+.kt-header-mobile .kt-header__brand-logo-default {
+  height: 52px !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.cc-window {
+  background-color: #282a3a;
+}
+.cc-btn {
+  background-color: #5867dd;
+  border-color: #5867dd;
+  color: #ffffff;
+}
+.cc-message {
+  color: #fefefe;
+}
+.kt-header__topbar-user span.kt-header__topbar-username {
+  display: none !important;
+}
+body ul.kt-menu__nav li.kt-menu__item--here .kt-menu__hor-arrow,
+body ul.kt-menu__nav li:not(.kt-menu__item--active):hover .kt-menu__hor-arrow {
+    color: #3d94fb !important;
+}
+body .mobile-subscription-warning {
+  background-color: transparent !important;
+}

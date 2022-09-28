@@ -1,0 +1,214 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
+
+@import '../node_modules/primeng/resources/themes/omega/theme.css';
+@import '../node_modules/primeng/resources/primeng.min.css';
+
+
+.require-field{
+    color:red;
+}
+
+.modal .modal-content {
+  box-shadow: 1px 1px 5px 1px #333333b8;
+  }
+
+.margin-right-5 {
+    margin-right: 5px !important;
+}
+
+.margin-top-5 {
+    margin-top: 5px !important;
+}
+
+.margin-top-15 {
+    margin-top: 15px !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px !important;
+}
+
+.padding-left-5 {
+    padding-left: 5px !important;
+}
+
+.padding-right-5 {
+    padding-right: 5px !important;
+}
+
+.padding-top-5 {
+    padding-top: 5px !important;
+}
+
+.padding-bottom-5 {
+    padding-bottom: 5px !important;
+}
+
+.width-percent-5 {
+    width: 5%;
+}
+
+.width-percent-10 {
+    width: 10%;
+}
+
+.width-percent-15 {
+    width: 15%;
+}
+
+.width-percent-20 {
+    width: 20%;
+}
+
+.width-percent-30 {
+    width: 30%;
+}
+
+.width-percent-40 {
+    width: 40%;
+}
+
+.width-percent-50 {
+    width: 50%;
+}
+
+.width-percent-100 {
+    width: 100%;
+}
+
+/* Sweet alert */
+
+.swal2-title {
+    display: inline-block !important;
+}
+
+body.swal2-height-auto {
+    height: inherit !important;
+}
+
+.swal2-popup.swal2-toast {
+    padding: 12px 10px 12px 0px !important;
+}
+
+@keyframes glowing {
+    0% {
+        opacity: .3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .3;
+    }
+}
+
+.glowing {
+    animation: glowing 2s infinite;
+}
+
+
+
+
+/* Sherry CSS*/
+
+.fa-money-bill-alt{   
+    color: white;
+    font-size: 25px;
+   }
+   .kt-portlet__body.table_width {
+    padding: 10px !important;
+}
+.table_even thead tr th{
+    font-size: 11px;
+    padding: .67rem;
+}
+.table_even tbody tr td{
+    font-size: 10px;    
+    padding: .4rem;
+}
+.kt-portlet__head-toolbar .amount-color{
+display: contents;
+font-size: 14px;
+}
+.kt-portlet.table_header_top {
+    max-height: 400px;
+}
+.table_header_top .kt-portlet__head {
+    min-height: 40px !important;
+}
+.kt-widget24.card_padding{
+padding: 20px !important;    
+}
+.tab_margin .nav.nav-tabs{
+    margin-bottom: 0px !important;
+} 
+.card_heading{
+    margin:0px !important
+}
+
+.checkboxes_sizes{
+    width: 25px !important;
+    height: 20px !important;
+    }
+    .inputFormBoldSize{
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+    .borders_outsight{
+        border: 1px groove #ddd !important;
+        padding: 1em 1.4em 1.4em 1.4em !important;
+        margin-bottom: 15px;
+        margin-left: 0px !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+    .background_border{
+        border: 1px groove #ddd !important;
+        padding: 1em 1.4em 1.4em 1.4em !important;
+     
+    }
+    .fas{
+        font-size: 2em!important;
+    }
+    .custom_height{
+        height: 220px;
+    }
+    .text_overflow{
+        white-space: nowrap; 
+        width: 200px; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+    }
+    .label_block{
+        display: block !important;
+    }
+    .hr_border {
+        border-top: 1px solid black;
+    }
+    .Total_class {
+        color: #13a771 !important;
+        font-size: 25px !important;
+    }
+    .no_border{
+    border: 0 !important;
+    }
+    span.clickable-item.text-muted{
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .select_class{
+        width: 150px;
+    }

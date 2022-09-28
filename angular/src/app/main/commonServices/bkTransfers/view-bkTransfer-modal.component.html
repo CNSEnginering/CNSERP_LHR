@@ -1,0 +1,99 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l("DETAILS") }}</span>
+                </h4>
+                <button
+                    type="button"
+                    class="close"
+                    (click)="close()"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("CMPID")}} :</h6>
+                        {{ item.bkTransfer.cmpid }}
+                    </div> -->
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DOCID") }} :</h6>
+                        {{ item.bkTransfer.docid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DOCDATE") }} :</h6>
+                        {{ item.bkTransfer.docdate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("TRANSFERDATE") }} :</h6>
+                        {{ item.bkTransfer.transferdate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DESCRIPTION") }} :</h6>
+                        {{ item.bkTransfer.description }}
+                    </div>
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("FROMBANKID")}} :</h6>
+                        {{ item.bkTransfer.frombankid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("FROMCONFIGID")}} :</h6>
+                        {{ item.bkTransfer.fromconfigid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TOBANKID")}} :</h6>
+                        {{ item.bkTransfer.tobankid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TOCONFIGID")}} :</h6>
+                        {{ item.bkTransfer.toconfigid }}
+                    </div> -->
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("Available Limit")}} :</h6>
+                        {{ item.bkTransfer.availlimit }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Transfer Amount")}} :</h6>
+                        {{ item.bkTransfer.transferamount }}
+                    </div> -->
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("AUDTDATE")}} :</h6>
+                        {{ item.bkTransfer.audtdate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTUSER")}} :</h6>
+                        {{ item.bkTransfer.audtuser }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("Bank")}}) {{l("BANKNAME")}} :</h6>
+                        {{item.bankBANKNAME}}
+                    </div> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-primary blue"
+                    (click)="close()"
+                >
+                    {{ l("Close") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

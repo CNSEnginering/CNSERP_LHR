@@ -1,0 +1,355 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{accountSubLedgers}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{accountSubLedgersHeaderInfo}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <div class="row">
+                    <div class="btn-group" dropdown>
+                        <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                            <a class="dropdown-item" id="ExportUsersToExcelButton" (click)="exportToExcel()"
+                                href="javascript:;">
+                                <i class="fa fa-download" style="font-size: 1rem;"></i>
+                                {{'ExportToExcel' | localize}}
+                            </a>
+                            <a href="javascript:;" *ngIf="isGranted('SetupForms.AccountSubLedgers.Create')"
+                                class="no-padding">
+                                <span class="fileinput-button">
+                                    <p-fileUpload customUpload="true" name="ExcelFileUpload" #ExcelFileUpload
+                                        maxFileSize="10000000" auto="auto" accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)" (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                    </p-fileUpload>
+                                </span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <span class="dropdown-item-text text-muted pl-3" href="#">
+                                <small
+                                    [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportAccountSubLedgersSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                        {{l("ExportToExcel")}}</button> -->
+                    <button *ngIf="isGranted('SetupForms.AccountSubLedgers.Create')"
+                        (click)="transferAccountSubLedger()" tooltip="Transfer Sub Ledgers from one account to another" class="btn btn-primary blue">
+                        <i class="fa fa-exchange"></i>
+                        {{"Transfer Sub Ledgers"}}</button>
+                    <button *ngIf="isGranted('SetupForms.AccountSubLedgers.Create')" (click)="createAccountSubLedger()"
+                        class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                        {{create}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("File Upload")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                    <p-fileUpload multiple="multiple" id="DefaultFileUploadFileInput"
+                        name="DefaultFileUploadFileInput[]" [url]="uploadUrl" accept=".xlsx" maxFileSize="1000000"
+                        (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)">
+
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+            </div>
+
+        </div>
+    </div> -->
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAccountSubLedgers()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AccountIDFilter">{{l("AccountID")}}</label>
+                                    <input type="text" class="form-control" id="AccountIDFilter" name="accountIDFilter"
+                                        [(ngModel)]="accountIDFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ChartofControlAccountNameFilter">
+                                        <!-- ({{l("ChartofControl")}}) -->
+                                        {{l("AccountName")}}</label>
+                                    <input type="text" class="form-control" id="ChartofControlAccountNameFilter"
+                                        name="chartofControlAccountNameFilter"
+                                        [(ngModel)]="chartofControlAccountNameFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSubAccIDFilter">
+                                        <!-- {{l("MinMax")}}  -->
+                                        {{l("SubAccID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSubAccIDFilter"
+                                            [(ngModel)]="minSubAccIDFilter" placeholder="{{l('From')}}"
+                                            name="minSubAccIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSubAccIDFilter"
+                                            placeholder="{{l('To')}}" name="maxSubAccIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="SubAccNameFilter">{{l("SubAccName")}}</label>
+                                    <input type="text" class="form-control" id="SubAccNameFilter"
+                                        name="subAccNameFilter" [(ngModel)]="subAccNameFilter">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="Address1Filter">{{l("Address1")}}</label>
+									<input type="text" class="form-control" id="Address1Filter" name="address1Filter" [(ngModel)]="address1Filter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="Address2Filter">{{l("Address2")}}</label>
+									<input type="text" class="form-control" id="Address2Filter" name="address2Filter" [(ngModel)]="address2Filter">
+								</div>
+                            </div> -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CityFilter">{{l("City")}}</label>
+                                    <input type="text" class="form-control" id="CityFilter" name="cityFilter"
+                                        [(ngModel)]="cityFilter">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="PhoneFilter">{{l("Phone")}}</label>
+									<input type="text" class="form-control" id="PhoneFilter" name="phoneFilter" [(ngModel)]="phoneFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ContactFilter">{{l("Contact")}}</label>
+									<input type="text" class="form-control" id="ContactFilter" name="contactFilter" [(ngModel)]="contactFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="RegNoFilter">{{l("RegNo")}}</label>
+									<input type="text" class="form-control" id="RegNoFilter" name="regNoFilter" [(ngModel)]="regNoFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TAXAUTHFilter">{{l("TAXAUTH")}}</label>
+									<input type="text" class="form-control" id="TAXAUTHFilter" name="taxauthFilter" [(ngModel)]="taxauthFilter">
+								</div>
+                            </div> -->
+
+
+
+
+
+
+
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAccountSubLedgers($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px"
+                                        [hidden]="!isGrantedAny('SetupForms.AccountSubLedgers.Edit', 'SetupForms.AccountSubLedgers.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 130px" pSortableColumn="accountID">
+                                        {{l('AccountID')}}
+                                        <p-sortIcon field="accountSubLedger.accountID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="accountName">
+                                        {{l('AccountName')}}
+                                        <p-sortIcon field="chartofControlAccountName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 90px" pSortableColumn="id">
+                                        {{l('Sub Id')}}
+                                        <p-sortIcon field="accountSubLedger.id"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="slType">
+                                        {{l('SL')}}
+                                        
+                                        <p-sortIcon field="accountSubLedger.slType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 300px" pSortableColumn="subAccName">
+                                        {{l('SubAccName')}}
+                                        <p-sortIcon field="accountSubLedger.subAccName"></p-sortIcon>
+                                    </th>
+                                    
+                                    <!-- <th style="width: 150px" pSortableColumn="phone">
+                                        {{l('Phone')}}
+                                        <p-sortIcon field="accountSubLedger.phone"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="contact">
+                                        {{l('Contact')}}
+                                        <p-sortIcon field="accountSubLedger.contact"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="regNo">
+                                        {{l('RegNo')}}
+                                        <p-sortIcon field="accountSubLedger.regNo"></p-sortIcon>
+                                    </th> -->
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('SetupForms.AccountSubLedgers.Edit', 'SetupForms.AccountSubLedgers.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewAccountSubLedgerModal.show(record)">{{ accountSubLedgers == "Customer Master" ? l('Customer Activity') : accountSubLedgers == "Vendor Master" ? l('Vendor Activity'): "Activity"  }}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('SetupForms.AccountSubLedgers.Edit')"
+                                                        (click)="createOrEditAccountSubLedgerModal.show(true,record.accountSubLedger.id, record.accountSubLedger.accountID)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('SetupForms.AccountSubLedgers.Delete')"
+                                                        (click)="deleteAccountSubLedger(record.accountSubLedger)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:130px">
+                                        <span class="ui-column-title"> {{l('AccountID')}}</span>
+                                        {{record.accountSubLedger.accountID}}
+                                    </td>
+                                    <td style="width:200px" class="text_overflow">
+                                        <span class="ui-column-title"> {{l('AccountName')}}</span>
+                                        {{record.chartofControlAccountName}}
+                                    </td>
+
+                                    <td style="width:90px">
+                                        <span class="ui-column-title"> {{l('SubAccID')}}</span>
+                                        {{record.accountSubLedger.id}}
+                                    </td>
+                                    <td style="width:100px">
+                                        <span class="ui-column-title"> {{l('SlType')}}</span>
+                                        {{record.accountSubLedger.slDesc}}
+                                    </td>
+                                    <td style="width:300px" class="text_overflow">
+                                        <span class="ui-column-title"> {{l('SubAccName')}}</span>
+                                        {{record.accountSubLedger.subAccName}}
+                                    </td>
+                                    
+                                    <!-- <td style="width:150px">
+											<span class="ui-column-title"> {{l('Phone')}}</span>
+											{{record.accountSubLedger.phone}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Contact')}}</span>
+											{{record.accountSubLedger.contact}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('RegNo')}}</span>
+											{{record.accountSubLedger.regNo}}
+										</td> -->
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAccountSubLedgers($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditAccountSubLedgerModal #createOrEditAccountSubLedgerModal (modalSave)="getAccountSubLedgers()"
+        [mode]="mode"></createOrEditAccountSubLedgerModal>
+    <viewAccountSubLedgerModal #viewAccountSubLedgerModal></viewAccountSubLedgerModal>
+    <transferAccountSubLedgerModal #transferAccountSubLedgerModal (modalSave)="getAccountSubLedgers()">
+    </transferAccountSubLedgerModal>
+
+    <app-file-uploader #FileUpload></app-file-uploader>
+
+</div>

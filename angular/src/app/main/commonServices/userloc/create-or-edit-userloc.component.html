@@ -1,0 +1,90 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #glSecurityForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="userLocHeader.id">{{l("Edit User Location")}}</span>
+						<span *ngIf="!userLocHeader.id">{{l("Create User Location")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body form-group">
+					<div class="row mt-2">
+                        <div class="col-md-4">
+                            <label for="GLSecurity_UserID">{{l("UserID")}}<span
+                                    class="require-field">*</span></label>
+                                <input type="text" id="GLSecurity_UserID"
+                                    class="form-control form-control-sm" [(ngModel)]="userLocHeader.userId"
+                                    name="UserID"(ngModelChange)="getUserName()" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="GLSecurity_UserName">{{l("UserName")}}<span
+								class="require-field">*</span></label>
+                            <input class="form-control form-control-sm" id="GLSecurity_UserName" style="background-color:#F4F4F4;"
+                                name="UserName" [(ngModel)]="userLocHeader.userName" type="text" readonly required/>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="GLSecurity_UserName">{{l("Type")}}<span
+                            class="require-field">*</span></label>
+                          <select id="GLSecurity_UserName" class="form-control form-control-sm" name="typeID" [(ngModel)]="userLocHeader.typeID" required>
+                            <option value="" disabled>select...</option>
+                            <option value=1>General Ledger</option>
+                            <option value=2>Inventory</option>
+                            <!-- <option value=3>Payroll</option> -->
+                          </select>
+                        </div>
+						<div class="row col-md-6">
+							<div class="mt-5 col-md-6">
+								<button class="btn btn-primary  btn-sm" type="button"
+								(click)="FetchLocation()">Fetch</button>
+							  </div>
+							  <div class="row mt-5 col-md-4">
+								<label>Check All</label>
+								 <input type="checkbox" class="checkboxes_sizes" (click)="CheckAll()" />
+							  </div>
+						</div>
+                    </div>
+					
+
+					<br>
+
+				
+	
+
+					<div class="row col-md-12">
+						<br>
+						<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [rowData]="rowData"
+							[columnDefs]="columnDefs" [animateRows]="true" [suppressDragLeaveHidesColumns]="true"
+							[rowSelection]="rowSelection" [singleClickEdit]="true"
+							(cellValueChanged)="onCellValueChanged($event)"
+							(cellEditingStarted)="onCellEditingStarted($event)" (gridReady)="onGridReady($event)"
+							(cellClicked)="onCellClicked($event)">
+						</ag-grid-angular>
+					</div>
+					<br>
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+
+					<!-- <button type="button" class="btn btn-success green"
+						*ngIf="glSecurityHeader.id && isGranted('Pages.GLSecurityDetail.Process')" [busyText]="l('ProcessingWithThreeDot')"
+						[buttonBusy]="processing" (click)="processGLSecurity()"> <i class="fa fa-spinner"></i>
+						<span>{{l("Process")}}</span></button> -->
+
+					<button type="submit" class="btn btn-primary blue" [buttonBusy]="saving" [disabled]="!glSecurityForm.form.valid"
+						[busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<!-- <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal> -->

@@ -1,0 +1,42 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title">
+        <h3>
+            {{"PaymentInfo" | localize}}
+        </h3>
+
+        <div class="kt-separator kt-separator--border-dashed"></div>
+
+        <form class="kt-form mt-2" method="post">
+            <h4 class="text-center mb-4">
+                {{"Extend_Edition_Description" | localize:edition.displayName}}
+            </h4>
+
+            <div class="form-group">
+                <label class="kt-radio">
+                    <input class="form-control" type="radio" name="PaymentPeriodType"
+                           checked
+                           [value]="paymentPeriodType.Monthly"
+                           (change)="onPaymentPeriodChangeChange(paymentPeriodType.Monthly)" />{{"MonthlyPrice" | localize}}: {{appSession.application.currencySign}}{{edition.monthlyPrice | number : '1.2-2'}}
+                    <span></span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label class="kt-radio">
+                    <input class="form-control" type="radio" name="PaymentPeriodType"
+                           [value]="paymentPeriodType.Annual"
+                           (change)="onPaymentPeriodChangeChange(paymentPeriodType.Annual)" />{{"AnnualPrice" | localize}}: {{appSession.application.currencySign}}{{edition.annualPrice | number : '1.2-2'}}
+                    <span></span>
+                </label>
+            </div>
+
+            <div class="kt-form__actions mt-4">
+                <button *ngFor="let paymentGateway of paymentGateways"
+                        (click)="checkout(paymentGateway.gatewayType)"
+                        class="btn btn-success btn-block">
+                    {{"CheckoutWith" + getPaymentGatewayType(paymentGateway.gatewayType) | localize}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

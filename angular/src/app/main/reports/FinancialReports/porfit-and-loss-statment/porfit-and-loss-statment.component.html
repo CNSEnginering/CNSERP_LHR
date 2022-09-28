@@ -1,0 +1,92 @@
+<div [@routerTransition]>
+  <div class="kt-subheader kt-grid__item">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        <span>{{l("Profit And Loss Statment")}}</span>
+      </h3>
+      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+      <span class="kt-subheader__desc">
+        {{"" | localize}}
+      </span>
+    </div>
+  </div>
+  <div class="kt-content">
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__body">
+        <form class="kt-form">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="kt-radio-list">
+                  <label class="kt-radio kt-radio--solid">
+                      <input type="radio" name="documentListing"
+                          [(ngModel)]="documentListing" 
+                          value="PLSTATMENT" [checked]='true'>
+                      Profit/Loss Statement
+                      <span></span>
+                  </label>
+              </div>
+          </div>
+          <div class="col-lg-4">
+              <div class="kt-radio-list">
+                  <label class="kt-radio kt-radio--solid">
+                      <input type="radio" name="documentListing"
+                          [(ngModel)]="documentListing" 
+                          value="cashflowstatement">
+                      Cash Flow Statement
+                      <span></span>
+                  </label>
+              </div>
+          </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="MinDocDateFilter">{{l("DocDate")}}</label>
+                <div class="input-group">
+                  <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime"
+                    bsDatepicker placeholder="{{l('From')}}" [(ngModel)]="fromDate" [(bsValue)]="fromDate"
+                    value="{{ fromDate | date: 'dd/MM/yyyy' }}">
+                  <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                  <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime"
+                    bsDatepicker placeholder="{{l('To')}}" [(ngModel)]="toDate" [(bsValue)]="toDate"
+                    value="{{ toDate | date: 'dd/MM/yyyy' }}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="MinDocDateFilter">{{l("DocDate")}}</label>
+                <div class="input-group">
+                  <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime"
+                    bsDatepicker placeholder="{{l('From')}}" [(ngModel)]="fromDate" [(bsValue)]="fromDate"
+                    value="{{ fromDate | date: 'dd/MM/yyyy' }}">
+                  <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                  <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime"
+                    bsDatepicker placeholder="{{l('To')}}" [(ngModel)]="toDate" [(bsValue)]="toDate"
+                    value="{{ toDate | date: 'dd/MM/yyyy' }}">
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+         
+         
+
+        
+          <div>
+            <div class="row mb-4">
+              <div class="col-sm-12 text-right">
+                <button type="button" (click)="getReport()" class="btn btn-primary blue">
+                  Preview</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
+  
+  <app-reportviewr-modal #reportView></app-reportviewr-modal>
+  

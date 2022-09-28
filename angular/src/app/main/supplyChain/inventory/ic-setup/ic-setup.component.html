@@ -1,0 +1,545 @@
+<div [@routerTransition]>
+
+  <div class="kt-subheader kt-grid__item">
+
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        <span>{{l("ICSetups")}}</span>
+      </h3>
+      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+      <span class="kt-subheader__desc">
+        {{l("ICSetupsHeaderInfo")}}
+      </span>
+    </div>
+    <div class="kt-subheader__toolbar">
+      <div class="kt-subheader__wrapper">
+        <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+          {{l("ExportToExcel")}}</button>
+        <button *ngIf="isGranted('Inventory.ICSetups.Create')" (click)="createICSetup()" class="btn btn-primary blue" [disabled] = "disableCreateButton"><i
+            class="fa fa-plus"></i> {{l("CreateNewICSetup")}}</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="kt-content">
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__body">
+        <form class="kt-form" autocomplete="off">
+          <div>
+            <div class="row align-items-center">
+              <div class="col-xl-12">
+                <div class="form-group m-form__group align-items-center">
+                  <div class="input-group">
+                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input"
+                      [placeholder]="l('SearchWithThreeDot')" type="text">
+                    <span class="input-group-btn">
+                      <button (click)="getICSetups()" class="btn btn-primary" type="submit"><i
+                          class="flaticon-search-1"></i></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" [hidden]="!advancedFiltersAreShown">
+              <div class="col-md-12">
+                <div class="kt-separator kt-separator--border-dashed"></div>
+              </div>
+
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="Segment1Filter">{{l("Segment1")}}</label>
+                  <input type="text" class="form-control" id="Segment1Filter" name="segment1Filter"
+                    [(ngModel)]="segment1Filter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="Segment2Filter">{{l("Segment2")}}</label>
+                  <input type="text" class="form-control" id="Segment2Filter" name="segment2Filter"
+                    [(ngModel)]="segment2Filter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="Segment3Filter">{{l("Segment3")}}</label>
+                  <input type="text" class="form-control" id="Segment3Filter" name="segment3Filter"
+                    [(ngModel)]="segment3Filter">
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+                <div class="form-group">
+                  <label for="MinAllowNegativeFilter">{{l("MinMax")}} {{l("AllowNegative")}}</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="MinAllowNegativeFilter"
+                      [(ngModel)]="minAllowNegativeFilter" placeholder="{{l('MinValue')}}"
+                      name="minAllowNegativeFilter" />
+                    <input type="number" class="form-control" [(ngModel)]="maxAllowNegativeFilter"
+                      placeholder="{{l('MaxValue')}}" name="maxAllowNegativeFilter" />
+                  </div>
+                </div>
+              </div> -->
+              <!-- <div class="col-md-3">
+                <div class="form-group">
+                  <label for="MinErrSrNoFilter">{{l("MinMax")}} {{l("ErrSrNo")}}</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="MinErrSrNoFilter" [(ngModel)]="minErrSrNoFilter"
+                      placeholder="{{l('MinValue')}}" name="minErrSrNoFilter" />
+                    <input type="number" class="form-control" [(ngModel)]="maxErrSrNoFilter"
+                      placeholder="{{l('MaxValue')}}" name="maxErrSrNoFilter" />
+                  </div>
+                </div>
+              </div> -->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="MinCostingMethodFilter">{{l("MinMax")}} {{l("CostingMethod")}}</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="MinCostingMethodFilter"
+                      [(ngModel)]="minCostingMethodFilter" placeholder="{{l('MinValue')}}"
+                      name="minCostingMethodFilter" />
+                    <input type="number" class="form-control" [(ngModel)]="maxCostingMethodFilter"
+                      placeholder="{{l('MaxValue')}}" name="maxCostingMethodFilter" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="PRBookIDFilter">{{l("PRBookID")}}</label>
+                  <input type="text" class="form-control" id="PRBookIDFilter" name="prBookIDFilter"
+                    [(ngModel)]="prBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="RTBookIDFilter">{{l("RTBookID")}}</label>
+                  <input type="text" class="form-control" id="RTBookIDFilter" name="rtBookIDFilter"
+                    [(ngModel)]="rtBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="CnsBookIDFilter">{{l("CnsBookID")}}</label>
+                  <input type="text" class="form-control" id="CnsBookIDFilter" name="cnsBookIDFilter"
+                    [(ngModel)]="cnsBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="SLBookIDFilter">{{l("SLBookID")}}</label>
+                  <input type="text" class="form-control" id="SLBookIDFilter" name="slBookIDFilter"
+                    [(ngModel)]="slBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="SRBookIDFilter">{{l("SRBookID")}}</label>
+                  <input type="text" class="form-control" id="SRBookIDFilter" name="srBookIDFilter"
+                    [(ngModel)]="srBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="TRBookIDFilter">{{l("TRBookID")}}</label>
+                  <input type="text" class="form-control" id="TRBookIDFilter" name="trBookIDFilter"
+                    [(ngModel)]="trBookIDFilter">
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+                <div class="form-group">
+                  <label for="PrdBookIDFilter">{{l("PrdBookID")}}</label>
+                  <input type="text" class="form-control" id="PrdBookIDFilter" name="prdBookIDFilter"
+                    [(ngModel)]="prdBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="PyRecBookIDFilter">{{l("PyRecBookID")}}</label>
+                  <input type="text" class="form-control" id="PyRecBookIDFilter" name="pyRecBookIDFilter"
+                    [(ngModel)]="pyRecBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="AdjBookIDFilter">{{l("AdjBookID")}}</label>
+                  <input type="text" class="form-control" id="AdjBookIDFilter" name="adjBookIDFilter"
+                    [(ngModel)]="adjBookIDFilter">
+                </div>
+              </div> -->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="AsmBookIDFilter">{{l("AsmBookID")}}</label>
+                  <input type="text" class="form-control" id="AsmBookIDFilter" name="asmBookIDFilter"
+                    [(ngModel)]="asmBookIDFilter">
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+                <div class="form-group">
+                  <label for="WSBookIDFilter">{{l("WSBookID")}}</label>
+                  <input type="text" class="form-control" id="WSBookIDFilter" name="wsBookIDFilter"
+                    [(ngModel)]="wsBookIDFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="DSBookIDFilter">{{l("DSBookID")}}</label>
+                  <input type="text" class="form-control" id="DSBookIDFilter" name="dsBookIDFilter"
+                    [(ngModel)]="dsBookIDFilter">
+                </div>
+              </div> -->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="MinCurrentLocIDFilter">{{l("MinMax")}} {{l("CurrentLocID")}}</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="MinCurrentLocIDFilter"
+                      [(ngModel)]="minCurrentLocIDFilter" placeholder="{{l('MinValue')}}"
+                      name="minCurrentLocIDFilter" />
+                    <input type="number" class="form-control" [(ngModel)]="maxCurrentLocIDFilter"
+                      placeholder="{{l('MaxValue')}}" name="maxCurrentLocIDFilter" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="Opt4Filter">{{l("Opt4")}}</label>
+                  <input type="text" class="form-control" id="Opt4Filter" name="opt4Filter" [(ngModel)]="opt4Filter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="Opt5Filter">{{l("Opt5")}}</label>
+                  <input type="text" class="form-control" id="Opt5Filter" name="opt5Filter" [(ngModel)]="opt5Filter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                  <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                    [(ngModel)]="createdByFilter">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="MinCreateadOnFilter">{{l("CreateadOnRange")}}</label>
+                  <div class="input-group">
+                    <input class="form-control m-input" id="MinCreateadOnFilter" name="MinCreateadOnFilter"
+                      type="datetime" bsDatepicker placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateadOnFilter">
+                    <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                    <input class="form-control m-input" id="MaxCreateadOnFilter" name="MaxCreateadOnFilter"
+                      type="datetime" bsDatepicker placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateadOnFilter">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                  (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i>
+                  {{l("ShowAdvancedFilters")}}</span>
+                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                  (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i>
+                  {{l("HideAdvancedFilters")}}</span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="row align-items-center">
+          <!--<Primeng-Datatable-Start>-->
+          <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+            <p-table #dataTable (onLazyLoad)="getICSetups($event)" [value]="primengTableHelper.records"
+              rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+              [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+              [resizableColumns]="primengTableHelper.resizableColumns">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 130px"
+                    [hidden]="!isGrantedAny('Inventory.ICSetups.Edit', 'Inventory.ICSetups.Delete')">{{l('Actions')}}
+                  </th>
+                  <th style="width: 150px" pSortableColumn="segment1">
+                    {{l('Segment1')}}
+                    <p-sortIcon field="icSetup.segment1"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="segment2">
+                    {{l('Segment2')}}
+                    <p-sortIcon field="icSetup.segment2"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="segment3">
+                    {{l('Segment3')}}
+                    <p-sortIcon field="icSetup.segment3"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="opt4">
+                    {{l('Opt4')}}
+                    <p-sortIcon field="icSetup.opt4"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="opt5">
+                    {{l('Opt5')}}
+                    <p-sortIcon field="icSetup.opt5"></p-sortIcon>
+                  </th>
+                  <!-- <th style="width: 150px" pSortableColumn="errSrNo">
+                    {{l('ErrSrNo')}}
+                    <p-sortIcon field="icSetup.errSrNo"></p-sortIcon>
+                  </th> -->
+                  <th style="width: 150px" pSortableColumn="costingMethod">
+                    {{l('CostingMethod')}}
+                    <p-sortIcon field="icSetup.costingMethod"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="prBookID">
+                    {{l('PRBookID')}}
+                    <p-sortIcon field="icSetup.prBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="rtBookID">
+                    {{l('RTBookID')}}
+                    <p-sortIcon field="icSetup.rtBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="cnsBookID">
+                    {{l('CnsBookID')}}
+                    <p-sortIcon field="icSetup.cnsBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="slBookID">
+                    {{l('SLBookID')}}
+                    <p-sortIcon field="icSetup.slBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="srBookID">
+                    {{l('SRBookID')}}
+                    <p-sortIcon field="icSetup.srBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="trBookID">
+                    {{l('TRBookID')}}
+                    <p-sortIcon field="icSetup.trBookID"></p-sortIcon>
+                  </th>
+                  <!-- <th style="width: 150px" pSortableColumn="prdBookID">
+                    {{l('PrdBookID')}}
+                    <p-sortIcon field="icSetup.prdBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="pyRecBookID">
+                    {{l('PyRecBookID')}}
+                    <p-sortIcon field="icSetup.pyRecBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="adjBookID">
+                    {{l('AdjBookID')}}
+                    <p-sortIcon field="icSetup.adjBookID"></p-sortIcon>
+                  </th> -->
+                  <th style="width: 150px" pSortableColumn="asmBookID">
+                    {{l('AsmBookID')}}
+                    <p-sortIcon field="icSetup.asmBookID"></p-sortIcon>
+                  </th>
+                  <!-- <th style="width: 150px" pSortableColumn="wsBookID">
+                    {{l('WSBookID')}}
+                    <p-sortIcon field="icSetup.wsBookID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="dsBookID">
+                    {{l('DSBookID')}}
+                    <p-sortIcon field="icSetup.dsBookID"></p-sortIcon>
+                  </th> 
+                  <th style="width: 150px" pSortableColumn="salesReturnLinkOn">
+                    {{l('SalesReturnLinkOn')}}
+                    <p-sortIcon field="icSetup.salesReturnLinkOn"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="salesLinkOn">
+                    {{l('SalesLinkOn')}}
+                    <p-sortIcon field="icSetup.salesLinkOn"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="accLinkOn">
+                    {{l('AccLinkOn')}}
+                    <p-sortIcon field="icSetup.accLinkOn"></p-sortIcon>
+                  </th> -->
+                  <th style="width: 150px" pSortableColumn="currentLocID">
+                    {{l('CurrentLocID')}}
+                    <p-sortIcon field="icSetup.currentLocID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="allowNegative">
+                    {{l('AllowNegative')}}
+                    <p-sortIcon field="icSetup.allowNegative"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="allowLocID">
+                    {{l('AllowLocID')}}
+                    <p-sortIcon field="icSetup.allowLocID"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="cDateOnly">
+                    {{l('CDateOnly')}}
+                    <p-sortIcon field="icSetup.cDateOnly"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="createdBy">
+                    {{l('CreatedBy')}}
+                    <p-sortIcon field="icSetup.createdBy"></p-sortIcon>
+                  </th>
+                  <th style="width: 150px" pSortableColumn="createadOn">
+                    {{l('CreateadOn')}}
+                    <p-sortIcon field="icSetup.createadOn"></p-sortIcon>
+                  </th>
+
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-record="$implicit">
+                <tr>
+                  <td style="width: 130px"
+                    [hidden]="!isGrantedAny('Inventory.ICSetups.Edit', 'Inventory.ICSetups.Delete')">
+                    <div class="btn-group dropdown" dropdown container="body">
+                      <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                        <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                      </button>
+                      <ul class="dropdown-menu" *dropdownMenu>
+                        <li>
+                          <a href="javascript:;" (click)="viewICSetupModal.show(record)">{{l('View')}}</a>
+                        </li>
+                        <li>
+                          <a href="javascript:;" *ngIf="permission.isGranted('Inventory.ICSetups.Edit')"
+                            (click)="createOrEditICSetupModal.show(record.id)">{{l('Edit')}}</a>
+                        </li>
+                        <li hidden>
+                          <a href="javascript:;" *ngIf="permission.isGranted('Inventory.ICSetups.Delete')"
+                            (click)="deleteICSetup(record)">{{l('Delete')}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('Segment1')}}</span>
+                    {{record.segment1}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('Segment2')}}</span>
+                    {{record.segment2}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('Segment3')}}</span>
+                    {{record.segment3}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('Opt4')}}</span>
+                    {{record.opt4}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('Opt5')}}</span>
+                    {{record.opt5}}
+                  </td>
+                  <!-- <td style="width:150px">
+                    <span class="ui-column-title"> {{l('ErrSrNo')}}</span>
+                    {{record.errSrNo}}
+                  </td> -->
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('CostingMethod')}}</span>
+                    {{record.costingMethod==3 ? 'LIFO':''}}
+                    {{record.costingMethod==2 ? 'FIFO':''}}
+                    {{record.costingMethod==1 ? 'Moving Average':''}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('PRBookID')}}</span>
+                    {{record.prBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('RTBookID')}}</span>
+                    {{record.rtBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('CnsBookID')}}</span>
+                    {{record.cnsBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('SLBookID')}}</span>
+                    {{record.slBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('SRBookID')}}</span>
+                    {{record.srBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('TRBookID')}}</span>
+                    {{record.trBookID}}
+                  </td>
+                  <!-- <td style="width:150px">
+                    <span class="ui-column-title"> {{l('PrdBookID')}}</span>
+                    {{record.prdBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('PyRecBookID')}}</span>
+                    {{record.pyRecBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('AdjBookID')}}</span>
+                    {{record.adjBookID}}
+                  </td> -->
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('AsmBookID')}}</span>
+                    {{record.asmBookID}}
+                  </td>
+                  <!-- <td style="width:150px">
+                    <span class="ui-column-title"> {{l('WSBookID')}}</span>
+                    {{record.wsBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('DSBookID')}}</span>
+                    {{record.dsBookID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('SalesReturnLinkOn')}}</span>
+                    {{record.salesReturnLinkOn}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('SalesLinkOn')}}</span>
+                    {{record.salesLinkOn}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('AccLinkOn')}}</span>
+                    {{record.accLinkOn}}
+                  </td> -->
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('CurrentLocID')}}</span>
+                    {{record.currentLocID}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('AllowNegative')}}</span>
+                    <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.allowNegative">{{'Yes' | localize}}</span>
+                    <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.allowNegative">{{'No' | localize}}</span>
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('AllowLocID')}}</span>
+                    <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.allowLocID">{{'Yes' | localize}}</span>
+                    <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.allowLocID">{{'No' | localize}}</span>
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('CDateOnly')}}</span>
+                    <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.cDateOnly">{{'Yes' | localize}}</span>
+                    <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.cDateOnly">{{'No' | localize}}</span>
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                    {{record.createdBy}}
+                  </td>
+                  <td style="width:150px">
+                    <span class="ui-column-title"> {{l('CreateadOn')}}</span>
+                    <span *ngIf="record.createadOn">
+                      {{record.createadOn | momentFormat:'L' | date: 'dd/MM/yyyy'}}
+                    </span>
+                    <span *ngIf="!record.createadOn">-</span>
+                  </td>
+
+                </tr>
+              </ng-template>
+            </p-table>
+            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+              {{l('NoData')}}
+            </div>
+            <div class="primeng-paging-container">
+              <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getICSetups($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+              </p-paginator>
+              <span class="total-records-count">
+                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+              </span>
+            </div>
+          </div>
+          <!--<Primeng-Datatable-End>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <createOrEditICSetupModal #createOrEditICSetupModal (modalSave)="getICSetups()"></createOrEditICSetupModal>
+  <viewICSetupModal #viewICSetupModal></viewICSetupModal>
+
+
+</div>
+

@@ -1,0 +1,106 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l("Details") }}</span>
+                </h4>
+                <button
+                    type="button"
+                    class="close"
+                    (click)="close()"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DocNo") }} :</h6>
+                        {{ item.docNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DocDate") }} :</h6>
+                        {{ item.docDate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Posted") }} :</h6>
+                        {{ item.posted == true ? "Yes" : "No" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("PostDate") }} :</h6>
+                        {{ item.postDate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("BankID") }} :</h6>
+                        {{ item.bankID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("BankID") }} :</h6>
+                        {{ item.accountID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("ChequeNo") }} :</h6>
+                        {{ item.chequeNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("RefNo") }} :</h6>
+                        {{ item.refNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("PayReason") }} :</h6>
+                        {{ item.payReason }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Narration") }} :</h6>
+                        {{ item.narration }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Currency") }} :</h6>
+                        {{ item.curID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("CurRate") }} :</h6>
+                        {{ item.curRate }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("PartyInvNo") }} :</h6>
+                        {{ item.partyInvNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("PartyInvDate") }} :</h6>
+                        {{ item.partyInvDate }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtUser") }} :</h6>
+                        {{ item.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtDate") }} :</h6>
+                        {{ item.audtDate | date: "dd/MM/yyyy" }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-primary blue"
+                    (click)="close()"
+                >
+                    {{ l("Close") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

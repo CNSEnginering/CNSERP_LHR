@@ -1,0 +1,411 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<form *ngIf="active" #adjustmentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="popoHeader.id">{{l("EditPurchaseOrders")}}</span>
+						<span *ngIf="!popoHeader.id">{{l("CreateNewPurchaseOrders")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<tabset class="tab-container tabbable-line">
+						<tab heading="{{'Document' | localize}}">
+							<div class="row col-md-12">
+
+								<div class="form-group m-form__group col-md-3">
+									<label for="PurchaseOrders_ReqNo">{{l("ReqNo")}}</label>
+									<div class="input-group">
+										<input type="text" min="1" id="PurchaseOrders_ReqNo"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.reqNo"
+											name="reqNo" readonly/>
+											<div class="input-group-append">
+												<button class="btn btn-primary blue btn-sm"
+													(click)="openSelectReqNoModal()" type="button"><i
+														class="fa fa-search"></i> {{l("Pick")}}</button>
+											</div>
+											<div class="input-group-prepend">
+												<button class="btn btn-danger btn-icon btn-sm" type="button"
+													(click)="setReqnoNull()"><i class="fa fa-times"></i></button>
+											</div>
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												*ngIf="permission.isGranted('Purchase.PurchaseOrders.Edit')"
+												(click)="getReqNoRecord()" type="button"><i class="fa fa-search"></i>
+												{{l("Filter")}}</button>
+										</div>
+									</div>
+								</div> 
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_DocNo">{{l("DOCNO")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_DocNo" class="form-control form-control-sm"
+										[(ngModel)]="popoHeader.docNo" name="DocNo" readonly required />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_DocDate">{{l("DOCDATE")}}<span
+											class="require-field">*</span></label>
+									<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+										class="form-control m-input  form-control-sm" type="text" bsDatepicker
+										[(ngModel)]="popoHeader.docDate" [disabled]="checkedval" id="PurchaseOrders_DocDate"
+										name="PurchaseOrders_DocDate">
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_ArrivalDate">{{l("DeliveryDate")}}<span
+											class="require-field">*</span></label>
+									<input required class="form-control m-input  form-control-sm" type="text"
+										bsDatepicker [(ngModel)]="popoHeader.arrivalDate"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" id="PurchaseOrders_ArrivalDate"
+										name="ArrivalDate">
+								</div>
+								<div class="form-group col-md-3">
+									<label for="PurchaseOrders_LocID">{{l("Location")}}<span
+											class="require-field">*</span></label>
+									<select id="PurchaseOrders_LocID" class="form-control form-control-sm"
+										[(ngModel)]="popoHeader.locID" name="LocID" required [disabled]="LocCheckVal" >
+										<option value=0>Choose Location</option>
+										<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}
+										</option>
+									</select>
+								</div>
+
+								<div class="form-group m-form__group col-md-3">
+									<label for="PurchaseOrders_ACCode">{{l("AccountID")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_ACCode"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.accountID"
+											name="accountID" readonly required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectChartofACModal()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3">
+									<label for="ChartofAccDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="ChartofAccDesc"
+										name="ChartofAccDesc" [(ngModel)]="chartofAccDesc" type="text" readonly>
+								</div>
+
+								<div class="form-group m-form__group col-md-3">
+									<label for="PurchaseOrders_SubAccID">{{l("VenderID")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="number" id="PurchaseOrders_SubAccID"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.subAccID"
+											name="subAccID" required readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectSubAccModal()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setSubAccIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3">
+									<label for="SubAccDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="SubAccDesc" name="subAccDesc"
+										[(ngModel)]="subAccDesc" type="text" readonly>
+								</div>
+
+								<!-- <div class="form-group m-form__group col-md-3">
+									<label for="PurchaseOrders_WHTermID">{{l("WHTermID")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_WHTermID"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.whTermID"
+											name="whTermID" readonly required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectWHTermModal()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setWHTermIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="WHTermDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="WHTermDesc" name="whTermDesc"
+										[(ngModel)]="whTermDesc" type="text" readonly>
+								</div> -->
+								<div class="form-group col-md-3">
+									<label for="PurchaseOrders_OrdNo">{{l("OrdNo")}}</label>
+									<input type="text" id="PurchaseOrders_OrdNo" class="form-control form-control-sm"
+										[(ngModel)]="popoHeader.ordNo" name="OrdNo" />
+								</div>
+
+							<!-- --------Price List------- -->
+							<div class="form-group m-form__group col-md-3">
+								<label for="POEntry_ItemPrice">{{l("ItemPrice")}}</label>
+								<div class="input-group">
+									<input type="text" id="POEntry_ItemPrice" class="form-control form-control-sm"
+										[(ngModel)]="popoHeader.itemPrice" name="itemPrice" readonly />
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectPriceListModal()"
+											type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div>
+									<div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button"
+											(click)="setPriceListIDNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-md-3" hidden>
+								<label for="ItemPriceDesc">{{l("")}}&nbsp;</label>
+								<input class="form-control form-control-sm" id="ItemPriceDesc" name="ItemPriceDesc"
+									[(ngModel)]="ItemPriceDesc" type="text" readonly>
+							</div> 
+							<!-- ------------------------ -->
+								<div class="m-checkbox-list col-md-2" style="padding-top: 30px;">
+									<label for="PurchaseOrders_OnHold" class="kt-checkbox">
+										<input id="PurchaseOrders_OnHold" type="checkbox" name="OnHold"
+											[(ngModel)]="popoHeader.onHold">
+										{{l("OnHold")}}
+										<span></span>
+									</label>
+								</div>
+								<div class="m-checkbox-list col-md-2" style="padding-top: 30px;">
+									<label for="PurchaseOrders_Active" class="kt-checkbox">
+										<input id="PurchaseOrders_Active" type="checkbox" name="Active"
+											[(ngModel)]="popoHeader.active">
+										{{l("Active")}}
+										<span></span>
+									</label>
+								</div>
+<!-- 
+								style="background-color: black !important;color: white;text-align: center;font-weight: bold;"  -->
+								<div class="form-group col-md-2" *ngIf="popoHeader.id">
+									<label for="PurchaseOrders_Status">{{l("Status")}}</label>
+									<input type="text" id="PurchaseOrders_Status" class="form-control form-control-sm"
+										name="Staus" [(ngModel)]="status"
+										style="  font-weight: bold; background-color:#f4f4f4 !important; color: white; text-align: center; "
+										disabled />
+								</div>
+								<div class="form-group col-md-12">
+									<label for="PurchaseOrders_Narration">{{l("Narration")}}</label>
+									<!-- <input type="text" id="PurchaseOrders_Narration"
+										class="form-control form-control-sm" [(ngModel)]="popoHeader.narration"
+										name="Narration" maxlength=150 /> -->
+										<textarea  id="PurchaseOrders_Narration" style="min-height:100px;max-height: 500px;"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.narration"
+											name="narration" ></textarea>	
+								</div>
+							</div>
+						</tab>
+						<tab heading="{{'Tax' | localize}}">
+							<div class="row col-md-10">
+								<div class="form-group m-form__group col-md-4">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_TAXAUTH"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.taxAuth"
+											name="TAXAUTH" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxAuthorityModal()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="PurchaseOrders_TAXAUTHDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_TAXAUTHDesc"
+										name="taxAuthorityDesc" [(ngModel)]="taxAuthorityDesc" type="text" readonly>
+								</div>
+								<div class="form-group m-form__group col-md-4">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_taxClass"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.taxClass"
+											name="taxClass" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxClassModal()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxClassIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="PurchaseOrders_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_taxClassDesc"
+										name="taxClassDesc" [(ngModel)]="taxClassDesc" type="text" readonly>
+								</div>
+
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_taxRate">{{l("TaxRate")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_taxRate"
+										class="form-control form-control-sm" [(ngModel)]="popoHeader.taxRate"
+										name="taxRate" readonly />
+								</div>
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_VenderTax">{{l("VenderTax")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_VenderTax"
+										class="form-control form-control-sm" [(ngModel)]="venderTax" name="VenderTax"
+										readonly />
+								</div>
+							</div>
+						</tab>
+						<tab heading="{{l('TermsAndConditions')}}">
+							<div class="row col-md-12">
+									<div class="input-group">
+										<textarea  id="PurchaseOrders_TC" style="min-height:100px;max-height: 500px;"
+											class="form-control form-control-sm" [(ngModel)]="popoHeader.terms"
+											name="termsNCondition" ></textarea>	
+									</div>
+						
+								</div>
+						</tab>
+					</tabset>
+
+
+
+					<br>
+					<tabset>
+
+						<tab heading="Detail">
+							<div class="row col-md-12">
+								<br>
+								<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()">Add Row</button>
+								<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()">Remove Row</button>
+								<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+									[rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+									[suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+									[singleClickEdit]="true" (cellClicked)="cellClicked($event)"
+									(cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)">
+								</ag-grid-angular>
+							</div><br>
+
+							<div class="row col-md-12">
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_TotalItems">{{l("TotalItems")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_TotalItems"
+										class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="totalItems" name="TotalItems"
+										required readonly 
+										currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_TotalQty">{{l("TotalQty")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_TotalQty"
+										class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="popoHeader.totalQty"
+										name="TotalQty" required readonly 
+										currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_TotalAmt">{{l("TotalAmt")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_TotalAmt"
+										class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="popoHeader.totalAmt"
+										name="TotalAmt" required readonly 
+										currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_TotalTax">{{l("TotalTax")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_TotalTax"
+										class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="popoHeader.taxAmount"
+										name="TotalTax" required readonly 
+										currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_NetAmt">{{l("NetAmt")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_NetAmt" class="form-control form-control-sm inputFormBoldSize"
+										[(ngModel)]="netAmount" name="NetAmt" required readonly 
+										currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+								</div>
+							</div>
+
+						</tab>
+						<tab heading="Attachment">
+							<div class="form-group">
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="FileAttachment">File Attachment</label>
+										<p-fileUpload id="FileAttachment" name="FileAttachment[]" [url]="uploadUrl"
+											accept=".jpg,.jpeg" maxFileSize="1000000"
+											(onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onUpload($event)">
+
+											<ng-template pTemplate="content">
+												<ul *ngIf="uploadedFiles.length">
+													<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+														bytes</li>
+												</ul>
+											</ng-template>
+										</p-fileUpload>
+									</div>
+								</div>
+								<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached"
+									width="100" height="100" (click)="open()">
+
+							</div>
+						</tab>
+
+					</tabset>
+
+				</div>
+				<div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="popoHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-1" *ngIf="popoHeader.id" [disabled]="!adjustmentForm.form.valid" [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit"  *ngIf="!this.popoHeader.approved" class="btn btn-primary blue" [disabled]="!adjustmentForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+						<button type="button" class="btn btn-primary blue" *ngIf="this.popoHeader.id && !this.popoHeader.approved"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="approveDoc(this.popoHeader.docNo,'Approve',true)"  ><i class="fa fa-save"></i>
+						Approved</button>
+						<button type="button" class="btn btn-danger blue" *ngIf="this.popoHeader.id && this.popoHeader.approved && !this.isPoExist"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="approveDoc(this.popoHeader.docNo,'UnApproval',false)"  ><i class="fa fa-save"></i>
+						UnApproved</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>
+<app-log #LogTableModal></app-log>
+
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

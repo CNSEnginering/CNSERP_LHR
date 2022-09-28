@@ -1,0 +1,39 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span>{{l("Print Preview")}}</span>
+          </h4>
+          <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div *ngIf="active" class="modal-body">
+          <dx-report-viewer [reportUrl]="reportUrl" height="800px">
+            <dxrv-request-options [invokeAction]="invokeAction" [host]="hostUrl"></dxrv-request-options>
+            <dxrv-callbacks (BeforeRender)="defaultZoom($event)"
+            (PreviewClick)="onDemandReportPreview($event)">
+            </dxrv-callbacks>
+          </dx-report-viewer>
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

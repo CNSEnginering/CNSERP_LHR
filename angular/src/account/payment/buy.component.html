@@ -1,0 +1,62 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title mb-4">
+        <h3>
+            {{"PaymentInfo" | localize}}
+        </h3>
+    </div>
+
+    <form class="kt-form" method="post">
+
+        <h4 class="text-center mb-4">{{"Edition" | localize}}: {{edition.displayName}}</h4>
+
+        <div *ngIf="edition.monthlyPrice" class="form-group">
+            <label class="kt-radio">
+                <input class="form-control"
+                       type="radio"
+                       name="PaymentPeriodType"
+                       checked
+                       [value]="paymentPeriodType.Monthly"
+                       (change)="onPaymentPeriodChangeChange(paymentPeriodType.Monthly)" />
+                {{"MonthlyPrice" | localize}}: {{appSession.application.currencySign}}{{edition.monthlyPrice | number : '1.2-2'}}
+                <span></span>
+            </label>
+        </div>
+
+        <div *ngIf="edition.annualPrice" class="form-group">
+            <label class="kt-radio">
+                <input class="form-control"
+                       type="radio"
+                       name="PaymentPeriodType"
+                       [value]="paymentPeriodType.Annual"
+                       (change)="onPaymentPeriodChangeChange(paymentPeriodType.Annual)" />
+                {{"AnnualPrice" | localize}}: {{appSession.application.currencySign}}{{edition.annualPrice | number : '1.2-2'}}
+                <span></span>
+            </label>
+        </div>
+
+        <div class="kt-separator kt-separator--border-dashed"></div>
+
+        <div *ngIf="supportsRecurringPayments" class="form-group">
+            <label class="kt-checkbox mb-0">
+                <input class="form-control"
+                       type="checkbox"
+                       name="RecurringPaymentEnabled"
+                       [(ngModel)]="recurringPaymentEnabled" />
+                {{"AutomaticallyBillMyAccount" | localize}}
+                <span></span>
+            </label>
+        </div>
+
+        <div class="kt-form__actions mt-4">
+            <div *ngFor="let paymentGateway of paymentGateways" class="mb-2">
+                <button *ngIf="paymentGateway.supportsRecurringPayments || !recurringPaymentEnabled"
+                        (click)="checkout(paymentGateway.gatewayType)"
+                        class="btn btn-success btn-block">
+                    {{"CheckoutWith" + getPaymentGatewayType(paymentGateway.gatewayType) | localize}}
+                </button>
+            </div>
+        </div>
+
+
+    </form>
+</div>

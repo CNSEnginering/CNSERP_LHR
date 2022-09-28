@@ -1,0 +1,230 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Transfer")}}</span>
+            </h3>
+            <span class="kt-subheader__desc">
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Inventory.Transfers.Create')" (click)="createOrEdit()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewTransfer")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="MinDocNoFilter">{{l("MinMax")}} {{l("DocNo")}}</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="MinDocNoFilter"
+                                                [(ngModel)]="minDocNoFilter" placeholder="{{l('MinValue')}}"
+                                                name="minDocNoFilter" />
+                                            <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter"
+                                                placeholder="{{l('MaxValue')}}" name="maxDocNoFilter" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="ReceiptEntry_Users">{{l("Create By")}}</label>
+                                    <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                        [(ngModel)]="createdByFilter" name="createdByFilter">
+                                        <option value=''>Choose User</option>
+                                        <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="ReceiptEntry_Users">{{l("Approved By")}}</label>
+                                    <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                        [(ngModel)]="audtUserFilter" name="audtUserFilter">
+                                        <option value=''>Choose User</option>
+                                        <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="activeFilter">{{l("Voucher Status")}}</label>
+                                    <select class="form-control" name="activeFilter" id="activeFilter"
+                                        [(ngModel)]="activeFilter">
+                                        <option value="-1">{{l("All")}}</option>
+                                        <option value="1">{{l("Approved")}}</option>
+                                        <option value="0">{{l("UnApproved")}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="PostedFilterSelect">{{l("Posted")}}</label>
+                                    <select class="form-control" name="PostedFilter" id="PostedFilterSelect"
+                                        [(ngModel)]="postedFilter">
+                                        <option value="0">{{l("All")}}</option>
+                                        <option value="1">{{l("Posted")}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                            class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Inventory.Transfers.Edit', 'Inventory.Transfers.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="docNo">
+                                        {{l('DocNo')}}
+                                        <p-sortIcon field="docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('DocDate')}}
+                                        <p-sortIcon field="docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="fromLoc">
+                                        {{l('FromLoc')}}
+                                        <p-sortIcon field="fromLoc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="toLoc">
+                                        {{l('ToLoc')}}
+                                        <p-sortIcon field="toLoc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="posted">
+                                        {{l('PostedTransfer')}}
+                                        <p-sortIcon field="posted"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="approved">
+                                        {{l('ApprovedTransfer')}}
+                                        <p-sortIcon field="approved"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Inventory.Transfers.Edit', 'Inventory.Transfers.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;" (click)="view(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Inventory.Transfers.Edit')"
+                                                        (click)="createOrEdit(record.transfer.docNo)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Inventory.Transfers.Print')"
+                                                        (click)="getReport(record.transfer.docNo)">{{l('Print')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" *ngIf="!record.transfer.approved && !record.transfer.posted && 
+														permission.isGranted('Inventory.Transfers.Delete')"
+                                                        (click)="delete(record.transfer.docNo)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                        {{record.transfer.docNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocDate')}}</span>
+                                        {{record.transfer.docDate | momentFormat:'L' | date: 'dd/MM/yyyy' }}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('FromLoc')}}</span>
+                                        {{record.transfer.fromLocName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ToLoc')}}</span>
+                                        {{record.transfer.toLocName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('PostedTransfer')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.transfer.posted">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.transfer.posted">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ApprovedTransfer')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.transfer.approved">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.transfer.approved">{{'No' | localize}}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAll($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<TransfersModal #TransfersModal (modalSave)="getAll()"></TransfersModal>
+<viewTransfersModal #viewTransfersModal></viewTransfersModal>
+<app-reportviewr-modal #reportviewrModalComponent></app-reportviewr-modal>

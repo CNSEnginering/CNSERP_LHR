@@ -1,0 +1,53 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #earningTypesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="earningTypes.id">{{l("EditEarningTypes")}}</span>
+                        <span *ngIf="!earningTypes.id">{{l("CreateNewEarningTypes")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="EarningTypes_TypeID">{{l("EarningTypeID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="EarningTypes_TypeID" class="form-control form-control-sm"
+                                [(ngModel)]="earningTypes.typeID" name="TypeID" required disabled />
+                        </div>
+                        <div class="form-group col-md-9">
+                            <label for="EarningTypes_TypeDesc">{{l("EarningTypeDesc")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="text" id="EarningTypes_TypeDesc" class="form-control form-control-sm"
+                                [(ngModel)]="earningTypes.typeDesc" name="TypeDesc" minlength="0" maxlength="50"
+                                required />
+                        </div>
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label for="EarningTypes_Active" class="kt-checkbox">
+                            <input id="EarningTypes_Active" type="checkbox" name="Active"
+                                [(ngModel)]="earningTypes.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!earningTypesForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

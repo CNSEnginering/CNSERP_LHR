@@ -1,0 +1,99 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #employeeArrearsForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="employeeArrears.id">{{l("EditEmployeeArrears")}}</span>
+                        <span *ngIf="!employeeArrears.id">{{l("CreateNewEmployeeArrears")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="EmployeeArrears_ArrearID">{{l("ArrearID")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="EmployeeArrears_ArrearID" class="form-control form-control-sm"
+                                [(ngModel)]="employeeArrears.arrearID" name="ArrearID" disabled required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeArrears_ArrearDate">{{l("ArrearDate")}}</label>
+                            <input type="text" id="EmployeeArrears_ArrearDate" class="form-control form-control-sm"
+                                bsDatepicker [(ngModel)]="arrearDate" name="ArrearDate"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (ngModelChange)="onChange($event)" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeArrears_SalaryYear">{{l("SalaryYear")}}</label>
+                            <input type="text" style="background-color:#F4F4F4;" id="EmployeeArrears_SalaryYear"
+                                class="form-control form-control-sm" name="SalaryYear" [(ngModel)]="salaryYear"
+                                readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeArrears_SalaryMonth">{{l("SalaryMonth")}}</label>
+                            <input type="text" style="background-color:#F4F4F4;" id="EmployeeArrears_SalaryMonth"
+                                class="form-control form-control-sm" name="SalaryMonth" [(ngModel)]="salaryMonth"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <label for="EmployeeArrears_EmployeeID">{{l("EmployeeID")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" style="background-color:#F4F4F4;" id="EmployeeArrears_EmployeeID"
+                                    class="form-control form-control-sm" [(ngModel)]="employeeArrears.employeeID"
+                                    name="EmployeeID" readonly required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openEmployeeModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setEmployeeNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="EmployeeArrears_EmployeeName">{{l("EmployeeName")}}</label>
+                            <input class="form-control form-control-sm" id="EmployeeArrears_EmployeeName"
+                                name="employeeName" [(ngModel)]="employeeArrears.employeeName" type="text" disabled />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="EmployeeArrears_Amount">{{l("Amount")}}</label>
+                            <input id="EmployeeArrears_Amount" class="form-control form-control-sm"
+                                [(ngModel)]="employeeArrears.amount" name="Amount" currencyMask
+                                [options]="{ prefix: '', thousands: ',', decimal: '.' }" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="EmployeeArrears_Active" class="kt-checkbox">
+                            <input id="EmployeeArrears_Active" type="checkbox" name="Active"
+                                [(ngModel)]="employeeArrears.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <br />
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!employeeArrearsForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

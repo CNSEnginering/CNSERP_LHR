@@ -1,0 +1,243 @@
+<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Receipt Invoices")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("Receipt Invoices Info")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button> -->
+                <button *ngIf="isGranted('Purchase.APINVH.Create')" (click)="createApinvH()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("Create Receipt Invoices")}}
+        </button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getApinvH()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinDocNoFilter">{{l("DocNo")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinDocNoFilter" [(ngModel)]="minDocNoFilter" placeholder="{{l('From')}}" name="minDocNoFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter" placeholder="{{l('To')}}" name="maxDocNoFilter" />
+									</div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinDocDateFilter">{{l("DocDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minDocDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxDocDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinDocDateFilter">{{l("Account No")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minDocDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxDocDateFilter">
+									</div>
+                                </div>
+                            </div> -->
+							
+
+                        </div>
+                        <!-- <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div> -->
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getApinvH($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Purchase.APINVH.Edit', 'Purchase.APINVH.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="docNo">
+                                        {{l('DocNo')}}
+                                        <p-sortIcon field="apinvh.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('Date')}}
+                                        <p-sortIcon field="apinvh.docDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="partyInvNo">
+                                        {{l('InvoiceNo')}}
+                                        <p-sortIcon field="apinvh.partyInvNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="vAccountID">
+                                        {{l('Account No')}}
+                                        <p-sortIcon field="apinvh.vAccountID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="amount">
+                                        {{l('Amount')}}
+                                        <p-sortIcon field="apinvh.amount"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="apinvh.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="opening.createDate"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="opening.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="opening.audtDate"></p-sortIcon>
+                                    </th> -->
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Purchase.APINVH.Edit', 'Purchase.APINVH.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<!-- <li hidden>
+													<a href="javascript:;"
+														(click)="createOrEditINVHModal.show(record)">{{l('View')}}</a>
+												</li> -->
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Purchase.APINVH.Edit')"
+														(click)="createOrEditINVHModal.show(null,record)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Purchase.APINVH.Delete') && !record.apinvh.posted"
+														(click)="deletePurchaseOrder(record)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('DOCNO')}}</span>
+											{{record.apinvh.docNo}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('DOCDATE')}}</span>
+                                        <span *ngIf="record.apinvh.docDate">
+											{{record.apinvh.docDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.apinvh.docDate">-</span>
+                                    </td>
+                                    <td style="width:200px">
+                                        <span class="ui-column-title"> {{l('partyInvNo')}}</span>
+                                        {{record.apinvh.partyInvNo}}
+                                    </td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('AccountNo')}}</span>
+											{{record.apinvh.vAccountID}}
+										</td>
+                                  
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('Amount')}}</span>
+											{{record.apinvh.amount}}
+                                        </td>
+                                   
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('CreatedBy')}}</span>
+											{{record.apinvh.createdBy}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.apinvh.createDate">
+											{{record.apinvh.createDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.apinvh.createDate">-</span>
+                                    </td>
+                                    <!-- <td style="width:150px">
+											<span class="ui-column-title"> {{l('AudtUser')}}</span>
+											{{record.audtUser}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.audtDate">
+											{{record.audtDate | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.audtDate">-</span>
+                                    </td> -->
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getApinvH($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-create-or-edit-apinvh #createOrEditINVHModal (modalSave)="getApinvH()"></app-create-or-edit-apinvh>
+    <!-- <app-view-apinvh #viewINVHModal></app-view-apinvh> -->
+    
+  
+</div>

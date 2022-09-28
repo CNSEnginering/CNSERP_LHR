@@ -1,0 +1,207 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #crdrNoteForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="crdrNote.id">{{headerName}}</span>
+                        <span *ngIf="!crdrNote.id">{{headerName}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="CRDRNote_LocID">{{l("LocID")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="CRDRNote_LocID" class="form-control form-control-sm"
+                                    [(ngModel)]="crdrNote.locID" name="LocID" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openLocationModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setLocationNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="CRDRNote_LocDesc">{{l("LocationDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_LocDesc"
+                                name="CRDRNote_LocDesccription" [(ngModel)]="locDesc" type="text" disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="CRDRNote_DocNo">{{l("DocNo")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_DocNo" name="CRDRNote_DocNo"
+                                [(ngModel)]="crdrNote.docNo" type="text" disabled required />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="CRDRNote_DocDate">{{l("DocDate")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_DocDate" name="CRDRNote_DocDate"
+                                [(ngModel)]="docDate" type="text"
+                                (ngModelChange) = "getDateParams()"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <label for="CRDRNote_AccountID">{{l("PartyAccountID")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CRDRNote_AccountID" class="form-control form-control-sm" required
+                                    [(ngModel)]="crdrNote.accountID" name="AccountID" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openAccountIDModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="CRDRNote_AccDesc">{{l("PartyAccDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_AccDesc"
+                                name="CRDRNote_AccDescription" [(ngModel)]="accDesc" type="text" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <label for="CRDRNote_SubAccID">{{l("PartyID")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CRDRNote_SubAccID" class="form-control form-control-sm"
+                                    [(ngModel)]="crdrNote.subAccID" name="SubAccID" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openSubAccIDModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setSubAccIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="CRDRNote_PartyDesc">{{l("PartyDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_PartyDesc"
+                                name="CRDRNote_PartyDescription" [(ngModel)]="partyDesc" type="text" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="CRDRNote_TransType">{{l("Type")}}</label>
+                            <select [(ngModel)]="crdrNote.transType" class="form-control" name="CRDNOTE_TransType"id="TransType">
+                                <option value="-1" disabled selected>Select Type</option>
+                                <option value="DR">DR Note</option>
+                                <option value="CR">CR Note</option>
+                            </select>
+                        </div>
+						<div class="col-md-4">
+							<label for="CRDRNote_InvoiceNo">{{l("InvoiceNo")}}</label>
+							<div class="input-group">
+                                <input type="text" id="CRDRNote_InvoiceNo" class="form-control form-control-sm"
+                                    [(ngModel)]="crdrNote.invoiceNo" name="InvoiceNo" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openInvoiceNoModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setInvoiceNoNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+						</div>
+                        <div class="col-md-2">
+							<label for="CRDRNote_InvAmount">{{l("InvAmount")}}</label>
+							<input style="font-size: 15px;" class="form-control form-control-sm" id="CRDRNote_InvAmount" name="CRDRNote_InvAmount"
+								[(ngModel)]="crdrNote.partyInvAmount" type="text" 
+                                currencyMask [options]="{ prefix: ' ', thousands: ',' }"  disabled/>
+						</div>
+						<div class="col-md-2">
+							<label for="CRDRNote_DrNoteAmount">{{l("Amount")}}</label>
+							<input  style="font-size: 15px;" class="form-control form-control-sm" id="CRDRNote_DrNoteAmount" name="CRDRNote_DrNoteAmount"
+                                [(ngModel)]="crdrNote.amount" type="text" required
+                                currencyMask [options]="{ prefix: ' ', thousands: ',' }"  />
+						</div>
+                      
+					</div>
+					<div class="row mt-2">
+                        <div class="col-md-2">
+							<label for="CRDRNote_InvoiceDate">{{l("InvoiceDate")}}</label>
+							<input class="form-control form-control-sm" id="CRDRNote_InvoiceDate"
+								name="CRDRNote_InvoiceDate" [(ngModel)]="partyInvDate" type="text"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker  disabled />
+						</div>
+						<div class="col-md-2">
+							<label for="CRDRNote_SupInvNo">{{l("SupInvNo")}}</label>
+							<input class="form-control form-control-sm" id="CRDRNote_SupInvNo" name="CRDRNote_SupInvNo"
+								[(ngModel)]="crdrNote.partyInvNo" type="text" disabled/>
+						</div>
+                        <div class="col-md-4">
+                            <label for="CRDRNote_StockAcc">{{l("AccountID")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CRDRNote_StockAcc" class="form-control form-control-sm"
+                                    [(ngModel)]="crdrNote.stkAccID" name="StkAccID" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openStkAccIDModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setStkAccIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="CRDRNote_StkDesc">{{l("AccDesc")}}</label>
+                            <input class="form-control form-control-sm" id="CRDRNote_StkDesc"
+                                name="CRDRNote_StkDescription" [(ngModel)]="stkDesc" type="text" disabled />
+                        </div>
+					</div>
+                    <br />
+                    <!-- <div class="m-checkbox-list">
+                        <label for="CRDRNote_Active" class="kt-checkbox">
+                            <input id="CRDRNote_Active" type="checkbox" name="Active" [(ngModel)]="crdrNote.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div> -->
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="button"
+						*ngIf="crdrNote.id && !crdrNote.linkDetID"
+                        (click) = "approve()"
+                        class="btn btn-success green" 
+                        [buttonBusy]="processing"         
+                        [disabled]="!validDate"
+                        [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i> <span>{{l("Process")}}</span>
+                    </button>
+					<button type="submit" 
+					*ngIf="!crdrNote.linkDetID"
+					class="btn btn-primary blue" [disabled]="!crdrNoteForm.form.valid || !validDate"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>

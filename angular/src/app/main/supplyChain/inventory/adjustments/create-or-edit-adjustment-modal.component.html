@@ -1,0 +1,206 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #adjustmentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="icadjHeader.id">{{l("EditAdjustment")}}</span>
+                        <span *ngIf="!icadjHeader.id">{{l("CreateNewAdjustment")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+						<div class="row col-md-12">
+
+							<div class="form-group col-md-2">
+								<label for="Adjustment_DocNo">{{l("DOCNO")}}<span class="require-field">*</span></label>
+								<input type="number" id="Adjustment_DocNo" class="form-control form-control-sm" [(ngModel)]="icadjHeader.docNo" name="DocNo" readonly  required/>
+							</div>
+							<div class="form-group col-md-2">
+								<label for="GLTRHeader_DocDate">{{l("DOCDATE")}}<span class="require-field">*</span></label>
+								<input required class="form-control m-input  form-control-sm" type="text" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker [(ngModel)]="icadjHeader.docDate._d" [disabled]="checkedval" id="GLTRHeader_DocDate" name="GLTRHeader_DocDate">
+							</div> 
+							<div class="form-group col-md-3">
+								<label for="Adjustment_LocID">{{l("Location")}}<span class="require-field">*</span></label>
+								<select id="Adjustment_LocID" class="form-control form-control-sm" [disabled]="LocCheckVal" [(ngModel)]="icadjHeader.locID" name="LocID"   required>
+									<option value=0>Choose Location</option>
+									<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+								</select>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="Adjustment_type">{{l("Type")}}<span class="require-field">*</span></label>
+								<select 
+								[disabled] = "editMode"
+								id="Adjustment_type" class="form-control form-control-sm" 
+								(change)="typeChange()"
+								[(ngModel)]="icadjHeader.type" name="type"   required>
+									<option value=1>Adjustment</option>
+									<option value=2>Store Return</option>
+								</select>
+							</div>
+							<div class="form-group col-md-2">
+								<label for="Adjustment_OrdNo">{{l("OrdNo")}}</label>
+								<input type="text" id="Adjustment_OrdNo" class="form-control form-control-sm" [(ngModel)]="icadjHeader.ordNo" name="OrdNo"  />
+							</div>
+							<div class="form-group m-form__group col-md-3">
+								<label for="Adjustment_conDocNo">{{l("Consumption Doc No")}}</label>
+								<div class="input-group">  
+									<input type="text" id="Adjustment_conDocNo" class="form-control form-control-sm" [(ngModel)]="icadjHeader.conDocNo" name="Adjustment_conDocNo" readonly/>
+									<div class="input-group-append">
+										<button
+										[disabled] = "!consumptionMode || editMode"
+										class="btn btn-primary blue btn-sm" (click)="openSelectConDocNoModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div> <div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setReferenceIDNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-md-9">
+								<label for="Adjustment_Narration">{{l("Narration")}}</label>
+								<input type="text" id="Adjustment_Narration" class="form-control form-control-sm" [(ngModel)]="icadjHeader.narration" name="Narration"    />
+							</div>
+							
+							
+
+						</div>
+
+						<tabset>
+							<tab heading="Accounts Detail">
+
+						<div class="row col-md-12">
+							<br>
+							<button type="button" [disabled] = "consumptionMode" class="btn btn-primary blue btn-sm" (click)="onAddRow()">Add Row</button>
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()">Remove Row</button>
+							<ag-grid-angular
+								style="width: 100%; height: 200px;" 
+								class="ag-theme-balham" 
+								[rowData]="rowData" 
+								[columnDefs]="columnDefs" 
+								[animateRows]="true"
+								[suppressDragLeaveHidesColumns]="true"
+								[rowSelection]="rowSelection"
+								[singleClickEdit]="true"
+								(cellClicked)="cellClicked($event)"
+								(cellValueChanged)="onCellValueChanged($event)"
+								(gridReady)="onGridReady($event)">
+							</ag-grid-angular>
+						</div><br>
+
+						<div class="row col-md-12">
+							<div class="form-group col-md-2">
+								<label for="Adjustment_TotalQty">{{l("TotalQty")}}<span class="require-field">*</span></label>
+								<input type="text" id="Adjustment_TotalQty" currencyMask
+								[options]="{ prefix: ' ', thousands: ',', decimal: '.' }" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="icadjHeader.totalQty" name="TotalQty"  required readonly/>
+							</div>
+							<!-- <div class="form-group col-md-2">
+								<label for="Adjustment_TotalAmt">{{l("TotalAmt")}}<span class="require-field">*</span></label>
+								<input type="number" id="Adjustment_TotalAmt" class="form-control form-control-sm" [(ngModel)]="icadjHeader.totalAmt" name="TotalAmt"  required readonly/>
+							</div> -->
+						</div>
+					</tab>
+					<tab heading="Attachment">
+						<div class="form-group">
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="FileAttachment">File Attachment</label>
+									<p-fileUpload
+												  id="FileAttachment"
+												  name="FileAttachment[]"
+												  [url]="uploadUrl"
+												  accept=".jpg,.jpeg"
+												  maxFileSize="1000000"
+												  (onBeforeUpload)="onBeforeUpload($event)"
+												  (onUpload)="onUpload($event)">
+	
+										<ng-template pTemplate="content">
+											<ul *ngIf="uploadedFiles.length">
+												<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+											</ul>
+										</ng-template>
+									</p-fileUpload>
+								</div>
+							</div>
+							<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached" width="100" height="100" (click)="open()">
+	
+						</div>
+	
+					</tab>
+					</tabset>
+
+
+								<!-- 
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Adjustment_Posted" class="kt-checkbox">
+										<input id="Adjustment_Posted" type="checkbox" name="Posted" [(ngModel)]="adjustment.posted"> 
+										{{l("Posted")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="Adjustment_LinkDetID">{{l("LinkDetID")}}</label>
+									<input type="number" id="Adjustment_LinkDetID" class="form-control" [(ngModel)]="adjustment.linkDetID" name="LinkDetID"  />
+								</div>
+					
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Adjustment_Active" class="kt-checkbox">
+										<input id="Adjustment_Active" type="checkbox" name="Active" [(ngModel)]="adjustment.active"> 
+										{{l("Active")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="Adjustment_CreatedBy">{{l("CreatedBy")}}</label>
+									<input type="text" id="Adjustment_CreatedBy" class="form-control" [(ngModel)]="adjustment.createdBy" name="CreatedBy"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Adjustment_CreateDate">{{l("CreateDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="createDate" id="Adjustment_CreateDate" name="Adjustment_CreateDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="Adjustment_AudtUser">{{l("AudtUser")}}</label>
+									<input type="text" id="Adjustment_AudtUser" class="form-control" [(ngModel)]="adjustment.audtUser" name="AudtUser"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Adjustment_AudtDate">{{l("AudtDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="audtDate" id="Adjustment_AudtDate" name="Adjustment_AudtDate">
+								</div> -->
+					
+
+                </div>
+                <div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="icadjHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-1" *ngIf="icadjHeader.id" [disabled]="!adjustmentForm.form.valid" [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button> 
+					<button type="button" *ngIf="icadjHeader.id && !icadjHeader.approved && !icadjHeader.posted && isGranted('Inventory.Adjustments.Approve')" class="btn btn-success green" [disabled]="!adjustmentForm.form.valid" [buttonBusy]="processing" (click)="approveDoc(icadjHeader.docNo,'Approval',true)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-check"></i> <span>{{l("Approve")}}</span></button>
+					<button type="button" *ngIf="icadjHeader.id && icadjHeader.approved && !icadjHeader.posted && isGranted('Inventory.Adjustments.UnApprove')" class="btn btn-danger" [disabled]="!adjustmentForm.form.valid" [buttonBusy]="processing" (click)="approveDoc(icadjHeader.docNo,'UnApproval',false)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-times"></i> <span>{{l("Unapprove")}}</span></button>
+                    <button type="submit" *ngIf="!icadjHeader.approved && !icadjHeader.posted" class="btn btn-primary blue" [disabled]="!adjustmentForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+
+<app-log #LogTableModal ></app-log>
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

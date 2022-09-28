@@ -1,0 +1,744 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<form *ngIf="active" #saleEntryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="oesaleHeader.id">{{l("Edit Sale Invoice")}}</span>
+						<span *ngIf="!oesaleHeader.id">{{l("Create Sale Invoice")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+		<tabset class="tab-container tabbable-line">
+			<tab heading="{{'Document' | localize}}">
+					<div class="row col-md-12">
+						<!-- <div class="form-group m-form__group col-md-3 col-xl-12 ">
+							<label for="SaleEntry_Location">{{l("Location")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="number" min="1" id="SaleEntry_Location"
+									class="form-control form-control-sm" [(ngModel)]="oesaleHeader.locID" name="LocID"
+									required readonly />
+								<span *ngIf="allcheckLoc">
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectLocationModal()"
+											type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div>
+									<div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button"
+											(click)="setLocationIDNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</span>
+							</div>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<label for="SaleEntry_Location" class="col-form-label-sm col-md-4">{{l("Location")}}<span
+									class="require-field">*</span></label>
+								
+								<div class="col-md-8">
+									<div class="input-group">
+										<input type="number" min="1" id="SaleEntry_Location"
+										class="form-control form-control-sm" [(ngModel)]="oesaleHeader.locID" name="LocID"
+										required readonly />
+										<div class="input-group-append" *ngIf="allcheckLoc">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectLocationModal()"
+													type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend" *ngIf="!oesaleHeader.locID">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+													(click)="setLocationIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group m-form__group col-md-3">
+							<label for="SaleEntry_Location">{{l("Location")}}<span
+								class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="number" min="1" id="SaleEntry_Location"
+								class="form-control form-control-sm" [(ngModel)]="oesaleHeader.locID" name="LocID"
+								required readonly />
+								<div class="input-group-append" *ngIf="allcheckLoc">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectLocationModal()"
+											type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!oesaleHeader.locID">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+											(click)="setLocationIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<!-- <label for="SaleEntry_Location" class="col-form-label-sm col-md-4">{{l("Location")}}<span
+									class="require-field">*</span></label>								 -->
+								<div class="col-md-12">
+									<input class="form-control form-control-sm" id="LocationDesc" name="LocDesc"
+								[(ngModel)]="locDesc" type="text" readonly>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-3">
+							<label for="LocationDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="LocationDesc" name="LocDesc"
+								[(ngModel)]="locDesc" type="text" readonly>
+						</div> -->
+						<div class="col-md-2">
+							<div class="row">
+								<label for="SaleEntry_DocNo" class="col-form-label-sm col-md-5">{{l("Sale#")}}<span class="require-field">*</span></label>
+								<div class="col-md-7">
+								<input type="number" id="SaleEntry_DocNo" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.docNo" name="DocNo" readonly required />
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-1">
+							<label for="SaleEntry_DocNo">{{l("Sale#")}}<span class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_DocNo" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.docNo" name="DocNo" readonly required />
+						</div> -->
+						<div class="col-md-2">
+							<div class="row">
+								<label for="SaleEntry_DocDate"  class="col-form-label-sm col-md-4">{{l("Date")}}<span class="require-field">*</span></label>
+								<div class="col-md-8">
+								<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+								class="form-control m-input  form-control-sm" type="text" bsDatepicker
+								[(ngModel)]="oesaleHeader.docDate._d" id="SaleEntry_DocDate" name="SaleEntry_DocDate"
+								(ngModelChange)="getDateParams($event)">
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-2">
+							<label for="SaleEntry_DocDate">{{l("Date")}}<span class="require-field">*</span></label>
+							<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+								class="form-control m-input  form-control-sm" type="text" bsDatepicker
+								[(ngModel)]="oesaleHeader.docDate._d" id="SaleEntry_DocDate" name="SaleEntry_DocDate"
+								(ngModelChange)="getDateParams($event)">
+						</div> -->
+						<div class="col-md-2">
+							<div class="row">
+								<label for="SaleEntry_PaymentDate" class="col-form-label-sm col-md-5">{{l("Payment Due Date")}}<span
+								class="require-field">*</span></label>
+								<div class="col-md-7">
+								<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+								class="form-control m-input  form-control-sm" type="text" bsDatepicker
+								[(ngModel)]="oesaleHeader.paymentDate._d" id="SaleEntry_PaymentDate"
+								name="SaleEntry_PaymentDate">
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-2">
+							<label for="SaleEntry_PaymentDate">{{l("Payment Due Date")}}<span
+									class="require-field">*</span></label>
+							<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+								class="form-control m-input  form-control-sm" type="text" bsDatepicker
+								[(ngModel)]="oesaleHeader.paymentDate._d" id="SaleEntry_PaymentDate"
+								name="SaleEntry_PaymentDate">
+						</div> -->
+                     </div>
+					
+                     <div class="row col-md-12"> 
+						<div class="col-md-3">
+							<div class="row">
+								<label for="SaleEntry_typeID" class="col-form-label-sm col-md-4">{{l("TransactionTypes")}}<span
+									class="require-field">*</span></label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<input type="text" id="SaleEntry_typeID" class="form-control form-control-sm"
+											[(ngModel)]="oesaleHeader.typeID" name="typeID" required readonly />
+										<div class="input-group-append" *ngIf="!oesaleHeader.poDocNo">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectTransactionModal()"
+												type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend" *ngIf="!oesaleHeader.poDocNo">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTransactionIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group m-form__group col-md-3">
+							<label for="SaleEntry_typeID">{{l("TransactionTypes")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="SaleEntry_typeID" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.typeID" name="typeID" required readonly />
+								<div class="input-group-append" *ngIf="!oesaleHeader.poDocNo">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectTransactionModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!oesaleHeader.poDocNo">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setTransactionIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<div class="col-md-12">
+									<input class="form-control form-control-sm" id="TypeDesc" name="TypeDesc"
+								[(ngModel)]="typeDesc" type="text" readonly>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-3">
+							<label for="TypeDesc">{{l("")}}&nbsp;</label>
+							
+							<input class="form-control form-control-sm" id="TypeDesc" name="TypeDesc"
+								[(ngModel)]="typeDesc" type="text" readonly>
+						</div> -->
+
+						<div class="col-md-3">
+							<div class="row">
+								<label for="SaleEntry_ReferenceID"  class="col-form-label-sm col-md-4">{{l("Reference")}}</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<input type="text" id="SaleEntry_ReferenceID" class="form-control form-control-sm"
+											[(ngModel)]="oesaleHeader.refID" name="ReferenceID" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectReferenceModal()"
+												type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setReferenceIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group m-form__group col-md-3">
+							<label for="SaleEntry_ReferenceID">{{l("Reference")}}</label>
+							<div class="input-group">
+								<input type="text" id="SaleEntry_ReferenceID" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.refID" name="ReferenceID" readonly />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectReferenceModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setReferenceIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<div class="col-md-12">
+									<input class="form-control form-control-sm" id="refName" name="refName"
+								[(ngModel)]="refName" type="text" readonly>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-3">
+							<label for="refName">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="refName" name="refName"
+								[(ngModel)]="refName" type="text" readonly>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<label for="SaleEntry_CustomerID" class="col-form-label-sm col-md-4">{{l("CustomerID")}}<span
+									class="require-field">*</span></label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<input type="number" id="SaleEntry_CustomerID" class="form-control form-control-sm"
+											[(ngModel)]="oesaleHeader.custID" name="CustID" readonly required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectCustomerModal()"
+												type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setCustomerIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group m-form__group col-md-3">
+							<label for="SaleEntry_CustomerID">{{l("CustomerID")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="number" id="SaleEntry_CustomerID" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.custID" name="CustID" readonly required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectCustomerModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setCustomerIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<div class="col-md-12">
+									<input class="form-control form-control-sm" id="CustomerName" name="CustomerName"
+								[(ngModel)]="customerName" type="text" readonly>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-3">
+							<label for="CustomerName">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="CustomerName" name="CustomerName"
+								[(ngModel)]="customerName" type="text" readonly>
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<label for="SaleEntry_PriceList" class="col-form-label-sm col-md-4">{{l("PriceList")}}</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<input type="text" id="SaleEntry_PriceList" class="form-control form-control-sm"
+											[(ngModel)]="oesaleHeader.priceList" name="PriceList" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectPriceListModal()"
+												type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setPriceListIDNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						 <!-- <div class="form-group m-form__group col-md-3">
+							<label for="SaleEntry_PriceList">{{l("PriceList")}}</label>
+							<div class="input-group">
+								<input type="text" id="SaleEntry_PriceList" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.priceList" name="PriceList" readonly />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectPriceListModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setPriceListIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+						<div class="form-group col-md-3" hidden>
+							<label for="PriceListDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="PriceListDesc" name="PriceListDesc"
+								[(ngModel)]="priceListDesc" type="text" readonly>
+						</div>
+						<div class="col-md-3">
+							<div class="row">
+								<label for="SaleEntry_OGPNo" class="col-form-label-sm col-md-4">{{l("OGP / Order #")}}</label>								
+								<div class="col-md-8">
+									<input type="text" id="SaleEntry_OGPNo" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.ogp" name="OGP" />
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-3">
+							<label for="SaleEntry_OGPNo">{{l("OGP / Order #")}}</label>
+							<input type="text" id="SaleEntry_OGPNo" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.ogp" name="OGP" />
+						</div>  -->
+						<div class="col-md-9">
+							<div class="row">
+								<label for="SaleEntry_Narration" class="col-form-label-sm col-md-1">{{l("Narration")}}</label>
+								<div class="col-md-11">
+								<input type="text" id="SaleEntry_Narration" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.narration" name="Narration" maxlength="150" />
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-6">
+							<label for="SaleEntry_Narration">{{l("Narration")}}</label>
+							<input type="text" id="SaleEntry_Narration" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.narration" name="Narration" maxlength="150" />
+						</div> -->
+						<div class="col-md-3">
+							<div class="row">
+								<label for="WorkOrderqutationDoc" class="col-form-label-sm col-md-4">{{l("Sale Order #")}}</label>
+								<div class="col-md-8">
+									<div class="input-group">
+										<input type="text" id="WorkOrderqutationDoc" class="form-control form-control-sm" [(ngModel)]="oesaleHeader.qutationDoc" name="qutationDoc"   readonly/>
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectQutationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setQutationNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group m-form__group col-md-3" >
+							<label for="WorkOrderqutationDoc">{{l("Sale Order #")}}</label>
+							<div class="input-group">
+								<input type="text" id="WorkOrderqutationDoc" class="form-control form-control-sm" [(ngModel)]="oesaleHeader.qutationDoc" name="qutationDoc"   readonly/>
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectQutationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div> <div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setQutationNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+
+						
+						
+						
+						
+					</div>
+			   </tab>
+			   	<tab heading="{{l('Route Information')}}">
+				<div class="row col-md-12">
+					  <!-- ChangingFeilds for driver-->
+					  <!-- <div class="col-md-4">
+						<div class="row">
+							<label for="SaleEntry_License"  class="col-form-label-sm col-md-4">{{l("Driver")}}</label>
+							<div class="col-md-8">
+								<input type="text" id="DriverName" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.driverName" name="DriverName" />
+							</div>
+						</div>
+					</div> -->  
+					<!-- driver Picker -->
+					<div class="col-md-4">
+						<div class="row">
+							<label for="SaleEntry_CustomerID" class="col-form-label-sm col-md-4">{{l("Driver")}}<span
+								class="require-field">*</span></label>
+							<div class="col-md-8">
+								<div class="input-group">
+									<input type="number" id="DriverID" class="form-control form-control-sm"
+										[(ngModel)]="oesaleHeader.driverID" name="DriverID" readonly required />
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectDriverModal()"
+											type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div>
+									<div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button"
+											(click)="setDriverIDNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<label for="RouteDesc" class="col-form-label-sm col-md-4">{{l("Driver Name")}}&nbsp;</label>
+							<div class="col-md-8">
+								<input class="form-control form-control-sm" id="DriverName" name="DriverName"
+								[(ngModel)]="oesaleHeader.driverName" type="text" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<label for="RouteDesc" class="col-form-label-sm col-md-4">{{l("Driver Control Acc")}}&nbsp;</label>
+							<div class="col-md-8">
+								<input class="form-control form-control-sm" id="DriverAcc" name="DriverAcc"
+								[(ngModel)]="oesaleHeader.driverCtrlAcc" type="text" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<label for="RouteDesc" class="col-form-label-sm col-md-4">{{l("Sub Acc")}}&nbsp;</label>
+							<div class="col-md-8">
+								<input class="form-control form-control-sm" id="DriverSubAcc" name="DriverSubAcc"
+								[(ngModel)]="oesaleHeader.driverSubAccID" type="text" readonly>
+							</div>
+						</div>
+					</div>
+
+                             <!-- *************************** -->
+					  <!-- <div class="form-group col-md-2">
+						<label for="SaleEntry_License">{{l("Driver Name")}}</label>
+						<input type="text" id="DriverName" class="form-control form-control-sm"
+							[(ngModel)]="oesaleHeader.driverName" name="DriverName" />
+					</div>	 -->
+					<div class="col-md-4">
+						<div class="row">
+							<label for="SaleEntry_License" class="col-form-label-sm col-md-4">{{l("Vehicle Number")}}</label>
+							<div class="col-md-8">
+								<input type="text" id="vehicleNo" class="form-control form-control-sm"
+								[(ngModel)]="oesaleHeader.vehicleNo" name="vehicleNo" />
+							</div>
+						</div>
+					</div>
+
+					<!-- <div class="form-group col-md-2">
+						<label for="SaleEntry_License">{{l("Vehicle Number")}}</label>
+						<input type="text" id="vehicleNo" class="form-control form-control-sm"
+							[(ngModel)]="oesaleHeader.vehicleNo" name="vehicleNo" />
+					</div>	 -->
+					<div class="col-md-4">
+						<div class="row">
+							<label for="VechileType" class="col-form-label-sm col-md-4">{{("Vehicle Type")}} <span class="require-field">*</span> </label>
+							<div class="col-md-8">
+								<select id="vehicleType" class="form-control form-control-sm" [(ngModel)]="oesaleHeader.vehicleType" name="vehicleType" required>
+								<option value="-1">{{l("Choose Any")}}</option>
+								<option value="0">{{l("Own Car")}}</option>
+								<option value="1">{{l("Rented Car")}}</option>
+								</select> 
+							</div>
+						</div>
+					</div>
+					<!-- <div class="col-md-2 ">
+						<label for="VechileType">{{("Vehicle Type")}} <span class="require-field"></span> </label>
+						<select id="vehicleType" class="form-control form-control-sm" [(ngModel)]="oesaleHeader.vehicleType" name="vehicleType" required>
+						<option value="-1">{{l("Choose Any")}}</option>
+						<option value="0">{{l("Own Car")}}</option>
+						<option value="1">{{l("Rented Car")}}</option>
+						 
+						</select> 
+					  </div> -->
+							 <!-- for Picker RouteID -->
+							 <div class="col-md-4">
+								<div class="row">
+									<label for="SaleEntry_CustomerID" class="col-form-label-sm col-md-4">{{l("Route ID")}}<span
+										class="require-field">*</span></label>
+									<div class="col-md-8">
+										<div class="input-group">
+											<input type="number" id="RouteID" class="form-control form-control-sm"
+												[(ngModel)]="oesaleHeader.routID" name="RouteID" readonly required />
+											<div class="input-group-append">
+												<button class="btn btn-primary blue btn-sm" (click)="openSelectRouteModal()"
+													type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+											</div>
+											<div class="input-group-prepend">
+												<button class="btn btn-danger btn-icon btn-sm" type="button"
+													(click)="setRouteIDNull()"><i class="fa fa-times"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						<!-- <div class="form-group m-form__group col-md-3">
+							<label for="SaleEntry_CustomerID">{{l("Route ID")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="number" id="RouteID" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.routID" name="RouteID" readonly required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectRouteModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setRouteIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div> -->
+						<div class="col-md-4">
+							<div class="row">
+								<label for="RouteDesc" class="col-form-label-sm col-md-4">{{l("Route Description")}}&nbsp;</label>
+								<div class="col-md-8">
+									<input class="form-control form-control-sm" id="RouteDesc" name="RouteDesc"
+									[(ngModel)]="oesaleHeader.routDesc" type="text" readonly>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-3">
+							<label for="RouteDesc">{{l("Route Description")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="RouteDesc" name="RouteDesc"
+								[(ngModel)]="oesaleHeader.routDesc" type="text" readonly>
+						</div> -->
+                             <!-- --------------------------------------- -->
+							 <div class="col-md-4 n">
+								<div class="row">
+									<label  hidden for="SaleEntry_License" class="col-form-label-sm col-md-4">{{l("Total Expected Cost")}}</label>
+									<div class="col-md-8">
+										<input type="hidden" id="SaleEntry_License" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.license" name="SaleEntry_License" />
+									</div>
+								</div>
+							</div>
+							 <!-- <div class="form-group col-md-2">
+								<label for="SaleEntry_License">{{l("Total Expected Cost")}}</label>
+								<input type="text" id="SaleEntry_License" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.license" name="SaleEntry_License" />
+							</div> -->
+							<div class="col-md-4 ">
+								<div class="row">
+									<label hidden for="form_Id" class="col-form-label-sm col-md-4">{{("Delivery Term")}} <span class="require-field"></span> </label>								
+									<div class="col-md-8">
+									<select hidden id="form_Id" class="form-control form-control-sm" [(ngModel)]="oesaleHeader.delvTerms" name="formId" >
+									<option value=0>Choose From</option>
+										<option *ngFor="let name of allterm" [value]="name.id">{{name.displayName}}</option>
+									</select> 
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="col-md-2 ">
+								<label for="form_Id">{{("Delivery Term")}} <span class="require-field"></span> </label>
+								<select id="form_Id" class="form-control form-control-sm" [(ngModel)]="oesaleHeader.delvTerms" name="formId" required>
+								<option value=0>Choose Form</option>
+								  <option *ngFor="let name of allterm" [value]="name.id">{{name.displayName}}</option>
+								</select> 
+							  </div> -->
+							  <div class="col-md-4">
+								<div class="row">
+									<label hidden  for="SaleEntry_BasicStyle" class="col-form-label-sm col-md-4">{{l("LD Rate% / Cheque Number")}}</label>
+									
+									<div class="col-md-8">
+										<input type="hidden" id="SaleEntry_BasicStyle" class="form-control form-control-sm"
+										[(ngModel)]="oesaleHeader.basicStyle" name="SaleEntry_BasicStyle" />
+									</div>
+								</div>
+							</div>
+							  <!-- <div class="form-group col-md-2">
+								<label for="SaleEntry_BasicStyle">{{l("LD Rate%")}}</label>
+								<input type="text" id="SaleEntry_BasicStyle" class="form-control form-control-sm"
+									[(ngModel)]="oesaleHeader.basicStyle" name="SaleEntry_BasicStyle" />
+							</div> -->
+									  
+						</div>
+
+						</tab>
+
+
+			 </tabset>
+
+
+					<br>
+					<!-- <div class="row col-md-12">
+						<br>
+						<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()" *ngIf="!oesaleHeader.poDocNo">Add Row</button>
+						<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()" *ngIf="!oesaleHeader.poDocNo">Remove
+							Row</button>
+						<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [rowData]="rowData"
+							[columnDefs]="columnDefs" [animateRows]="true" [suppressDragLeaveHidesColumns]="true"
+							[rowSelection]="rowSelection" [singleClickEdit]="true" (cellClicked)="cellClicked($event)"
+							(cellValueChanged)="onCellValueChanged($event)"  (gridReady)="onGridReady($event)">
+						</ag-grid-angular>
+					</div> -->
+					<div class="row col-md-12">
+						<br>
+						<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()" *ngIf="!oesaleHeader.poDocNo">Add Row</button>
+						<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()" *ngIf="!oesaleHeader.poDocNo">Remove
+							Row</button>
+							<input type="text" class="form-control col-md-3 ml-2" name="ItemSearch" [(ngModel)]="this.ItemSearch" placeholder="Search Alternate Item or Bar Code"  (keydown)="SearchItem($event)" />
+						<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [rowData]="rowData"
+							[columnDefs]="columnDefs" [animateRows]="true" [suppressDragLeaveHidesColumns]="true"
+							[rowSelection]="rowSelection" [singleClickEdit]="true" (cellClicked)="cellClicked($event)"
+							(cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)">
+						</ag-grid-angular>
+					</div>
+					<br>
+
+					<div class="row col-md-12">
+						<!-- <div class="form-group col-md-2">
+							<label for="SaleEntry_TotalItems">{{l("TotalItems")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_TotalItems" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="totalItems" name="TotalItems" required readonly />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_TotalQty">{{l("TotalQty")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_TotalQty" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.totalQty" name="TotalQty" required readonly />
+						</div> -->
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_billAmt">{{l("TotalExclAmt")}}<span class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_billAmt" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.exlTaxAmount" name="billAmt" required readonly />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_TotalTax">{{l("SaleTax")}}<span class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_TotalTax" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.tax" name="TotalTax" required readonly />
+						</div>
+						<!-- <div class="form-group col-md-2">
+							<label for="SaleEntry_TotalDisc">{{l("TotalDisc")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_TotalDisc" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.disc" name="TotalDisc" required readonly />
+						</div> -->
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_AddTotalTax">{{l("AdvIncTax")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_AddTotalTax" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.addTax" name="AddTotalTax"  onwheel="return false;" onchange="calculatetotaladvInc()" 
+								required />
+						</div>
+						<!-- using for show Total Discount -->
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_TotalDisc">{{l("TradeDisc")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_TotalDisc" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.disc" name="TotalDisc" required readonly />
+						</div>
+						<!-- <div class="form-group col-md-2">
+							<label for="SaleEntry_TradeDisc">{{l("TradeDisc")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_TradeDisc" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.tradeDisc" name="TradeDisc" (keyup)="calculatetotal()" min="0"
+								required />
+						</div> -->
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_Freight">{{l("Freight")}}<span class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_Freight" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.freight" name="Freight" onchange="calculatetotal()" 
+								required readonly/>
+						</div>
+						<!-- <div class="form-group col-md-2">
+							<label for="SaleEntry_Margin">{{l("Total Cost")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_Margin" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.margin" name="Margin" (keyup)="calculatetotal()" min="0"
+								required />
+						</div> -->
+						<div class="form-group col-md-2">
+							<label for="SaleEntry_NetAmt">{{l("NetAmt")}}<span class="require-field">*</span></label>
+							<input type="number" id="SaleEntry_NetAmt" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="oesaleHeader.totAmt" name="NetAmt" required readonly />
+						</div>
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="oesaleHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-2"  *ngIf="oesaleHeader.id"  [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>	
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="button"
+						*ngIf="oesaleHeader.id && !oesaleHeader.posted && oesaleHeader.approved && isGranted('Sales.SaleEntry.Process')"
+						class="btn btn-success green" [buttonBusy]="processing" (click)="processSaleEntry()"
+						[busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i>
+						<span>{{l("Process")}}</span></button>
+						<button type="button" *ngIf="oesaleHeader.id && !oesaleHeader.approved && !oesaleHeader.posted && isGranted('Sales.SaleEntry.Approve')" class="btn btn-success green" [disabled]="!saleEntryForm.form.valid" [buttonBusy]="approving" (click)="approveDoc(oesaleHeader.docNo,'Approval',true)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-check"></i> <span>{{l("Approve")}}</span></button>
+						<button type="button" *ngIf="oesaleHeader.id && oesaleHeader.approved && !oesaleHeader.posted && isGranted('Sales.SaleEntry.UnApprove')" class="btn btn-danger" [disabled]="!saleEntryForm.form.valid" [buttonBusy]="approving" (click)="approveDoc(oesaleHeader.docNo,'UnApproval',false)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-times"></i> <span>{{l("Unapprove")}}</span></button>
+					<button type="submit" class="btn btn-primary blue" *ngIf="!oesaleHeader.posted"
+						[disabled]="!saleEntryForm.form.valid" [buttonBusy]="saving"
+						[busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>
+<salesLookupTableModal #SalesLookupTableModal (modalSave)="getNewSalesModal()"></salesLookupTableModal>
+<app-log #LogTableModal></app-log>
+
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

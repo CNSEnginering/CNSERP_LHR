@@ -1,0 +1,375 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("BatchListPreviews")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("BatchListPreviewsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <!-- <button *ngIf="isGranted('Pages.Administration.BatchListPreviews.Create')" (click)="createBatchListPreview()"
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewBatchListPreview")}}</button> -->
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getBatchListPreviews()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="LocationFilter">{{l("Location")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="LocationFilter"
+                                            name="LocationFilter" type="text"
+                                            [(ngModel)]="locationFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span style="padding: 0 15px 0 15px;"> </span>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="MinDocMonthFilter">{{l("From")}} {{l("Voucher No")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinVoucherNoFilter"
+                                            name="MinVoucherNoFilter" type="number" placeholder="{{l('MinValue')}}"
+                                            [(ngModel)]="minVoucherNo">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="MaxVoucherNoFilter">{{l("To")}} {{l("Voucher No")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MaxVoucherNoFilter"
+                                            name="MaxVoucherNoFilter" type="number" placeholder="{{l('MaxValue')}}"
+                                            [(ngModel)]="maxVoucherNo">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="MinDocDateFilter">{{l("Voucher Date")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter"
+                                            name="MinDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('From')}}" [(ngModel)]="minDocDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter"
+                                            name="MaxDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('To')}}" [(ngModel)]="maxDocDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="MinAmountFilter">{{l("From")}} {{l("Amount")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAmountFilter"
+                                            name="MinAmountFilter" type="number" placeholder="{{l('MinValue')}}"
+                                            [(ngModel)]="minAmountFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="MaxAmountFilter">{{l("To")}} {{l("Amount")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MaxAmountFilter"
+                                            name="MaxAmountFilter" type="number" placeholder="{{l('MaxValue')}}"
+                                            [(ngModel)]="maxAmountFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span style="padding: 0 15px 0 15px;"> </span>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="NarrationFilter">{{l("Particulars")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="NarrationFilter"
+                                            name="NarrationFilter" type="text"
+                                            [(ngModel)]="narrationFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span style="padding: 0 15px 0 15px;"> </span>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="ReferenceFilter">{{l("Payee")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="ReferenceFilter"
+                                            name="ReferenceFilter" type="text"
+                                            [(ngModel)]="referenceFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="statusFilter">{{l("Status")}}</label>
+                                <select id="statusFilter" class="form-control" name="Status"
+                                    [(ngModel)]="statusFilter" (change)="onStatusChange($event.target.value)">
+                                    <option value="All">All</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Unapproved">Unapproved</option>
+                                    <option value="Posted">Posted</option>
+                                </select>
+                            </div>
+
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="BookIDFilter">{{l("VoucherTypeID")}}</label>
+                                    <select class="form-control" id="BookIDFilter" name="bookIDFilter"
+                                        [(ngModel)]="bookIDFilter" (change)="onVoucherTypeChange($event.target.value)">
+                                        <option value="">Choose Voucher</option>
+                                        <option *ngFor="let book of booksList" [value]="book.bookID">{{book.bookName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> </span>
+
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="ClearFiltersButton">{{l(".")}}</label>
+                                    <div class="input-group">
+                                        <button class="btn btn-primary blue" id="ClearFiltersButton"
+                                            name="ClearFiltersButton"
+                                            (click)="clearFilters()"><span>{{l("Clear Filters")}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-md-3">
+                                <label for="ApprovedFilterSelect">{{l("Status")}}</label>
+                                <select class="form-control" name="ApprovedFilter" id="ApprovedFilterSelect"
+                                    [(ngModel)]="approvedFilter" (change)="onStatusChange($event.target.value)">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="1">{{l("Approved")}}</option>
+                                    <option value="0">{{l("Unapproved")}}</option>
+                                </select>
+                            </div> -->
+
+
+                            <!-- <div class="col-md-3">
+                                <label for="PostedFilter">{{l("Posted/Unposted")}}</label>
+                                <select class="form-control" name="PostedFilter" id="PostedFilter"
+                                    [(ngModel)]="postedFilter" (change)="onPostedChange($event.target.value)">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="1">{{l("Posted")}}</option>
+                                    <option value="0">{{l("Unposted")}}</option>
+                                </select>
+                            </div> -->
+
+                        </div>
+
+
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getBatchListPreviews($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 80px"
+                                        [hidden]="!isGrantedAny('Pages.BatchListPreviews.Edit', 'Pages.BatchListPreviews.Delete')">
+                                        {{l('Actions')}}</th>
+
+                                    <th style="width: 150px" pSortableColumn="locDesc">
+                                        {{l('Location')}}
+                                        <p-sortIcon field="batchListPreview.locDesc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bookname">
+                                        {{l('VoucherTypeName')}}
+                                        <p-sortIcon field="batchListPreview.bookDesc"></p-sortIcon>
+                                    </th>
+                                    <th class="text-right" style="width: 150px" pSortableColumn="docno">
+                                        {{l('VoucherNo')}}
+                                        <p-sortIcon field="batchListPreview.id"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('VoucherDate')}}
+                                        <p-sortIcon field="batchListPreview.docDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="narration">
+                                        {{l('Narration')}}
+                                        <p-sortIcon field="batchListPreview.description"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="reference">
+                                        {{l('Payee')}}
+                                        <p-sortIcon field="batchListPreview.reference"></p-sortIcon>
+                                    </th>
+                                    <th class="text-right" style="width: 150px">
+                                        {{l('Debit')}}
+                                        <!-- <p-sortIcon field="batchListPreview.debit"></p-sortIcon> -->
+                                    </th>
+                                    <th class="text-right" style="width: 150px">
+                                        {{l('Credit')}}
+                                        <!-- <p-sortIcon field="batchListPreview.credit"></p-sortIcon> -->
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="approved">
+                                        {{l('Status')}}
+                                        <p-sortIcon field="batchListPreview.approved"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 80px"
+                                        [hidden]="!isGrantedAny('Pages.BatchListPreviews.Edit', 'Pages.BatchListPreviews.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewBatchListPreviewModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <!-- <li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.BatchListPreviews.Edit')"
+														(click)="createOrEditBatchListPreviewModal.show(record.batchListPreview.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.BatchListPreviews.Delete')"
+														(click)="deleteBatchListPreview(record.batchListPreview)">{{l('Delete')}}</a>
+												</li> -->
+                                            </ul>
+                                        </div>
+                                    </td>
+
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Location')}}</span>
+                                        <span style="color:black">{{record.batchListPreview.locDesc}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('VoucherTypeName')}}</span>
+                                        <span style="color:black">{{record.batchListPreview.bookDesc}}</span>
+                                    </td>
+                                    <td class="text-right" style="width:150px">
+                                        <span class="ui-column-title"> {{l('VoucherNo')}}</span>
+                                        <span style="color:black">{{record.batchListPreview.id}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('VoucherDate')}}</span>
+                                        <span
+                                            style="color:black">{{record.batchListPreview.docDate.format('DD-MMM-YYYY')}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Description')}}</span>
+                                        <span style="color:black">{{record.batchListPreview.description}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Payee')}}</span>
+                                        <span style="color:black">{{record.batchListPreview.reference}}</span>
+                                    </td>
+                                    <td class="text-right" style="width:150px">
+                                        <span class="ui-column-title"> {{l('Debit')}}</span>
+                                        <span
+                                            style="color:black">{{record.batchListPreview.debit | number: '.2'}}</span>
+                                    </td>
+                                    <td class="text-right" style="width:150px">
+                                        <span class="ui-column-title"> {{l('Credit')}}</span>
+                                        <span
+                                            style="color:black">{{record.batchListPreview.credit | number: '.2'}}</span>
+                                    </td>
+                                    <td style="width:100px">
+                                        <span class="ui-column-title"> {{l('Status')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.batchListPreview.approved">{{'Approved' | localize}}</span>
+                                        <!-- <span class="kt-badge kt-badge--info kt-badge--inline" *ngIf="record.gltrHeader.approved && record.gltrHeader.posted">{{'Posted' | localize}}</span> -->
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.batchListPreview.approved">{{'Unapproved' | localize}}</span>
+                                    </td>
+
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getBatchListPreviews($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <createOrEditBatchListPreviewModal #createOrEditBatchListPreviewModal (modalSave)="getBatchListPreviews()"></createOrEditBatchListPreviewModal> -->
+    <viewBatchListPreviewModal #viewBatchListPreviewModal></viewBatchListPreviewModal>
+
+
+</div>

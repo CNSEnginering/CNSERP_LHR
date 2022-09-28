@@ -1,0 +1,212 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #consumptionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="icwoHeader.id">{{l("EditWorkOrder")}}</span>
+                        <span *ngIf="!icwoHeader.id">{{l("CreateNewWorkOrder")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+						<div class="row col-md-12">
+
+							<div class="form-group col-md-2">
+								<label for="WorkOrder_DocNo">{{l("OrdNo")}}<span class="require-field">*</span></label>
+								<input type="number" id="WorkOrder_DocNo" class="form-control form-control-sm" [(ngModel)]="icwoHeader.docNo" name="DocNo" readonly  required/>
+							</div>
+							<div class="form-group col-md-2">
+								<label for="GLTRHeader_DocDate">{{l("OrdDate")}}<span class="require-field">*</span></label>
+								<input 
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+								required 
+								class="form-control m-input
+								  form-control-sm" type="text" 
+								  bsDatepicker [(ngModel)]="icwoHeader.docDate._d" [disabled]="CheckDatVal" id="GLTRHeader_DocDate" name="GLTRHeader_DocDate">
+							</div> 
+
+							<div class="form-group col-md-3">
+								<label for="WorkOrder_LocID">{{l("Location")}}<span class="require-field">*</span></label>
+								<select id="WorkOrder_LocID" class="form-control form-control-sm" [disabled]="LocCheckVal" [(ngModel)]="icwoHeader.locID" name="LocID"   required>
+									<option value=0>Choose Location</option>
+									<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+								</select>
+							</div>
+
+							<div class="form-group col-md-1">
+								<div class="m-checkbox-list" style="margin-top: 2.3rem !important;">
+									<label for="WorkOrder_Active" class="kt-checkbox">
+										<input id="WorkOrder_Active" type="checkbox" name="Active" [(ngModel)]="icwoHeader.active"> 
+										{{l("Active")}}
+										<span></span>
+									</label>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="WorkOrder_RefNo">{{l("Refrence")}}</label>
+								<input type="text" id="WorkOrder_RefNo" class="form-control form-control-sm" [(ngModel)]="icwoHeader.refrence" name="Refrence"  />
+							</div>
+							<div class="form-group m-form__group col-md-3" >
+								<label for="WorkOrder_CostCenter">{{l("CostCenter")}}<span class="require-field">*</span></label>
+								<div class="input-group">
+									<input type="text" id="WorkOrder_CostCenter" class="form-control form-control-sm" [(ngModel)]="icwoHeader.ccid" name="CostCenter"  required readonly/>
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectCostCenterModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div> <div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCostCenterNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-md-4">
+								<label for="WorkOrder_CCDesc">{{l("")}}&nbsp;</label>
+								<input class="form-control form-control-sm" id="WorkOrder_CCDesc" name="ccDesc" [(ngModel)]="ccDesc" type="text" readonly>
+							</div>
+
+							<div class="form-group col-md-7">
+								<label for="WorkOrder_Narration">{{l("Narration")}}</label>
+								<input type="text" id="WorkOrder_Narration" class="form-control form-control-sm" [(ngModel)]="icwoHeader.narration" name="Narration"    />
+							</div>
+							
+							<!-- <div class="form-group m-form__group col-md-3" >
+								<label for="WorkOrderqutationDoc">{{l("Quotation Doc No#")}}</label>
+								<div class="input-group">
+									<input type="text" id="WorkOrderqutationDoc" class="form-control form-control-sm" [(ngModel)]="icwoHeader.qutationDoc" name="qutationDoc"   readonly/>
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectQutationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div> <div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setQutationNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div> -->
+						</div>
+
+						<div class="row col-md-12">
+							<br>
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()">Add Row</button>
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()">Remove Row</button>
+							<ag-grid-angular
+								style="width: 100%; height: 200px;" 
+								class="ag-theme-balham" 
+								[rowData]="rowData" 
+								[columnDefs]="columnDefs" 
+								[animateRows]="true"
+								[suppressDragLeaveHidesColumns]="true"
+								[rowSelection]="rowSelection"
+								[singleClickEdit]="true"
+								(cellClicked)="cellClicked($event)"
+								(cellValueChanged)="onCellValueChanged($event)"
+								(gridReady)="onGridReady($event)">
+							</ag-grid-angular>
+						</div><br>
+
+
+						<div class="row col-md-12">
+							<div class="form-group col-md-2">
+								<label for="WorkOrder_TotalItems">{{l("TotalItems")}}<span class="require-field">*</span></label>
+								<input type="number" id="WorkOrder_TotalItems" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="totalItems" name="TotalItems"  required readonly/>
+							</div>
+							<div class="form-group col-md-2">
+								<label for="WorkOrder_TotalQty">{{l("TotalQty")}}<span class="require-field">*</span></label>
+								<input type="number" id="WorkOrder_TotalQty" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="icwoHeader.totalQty" name="TotalQty"  required readonly/>
+							</div>
+							<div class="form-group col-md-2">
+								<label for="WorkOrder_TotalAmt">{{l("TotalAmt")}}<span class="require-field">*</span></label>
+								<input type="number" id="WorkOrder_TotalAmt" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="icwoHeader.totalAmt" name="TotalAmt"  required readonly/>
+							</div>
+						</div>
+
+
+								<!-- 
+					
+								<br/><div class="m-checkbox-list">
+									<label for="WorkOrder_Posted" class="kt-checkbox">
+										<input id="WorkOrder_Posted" type="checkbox" name="Posted" [(ngModel)]="adjustment.posted"> 
+										{{l("Posted")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="WorkOrder_LinkDetID">{{l("LinkDetID")}}</label>
+									<input type="number" id="WorkOrder_LinkDetID" class="form-control" [(ngModel)]="adjustment.linkDetID" name="LinkDetID"  />
+								</div>
+					
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="WorkOrder_Active" class="kt-checkbox">
+										<input id="WorkOrder_Active" type="checkbox" name="Active" [(ngModel)]="adjustment.active"> 
+										{{l("Active")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="WorkOrder_CreatedBy">{{l("CreatedBy")}}</label>
+									<input type="text" id="WorkOrder_CreatedBy" class="form-control" [(ngModel)]="adjustment.createdBy" name="CreatedBy"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="WorkOrder_CreateDate">{{l("CreateDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="createDate" id="WorkOrder_CreateDate" name="WorkOrder_CreateDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="WorkOrder_AudtUser">{{l("AudtUser")}}</label>
+									<input type="text" id="WorkOrder_AudtUser" class="form-control" [(ngModel)]="adjustment.audtUser" name="AudtUser"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="WorkOrder_AudtDate">{{l("AudtDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="audtDate" id="WorkOrder_AudtDate" name="WorkOrder_AudtDate">
+								</div> -->
+					
+
+                </div>
+				<div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="icwoHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-1"  *ngIf="icwoHeader.id" [disabled]="!consumptionForm.form.valid" [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+					
+					<button type="button" *ngIf="icwoHeader.id && icwoHeader.approved && !icwoHeader.posted "
+                        class="btn btn-success green" [disabled]="!consumptionForm.form.valid" [buttonBusy]="processing"
+                        (click)="postDoc(icwoHeader.docNo,'Posting',true)" [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i><span>{{l("Post")}}</span></button>
+
+					<button type="button"
+						*ngIf="icwoHeader.id && !icwoHeader.approved && !icwoHeader.posted && isGranted('Inventory.WorkOrder.Approve')"
+						class="btn btn-success green" [disabled]="!consumptionForm.form.valid" [buttonBusy]="approving"
+						(click)="approveDoc(icwoHeader.docNo,'Approval',true)" [busyText]="l('ApprovingWithThreeDot')"><i
+							class="fa fa-check"></i> <span>{{l("Approve")}}</span></button>
+					
+							<button type="button"
+						*ngIf="icwoHeader.id && icwoHeader.approved && !icwoHeader.posted && isGranted('Inventory.WorkOrder.UnApprove')"
+						class="btn btn-danger" [disabled]="!consumptionForm.form.valid" [buttonBusy]="approving"
+						(click)="approveDoc(icwoHeader.docNo,'UnApproval',false)" [busyText]="l('ApprovingWithThreeDot')"><i
+							class="fa fa-times"></i> <span>{{l("Unapprove")}}</span></button>
+					
+							<button type="submit" *ngIf="!icwoHeader.approved && !icwoHeader.posted" class="btn btn-primary blue"
+						[disabled]="!consumptionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
+							class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+				</div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<app-log #LogTableModal></app-log>
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

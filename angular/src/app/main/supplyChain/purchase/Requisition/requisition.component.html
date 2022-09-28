@@ -1,0 +1,337 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Requisition")}}</span>
+            </h3>
+            <span class="kt-subheader__desc"> </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button
+                    (click)="exportToExcel()"
+                    class="btn btn-outline-success"
+                >
+                    <i class="fa fa-file-excel"></i> {{ l("ExportToExcel") }}
+                </button>
+                <button
+                    *ngIf="isGranted('Purchase.Requisitions.Create')"
+                    (click)="createOrEdit()"
+                    class="btn btn-primary blue"
+                >
+                    <i class="fa fa-plus"></i> {{ l("CreateNewRequisition") }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div
+                                    class="form-group m-form__group align-items-center"
+                                >
+                                    <div class="input-group">
+                                        <input
+                                            [(ngModel)]="filterText"
+                                            name="filterText"
+                                            autoFocus
+                                            class="form-control m-input"
+                                            [placeholder]="
+                                                l('SearchWithThreeDot')
+                                            "
+                                            type="text"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                (click)="getAll()"
+                                                class="btn btn-primary"
+                                                type="submit"
+                                            >
+                                                <i
+                                                    class="flaticon-search-1"
+                                                ></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" [hidden]="!advancedFiltersAreShown">
+                                <div class="col-md-12">
+                                    <div class="kt-separator kt-separator--border-dashed"></div>
+                                </div>
+   
+                               <div class="col-md-3">
+                                   <div class="form-group">
+                                       <label for="MinDocNoFilter">{{l("MinMax")}} {{l("DocNo")}}</label>
+                                       <div class="input-group">
+                                           <input type="number" class="form-control" id="MinDocNoFilter" [(ngModel)]="minDocNoFilter" placeholder="{{l('MinValue')}}" name="minDocNoFilter" />
+                                           <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter" placeholder="{{l('MaxValue')}}" name="maxDocNoFilter" />
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="form-group col-md-3">
+                                   <label for="ReceiptEntry_LocID">{{l("Location")}}</label>
+                                   <select id="ReceiptEntry_LocID" class="form-control form-control-sm"
+                                       [(ngModel)]="minLocIDFilter" name="LocID" >
+                                       <option value=0>Choose Location</option>
+                                       <option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+                                   </select>
+                               </div>
+                               <div class="form-group col-md-3">
+                                   <label for="ReceiptEntry_Users">{{l("Create By")}}</label>
+                                   <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                       [(ngModel)]="createdByFilter" name="createdByFilter" >
+                                       <option value=''>Choose User</option>
+                                       <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}</option>
+                                   </select>
+                               </div>
+                               <div class="form-group col-md-3">
+                                   <label for="ReceiptEntry_Users">{{l("Approved By")}}</label>
+                                   <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                       [(ngModel)]="audtUserFilter" name="audtUserFilter" >
+                                       <option value=''>Choose User</option>
+                                       <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}</option>
+                                   </select>
+                               </div>
+                               <div class="col-md-3">
+                                   <label for="activeFilter">{{l("Voucher Status")}}</label>
+                                   <select class="form-control" name="activeFilter" id="activeFilter" [(ngModel)]="activeFilter">
+                                   <option value="-1">{{l("All")}}</option>
+                                   <option value="1">{{l("Approved")}}</option>
+                                   <option value="0">{{l("UnApproved")}}</option>
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="row mb-2">
+                               <div class="col-sm-12">
+                                   <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                   <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div
+                        class="primeng-datatable-container col-12"
+                        [busyIf]="primengTableHelper.isLoading"
+                    >
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getAll($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{
+                                primengTableHelper.defaultRecordsCountPerPage
+                            }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            ScrollWidth="100%"
+                            [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="
+                                primengTableHelper.resizableColumns
+                            "
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th
+                                        style="width: 50px"
+                                        [hidden]="
+                                            !isGrantedAny(
+                                                'Purchase.Requisitions.Edit',
+                                                'Purchase.Requisitions.Delete'
+                                            )
+                                        "
+                                    >
+                                        {{ l("Actions") }}
+                                    </th>
+                                    <th
+                                        style="width: 50px"
+                                        pSortableColumn="LOCID"
+                                    >
+                                        {{ l("LOCID") }}
+                                        <p-sortIcon field="LOCID"></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="LOCNAME"
+                                    >
+                                        {{ l("LOCNAME") }}
+                                        <p-sortIcon
+                                            field="LOCNAME"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="DocNo"
+                                    >
+                                        {{ l("DocNo") }}
+                                        <p-sortIcon field="docNo"></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="docDate"
+                                    >
+                                        {{ l("DocDate") }}
+                                        <p-sortIcon field="docNo"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template
+                                pTemplate="body"
+                                let-record="$implicit"
+                            >
+                                <tr>
+                                    <td
+                                        style="width: 50px"
+                                        [hidden]="
+                                            !isGrantedAny(
+                                                'Purchase.Requisitions.Edit',
+                                                'Purchase.Requisitions.Delete'
+                                            )
+                                        "
+                                    >
+                                        <div
+                                            class="btn-group dropdown"
+                                            dropdown
+                                            container="body"
+                                        >
+                                            <button
+                                                class="dropdown-toggle btn btn-sm btn-primary"
+                                                dropdownToggle
+                                            >
+                                                <i class="fa fa-bars"></i
+                                                ><span class="caret"></span>
+                                            </button>
+                                            <ul
+                                                class="dropdown-menu"
+                                                *dropdownMenu
+                                            >
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        (click)="view(record)"
+                                                        >{{ l("View") }}</a
+                                                    >
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        *ngIf="
+                                                            permission.isGranted(
+                                                                'Purchase.Requisitions.Edit'
+                                                            )
+                                                        "
+                                                        (click)="
+                                                            createOrEdit(
+                                                                record
+                                                                    .requisition
+                                                                    .docNo
+                                                            )
+                                                        "
+                                                        >{{ l("Edit") }}</a
+                                                    >
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Purchase.Requisitions.Print')"
+                                                        (click)="getReport(record.requisition.docNo)" >{{l('Print')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        *ngIf="
+                                                            permission.isGranted(
+                                                                'Purchase.Requisitions.Delete'
+                                                            ) && !record.requisition.approved && !record.requisition.hold
+                                                        "
+                                                        (click)="
+                                                            delete(
+                                                                record
+                                                                    .requisition
+                                                                    .docNo
+                                                            )
+                                                        "
+                                                        >{{ l("Delete") }}</a
+                                                    >
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width: 50px">
+                                        <span class="ui-column-title">
+                                            {{ l("locID") }}</span
+                                        >
+                                        {{ record.requisition.locID }}
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("locName") }}</span
+                                        >
+                                        {{ record.requisition.locName }}
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("DocNo") }}</span
+                                        >
+                                        {{ record.requisition.docNo }}
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("DocDate") }}</span
+                                        >
+                                        {{
+                                            record.requisition.docDate
+                                                | momentFormat: "L"
+                                                | date: "dd/MM/yyyy"
+                                        }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div
+                            class="primeng-no-data"
+                            *ngIf="primengTableHelper.totalRecordsCount == 0"
+                        >
+                            {{ l("NoData") }}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="
+                                    primengTableHelper.defaultRecordsCountPerPage
+                                "
+                                #paginator
+                                (onPageChange)="getAll($event)"
+                                [totalRecords]="
+                                    primengTableHelper.totalRecordsCount
+                                "
+                                [rowsPerPageOptions]="
+                                    primengTableHelper.predefinedRecordsCountPerPage
+                                "
+                            >
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{
+                                    l(
+                                        "TotalRecordsCount",
+                                        primengTableHelper.totalRecordsCount
+                                    )
+                                }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<RequisitionModal #RequisitionModal (modalSave)="getAll()"></RequisitionModal>
+<viewRequisitionModal #viewRequisitionModal></viewRequisitionModal>
+<app-reportviewr-modal #reportviewrModalComponent></app-reportviewr-modal>

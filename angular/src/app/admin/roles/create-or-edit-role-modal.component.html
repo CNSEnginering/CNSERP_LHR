@@ -1,0 +1,50 @@
+<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+     aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #roleForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="new-password">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="role.id">{{"EditRole" | localize}}: {{role.displayName}}</span>
+                        <span *ngIf="!role.id">{{"CreateNewRole" | localize}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tabset class="tab-container tabbable-line">
+                        <tab heading="{{'RoleName' | localize}}">
+                            <div class="form-group">
+                                <label>{{"RoleName" | localize}} *</label>
+                                <input id="RoleDisplayName" #roleNameInput="ngModel" class="form-control" type="text" name="DisplayName" [(ngModel)]="role.displayName" required maxlength="64">
+                                <validation-messages [formCtrl]="roleNameInput"></validation-messages>
+                            </div>
+
+                            <div class="kt-checkbox-list">
+                                <label class="kt-checkbox">
+                                    <input id="EditRole_IsDefault" type="checkbox" name="IsDefault" [(ngModel)]="role.isDefault">
+                                    {{"Default" | localize}}
+                                    <span></span>
+                                </label>
+                                <span class="help-block">{{"DefaultRole_Description" | localize}}</span>
+                            </div>
+                        </tab>
+                        <tab heading="{{'Permissions' | localize}}">
+                            <permission-tree #permissionTree></permission-tree>
+                        </tab>
+                    </tabset>
+                    <div class="alert alert-warning" style="margin-top: 30px;">
+                        <em>{{'Note_RefreshPageForPermissionChanges' | localize}}</em>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!roleForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

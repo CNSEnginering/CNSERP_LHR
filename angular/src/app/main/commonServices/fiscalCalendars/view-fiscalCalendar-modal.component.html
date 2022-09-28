@@ -1,0 +1,150 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTDATE")}} :</h6>
+                        {{ item.fiscalCalendar.audtdate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTUSER")}} :</h6>
+                        {{ item.fiscalCalendar.audtuser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PERIODS")}} :</h6>
+                        {{ item.fiscalCalendar.periods }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("QTR4PERD")}} :</h6>
+                        {{ item.fiscalCalendar.qtR4PERD }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ACTIVE")}} :</h6>
+                        {{ item.fiscalCalendar.active }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE1")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE1 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE2")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE2 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE3")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE3 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE4")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE4 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE5")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE5 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE6")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE6 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE7")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE7 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE8")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE8 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE9")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE9 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE10")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE10 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE11")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE11 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE12")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE12 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BGNDATE13")}} :</h6>
+                        {{ item.fiscalCalendar.bgndatE13 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE1")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE1 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE2")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE2 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE3")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE3 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE4")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE4 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE5")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE5 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE6")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE6 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE7")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE7 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE8")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE8 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE9")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE9 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE10")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE10 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE11")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE11 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE12")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE12 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ENDDATE13")}} :</h6>
+                        {{ item.fiscalCalendar.enddatE13 | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

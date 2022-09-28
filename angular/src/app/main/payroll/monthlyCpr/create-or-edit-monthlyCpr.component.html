@@ -1,0 +1,74 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form *ngIf="active" #employeeSalaryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="MonthCprDto.id">{{l("EditMonthlyCPR")}}</span>
+                        <span *ngIf="!MonthCprDto.id">{{l("CreateNewMonthlyCPR")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                   
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeSalary_StartDate">{{l("Tax Period")}}<span
+                                    class="require-field">*</span></label>
+                                    <input type="text" id="YearAndMonth" class="form-control form-control-sm"
+                                    bsDatepicker [(ngModel)]="yearAndMonth" name="YearAndMonth"
+                                    [bsConfig]="{ dateInputFormat: 'MM/YYYY' }" (onShown)="onOpenCalendar($event)"
+                                    required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeSalary_StartDate">{{l("Deposite Date")}}<span
+                                    class="require-field">*</span></label>
+                                    <input type="text" name="cprDate" id="cprDate"
+                                class="form-control form-control-sm" bsDatepicker [(ngModel)]="MonthCprDto.cprDate"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeSalary_CPRNumber">{{l("CPR No")}}</label>
+                            <p-inputMask type="text" [style]="{'font-size': '0.875rem'}"
+                            styleClass="form-control form-control-sm" id="EmployeeSalary_CPRNumber" mask="aa-99999999-9999-9999999"
+                            placeholder="AA-99999999-9999-9999999" name="EmployeeSalary_CPRNumber" [(ngModel)]="MonthCprDto.cprNumber" required>
+                            </p-inputMask>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeArrears_Amount">{{l("Amount")}}</label>
+                                <input id="EmployeeArrears_Amount" class="form-control form-control-sm"
+                                    [(ngModel)]="MonthCprDto.amount" name="Amount" currencyMask
+                                    [options]="{ prefix: '', thousands: ',', decimal: '.' }" required />
+                        </div>
+                        <div class="col-md-1">
+                            <label for="Actives">{{l("Active")}}</label>
+                            <input type="checkbox" name="Actives" id="Actives"
+                                class="" [(ngModel)]="MonthCprDto.active"
+                                />
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!employeeSalaryForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<style>
+	.modal-dialog.modal-lg {
+		max-width: 90%;
+	}
+</style>
+

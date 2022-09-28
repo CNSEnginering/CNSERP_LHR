@@ -1,0 +1,210 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Rates")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("CurrencyRatesHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('SetupForms.CurrencyRates.Create')" (click)="createCurrencyRate()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewCurrencyRate")}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+			
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getCurrencyRates()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CURIDFilter">{{l("CURID")}}</label>
+									<input type="text" class="form-control" id="CURIDFilter" name="curidFilter" [(ngModel)]="curidFilter">
+								</div>
+                            </div>
+                        
+							
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CURNAMEFilter">{{l("CURNAME")}}</label>
+									<input type="text" class="form-control" id="CURNAMEFilter" name="curnameFilter" [(ngModel)]="curnameFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="SYMBOLFilter">{{l("SYMBOL")}}</label>
+									<input type="text" class="form-control" id="SYMBOLFilter" name="symbolFilter" [(ngModel)]="symbolFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinRATEDATEFilter">{{l("AuditRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinRATEDATEFilter" name="MinRATEDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minRATEDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxRATEDATEFilter" name="MaxRATEDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxRATEDATEFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinCURRATEFilter">{{l("CURRATE")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinCURRATEFilter" [(ngModel)]="minCURRATEFilter" placeholder="{{l('From')}}" name="minCURRATEFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxCURRATEFilter" placeholder="{{l('To')}}" name="maxCURRATEFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CompanyProfileCompanyNameFilter">{{l("CompanyName")}}</label>
+									<input type="text" class="form-control" id="CompanyProfileCompanyNameFilter" name="companyProfileCompanyNameFilter" [(ngModel)]="companyProfileCompanyNameFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getCurrencyRates($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('SetupForms.CurrencyRates.Edit', 'SetupForms.CurrencyRates.Delete')">{{l('Actions')}}</th>
+                                   
+                                    <th style="width: 150px" pSortableColumn="curid">
+                                        {{l('CURID')}}
+                                        <p-sortIcon field="currencyRate.curid"></p-sortIcon>
+                                    </th>
+                                  
+                                    <th style="width: 150px" pSortableColumn="curname">
+                                        {{l('CURNAME')}}
+                                        <p-sortIcon field="currencyRate.curname"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="symbol">
+                                        {{l('SYMBOL')}}
+                                        <p-sortIcon field="currencyRate.symbol"></p-sortIcon>
+                                    </th>
+                                    
+                                    <th style="width: 150px" pSortableColumn="currate">
+                                        {{l('CURRATE')}}
+                                        <p-sortIcon field="currencyRate.currate"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('SetupForms.CurrencyRates.Edit', 'SetupForms.CurrencyRates.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> 
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewCurrencyRateModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('SetupForms.CurrencyRates.Edit')"
+														(click)="createOrEditCurrencyRateModal.show(record.currencyRate.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('SetupForms.CurrencyRates.Delete')"
+														(click)="deleteCurrencyRate(record.currencyRate)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('CURID')}}</span>
+											{{record.currencyRate.id}}
+										</td>
+                                
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('CURNAME')}}</span>
+											{{record.currencyRate.curname}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('SYMBOL')}}</span>
+											{{record.currencyRate.symbol}}
+										</td>
+                                   
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('CURRATE')}}</span>
+											{{record.currencyRate.currate}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getCurrencyRates($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditCurrencyRateModal #createOrEditCurrencyRateModal (modalSave)="getCurrencyRates()"></createOrEditCurrencyRateModal>
+    <viewCurrencyRateModal #viewCurrencyRateModal></viewCurrencyRateModal>
+    
+</div>

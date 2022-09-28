@@ -1,0 +1,44 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                {{"DateAndTimePickers" | localize}}
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <form role="form" class="kt-form">
+
+            <div class="form-group row">
+                <label for="SampleDatePicker" class="col-md-12">Default date picker</label>
+                <div class="col-lg-10 col-md-9 col-sm-8">
+                    <input id="SampleDatePicker"
+                           type="text"
+                           #SampleDatePicker
+                           name="SampleDatePicker"
+                           class="form-control"
+                           [(ngModel)]="sampleDate"
+                           bsDatepicker>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <button class="btn btn-primary" type="button" (click)="submitDate()">{{"Submit" | localize}}</button>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="SampleDateRangePicker" class="col-md-12">Default daterange picker</label>
+                <div class="col-lg-10 col-md-9 col-sm-8">
+                    <input name="SampleDateRangePicker"
+                           type="text"
+                           class="form-control"
+                           id="SampleDateRangePicker"
+                           bsDaterangepicker
+                           [(ngModel)]="sampleDateRange" />
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <button class="btn btn-primary" (click)="submitDateRange()" type="button">{{"Submit" | localize}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

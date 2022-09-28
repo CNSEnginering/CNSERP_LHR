@@ -1,0 +1,139 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+            </h3>
+            <span class="kt-subheader__desc">
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Sales.CreditDebitNotes.Create')" (click)="createOrEdit()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewCreditDebitNote")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text" />
+                                        <span class="input-group-btn">
+                                            <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Sales.CreditDebitNotes.Edit', 'Sales.CreditDebitNotes.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="locId">
+                                        {{l('LOCID')}}
+                                        <p-sortIcon field="locId"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="locName">
+                                        {{l('LOCNAME')}}
+                                        <p-sortIcon field="locName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docNo">
+                                        {{l('DocNo')}}
+                                        <p-sortIcon field="docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('DocDate')}}
+                                        <p-sortIcon field="docDate"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Sales.CreditDebitNotes.Edit', 'Sales.CreditDebitNotes.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;" (click)="view(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Sales.CreditDebitNotes.Edit')"
+                                                        (click)="createOrEdit(record.creditDebitNote.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Sales.CreditDebitNotes.Delete')"
+                                                        (click)="delete(record.creditDebitNote.id)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('locID')}}</span>
+                                        {{record.creditDebitNote.locID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('locName')}}</span>
+                                        {{record.creditDebitNote.locName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                        {{record.creditDebitNote.docNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocDate')}}</span>
+                                        {{record.creditDebitNote.docDate  | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAll($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<CreditDebitNoteModal #CreditDebitNoteModal (modalSave)="getAll()"></CreditDebitNoteModal>
+<viewCreditDebitNoteModal #viewCreditDebitNoteModal></viewCreditDebitNoteModal>
+<!-- <RequisitionModal #RequisitionModal (modalSave)="getAll()"></RequisitionModal>
+<viewRequisitionModal #viewRequisitionModal></viewRequisitionModal> -->

@@ -1,0 +1,208 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #glOptionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glOption.id">{{l("EditGLOption")}}</span>
+                        <span *ngIf="!glOption.id">{{l("CreateNewGLOption")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="row">
+                        <div class="col-md-12 well">
+                            <h3>{{CompanyName}}</h3>
+                            <h4>{{Address}}</h4>
+                            <br>
+                            <h5>{{City}}</h5>
+                            <h5>{{Province}}</h5>
+                            <h5>{{Country}}</h5>
+                            <br><br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="GLOption_DEFAULTCLACC">{{l("DEFAULTCLACCGLO")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="GLOption_DEFAULTCLACC" class="form-control form-control-sm"
+                                    [(ngModel)]="glOption.defaultclacc" name="DEFAULTCLACC" readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm"
+                                        (click)="openSelectChartofACModal('Retained')" type="button"><i
+                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountIDNull('Retained')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="glOption.chartofControlId"
+                            [(ngModel)]="glOption.chartofControlId" type="text" hidden>
+                        <div class="form-group col-md-8">
+                            <label for="ChartofControlId">{{l("DescriptionGLO")}}</label>
+                            <input class="form-control form-control-sm" id="ChartofControlId" name="chartofControlId"
+                                [(ngModel)]="chartofControlId" type="text" readonly>
+                        </div>
+
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="GLOption_STOCKCTRLACC">{{l("STOCKCTRLACCGLO")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="GLOption_STOCKCTRLACC" class="form-control form-control-sm"
+                                    [(ngModel)]="glOption.stockctrlacc" name="STOCKCTRLACC" readonly />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm"
+                                        (click)="openSelectChartofACModal('Purchase')" type="button"><i
+                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountIDNull('Purchase')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="glOption.chartofControlId1"
+                            [(ngModel)]="glOption.chartofControlId1" type="text" hidden>
+                        <div class="form-group col-md-8">
+                            <label for="ChartofControlId1">{{l("DescriptionGLO")}}</label>
+                            <input class="form-control form-control-sm" id="ChartofControlId1" name="chartofControlId1"
+                                [(ngModel)]="chartofControlId1" type="text" readonly>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_Seg1Name">{{l("Seg1Name")}}</label>
+                            <input type="text" id="GLOption_Seg1Name" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.seg1Name" name="Seg1Name" />
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_Seg2Name">{{l("Seg2Name")}}</label>
+                            <input type="text" id="GLOption_Seg2Name" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.seg2Name" name="Seg2Name" />
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_Seg3Name">{{l("Seg3Name")}}</label>
+                            <input type="text" id="GLOption_Seg3Name" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.seg3Name" name="Seg3Name" />
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_FirstSignature">{{l("FirstSignature")}}</label>
+                            <input type="text" id="GLOption_FirstSignature" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.firstSignature" name="FirstSignature" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_SecondSignature">{{l("SecondSignature")}}</label>
+                            <input type="text" id="GLOption_SecondSignature" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.secondSignature" name="SecondSignature" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_ThirdSignature">{{l("ThirdSignature")}}</label>
+                            <input type="text" id="GLOption_ThirdSignature" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.thirdSignature" name="ThirdSignature" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_FourthSignature">{{l("FourthSignature")}}</label>
+                            <input type="text" id="GLOption_FourthSignature" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.fourthSignature" name="FourthSignature" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_FifthSignature">{{l("FifthSignature")}}</label>
+                            <input type="text" id="GLOption_FifthSignature" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.fifthSignature" name="FifthSignature" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_SixthSignature">{{l("SixthSignature")}}</label>
+                            <input type="text" id="GLOption_SixthSignature" class="form-control form-control-sm"
+                                [(ngModel)]="glOption.sixthSignature" name="SixthSignature" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="GLOption_DocFrequency">{{l("DocFrequency")}}</label>
+                            <select [disabled]="editMode" id="GLOption_DocFrequency"
+                                class="form-control form-control-sm" [(ngModel)]="glOption.docFrequency"
+                                name="DocFrequency">
+                                <option [value]="1">Forever</option>
+                                <option [value]="2">Yearly</option>
+                                <option [value]="3">Monthly</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="ICSetup_xpoint">{{l("Decimal Places")}}</label>
+                            <select id="ICSetup_xpoint" class="form-control form-control-sm" [(ngModel)]="glOption.financePoint" name="FinancePoint" >
+                                <option value="0">0</option>
+                                <option value="1">0.0</option>
+                                <option value="2">0.00</option>
+                                <option value="3">0.000</option>
+                                <option value="4">0.0000</option>
+                                <option value="5">0.00000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <div class="m-checkbox-list">
+                                <label for="GLOption_DirectPost" class="kt-checkbox">
+                                    <input id="GLOption_DirectPost" type="checkbox" name="DirectPost"
+                                        [(ngModel)]="glOption.directPost">
+                                    {{l("Direct Approve")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="m-checkbox-list">
+                                <label for="GLOption_InstrumentNo" class="kt-checkbox">
+                                    <input id="GLOption_InstrumentNo" type="checkbox" name="InstrumentNo"
+                                        [(ngModel)]="glOption.instrumentNo">
+                                    {{l("Allow Instrument No. Change")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                    <div class="form-group col-md-4">
+                        <div class="m-checkbox-list">
+                            <label for="GLOption_AutoSeg3" class="kt-checkbox">
+                                <input id="GLOption_AutoSeg3" type="checkbox" name="AutoSeg3"
+                                    [(ngModel)]="glOption.autoSeg3">
+                                {{l("AutoSeg3")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    </div>
+                  
+                   
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!glOptionForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+</style>

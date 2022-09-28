@@ -1,0 +1,202 @@
+
+<div [@routerTransition]>
+    
+    <div class="kt-subheader kt-grid__item" >
+       
+        <div class="kt-subheader__main" >
+            <h3 class="kt-subheader__title">
+                <span>{{l("HRM Setup")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("DesignationsHeaderInfo")}}
+            </span> -->
+        </div>
+    </div>
+
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" (ngSubmit)="save()" autocomplete="off" >
+                    <div>
+
+                        <div class="form-group form-group-md">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="m-form__group">
+                                        <div class="row">
+                                            <label for="ChartofControlAccountName"
+                                                class="col-form-label col-md-4">{{l("Advance To Staff (A/c)")}}</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input class="form-control form-control-sm"
+                                                        name="accountHrmSetup.AdvToStSal"
+                                                        [(ngModel)]="accountHrmSetup.AdvToStSal" type="text" readonly
+                                                        required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary btn-sm blue"
+                                                            (click)="openSelectChartofControlModal(1)" type="button"
+                                                            [disabled]="flag"><i class="fa fa-search"></i>
+                                                            {{l("Pick")}}</button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdNull(1)" [disabled]="flag"><i
+                                                                class="fa fa-times"></i></button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdClear()"
+                                                            *ngIf="flag">Clear</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" id="ChartofControlAccountName"
+                                        name="chartofControlAccountName" [(ngModel)]="chartofControlAccountName"
+                                        type="text" disabled>
+                                </div>
+                            </div>
+
+
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="m-form__group">
+                                        <div class="row">
+                                            <label for="ChartofControlAccountName"
+                                                class="col-form-label col-md-4">{{l("Advance To Payable (A/c)")}}</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input class="form-control form-control-sm"
+                                                        name="accountHrmSetup.AdvToPayable"
+                                                        [(ngModel)]="accountHrmSetup.AdvToPayable" type="text" readonly required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary btn-sm blue"
+                                                            (click)="openSelectChartofControlModal(2)" type="button"
+                                                            [disabled]="flag"><i class="fa fa-search"></i>
+                                                            {{l("Pick")}}</button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdNull(2)" [disabled]="flag"><i
+                                                                class="fa fa-times"></i></button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdClear()"
+                                                            *ngIf="flag">Clear</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" id="chartofControlAccountName2"
+                                        name="chartofControlAccountName2" [(ngModel)]="chartofControlAccountName2"
+                                        type="text" disabled>
+                                </div>
+                            </div>
+
+
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="m-form__group">
+                                        <div class="row">
+                                            <label for="ChartofControlAccountName"
+                                                class="col-form-label col-md-4">{{l("Loan To Staff (A/c)")}}</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input class="form-control form-control-sm"
+                                                        name="accountHrmSetup.LoanToStSal"
+                                                        [(ngModel)]="accountHrmSetup.LoanToStSal" type="text" readonly
+                                                        required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary btn-sm blue"
+                                                            (click)="openSelectChartofControlModal(3)" type="button"
+                                                            [disabled]="flag"><i class="fa fa-search"></i>
+                                                            {{l("Pick")}}</button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdNull(3)" [disabled]="flag"><i
+                                                                class="fa fa-times"></i></button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdClear()"
+                                                            *ngIf="flag">Clear</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" id="chartofControlAccountName3"
+                                        name="chartofControlAccountName3" [(ngModel)]="chartofControlAccountName3"
+                                        type="text" disabled>
+                                </div>
+                            </div>
+
+
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="m-form__group">
+                                        <div class="row">
+                                            <label for="ChartofControlAccountName"
+                                                class="col-form-label col-md-4">{{l("Loan To Payable (A/c)")}}</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input class="form-control form-control-sm"
+                                                        name="accountHrmSetup.LoanToPayable"
+                                                        [(ngModel)]="accountHrmSetup.LoanToPayable" type="text" readonly
+                                                        required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary btn-sm blue"
+                                                            (click)="openSelectChartofControlModal(4)" type="button"
+                                                            [disabled]="flag"><i class="fa fa-search"></i>
+                                                            {{l("Pick")}}</button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdNull(4)" [disabled]="flag"><i
+                                                                class="fa fa-times"></i></button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-danger btn-icon" type="button"
+                                                            (click)="setChartofControlIdClear()"
+                                                            *ngIf="flag">Clear</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" id="chartofControlAccountName4"
+                                        name="chartofControlAccountName4" [(ngModel)]="chartofControlAccountName4"
+                                        type="text" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="modal-footer">
+                       
+                        <button type="submit" class="btn btn-primary blue" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i><span>{{l("Save")}}</span></button>
+                    </div>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+</div>
+

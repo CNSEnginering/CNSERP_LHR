@@ -1,0 +1,32 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("VoucherPostings")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <!-- <span class="kt-subheader__desc">
+                {{l("AccountsPostingsHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button *ngIf="isGranted('Pages.AccountsApproval.Create')" (click)="createAccountsApproval()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("Approved")}}</button>
+                <button *ngIf="isGranted('Pages.AccountsUnApproval.Create')" (click)="createAccountsUnApproval()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("Unapproved")}}</button>
+                <button *ngIf="isGranted('Pages.AccountsPostings.Create')" (click)="createAccountsPosting()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("Posted")}}</button>
+            </div>
+        </div>
+
+    </div>
+
+    <createOrEditAccountsPostingModal #createOrEditAccountsPostingModal (modalSave)="getAccountsPostings()">
+    </createOrEditAccountsPostingModal>
+    <!-- <viewAccountsPostingModal #viewAccountsPostingModal></viewAccountsPostingModal> -->
+
+
+</div>

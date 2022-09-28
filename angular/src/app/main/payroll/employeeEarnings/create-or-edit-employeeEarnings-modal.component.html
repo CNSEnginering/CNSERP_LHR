@@ -1,0 +1,126 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #employeeEarningsForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="employeeEarnings.id">{{l("EditEmployeeEarnings")}}</span>
+                        <span *ngIf="!employeeEarnings.id">{{l("CreateNewEmployeeEarnings")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_EarningID">{{l("Earning ID")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="EmployeeEarnings_EarningID" class="form-control form-control-sm"
+                                [(ngModel)]="employeeEarnings.earningID" name="EarningID" disabled required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_EarningDate">{{l("Earning Date")}}</label>
+                            <input type="text" id="EmployeeEarnings_EarningDate" class="form-control form-control-sm"
+                                bsDatepicker [(ngModel)]="earningDate" (ngModelChange)="onChange($event)"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" name="EarningDate" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_SalaryYear">{{l("Salary Year")}}</label>
+                            <input type="text" style="background-color:#F4F4F4;" id="EmployeeArrears_SalaryYear"
+                                class="form-control form-control-sm" name="SalaryYear" [(ngModel)]="salaryYear"
+                                readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_SalaryMonth">{{l("Salary Month")}}</label>
+                            <input type="text" style="background-color:#F4F4F4;" id="EmployeeArrears_SalaryMonth"
+                                class="form-control form-control-sm" name="SalaryMonth" [(ngModel)]="salaryMonth"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_EmployeeID">{{l("Employee ID")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" style="background-color:#F4F4F4;" id="EmployeeEarnings_EmployeeID"
+                                    class="form-control form-control-sm" [(ngModel)]="employeeEarnings.employeeID"
+                                    name="EmployeeID" readonly required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openEmployeeModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setEmployeeNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_EmployeeName">{{l("EmployeeName")}}</label>
+                            <input class="form-control form-control-sm" id="EmployeeEarnings_EmployeeName"
+                                name="employeeName" [(ngModel)]="employeeEarnings.employeeName" type="text" disabled />
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_Amount">{{l("Amount")}}</label>
+                            <input id="EmployeeEarnings_Amount" class="form-control form-control-sm"
+                                [(ngModel)]="employeeEarnings.amount" name="Amount" currencyMask
+                                [options]="{ prefix: '', thousands: ',', decimal: '.' }" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_EarningType">{{l("EarningType")}}</label>
+                            <select type="number" id="EmployeeEarnings_EarningType"
+                                class="form-control form-control-sm" [(ngModel)]="employeeEarnings.earningTypeID"
+                                name="EarningType">
+                                <option value=0 disabled selected>Choose Earning Type</option>
+                                <option *ngFor="let earn of earningTypesDtoArray" [value]="earn.earningTypes.typeID">
+                                    {{earn.earningTypes.typeDesc}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeEarnings_Remarks">{{l("Remarks")}}</label>
+                            <input type="text" id="EmployeeEarnings_Remarks" class="form-control form-control-sm"
+                                [(ngModel)]="employeeEarnings.remarks" name="Remarks" />
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="EmployeeEarnings_Active" class="kt-checkbox">
+                            <input id="EmployeeEarnings_Active" type="checkbox" name="Active"
+                                [(ngModel)]="employeeEarnings.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <br />
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!employeeEarningsForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

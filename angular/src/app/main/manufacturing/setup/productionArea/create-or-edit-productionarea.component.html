@@ -1,0 +1,120 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("MFACSET")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="areacode">{{l("AreaCode")}} <span class="text-danger">*</span> </label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="areacode" name="areacode"
+                                    [(ngModel)]="dto.areaid" type="text" required maxlength="10">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="Description">{{l("AreaDesc")}}<span class="text-danger">*</span> </label>
+                            <input type="text" required class="form-control form-control-md" id="setcodeDesc"
+                                name="setcodeDesc" [(ngModel)]="dto.areadesc">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="areatype">{{l("AreaType")}}</label>
+                            <select id="areatype" class="form-control form-control-sm" [(ngModel)]="dto.areaty"
+                                name="areatype" required>
+                                <option [value]="null" selected>Select Type</option>
+                                <option [value]="0">Internal</option>
+                                <option [value]="1">Subcontract</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="active">{{l("ActiveStatus")}}</label>
+                            <select id="active" class="form-control form-control-sm" [(ngModel)]="dto.active" name="active" >
+                                <option [value]="true">Active</option>
+                                <option [value]="false">InActive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="addr">{{l("AreaAddr")}}<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="addr" name="addr" [(ngModel)]="dto.address"
+                                type="text" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="contactp">{{l("ContactPerson")}}<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="contactp" name="contactp"
+                                [(ngModel)]="dto.contname" type="text" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ContPos">{{l("ContPos")}}<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="ContPos" name="ContPos"
+                                [(ngModel)]="dto.contpos" type="text" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="contactp">{{l("CONTPHONE")}}<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="contactp" name="contactp"
+                                [(ngModel)]="dto.contcell" type="text" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="contemail">{{l("CONTEMAIL")}}<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="contemail" name="contemail"
+                                [(ngModel)]="dto.contemail" type="text" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="locId" class="col-sm-2 col-form-label">{{l("Loc")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" disabled required class="form-control form-control-sm" id="locId"
+                                    name="locId" [(ngModel)]="dto.locid" />
+                                <div class="input-group-append">
+                                    <button 
+                                    [disabled] = "editMode"
+                                    class="btn btn-primary blue btn-sm btn-pick" (click)="openLocationModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setLocIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="locDesc"
+                                name="locDesc" [(ngModel)]="dto.locDesc" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="Form.invalid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewLocation()"></inventoryLookupTableModal>

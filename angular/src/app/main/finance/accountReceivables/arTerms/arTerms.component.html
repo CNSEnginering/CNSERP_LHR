@@ -1,0 +1,221 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("ARTerms")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("Account Payment Terms")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.ARTerms.Create')" (click)="createARTerm()"
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewARTerm")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getARTerms()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TERMDESCFilter">{{l("TERMDESC")}}</label>
+									<input type="text" class="form-control" id="TERMDESCFilter" name="termdescFilter" [(ngModel)]="termdescFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinTERMRATEFilter">{{l("TERMRATE")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinTERMRATEFilter" [(ngModel)]="minTERMRATEFilter" placeholder="{{l('From')}}" name="minTERMRATEFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxTERMRATEFilter" placeholder="{{l('To')}}" name="maxTERMRATEFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAUDTDATEFilter">{{l("Audit Date Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAUDTDATEFilter" name="MinAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minAUDTDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAUDTDATEFilter" name="MaxAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxAUDTDATEFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AUDTUSERFilter">{{l("AUDTUSER")}}</label>
+									<input type="text" class="form-control" id="AUDTUSERFilter" name="audtuserFilter" [(ngModel)]="audtuserFilter">
+								</div>
+                            </div> -->
+							<div class="col-md-3">
+								<label for="ACTIVEFilterSelect">{{l("ACTIVE")}}</label>
+								<select class="form-control" name="ACTIVEFilter" id="ACTIVEFilterSelect" [(ngModel)]="activeFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getARTerms($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px" [hidden]="!isGrantedAny('Pages.ARTerms.Edit', 'Pages.ARTerms.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="termId">
+                                        {{l('TERMID')}}
+                                        <p-sortIcon field="arTerm.termId"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="termdesc">
+                                        {{l('TERMDESC')}}
+                                        <p-sortIcon field="arTerm.termdesc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="termrate">
+                                        {{l('TERMRATE')}}
+                                        <p-sortIcon field="arTerm.termrate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtdate">
+                                        {{l('AUDTDATE')}}
+                                        <p-sortIcon field="arTerm.audtdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtuser">
+                                        {{l('AUDTUSER')}}
+                                        <p-sortIcon field="arTerm.audtuser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('ACTIVE')}}
+                                        <p-sortIcon field="arTerm.active"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('Pages.ARTerms.Edit', 'Pages.ARTerms.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewARTermModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.ARTerms.Edit')"
+														(click)="createOrEditARTermModal.show(record.arTerm.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.ARTerms.Delete')"
+														(click)="deleteARTerm(record.arTerm)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TERMID')}}</span>
+											{{record.arTerm.termId}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TERMDESC')}}</span>
+											{{record.arTerm.termDesc}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TERMRATE')}}</span>
+											{{record.arTerm.termRate | number: '.2'}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AUDTDATE')}}</span>
+                                        <span *ngIf="record.arTerm.audtDate">
+											{{record.arTerm.audtDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.arTerm.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AUDTUSER')}}</span>
+											{{record.arTerm.audtUser}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ACTIVE')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.arTerm.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.arTerm.active">{{'No' | localize}}</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getARTerms($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditARTermModal #createOrEditARTermModal (modalSave)="getARTerms()"></createOrEditARTermModal>
+    <viewARTermModal #viewARTermModal></viewARTermModal>
+
+
+</div>

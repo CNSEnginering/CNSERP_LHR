@@ -1,0 +1,187 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #SalaryLoanStopForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+                autocomplete="off"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="SalaryLoanStop.id">{{
+                            l("EditSalaryLoanStop")
+                        }}</span>
+                        <span *ngIf="!SalaryLoanStop.id">{{
+                            l("CreateNewSalaryLoanStop")
+                        }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <label for="SalaryLoanStop_Year"
+                                >{{ l("SalaryYear")
+                                }}<span class="require-field">*</span></label
+                            >
+                            <div class="input-group">
+                                <input
+                                    [disabled]="SalaryLoanStop.id"
+                                    type="text"
+                                    id="SalaryLoanStop_Year"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="salaryYear"
+                                    name="SalaryLoanStop_Year"
+                                    required
+                                    type="number"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="SalaryLoanStop_Month"
+                                >{{ l("SalaryMonth")
+                                }}<span class="require-field">*</span></label
+                            >
+                            <div class="input-group">
+                                <input
+                                    [disabled]="SalaryLoanStop.id"
+                                    type="text"
+                                    id="SalaryLoanStop_Month"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="salaryMonth"
+                                    name="SalaryLoanStop_Month"
+                                    required
+                                    type="number"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Marital_Status"
+                                >{{ l("AmountType")
+                                }}<span class="require-field">*</span></label
+                            >
+                            <div class="kt-radio-inline">
+                                <label class="kt-radio kt-radio--solid">
+                                    <input
+                                        [disabled]="SalaryLoanStop.id"
+                                        type="radio"
+                                        name="AmountTypeID"
+                                        [(ngModel)]="typeID"
+                                        value="1"
+                                    />
+                                    Loan
+                                    <span></span>
+                                </label>
+                                <label class="kt-radio kt-radio--solid">
+                                    <input
+                                        [disabled]="SalaryLoanStop.id"
+                                        type="radio"
+                                        name="AmountTypeID"
+                                        [(ngModel)]="typeID"
+                                        value="2"
+                                    />
+                                    Salary
+                                    <span></span>
+                                </label>
+                                <label class="kt-radio kt-radio--solid">
+                                    <input
+                                        [disabled]="SalaryLoanStop.id"
+                                        type="radio"
+                                        name="AmountTypeID"
+                                        [(ngModel)]="typeID"
+                                        value="3"
+                                    />
+                                    Allowance
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label for="SalaryLoanStop_Remarks">{{
+                                l("Remarks")
+                            }}</label>
+                            <input
+                                type="text"
+                                id="SalaryLoanStop_Remarks"
+                                class="form-control form-control-sm"
+                                [(ngModel)]="remarks"
+                                name="Remarks"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <button
+                                type="button"
+                                id="SalaryLoanStop_Fetch"
+                                class="btn btn-primary"
+                                name="SalaryLoanStop_Fetch"
+                                (click)="onAddRow()"
+                            >
+                                {{ l("Fetch") }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2 col-md-12">
+                        <br />
+                        <ag-grid-angular
+                            style="width: 100%; height: 200px"
+                            class="ag-theme-balham"
+                            [rowData]="rowData"
+                            [columnDefs]="columnDefs"
+                            [animateRows]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [rowSelection]="rowSelection"
+                            [singleClickEdit]="true"
+                            (cellValueChanged)="onCellValueChanged($event)"
+                            (gridReady)="onGridReady($event)"
+                        >
+                        </ag-grid-angular>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="close()"
+                    >
+                        {{ l("Cancel") }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!SalaryLoanStopForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

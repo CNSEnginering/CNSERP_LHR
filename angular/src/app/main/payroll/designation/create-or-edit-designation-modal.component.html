@@ -1,0 +1,56 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #designationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="designation.id">{{l("EditDesignation")}}</span>
+                        <span *ngIf="!designation.id">{{l("CreateNewDesignation")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-3">
+                            <label for="Designation_DesignationID">{{l("DesignationID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="Designation_DesignationID" min="1" class="form-control form-control-sm" [(ngModel)]="designation.designationID" 
+                            name="DesignationID" disabled required/>
+                        </div> 
+                        <div class="form-group col-md-6">
+                            <label for="Designation_Designation">{{l("Designation")}}<span class="require-field">*</span></label>
+                            <input type="text" id="Designation_Designation" class="form-control form-control-sm"
+                                [(ngModel)]="designation.designation" name="Designation" required/>
+                        </div>
+                        <div class="form-group col-md-3">
+							<label for="Department_sortId">{{l("sortId")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="Department_sortId" min="1" class="form-control form-control-sm"
+								[(ngModel)]="designation.sortId" name="sortId"  required />
+						</div>
+
+                    </div>
+                 
+                    <div class="m-checkbox-list">
+                        <label for="Designation_Active" class="kt-checkbox">
+                            <input id="Designation_Active" type="checkbox" name="Active" [(ngModel)]="designation.active"> 
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!designationForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

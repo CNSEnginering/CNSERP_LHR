@@ -1,0 +1,285 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-dialog-centered  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{pickName}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="off">
+                        <div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                        class="flaticon-search-1"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                                rows="5" [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px">{{l('Actions')}}</th>
+                                        <th style="width: 150px" pSortableColumn="id" *ngIf="idShow">
+                                            {{l('Id')}}
+                                            <p-sortIcon field="id"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="id" *ngIf="voucherNoShow">
+                                            {{l('VoucherNo')}}
+                                            <p-sortIcon field="id"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="voucherDate" *ngIf="voucherDateShow">
+                                            {{l('VoucherDate')}}
+                                            <p-sortIcon field="voucherDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="docMonth" *ngIf="docMonthShow">
+                                            {{l('DocMonth')}}
+                                            <p-sortIcon field="docMonth"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="docNo" *ngIf="docNoShow">
+                                            {{l('Doc No')}}
+                                            <p-sortIcon field="docNo"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="bookId" *ngIf="bookIdShow">
+                                            {{l('BookId')}}
+                                            <p-sortIcon field="bookId"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="displayName" *ngIf="narrationShow">
+                                            {{l('Narration')}}
+                                            <p-sortIcon field="displayName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="displayName" *ngIf="partyInvNoShow">
+                                            {{l('PartyInvNo')}}
+                                            <p-sortIcon field="displayName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="displayName" *ngIf="displayNameShow">
+                                            {{l('Description')}}
+                                            <p-sortIcon field="displayName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="accountID" *ngIf="accountIDShow">
+                                            {{l('AccountID')}}
+                                            <p-sortIcon field="accountID"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="termRate" *ngIf="termRateShow">
+                                            {{l('TermRate')}}
+                                            <p-sortIcon field="termRate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="amount" *ngIf="amountShow">
+                                            {{l('InvAmount')}}
+                                            <p-sortIcon field="amount"></p-sortIcon>
+                                        </th>
+                                        <th hidden style="width: 150px">
+                                            {{l('slType')}}
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="driverAccount" *ngIf="driverAccShow">
+                                            {{l('Cntrl Account')}}
+                                            <p-sortIcon field="driverAccShow"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="driverSubAccount" *ngIf="driverSubAccShow">
+                                            {{l(' Sub Account')}}
+                                            <p-sortIcon field="driverSubAccShow"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px">
+                                            <div class="btn-group dropdown" normalizePosition>
+                                                <button class="btn btn-sm btn-primary" type="button"
+                                                    (click)="setAndSave(record)">
+                                                    {{l("Select")}}
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px" *ngIf="idShow">
+                                            <span class="ui-column-title"> {{l('Id')}}</span>
+                                            {{record.id}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="voucherNoShow">
+                                            <span class="ui-column-title"> {{l('VoucherNo')}}</span>
+                                            {{record.id}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="voucherDateShow">
+                                            <span class="ui-column-title"> {{l('VoucherDate')}}</span>
+                                            {{record.docDate | date: 'dd/MM/yyyy'}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="docMonthShow">
+                                            <span class="ui-column-title"> {{l('DocMonth')}}</span>
+                                            {{record.docMonth}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="docNoShow">
+                                            <span class="ui-column-title"> {{l('Doc No')}}</span>
+                                            {{record.docNo}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="bookIdShow">
+                                            <span class="ui-column-title"> {{l('BookID')}}</span>
+                                            {{record.bookId}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="narrationShow">
+                                            <span class="ui-column-title"> {{l('Narration')}}</span>
+                                            {{record.displayName}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="displayNameShow">
+                                            <span class="ui-column-title"> {{l('Description')}}</span>
+                                            {{record.displayName}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="partyInvNoShow">
+                                            <span class="ui-column-title"> {{l('PartyInvNo')}}</span>
+                                            {{record.displayName}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="accountIDShow">
+                                            <span class="ui-column-title"> {{l('AccountID')}}</span>
+                                            {{record.accountID}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="termRateShow">
+                                            <span class="ui-column-title"> {{l('TermRate')}}</span>
+                                            {{record.termRate}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="amountShow">
+                                            <span class="ui-column-title"> {{l('InvAmount')}}</span>
+                                            {{record.amount}}
+                                        </td>
+                                        <td hidden style="width:150px">
+                                            <span class="ui-column-title"> {{l('slType')}}</span>
+                                            {{record.slType}}
+                                        </td>
+                                        <td style="width:150px" *ngIf="driverAccShow">
+                                            <span class="ui-column-title"> {{l('Driver Ctrl Acc')}}</span>
+                                            {{record.driverCtrlAcc}}
+                                            
+                                        </td>
+                                        <td style="width:150px" *ngIf="driverSubAccShow">
+                                            <span class="ui-column-title"> {{l('Driver Ctrl Acc')}}</span>
+                                            {{record.driverSubAcc}}
+                                            
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                    styleClass="chartofControl-lookup-table-paginator" (onPageChange)="getAll($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row align-items-center">
+                                <div class="primeng-datatable-container"
+                                     [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #dataTable
+                                                 (onLazyLoad)="getAll($event)"
+                                                 [value]="primengTableHelper.records"
+                                                 rows ="5"
+                                                 [paginator]="false"
+                                                 [lazy]="true"
+											 	 [scrollable]="true"
+												 ScrollWidth="100%"
+												 [responsive]="primengTableHelper.isResponsive"
+												 [resizableColumns]="primengTableHelper.resizableColumns">
+									<ng-template pTemplate="header">
+										<tr>
+											<th style="width: 130px" >{{l('Actions')}}</th>
+											<th style="width: 150px" pSortableColumn="id">
+												{{l('Id')}}
+												<p-sortIcon field="displayName"></p-sortIcon>
+											</th>
+                                            <th style="width: 200px" pSortableColumn="displayName">
+												{{l('Description')}}
+												<p-sortIcon field="displayName"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="accountID" *ngIf="accountIDShow">
+												{{l('AccountID')}}
+												<p-sortIcon field="accountID"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="termRate" *ngIf="termRateShow">
+												{{l('TermRate')}}
+												<p-sortIcon field="termRate"></p-sortIcon>
+											</th>
+										</tr>
+									</ng-template>
+									<ng-template pTemplate="body" let-record="$implicit">
+										<tr>
+											<td style="width: 130px">
+												<div class="btn-group dropdown" normalizePosition>
+                                                    <button class="btn btn-sm btn-primary" type="button" (click)="setAndSave(record)">
+                                                        {{l("Select")}}
+                                                    </button>
+                                                </div>
+											</td>
+											<td style="width:150px">
+												<span class="ui-column-title"> {{l('Id')}}</span>
+												{{record.id}}
+											</td>
+                                            <td style="width:200px">
+												<span class="ui-column-title"> {{l('Description')}}</span>
+												{{record.displayName}}
+                                            </td>
+                                            <td style="width:150px" *ngIf="accountIDShow">
+												<span class="ui-column-title"> {{l('AccountID')}}</span>
+												{{record.accountID}}
+                                            </td>
+                                            <td style="width:150px" *ngIf="termRateShow">
+												<span class="ui-column-title"> {{l('TermRate')}}</span>
+												{{record.termRate}}
+											</td>
+										</tr>
+									</ng-template>
+                                    </p-table>
+									<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+										{{l('NoData')}}
+									</div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                                     #paginator
+                                                     styleClass="bank-lookup-table-paginator"
+                                                     (onPageChange)="getAll($event)"
+                                                     [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

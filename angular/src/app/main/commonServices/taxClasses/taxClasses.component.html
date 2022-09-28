@@ -1,0 +1,272 @@
+<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("TaxClasses")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("TaxClassesHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.TaxClasses.Create')" (click)="createTaxClass()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewTaxClass")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getTaxClasses()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TAXAUTHFilter">{{l("TAXAUTH")}}</label>
+									<input type="text" class="form-control" id="TAXAUTHFilter" name="taxauthFilter" [(ngModel)]="taxauthFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CLASSDESCFilter">{{l("CLASSDESC")}}</label>
+									<input type="text" class="form-control" id="CLASSDESCFilter" name="classdescFilter" [(ngModel)]="classdescFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinCLASSRATEFilter">{{l("CLASSRATE")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinCLASSRATEFilter" [(ngModel)]="minCLASSRATEFilter" placeholder="{{l('From')}}" name="minCLASSRATEFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxCLASSRATEFilter" placeholder="{{l('To')}}" name="maxCLASSRATEFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinTRANSTYPEFilter">{{l("TRANSTYPE")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinTRANSTYPEFilter" [(ngModel)]="minTRANSTYPEFilter" placeholder="{{l('From')}}" name="minTRANSTYPEFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxTRANSTYPEFilter" placeholder="{{l('To')}}" name="maxTRANSTYPEFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CLASSTYPEFilter">{{l("CLASSTYPE")}}</label>
+									<input type="text" class="form-control" id="CLASSTYPEFilter" name="classtypeFilter" [(ngModel)]="classtypeFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAUDTDATEFilter">{{l("AUDTDATERange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAUDTDATEFilter" name="MinAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minAUDTDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAUDTDATEFilter" name="MaxAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxAUDTDATEFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AUDTUSERFilter">{{l("AUDTUSER")}}</label>
+									<input type="text" class="form-control" id="AUDTUSERFilter" name="audtuserFilter" [(ngModel)]="audtuserFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TaxAuthorityTAXAUTHFilter">{{l("TAXAUTH")}}</label>
+									<input type="text" class="form-control" id="TaxAuthorityTAXAUTHFilter" name="taxAuthorityTAXAUTHFilter" [(ngModel)]="taxAuthorityTAXAUTHFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getTaxClasses($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px" [hidden]="!isGrantedAny('Pages.TaxClasses.Edit', 'Pages.TaxClasses.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="taxAuthorityFk.taxauth" hidden>
+                                        {{l('TAXAUTH')}}
+                                        <p-sortIcon field="taxAuthorityTAXAUTH"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 120px" pSortableColumn="taxauth">
+                                        {{l('TAXAUTH')}}
+                                        <p-sortIcon field="taxClass.taxauth"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="classdesc">
+                                        {{l('CLASSDESC')}}
+                                        <p-sortIcon field="taxClass.classdesc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="classrate">
+                                        {{l('CLASSRATE')}}
+                                        <p-sortIcon field="taxClass.classrate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="transtype">
+                                        {{l('TRANSTYPE')}}
+                                        <p-sortIcon field="taxClass.transtype"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="classtype" hidden>
+                                        {{l('CLASSTYPE')}}
+                                        <p-sortIcon field="taxClass.classtype"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="taxaccid">
+                                        {{l('TAXACCID')}}
+                                        <p-sortIcon field="taxClass.taxaccid"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="classtype">
+                                        {{l('IsActive')}}
+                                        <p-sortIcon field="taxClass.isActive"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtdate">
+                                        {{l('AUDTDATE')}}
+                                        <p-sortIcon field="taxClass.audtdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtuser">
+                                        {{l('AUDTUSER')}}
+                                        <p-sortIcon field="taxClass.audtuser"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('Pages.TaxClasses.Edit', 'Pages.TaxClasses.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewTaxClassModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.TaxClasses.Edit')"
+														(click)="createOrEditTaxClassModal.show(record.taxClass.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.TaxClasses.Delete')"
+														(click)="deleteTaxClass(record.taxClass)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px" hidden>
+												<span class="ui-column-title"> {{l('TAXAUTH')}}</span>
+												{{record.taxAuthorityTAXAUTH}}
+											</td>
+                                    <td style="width:120px">
+											<span class="ui-column-title"> {{l('TAXAUTH')}}</span>
+											{{record.taxClass.taxauth}}
+										</td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('CLASSDESC')}}</span>
+											{{record.taxClass.classdesc}}
+										</td>
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('CLASSRATE')}}</span>
+											{{record.taxClass.classrate}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TRANSTYPE')}}</span>
+											{{record.taxClass.transtype==1 ? 'Sale': record.taxClass.transtype==2 ? 'Purchase' : 'Services'}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('CLASSTYPE')}}</span>
+											{{record.taxClass.classtype}}
+                                        </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TAXACCID')}}</span>
+											{{record.taxClass.taxaccid}}
+										</td>
+                                    <td style="width:100px">
+										<span class="ui-column-title"> {{l('IsActive')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.taxClass.isActive">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.taxClass.isActive">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AUDTDATE')}}</span>
+                                        <span *ngIf="record.taxClass.audtdate">
+											{{record.taxClass.audtdate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.taxClass.audtdate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AUDTUSER')}}</span>
+											{{record.taxClass.audtuser}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getTaxClasses($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditTaxClassModal #createOrEditTaxClassModal (modalSave)="getTaxClasses()"></createOrEditTaxClassModal>
+    <viewTaxClassModal #viewTaxClassModal></viewTaxClassModal>
+    
+  
+</div>

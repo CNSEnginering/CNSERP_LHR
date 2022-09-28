@@ -1,0 +1,726 @@
+﻿<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>
+                    {{
+                        adjustmentType == "deduction"
+                            ? l("EmployeeDeductions")
+                            : l("EmployeeEarnings")
+                    }}
+                </span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("EmployeeDeductionsHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <!-- <button
+                    (click)="exportToExcel()"
+                    class="btn btn-outline-success"
+                >
+                    <i class="fa fa-file-excel"></i> {{ l("ExportToExcel") }}
+                </button> -->
+                <button
+                    *ngIf="isGranted('PayRoll.EmployeeDeductions.Transactions.Create')"
+                    (click)="createEmployeeAdjustment()"
+                    class="btn btn-primary blue"
+                >
+                    <i class="fa fa-plus"></i>
+                    {{
+                        adjustmentType == "deduction"
+                            ? l("CreateNewEmployeeDeductions")
+                            : l("CreateNewEmployeeEarnings")
+                    }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div
+                                    class="form-group m-form__group align-items-center"
+                                >
+                                    <div class="input-group">
+                                        <input
+                                            [(ngModel)]="filterText"
+                                            name="filterText"
+                                            autoFocus
+                                            class="form-control m-input"
+                                            [placeholder]="
+                                                l('SearchWithThreeDot')
+                                            "
+                                            type="text"
+                                        />
+                                        <span class="input-group-btn">
+                                            <button
+                                                (click)="
+                                                    getEmployeeAdjustment()
+                                                "
+                                                class="btn btn-primary"
+                                                type="submit"
+                                            >
+                                                <i
+                                                    class="flaticon-search-1"
+                                                ></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div
+                                    class="kt-separator kt-separator--border-dashed"
+                                ></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocID"
+                                        >{{ l("MinMax") }}
+                                        {{ l("DocID") }}</label
+                                    >
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="MinDocIDFilter"
+                                            [(ngModel)]="minDocIDFilter"
+                                            placeholder="{{ l('MinValue') }}"
+                                            name="MinDocIDFilter"
+                                        />
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            [(ngModel)]="maxDocIDFilter"
+                                            placeholder="{{ l('MaxValue') }}"
+                                            name="MaxDocIDFilter"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinEmployeeIDFilter"
+                                        >{{ l("MinMax") }}
+                                        {{ l("EmployeeID") }}</label
+                                    >
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="MinEmployeeIDFilter"
+                                            [(ngModel)]="minEmployeeIDFilter"
+                                            placeholder="{{ l('MinValue') }}"
+                                            name="minEmployeeIDFilter"
+                                        />
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            [(ngModel)]="maxEmployeeIDFilter"
+                                            placeholder="{{ l('MaxValue') }}"
+                                            name="maxEmployeeIDFilter"
+                                        />
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="EmployeeNameFilter">{{
+                                        l("EmployeeName")
+                                    }}</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="AudtUserFilter"
+                                        name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter"
+                                    />
+                                </div>
+                            </div> -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSalaryYearFilter">{{l("MinMax")}} {{l("SalaryYear")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSalaryYearFilter"
+                                            [(ngModel)]="minSalaryYearFilter" placeholder="{{l('MinValue')}}"
+                                            name="minSalaryYearFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSalaryYearFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxSalaryYearFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSalaryMonthFilter">{{l("MinMax")}} {{l("SalaryMonth")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSalaryMonthFilter"
+                                            [(ngModel)]="minSalaryMonthFilter" placeholder="{{l('MinValue')}}"
+                                            name="minSalaryMonthFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSalaryMonthFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxSalaryMonthFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocDateFilter">{{
+                                        l("DocDateRange")
+                                    }}</label>
+                                    <div class="input-group">
+                                        <input
+                                            class="form-control m-input"
+                                            id="MinDocDateFilter"
+                                            name="MinDocDateFilter"
+                                            type="datetime"
+                                            bsDatepicker
+                                            placeholder="{{ l('MinValue') }}"
+                                            [(ngModel)]="minDocDateFilter"
+                                        />
+                                        <span
+                                            style="
+                                                line-height: 40px;
+                                                padding: 0 15px 0 15px;
+                                            "
+                                        >
+                                            &mdash;
+                                        </span>
+                                        <input
+                                            class="form-control m-input"
+                                            id="MaxDocDateFilter"
+                                            name="MaxDocDateFilter"
+                                            type="datetime"
+                                            bsDatepicker
+                                            placeholder="{{ l('MaxValue') }}"
+                                            [(ngModel)]="maxDocDateFilter"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAmountFilter"
+                                        >{{ l("MinMax") }}
+                                        {{ l("Amount") }}</label
+                                    >
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="MinAmountFilter"
+                                            [(ngModel)]="minAmountFilter"
+                                            placeholder="{{ l('MinValue') }}"
+                                            name="minAmountFilter"
+                                        />
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            [(ngModel)]="maxAmountFilter"
+                                            placeholder="{{ l('MaxValue') }}"
+                                            name="maxAmountFilter"
+                                        />
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <label for="ActiveFilterSelect">{{l("Active")}}</label>
+                                <select class="form-control" name="ActiveFilter" id="ActiveFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("False")}}</option>
+                                    <option value="1">{{l("True")}}</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span
+                                    class="clickable-item text-muted"
+                                    *ngIf="!advancedFiltersAreShown"
+                                    (click)="
+                                        advancedFiltersAreShown = !advancedFiltersAreShown
+                                    "
+                                    ><i class="fa fa-angle-down"></i>
+                                    {{ l("ShowAdvancedFilters") }}</span
+                                >
+                                <span
+                                    class="clickable-item text-muted"
+                                    *ngIf="advancedFiltersAreShown"
+                                    (click)="
+                                        advancedFiltersAreShown = !advancedFiltersAreShown
+                                    "
+                                    ><i class="fa fa-angle-up"></i>
+                                    {{ l("HideAdvancedFilters") }}</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div
+                        class="primeng-datatable-container col-12"
+                        [busyIf]="primengTableHelper.isLoading"
+                    >
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getEmployeeAdjustment($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{
+                                primengTableHelper.defaultRecordsCountPerPage
+                            }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            ScrollWidth="100%"
+                            [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="
+                                primengTableHelper.resizableColumns
+                            "
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !isGrantedAny(
+                                                'PayRoll.EmployeeDeductions.Transactions.Edit',
+                                                'PayRoll.EmployeeDeductions.Transactions.Delete'
+                                            )
+                                        "
+                                    >
+                                        {{ l("Actions") }}
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="DocID"
+                                    >
+                                        {{ l("DocID") }}
+                                        <p-sortIcon
+                                            field="adjH.docID"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="DocTypeID"
+                                    >
+                                        {{ l("DocTypeID") }}
+                                        <p-sortIcon
+                                            field="adjH.typeID"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 170px"
+                                        pSortableColumn="DocType"
+                                    >
+                                        {{ l("DocType") }}
+                                        <p-sortIcon
+                                            field="adjH.docType"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="salaryYear"
+                                    >
+                                        {{ l("SalaryYear") }}
+                                        <p-sortIcon
+                                            field="adjH.salaryYear"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="salaryMonth"
+                                    >
+                                        {{ l("SalaryMonth") }}
+                                        <p-sortIcon
+                                            field="adjH.salaryMonth"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <th
+                                        style="width: 150px"
+                                        pSortableColumn="DocDate"
+                                    >
+                                        {{ l("DocDate") }}
+                                        <p-sortIcon
+                                            field="adjH.docdate"
+                                        ></p-sortIcon>
+                                    </th>
+                                    <!--<th style="width: 150px" pSortableColumn="amount">
+                                        {{l('Amount')}}
+                                        <p-sortIcon field="employeeDeductions.amount"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="employeeDeductions.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="employeeDeductions.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="employeeDeductions.audtDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="employeeDeductions.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="employeeDeductions.createDate"></p-sortIcon>
+                                    </th> -->
+                                </tr>
+                            </ng-template>
+                            <ng-template
+                                pTemplate="body"
+                                let-record="$implicit"
+                            >
+                                <tr>
+                                    <td
+                                        style="width: 130px"
+                                        [hidden]="
+                                            !isGrantedAny(
+                                                'PayRoll.EmployeeDeductions.Transactions.Edit',
+                                                'PayRoll.EmployeeDeductions.Transactions.Delete'
+                                            )
+                                        "
+                                    >
+                                        <div
+                                            class="btn-group dropdown"
+                                            dropdown
+                                            container="body"
+                                        >
+                                            <button
+                                                class="dropdown-toggle btn btn-sm btn-primary"
+                                                dropdownToggle
+                                            >
+                                                <i class="fa fa-bars"></i
+                                                ><span class="caret"></span>
+                                                {{ l("") }}
+                                            </button>
+                                            <ul
+                                                class="dropdown-menu"
+                                                *dropdownMenu
+                                            >
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        (click)="
+                                                            viewEmployeeDeductionsModal.show(
+                                                                record.AdjHDto
+                                                                    .id
+                                                            )
+                                                        "
+                                                        >{{ l("View") }}</a
+                                                    >
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        *ngIf="
+                                                            permission.isGranted(
+                                                                'PayRoll.EmployeeDeductions.Transactions.Edit'
+                                                            )
+                                                        "
+                                                        (click)="
+                                                            createOrEditEmployeeDeductionsModal.show(
+                                                                record.AdjHDto
+                                                                    .id,
+                                                                adjustmentType
+                                                            )
+                                                        "
+                                                        >{{ l("Edit") }}</a
+                                                    >
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        *ngIf="
+                                                            permission.isGranted(
+                                                                'PayRoll.EmployeeDeductions.Transactions.Delete'
+                                                            )
+                                                        "
+                                                        (click)="
+                                                            deleteEmployeeAdjustment(
+                                                                record.AdjHDto
+                                                            )
+                                                        "
+                                                        >{{ l("Delete") }}</a
+                                                    >
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="javascript:;"
+                                                        *ngIf="
+                                                            permission.isGranted(
+                                                                'PayRoll.EmployeeDeductions.Transactions.Create'
+                                                            )
+                                                        "
+                                                        (click)="
+                                                        createOrEditEmployeeDeductionsModal.Clone(
+                                                            record.AdjHDto
+                                                                .id,
+                                                            adjustmentType
+                                                        )
+                                                        "
+                                                        >{{ l("Clone") }}</a
+                                                    >
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("DocID") }}</span
+                                        >
+                                        {{ record.AdjHDto.docID }}
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("DocTypeID") }}</span
+                                        >
+                                        {{ record.AdjHDto.typeID }}
+                                    </td>
+                                    <td style="width: 170px">
+                                        <span class="ui-column-title">
+                                            {{ l("DocType") }}</span
+                                        >
+                                        {{
+                                            record.AdjHDto.docType == 1
+                                                ? "Earning"
+                                                : "Deduction"
+                                        }}
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("SalaryYear") }}</span
+                                        >
+                                        {{ record.AdjHDto.salaryYear }}
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("SalaryMonth") }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 1
+                                            "
+                                            >{{ "January" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 2
+                                            "
+                                            >{{ "February" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 3
+                                            "
+                                            >{{ "March" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 4
+                                            "
+                                            >{{ "April" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 5
+                                            "
+                                            >{{ "May" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 6
+                                            "
+                                            >{{ "June" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 7
+                                            "
+                                            >{{ "July" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 8
+                                            "
+                                            >{{ "August" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 9
+                                            "
+                                            >{{ "September" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 10
+                                            "
+                                            >{{ "October" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 11
+                                            "
+                                            >{{ "November" }}</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                record.AdjHDto.salaryMonth == 12
+                                            "
+                                            >{{ "December" }}</span
+                                        >
+                                    </td>
+                                    <td style="width: 150px">
+                                        <span class="ui-column-title">
+                                            {{ l("DocDate") }}</span
+                                        >
+                                        <span *ngIf="record.AdjHDto.docdate">
+                                            {{
+                                                record.AdjHDto.docdate
+                                                    | momentFormat: "DD/MM/YYYY"
+                                            }}
+                                        </span>
+                                        <span *ngIf="!record.AdjHDto.docdate"
+                                            >-</span
+                                        >
+                                    </td>
+                                    <!-- <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Amount')}}</span>
+                                        {{record.employeeDeductions.amount | number: '.2'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.employeeDeductions.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.employeeDeductions.active">{{'No' | localize}}</span>
+                                    </td>
+                                   <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.employeeDeductions.audtUser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.employeeDeductions.audtDate">
+                                            {{record.employeeDeductions.audtDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employeeDeductions.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.employeeDeductions.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.employeeDeductions.createDate">
+                                            {{record.employeeDeductions.createDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employeeDeductions.createDate">-</span>
+                                    </td> -->
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div
+                            class="primeng-no-data"
+                            *ngIf="primengTableHelper.totalRecordsCount == 0"
+                        >
+                            {{ l("NoData") }}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="
+                                    primengTableHelper.defaultRecordsCountPerPage
+                                "
+                                #paginator
+                                (onPageChange)="getEmployeeAdjustment($event)"
+                                [totalRecords]="
+                                    primengTableHelper.totalRecordsCount
+                                "
+                                [rowsPerPageOptions]="
+                                    primengTableHelper.predefinedRecordsCountPerPage
+                                "
+                            >
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{
+                                    l(
+                                        "TotalRecordsCount",
+                                        primengTableHelper.totalRecordsCount
+                                    )
+                                }}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditEmployeeDeductionsModal
+        #createOrEditEmployeeDeductionsModal
+        (modalSave)="getEmployeeAdjustment()"
+    >
+    </createOrEditEmployeeDeductionsModal>
+
+    <createOrEditEmployeeDeductionsModal
+        mode="view"
+        #viewEmployeeDeductionsModal
+    ></createOrEditEmployeeDeductionsModal>
+</div>

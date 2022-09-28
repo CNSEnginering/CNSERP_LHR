@@ -1,0 +1,47 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #glAccountsPermissionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glAccountsPermission.id">{{l("EditGLAccountsPermission")}}</span>
+                        <span *ngIf="!glAccountsPermission.id">{{l("CreateNewGLAccountsPermission")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="GLAccountsPermission_UserID">{{l("UserID")}}</label>
+									<input type="text" id="GLAccountsPermission_UserID" class="form-control" [(ngModel)]="glAccountsPermission.userID" name="UserID"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="GLAccountsPermission_CanSee">{{l("CanSee")}}</label>
+									<input type="number" id="GLAccountsPermission_CanSee" class="form-control" [(ngModel)]="glAccountsPermission.canSee" name="CanSee"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="GLAccountsPermission_BeginAcc">{{l("BeginAcc")}}</label>
+									<input type="text" id="GLAccountsPermission_BeginAcc" class="form-control" [(ngModel)]="glAccountsPermission.beginAcc" name="BeginAcc"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="GLAccountsPermission_EndAcc">{{l("EndAcc")}}</label>
+									<input type="text" id="GLAccountsPermission_EndAcc" class="form-control" [(ngModel)]="glAccountsPermission.endAcc" name="EndAcc"    />
+								</div>
+					
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!glAccountsPermissionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

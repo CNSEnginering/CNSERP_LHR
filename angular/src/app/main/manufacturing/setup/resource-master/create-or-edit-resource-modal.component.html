@@ -1,0 +1,93 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("MFRESMAS")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="resid" class="col-sm-2 col-form-label">{{l("ResID")}} <span
+                                class="text-danger">*</span> </label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="resid" name="resid"
+                                    [(ngModel)]="dto.resid" type="text" maxlength="10" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <label for="resdesc" class="col-sm-2 col-form-label">{{l("Description")}}<span
+                                class="text-danger">*</span> </label>
+                        <div class=" col-sm-6">
+                            <input type="text" required class="form-control form-control-sm" id="resdesc" name="resdesc"
+                                [(ngModel)]="dto.resdesc" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="active" class="col-form-label">{{l("Status")}}</label>
+                            <select id="active" class="form-control form-control-sm" [(ngModel)]="dto.active"
+                                name="active">
+                                <option [value]="true">Active</option>
+                                <option [value]="false">InActive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="costtype" class="col-form-label">{{l("CostType")}}</label>
+                            <select id="costtype" class="form-control form-control-sm" [(ngModel)]="dto.costtype"
+                                name="costtype">
+                                <option [value]="1">Setup Labor</option>
+                                <option [value]="2">Run Labor</option>
+                                <option [value]="3">Over Head</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="uomtype" class="col-form-label">{{l("ICUOMs")}}</label>
+                            <select id="uomtype" class="form-control form-control-sm" [(ngModel)]="dto.uomtype"
+                                name="uomtype" (change)="setunit($event)">
+                                <option [value]="1">Hour</option>
+                                <option [value]="2">Minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="costbasis" class="col-form-label">{{l("CostBasis")}}</label>
+                            <select id="costbasis" class="form-control form-control-sm" [(ngModel)]="dto.costbasis"
+                                name="costbasis">
+                                <option [value]="1">Run Time</option>
+                                <option [value]="2">Setup Time</option>
+                                <option [value]="3">Order Qty</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unitcost" class="col-form-label">{{l("Cost")}}</label>
+                            <input type="number" required class="form-control form-control-sm" id="unitcost"
+                                name="unitcost" [(ngModel)]="dto.unitcost" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="Form.invalid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

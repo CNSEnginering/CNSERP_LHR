@@ -1,0 +1,89 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("APTransactionList")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("APTransactionListHeaderInfo")}} -->
+            </span>
+        </div>
+      
+    </div>
+  
+<div class="kt-content" style="width:60%">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body" style="
+        padding-bottom: 0px;
+    ">
+    <div class="form-group">    
+                <div class="row">
+                      <label for="FromDate" class="col-md-3 col-form-label">{{l("FROMDATE")}}</label>
+					  <div class="col-md-3">		
+							<input type="text" id="getReportParm.FromDate" class="form-control form-control-sm" bsDatepicker  [(ngModel)]="fromDate"  name="FromDate" required>			
+                      </div>
+                      <label for="To Date" class="col-md-3 col-form-label">{{l("TODATE")}}</label>
+					  <div class="col-md-3">		
+                            <input type="text" id="getReportParm.ToDate" class="form-control form-control-sm" bsDatepicker   name="ToDate" required  [(ngModel)]="toDate">
+                     </div>
+                 </div>
+                  <!-- <div class="row">
+                    <label for="FromAccount" class="col-md-3 col-form-label">{{l("FROMACCOUNT")}}</label>
+                    <div class="col-md-3">	
+                          <input type="text" id="getReportParm.FromAccount" class="form-control form-control-sm" bsDatepicker  [(ngModel)]="fromDate"  name="FromDate" required>                    
+                      </div>
+
+                          <label for="To Date" class="col-md-3 col-form-label">{{l("TOACCOUNT")}}</label>
+                       <div class="col-md-3">	
+                          <input type="text" id="getReportParm.ToAccount" class="form-control form-control-sm" bsDatepicker   name="ToDate" required  [(ngModel)]="toDate">
+                      </div>     
+                  </div> -->
+				  <div class="row">
+                            <label for="GroupCategory" class="col-md-3 col-form-label">Book</label>
+                            <div class="col-md-3">	   
+                            <select id="getReportParm.BookId" name="getReportParm.bookid" class="form-control form-control-sm"  name="BookId" [(ngModel)]="bookId" >
+                                    <option *ngFor="let Group of grgcat" [value]="Group.bookId">{{Group.bookName}}
+                                    </option>
+                                </select>
+                                </div>
+                        <label for="GLBOOKS_NormalEntry" class="col-md-3 col-form-label">{{"Status"}}</label>
+                        <div class="col-md-3">	   
+							<select id="getReportParm_DirectPost" class="form-control form-control-sm"  name="directPost" [(ngModel)]="status"  >
+								<option value="1">Posted</option>
+								<option value="0">Un Posted</option>
+                                </select>
+                            </div>
+				   </div>
+			    <div class="row">
+                  <label for="GroupCategory" class="col-md-3 col-form-label">{{"User"}}</label>
+                  <div class="col-md-3">	                
+                  <select id=" getReportParm_UserId" name="getReportParm.userId" class="form-control form-control-sm"   [(ngModel)]="userId">
+                                    <option *ngFor="let Group of grguser" [value]="Group.username">{{Group.username}}
+                                    </option>
+                                </select>
+                                </div>
+                                <div class="col-md-4"></div>
+                                <label for="ChartofControl_Inactive" class="col-md-2 col-form-label">
+                                    <input id="ChartofControl_Inactive" type="checkbox" name="Inactive"
+                                       [(ngModel)]="directPost">
+                                    {{l("Hide Direct")}}
+                                    <span></span>
+                                </label>
+                </div>
+                <div>
+                    <hr/>
+                <button type="submit"
+                 class="btn btn-primary blue"
+                  (click)="getReport()">
+                  <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                </div>
+            </div>
+    </div>
+</div>
+
+    </div>
+
+

@@ -1,0 +1,199 @@
+<!-- begin::Quick Sidebar -->
+<a href="javascript:;" class="kt-quick-panel__close quick-panel-action-button" id="kt_quick_sidebar_close">
+    <i class="flaticon2-delete"></i>
+</a>
+<a href="javascript:;" id="kt_quick_sidebar_back" class="quick-panel-action-button quick-sidebar-back" (click)="quickSideBarBackClick()" [hidden]="!selectedUser.friendUserId">
+    <i class="fa fa-arrow-alt-circle-left" [attr.aria-label]="l('Back')"></i>
+</a>
+<a href="javascript:;" class="quick-panel-action-button page-quick-sidebar-pinner" (click)="reversePinned()">
+    <i class="fa fa-map-pin" [ngClass]="{'fa-rotate-90':!pinned}" [attr.aria-label]="l('Pin')"></i>
+</a>
+<div class="kt-quick-panel__content" (window:resize)="onWindowResize($event)">
+    <div class="kt-portlet kt-messenger-friends" [hidden]="selectedUser.friendUserId">
+        <div class="kt-portlet__body">
+            <div class="kt-searchbar">
+                <div class="kt-input-icon kt-input-icon--right">
+                    <input type="text" id="ChatUserSearchUserName" class="form-control input-sm" placeholder="{{'FilterOrAddUser' | localize}}" [(ngModel)]="userNameFilter">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right" [popover]="popTemplate" triggers="mouseenter:mouseleave" placement="left">
+                        <span>
+                            <i id="InterTenantChatHintIcon" class="la la-info-circle" data-toggle="kt-popover" data-placement="bottom" data-html="true"></i>
+                        </span>
+                    </span>
+                    <ng-template #popTemplate>
+                        <div [innerHtml]="chatUserSearchHint">
+                        </div>
+                    </ng-template>
+                </div>
+                <button id="SearchChatUserButton" type="button" class="btn btn-block btn-success" *ngIf="userNameFilter.length" (click)="search()">{{'AddFriend' | localize}}</button>
+            </div>
+            <div class="kt-widget kt-widget--users kt-mt-20">
+                <div class="kt-scroll kt-scroll--pull">
+                    <div class="kt-widget__items">
+                        <div class="media-list list-items" *ngFor="let friend of getFilteredFriends(friendDtoState.Accepted, userNameFilter)">
+                            <chat-friend-list-item [friend]="friend" (selectChatFriend)="selectFriend(friend)"></chat-friend-list-item>
+                        </div>
+                        <p id="EmptyFriendListInfo" *ngIf="getFilteredFriendsCount(friendDtoState.Accepted) == 0">{{'YouDontHaveAnyFriend' | localize}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-widget kt-widget--users kt-mt-20">
+                <h5>{{"BlockedUsers" | localize}}</h5>
+                <div class="kt-scroll kt-scroll--pull">
+                    <div class="kt-widget__items">
+                        <div class="media-list list-items" *ngFor="let friend of getFilteredFriends(friendDtoState.Blocked, userNameFilter)">
+                            <chat-friend-list-item [friend]="friend" (selectChatFriend)="selectFriend(friend)"></chat-friend-list-item>
+                        </div>
+                        <p id="EmptyBlockedFriendListInfo" *ngIf="getFilteredFriendsCount(friendDtoState.Blocked) == 0">{{"YouDontHaveAnyBlockedFriend" | localize}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-chat kt-messenger-conversation" [hidden]="!selectedUser.friendUserId">
+        <div class="kt-portlet kt-portlet--last">
+            <div class="kt-portlet__head">
+                <div class="kt-chat__head">
+                    <div class="kt-chat__left">
+                        <div class="kt-chat__label">
+                            <a href="javascript:;" class="kt-chat__title" id="selectedChatUserName">{{getShownUserName(selectedUser.friendTenancyName,selectedUser.friendUserName)}}</a>
+                            <span class="kt-chat__status" id="selectedChatUserStatus">
+                                <span class="kt-badge kt-badge--dot" [ngClass]="{'kt-badge--online': selectedUser.isOnline, 'kt-badge--offline':!selectedUser.isOnline}"></span>
+                                <small *ngIf="selectedUser.isOnline">{{'Online' | localize}}</small>
+                                <small *ngIf="!selectedUser.isOnline">{{'Offline' | localize}}</small>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="kt-chat__right">
+                        <div class="dropdown dropdown-inline" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" [attr.aria-label]="l('Expand')">
+                                <i class="flaticon-more-1"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-md" *dropdownMenu>
+                                <ul class="kt-nav">
+                                    <li id="liBanChatUser" class="kt-nav__item" *ngIf="selectedUser.state !== friendDtoState.Blocked"> 
+                                        <a href="javascript:;" class="kt-nav__link" (click)="block(selectedUser)">
+                                            <i class="kt-nav__link-icon fa fa-ban"></i>
+                                            <span class="kt-nav__link-text">{{"Block" | localize}}</span>
+                                        </a>
+                                    </li>
+                                    <li id="liUnbanChatUser" class="kt-nav__item" *ngIf="selectedUser.state === friendDtoState.Blocked">
+                                        <a href="javascript:;" class="kt-nav__link" (click)="unblock(selectedUser)">
+                                            <i class="kt-nav__link-icon fa fa-check"></i>
+                                            <span class="kt-nav__link-text">{{"Unblock" | localize}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <perfect-scrollbar #chatScrollBar (psYReachStart)="loadPreviousMesssagesOfSelectedUser()" style="height: 78vh;">
+                <div class="kt-portlet__body">
+                    <div class="kt-chat__messages kt-chat__messages--modal" id="UserChatMessages" *ngFor="let message of selectedUser.messages">
+                        <div *ngIf="message.side === 1" class="kt-chat__message kt-chat__message--right kt-bg-light-brand">
+                            <div class="kt-chat__user">
+                                <span class="kt-chat__datetime">
+                                    <time class="timeago">{{ getFixedMessageTime(message.creationTime) | momentFromNow }}</time> {{message.readStateCheck}}
+                                </span>
+                                <a href="#" class="kt-chat__username">{{currentUser.userName}}</a>
+                                <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
+                                    <img src="{{profilePicture}}" alt="image">
+                                </span>
+                            </div>
+                            <div class="kt-chat__text">
+                                <chat-message [message]="message"></chat-message>
+                            </div>
+                        </div>
+                        <div *ngIf="message.side !== 1" class="kt-chat__message kt-bg-light-success">
+                            <div class="kt-chat__user">
+                                <span class="kt-userpic kt-userpic--circle kt-userpic--sm">
+                                    <friend-profile-picture [profilePictureId]="selectedUser.friendProfilePictureId" [userId]="selectedUser.friendUserId" [tenantId]="selectedUser.friendTenantId"></friend-profile-picture>
+                                </span>
+                                <a href="#" class="kt-chat__username">{{selectedUser.friendUserName}}</a>
+                                <span class="kt-chat__datetime">
+                                    <time class="timeago">{{ getFixedMessageTime(message.creationTime) | momentFromNow }}</time> {{message.readStateCheck}}
+                                </span>
+                            </div>
+                            <div class="kt-chat__text">
+                                <chat-message [message]="message"></chat-message>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </perfect-scrollbar>
+            <div class="kt-portlet__foot">
+                <form name="chatMessageForm" id="chatMessageForm" role="form">
+                    <div id="files" class="files"></div>
+                    <div class="col-md-12" style="margin: 5px; padding-right: 25px;" *ngIf="selectedUser.state === friendDtoState.Blocked">
+                        <button id="UnblockUserButton" (click)="unblock(selectedUser)" type="button" class="btn btn-block btn-success">{{"UnblockUser" | localize}}</button>
+                    </div>
+
+                    <div class="col-md-12 chat-progress-bar">
+                        <div id="chatFileUploadProgress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                    </div>
+                    <div class="kt-chat__input" id="ChatMessageWrapper">
+                        <div class="kt-chat__editor">
+                            <textarea id="ChatMessage" #ChatMessage type="text" name="message" class="kt-messenger__forkt-input" placeholder="{{'TypeAMessageHere' | localize}}" [(ngModel)]="chatMessage" (keydown.Enter)="sendMessage($event)" [disabled]="selectedUser.state == friendDtoState.Blocked" maxlength="4096" required>
+                            </textarea>
+                        </div>
+                        <div class="kt-chat__toolbar">
+                            <div class="kt_chat__tools" dropdown dropup="true" #chatAttachmentDropdown="bs-dropdown">
+                                <a id="chatDropdownToggle" href="javascript:;" class="kt-messenger__form-attachment select-media" data-toggle="dropdown" tabindex="-1" aria-expanded="false" dropdownToggle>
+                                    <i class="la la-paperclip" [attr.aria-label]="l('Attach')"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right bottom-up chat-attachment-menu" role="menu" *dropdownMenu>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="fileinput-button">
+                                                <p-fileUpload customUpload="true"
+                                                    (uploadHandler)="uploadImage($event)"
+                                                    id="chatImageUpload"
+                                                    #chatImageUpload
+                                                    name="ChatImageUpload"
+                                                    maxFileSize="10000000"
+                                                    auto="auto"
+                                                    accept="image/*"
+                                                    (onBeforeSend)="onBeforeSend($event)"
+                                                    chooseLabel="{{'Image' | localize}}">
+                                                </p-fileUpload>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="fileinput-button">
+                                                <p-fileUpload customUpload="true"
+                                                    (uploadHandler)="uploadFile($event)"
+                                                    id="chatFileUpload"
+                                                    #chatFileUpload
+                                                    name="ChatFileUpload"
+                                                    [url]="uploadUrl"
+                                                    maxFileSize="10000000"
+                                                    auto="auto"
+                                                    (onBeforeSend)="onBeforeSend($event)"
+                                                    chooseLabel="{{'File' | localize}}">
+                                                </p-fileUpload>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" id="btnLinkShare">
+                                            <button pButton type="button" class="ui-fileupload-choose" icon="fa fa-link" label="{{'LinkToCurrentPage' | localize}}" (click)="shareCurrentLink()"></button>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="kt_chat__actions">
+                                <button type="button" id="SendChatMessageButton" class="btn btn-brand btn-md  btn-font-sm btn-upper btn-bold kt-chat__reply">{{'Reply' | localize}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end::Quick Sidebar -->

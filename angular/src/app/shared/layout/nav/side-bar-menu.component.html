@@ -1,0 +1,85 @@
+
+<!-- BEGIN: Aside Menu -->
+<div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+    <div #asideMenu ktMenu [options]="menuOptions" [perfectScrollbar]="{wheelPropagation: false}" [ngStyle]="{'max-height': '90vh', 'position': 'relative'}" id="kt_aside_menu" class="kt-aside-menu"
+         [attr.data-ktmenu-vertical]="1" [attr.data-ktmenu-scroll]="ui.getIsMenuScrollable() ? 1 : 0" [attr.data-ktmenu-dropdown]="ui.isSubmenuToggleDropdown() ? 1 : 0"
+         (mouseenter)="mouseEnter($event)" (mouseleave)="mouseLeave($event)"
+         [class]="ui.getLeftAsideClass()">
+        <ul class="kt-menu__nav" class="kt-menu__nav">
+            <ng-container [ngTemplateOutlet]="menuListTemplate"></ng-container>
+        </ul>
+    </div>
+</div>
+<!-- END: Aside Menu -->
+
+<!-- </div> -->
+<ng-template #menuListTemplate>
+    <ng-container *ngFor="let child of menu.items">
+        <ng-container *ngIf="showMenuItem(child)" [ngTemplateOutlet]="mMenuItem" [ngTemplateOutletContext]="{ item: child, parentItem: item }"></ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #mMenuItem let-item="item" let-parentItem="parentItem">
+    <li *ngIf="showMenuItem(item)"
+        class="{{ui.getSideBarMenuItemClass(item, isMenuItemIsActive(item))}}"
+        aria-haspopup="true"
+        data-ktmenu-submenu-toggle="hover">
+
+        <!-- if menu item hasn't submenu -->
+        <a *ngIf="!item.items.length && !item.external" [queryParams]="item.parameters" [routerLink]="item.route" class="kt-menu__link">
+            <ng-container [ngTemplateOutlet]="mMenuItemText" [ngTemplateOutletContext]="{ item: item, parentItem: parentItem }"></ng-container>
+        </a>
+        <a *ngIf="!item.items.length && item.external" [attr.href]="item.route" target="_blank" class="kt-menu__link kt-menu__toggle">
+            <ng-container [ngTemplateOutlet]="mMenuItemText" [ngTemplateOutletContext]="{ item: item, parentItem: parentItem }"></ng-container>
+        </a>
+
+        <!-- if menu item has submenu child  -->
+        <a href="javascript:;" *ngIf="item.items.length" class="kt-menu__link kt-menu__toggle">
+            <ng-container [ngTemplateOutlet]="mMenuItemText" [ngTemplateOutletContext]="{ item: item, parentItem: parentItem }"></ng-container>
+        </a>
+
+        <!-- if menu item has submenu child then recursively call new menu item component -->
+        <div *ngIf="item.items.length" class="kt-menu__submenu">
+            <span class="kt-menu__arrow"></span>
+            <ul class="kt-menu__subnav">
+                <ng-container *ngFor="let child of item.items">
+                    <ng-container [ngTemplateOutlet]="mMenuItem" [ngTemplateOutletContext]="{ item: child, parentItem: item }"></ng-container>
+                </ng-container>
+            </ul>
+        </div>
+    </li>
+</ng-template>
+
+<ng-template #mMenuItemText let-item="item" let-parentItem="parentItem">
+    <span class="kt-menu__item-here"></span>
+    <!-- if menu item has icon -->
+    <span class="kt-menu__link-icon" *ngIf="item.icon">
+        <!-- <i class="kt-menu__link-icon" [ngClass]="item.icon"></i> -->
+        <img src="../../../../assets/common/images/fin_icons/{{item.icon}}.svg" width="20" height="20" class="img2svg" alt="">
+    </span>
+
+    <ng-container *ngIf="!item.badge; else mMenuLinkBadge">
+        <!-- menu item title text -->
+        <span class="kt-menu__link-text">
+            {{item.name | localize}}
+        </span>
+    </ng-container>
+
+    <ng-template #mMenuLinkBadge>
+        <!-- menu item with badge -->
+        <span class="kt-menu__link-title">
+            <span class="kt-menu__link-wrap">
+                <span class="kt-menu__link-text">
+                    {{item.name | localize}}
+                </span>
+                <span class="kt-menu__link-badge">
+                    <span class="kt-badge" [ngClass]="item.badge.type">{{item.badge.value}}</span>
+                </span>
+            </span>
+        </span>
+    </ng-template>
+
+    <!-- if menu item has submenu child then put arrow icon -->
+    <i *ngIf="item.items.length" class="kt-menu__ver-arrow la la-angle-right"></i>
+</ng-template>
+<!-- END: Left Aside -->

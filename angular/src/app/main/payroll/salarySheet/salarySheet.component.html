@@ -1,0 +1,135 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("SalarySheet")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row col-md-12">
+        <div class="col-md-6">
+            <div class="kt-content">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Attendance_FromDate">{{l("From Date")}}<span
+                                            class="require-field">*</span></label>
+                                    <input type="text" id="Attendance_FromDate" class="form-control form-control-sm"
+                                        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker
+                                        [(ngModel)]="fromDate" name="fromDate" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Attendance_ToDate">{{l("To Date")}}<span
+                                            class="require-field">*</span></label>
+                                    <input type="text" id="Attendance_ToDate" class="form-control form-control-sm"
+                                        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker [(ngModel)]="toDate"
+                                        name="toDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__foot footerSection">
+                            <div class="col-lg-12" style="text-align: right">
+
+                                <button type="submit" class="btn btn-success green"
+                                    [busyText]="l('ProcessingWithThreeDot')" [buttonBusy]="processing2"
+                                    (click)="markWholeMonthAttendance()" [disabled]="!fromDate|| !toDate">
+                                    <i class="fa fa-spinner"></i> <span>{{l("Mark Attendance")}}</span>
+                                </button>
+
+                                <button type="submit" class="btn btn-success green"
+                                    [busyText]="l('ProcessingWithThreeDot')" [buttonBusy]="processing1"
+                                    (click)="scheduleAttendance()" [disabled]="!fromDate|| !toDate">
+                                    <i class="fa fa-spinner"></i> <span>{{l("Schedule Attendance")}}</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="kt-content">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="YearAndMonth"
+                                    class="col-md-6 col-form-label">{{l("Salary Year And Month")}}</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="YearAndMonth" class="form-control form-control-sm"
+                                        bsDatepicker [(ngModel)]="yearAndMonth" name="YearAndMonth"
+                                        [bsConfig]="{ dateInputFormat: 'MM/YYYY' }" (onShown)="onOpenCalendar($event)"
+                                        required>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <label for="SalaryYear">{{l("SalaryYear")}}<span
+                                            class="require-field">*</span></label>
+                                    <select type="text" id="SalaryYear" class="form-control form-control-sm"
+                                        name="SalaryYear" [(ngModel)]="salaryYear" required>
+                                        <option value="Select Year" disabled selected>Select Year</option>
+                                        <option *ngFor="let year of years">{{year}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="SalaryMonth">{{l("SalaryMonth")}}<span
+                                            class="require-field">*</span></label>
+                                    <select type="text" id="SalaryMonth" class="form-control form-control-sm"
+                                        name="SalaryMonth" [(ngModel)]="salaryMonth" required>
+                                        <option value="Select Month" disabled selected>Select Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="kt-portlet__foot footerSection">
+                            <div class="col-lg-12 mb-2" style="text-align: right">
+                                <button type="submit" class="btn btn-success green"
+                                    [busyText]="l('ProcessingWithThreeDot')" [buttonBusy]="processing"
+                                    (click)="processSalarySheet()">
+                                    <i class="fa fa-spinner"></i> <span>{{l("GenerateSalary")}}</span></button>
+                            </div>
+                            <div class="col-lg-12" style="text-align: right">
+                                <button   (click)="createGLTRHeader('JV','Journal Voucher')"  value="JV"
+                        class="btn btn-primary blue"  > {{l("CreateNewJournalVoucher")}}</button>                     
+                            </div>
+                        </div>
+                        <!-- <div class="kt-portlet__foot footerSection">
+                            
+                        </div> -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<createOrEditJVEntryModal #createOrEditJVEntryModal></createOrEditJVEntryModal>

@@ -1,0 +1,94 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid">
+        <div class="kt-portlet">
+            <div class="kt-portlet__body">
+                <div class="kt-pricing-1 kt-pricing-1--fixed">
+                    <div class="kt-pricing-1__items row row-centered">
+
+                        <div class="kt-pricing-1__item col-lg-3 col-centered" *ngFor="let editionWithFeatures of editionsSelectOutput.editionsWithFeatures;  let i = index">
+
+                            <div class="kt-pricing-1__visual">
+                                <div class="kt-pricing-1__hexagon1"></div>
+                                <div class="kt-pricing-1__hexagon2"></div>
+                                <span class="kt-pricing-1__icon kt-font-brand">
+                                    <i class="fa {{editionIcons[i]}}"></i>
+                                </span>
+                            </div>
+
+                            <span class="kt-pricing-1__price">
+                                {{editionWithFeatures.edition.displayName}}
+                            </span>
+
+                            <h2 class="kt-pricing-1__subtitle" *ngIf="isFree(editionWithFeatures.edition)">
+                                {{"Free" | localize}}
+                            </h2>
+
+                            <h2 class="kt-pricing-1__subtitle" *ngIf="!isFree(editionWithFeatures.edition)">
+                                <span class="kt-pricing-1__label">{{appSession.application.currencySign}}</span>{{editionWithFeatures.edition.monthlyPrice}} {{"PerMonth" | localize}} /
+                                <span class="kt-pricing-1__label">{{appSession.application.currencySign}}</span>{{editionWithFeatures.edition.annualPrice}} {{"PerYear" | localize}}
+                            </h2>
+
+                            <span class="kt-pricing-1__description">
+
+                                <ng-container *ngFor="let feature of editionsSelectOutput.allFeatures">
+                                    <!--Checbox Feature-->
+                                    <ng-container *ngIf="isTrueFalseFeature(feature)">
+                                        <i class="la la-check kt-font-success" *ngIf="featureEnabledForEdition(feature,editionWithFeatures)"></i>
+                                        <i class="la la-times kt-font-dark" *ngIf="!featureEnabledForEdition(feature,editionWithFeatures)"></i>
+                                    </ng-container>
+                                    <ng-container *ngIf="isTrueFalseFeature(feature)">{{feature.displayName}}</ng-container>
+                                    <!--Checbox Feature-->
+                                    <!--Not Checbox Feature-->
+                                    <ng-container *ngIf="!isTrueFalseFeature(feature)">
+                                        <i class="la la-check kt-font-success"></i>
+                                    </ng-container>
+                                    <ng-container *ngIf="!isTrueFalseFeature(feature)">{{feature.displayName}}:{{getFeatureValueForEdition(feature,editionWithFeatures)}}</ng-container>
+                                    <!--Not Checbox Feature-->
+                                    <br />
+                                </ng-container>
+
+                            </span>
+
+                            <div class="kt-pricing-1__btn">
+
+                                <button class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                        (click)="upgrade(editionWithFeatures.edition, editionPaymentType.Upgrade)"
+                                        *ngIf="isUserLoggedIn"
+                                        [disabled]="!canUpgrade(editionWithFeatures.edition)">
+                                    {{"Upgrade" | localize}}
+                                </button>
+
+                                <button class="btn btn-success btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                        [routerLink]="['/account/register-tenant']"
+                                        [queryParams]="{editionId: editionWithFeatures.edition.id, subscriptionStartType: subscriptionStartType.Free}"
+                                        href="#"
+                                        *ngIf="!isUserLoggedIn && isFree(editionWithFeatures.edition)">
+                                    {{"Start" | localize}}
+                                </button>
+
+                                <button class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                        [routerLink]="['/account/register-tenant']"
+                                        [queryParams]="{editionId: editionWithFeatures.edition.id, subscriptionStartType: subscriptionStartType.Trial}"
+                                        href="#"
+                                        *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition) && editionWithFeatures.edition.trialDayCount">
+                                    {{"FreeTrial" | localize}}
+                                </button>
+
+                                <button class="btn btn-primary btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                        [routerLink]="['/account/register-tenant']"
+                                        [queryParams]="{editionId: editionWithFeatures.edition.id, subscriptionStartType: subscriptionStartType.Paid, editionPaymentType: editionPaymentType.NewRegistration}"
+                                        href="#"
+                                        *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition)">
+                                    {{"BuyNow" | localize}}
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

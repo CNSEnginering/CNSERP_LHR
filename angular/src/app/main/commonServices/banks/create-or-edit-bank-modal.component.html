@@ -1,0 +1,207 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #bankForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="bank.id">{{l("EditBank")}}</span>
+                        <span *ngIf="!bank.id">{{l("CreateNewBank")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+					
+					<div class="row">
+						<div class="form-group col-md-2">
+							<label for="Bank_BANKID">{{l("BANKID")}}<span class="require-field">*</span></label>
+							<input type="text" id="Bank_BANKID" class="form-control form-control-sm" [(ngModel)]="bank.bankid" name="BANKID" maxlength="5" [disabled]="bank.id"  required />
+						</div>
+			
+						<div class="form-group col-md-5">
+							<label for="Bank_BANKNAME">{{l("BANKNAME")}}<span class="require-field">*</span></label>
+							<input type="text" id="Bank_BANKNAME" class="form-control form-control-sm" [(ngModel)]="bank.bankname" name="BANKNAME"   required />
+						</div>
+
+						<div class="form-group col-md-5">
+							<label for="Bank_BrancName">{{l("BranchName")}}<span class="require-field">*</span></label>
+							<input type="text" id="Bank_BrancName" class="form-control form-control-sm" [(ngModel)]="bank.branchName" name="branchName"   required />
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12">
+							<tabset class="tab-container tabbable-line">
+								<tab heading="{{'Profile' | localize}}">
+									
+									<br/><div class="m-checkbox-list row  col-md-6">
+										<label for="Bank_INACTIVE" class="kt-checkbox">
+											<input id="Bank_INACTIVE" type="checkbox" name="INACTIVE" [(ngModel)]="bank.inactive"> 
+											{{l("INACTIVE")}}
+											<span></span>
+										</label>
+									</div>
+
+									<div class="row">
+										<div class="form-group  col-md-4">
+											<label for="Bank_BKACCTNUMBER">{{l("BKACCTNUMBER")}}<span class="require-field">*</span></label>
+											<input type="text" id="Bank_BKACCTNUMBER" class="form-control form-control-sm" [(ngModel)]="bank.bkacctnumber" name="BKACCTNUMBER"    required/>
+										</div>
+										<div class="form-group col-md-4">
+											<label for="Bank_DocType">{{l("DocType")}}</label>
+											<select id="Bank_DocType" class="form-control form-control-sm" [(ngModel)]="bank.docType" name="docType">
+												<option [value]="1">Bank</option>
+												<option [value]="2">Cash</option>
+												<option [value]="3">Bank-Over Draft</option>
+											</select>
+										</div>
+										<div class="form-group m-form__group col-md-4">
+											<label for="ChartofControlId">{{l("IDACCTBANK")}}<span class="require-field">*</span></label>
+											<div class="input-group">
+												<input type="text" id="Bank_IDACCTBANK" class="form-control form-control-sm" [(ngModel)]="bank.idacctbank" name="IDACCTBANK"    readonly  required/>   
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectChartofControlModal(true)" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend" hidden>
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										
+										<input class="form-control" name="bank-idacctcrcardF" [(ngModel)]="bank.idacctcrcardF" type="text"  hidden>
+										<div class="form-group col-md-4">
+											<label for="Bank_IDACCTBANK">{{l("")}}&nbsp;</label>
+											<input class="form-control  form-control-sm" id="ChartofControlId" name="chartofControlId" [(ngModel)]="chartofControlName" type="text" readonly> 
+										</div>
+										<div class="form-group m-form__group col-md-4">
+											<label for="NameActtWoff">{{l("IDACCTWOFF")}}</label>
+											<div class="input-group"> 
+												<input type="text" id="Bank_IDACCTWOFF" class="form-control form-control-sm" [(ngModel)]="bank.idacctwoff" name="IDACCTWOFF"   readonly/>     
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectChartofControlModal1(true)" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend" hidden>
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<input class="form-control" name="bank-idacctwoff" [(ngModel)]="bank.idacctwoff" type="text"  hidden>
+										<div class="form-group col-md-4">
+											<label for="Bank_IDACCTWOFF">{{l("")}}&nbsp;</label>
+											<input class="form-control form-control-sm" id="NameActtWoff" name="NameActtWoff" [(ngModel)]="NameActtWoff" type="text" readonly>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group m-form__group col-md-4">
+											<label for="NameAcctcrcard">{{l("IDACCTCRCARD")}}</label>
+											<div class="input-group">
+												<input type="text" id="Bank_IDACCTCRCARD" class="form-control form-control-sm" [(ngModel)]="bank.idacctcrcard" name="IDACCTCRCARD"  readonly />    
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectChartofControlModal2(true)" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend" hidden>
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<input class="form-control" name="bank-idacctcrcardF" [(ngModel)]="bank.idacctcrcardF" type="text"  hidden>
+										<div class="form-group col-md-4">
+											<label for="Bank_IDACCTCRCARD">{{l("")}}&nbsp;</label>
+											<input class="form-control form-control-sm" id="NameAcctcrcard" name="NameAcctcrcard" [(ngModel)]="NameAcctcrcard" type="text" readonly> 
+										</div>
+										<div class="form-group col-md-4">
+											<label for="Bank_ODLimit">{{l("OverDraftLimit")}}</label>
+											<input type="text" id="Bank_ODLimit" class="form-control form-control-sm" [(ngModel)]="bank.odlimit" name="ODLimit"
+											currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+										</div>
+									</div>
+								</tab>
+								<tab heading="{{'ADDR1' | localize}}">
+									
+									<div class="row">
+										<div class="form-group col-md-6">
+											<label for="Bank_ADDR1">{{l("ADDR1")}}</label>
+											<input type="text" id="Bank_ADDR1" class="form-control form-control-sm" [(ngModel)]="bank.addR1" name="ADDR1"    />
+										</div>
+							
+										<div class="form-group col-md-6">
+											<label for=""></label>
+											<input type="text" id="Bank_ADDR2" class="form-control form-control-sm" [(ngModel)]="bank.addR2" name="ADDR2"    />
+										</div>
+							
+										<div class="form-group col-md-6">
+											<input type="text" id="Bank_ADDR3" class="form-control form-control-sm" [(ngModel)]="bank.addR3" name="ADDR3"    />
+										</div>
+							
+										<div class="form-group col-md-6">
+											<input type="text" id="Bank_ADDR4" class="form-control form-control-sm" [(ngModel)]="bank.addR4" name="ADDR4"    />
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="form-group col-md-3">
+											<label for="Bank_COUNTRY">{{l("COUNTRY")}}</label>
+											<select id="Bank_COUNTRY" class="form-control form-control-sm" [(ngModel)]="bank.country" name="COUNTRY">
+												<option value="Pakistan">Pakistan</option>
+											</select>
+										</div>
+
+										<div class="form-group col-md-3">
+											<label for="Bank_STATE">{{l("STATE")}}</label>
+											<input type="text" id="Bank_STATE" class="form-control form-control-sm" [(ngModel)]="bank.state" name="STATE"    />
+										</div>
+
+										<div class="form-group col-md-3">
+											<label for="Bank_CITY">{{l("CITY")}}</label>
+											<select id="Bank_CITY" class="form-control form-control-sm" [(ngModel)]="bank.city" name="CITY">
+												<option value="Lahore">Lahore</option>
+												<option value="Karachi">Karachi</option>
+												<option value="Multan">Multan</option>
+												<option value="Faisalabad">Faisalabad</option>
+											</select>
+										</div>
+										
+										<div class="form-group col-md-3">
+											<label for="Bank_POSTAL">{{l("POSTAL")}}</label>
+											<input type="text" id="Bank_POSTAL" class="form-control form-control-sm" [(ngModel)]="bank.postal" name="POSTAL"    />
+										</div>
+
+										<div class="form-group col-md-4">
+											<label for="Bank_CONTACT">{{l("CONTACTPERSON")}}</label>
+											<input type="text" id="Bank_CONTACT" class="form-control form-control-sm" [(ngModel)]="bank.contact" name="CONTACT"    />
+										</div>
+							
+										<div class="form-group col-md-4">
+											<label for="Bank_PHONE">{{l("PHONE")}}</label>
+											<input type="text" id="Bank_PHONE" class="form-control form-control-sm" [(ngModel)]="bank.phone" name="PHONE"    />
+										</div>
+							
+										<div class="form-group col-md-4">
+											<label for="Bank_FAX">{{l("FAX")}}</label>
+											<input type="text" id="Bank_FAX" class="form-control form-control-sm" [(ngModel)]="bank.fax" name="FAX"    />
+										</div>
+
+									</div>
+
+								</tab>
+							</tabset>
+						</div>
+					</div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!bankForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewIDACCTBANK()"></financeLookupTableModal>	 
+</div>
+<style>
+.form-group {
+    margin-bottom: 0.8rem;
+}
+</style>

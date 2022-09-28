@@ -1,0 +1,230 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #saleReturnForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="oeretHeader.id">{{l("EditSaleReturn")}}</span>
+                        <span *ngIf="!oeretHeader.id">{{l("CreateNewSaleReturn")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+					<div class="row col-md-12">
+						<div class="form-group m-form__group col-md-2">
+							<label for="SaleReturn_Location">{{l("Location")}}<span class="require-field">*</span></label>
+							<div class="input-group">  
+								<input type="number" min="1" id="SaleReturn_Location" class="form-control form-control-sm" [(ngModel)]="oeretHeader.locID" name="LocID" required/>
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectLocationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div><div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setLocationIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="LocationDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="LocationDesc" name="LocDesc" [(ngModel)]="locDesc" type="text" readonly>
+						</div>
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="SaleReturn_SaleNo">{{l("SaleNo")}}</label>
+							<div class="input-group">  
+								<input type="number" min="1" id="SaleReturn_SaleNo" class="form-control form-control-sm" [(ngModel)]="oeretHeader.sDocNo" name="SaleNo" />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectSaleNoModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div><div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setSaleNoNull()"><i class="fa fa-times"></i></button>
+								</div>
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" *ngIf="permission.isGranted('Sales.SaleReturn.Edit')" (click)="getSaleNoRecord()" type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-2">
+							<label for="SaleReturn_DocNo">{{l("DOCNO")}}<span class="require-field">*</span></label>
+							<input type="number" id="SaleReturn_DocNo" class="form-control form-control-sm" [(ngModel)]="oeretHeader.docNo" name="DocNo" readonly  required/>
+						</div>
+						<div class="form-group col-md-2">
+							<label for="SaleReturn_DocDate">{{l("DOCDATE")}}<span class="require-field">*</span></label>
+							<input 
+							[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+							required class="form-control m-input  form-control-sm" type="text" bsDatepicker [disabled]="checkedval" [(ngModel)]="oeretHeader.docDate._d" id="SaleReturn_DocDate" name="SaleReturn_DocDate" (ngModelChange)="getDateParams($event)">
+						</div> 
+						<!-- <div class="form-group col-md-2">
+							<button class="btn btn-primary green btn-sm  col-md-8" style="margin-top: 25px;" *ngIf="permission.isGranted('Sales.SaleReturn.Edit')" (click)="getSaleNoRecord()" type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+						</div> -->
+					</div>
+
+					<div class="row col-md-12">
+
+						
+						<div class="form-group col-md-2">
+							<label for="SaleReturn_PaymentDate">{{l("PaymentDate")}}<span class="require-field">*</span></label>
+							<input
+							[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+							required class="form-control m-input  form-control-sm" type="text" bsDatepicker [(ngModel)]="oeretHeader.paymentDate._d" id="SaleReturn_PaymentDate" name="SaleReturn_PaymentDate" >
+						</div>  
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="SaleReturn_ReferenceID">{{l("Reference")}}</label>
+							<div class="input-group">  
+								<input type="text" id="SaleReturn_ReferenceID" class="form-control form-control-sm" [(ngModel)]="oeretHeader.refID" name="ReferenceID" readonly/>
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<label for="ChartofAccDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="ChartofAccDesc" name="ChartofAccDesc" [(ngModel)]="chartofAccDesc" type="text" readonly>
+						</div>
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="SaleReturn_typeID">{{l("TransactionID")}}<span class="require-field">*</span></label>
+							<div class="input-group">  
+								<input type="text" id="SaleReturn_typeID" class="form-control form-control-sm" [(ngModel)]="oeretHeader.typeID" name="typeID" required   readonly/>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="TypeDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="TypeDesc" name="TypeDesc" [(ngModel)]="typeDesc" type="text" readonly>
+						</div>
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="SaleReturn_CustomerID">{{l("CustomerID")}}<span class="require-field">*</span></label>
+							<div class="input-group">  
+								<input type="number" id="SaleReturn_CustomerID" class="form-control form-control-sm" [(ngModel)]="oeretHeader.custID" name="CustID"    readonly required/>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="CustomerName">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="CustomerName" name="CustomerName" [(ngModel)]="customerName" type="text" readonly>
+						</div>
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="SaleReturn_PriceList">{{l("PriceList")}}<span class="require-field">*</span></label>
+							<div class="input-group">  
+								<input type="text" id="SaleReturn_PriceList" class="form-control form-control-sm" [(ngModel)]="oeretHeader.priceList" name="PriceList"    readonly required/>
+							</div>
+						</div>
+						<div class="form-group col-md-3" hidden>
+							<label for="PriceListDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="PriceListDesc" name="PriceListDesc" [(ngModel)]="priceListDesc" type="text" readonly>
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="SaleReturn_OGPNo">{{l("OGP")}}</label>
+							<input type="text" id="SaleReturn_OGPNo" class="form-control form-control-sm" [(ngModel)]="oeretHeader.ogp" name="OGP"  />
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="SaleReturn_Narration">{{l("Narration")}}</label>
+							<input type="text" id="SaleReturn_Narration" class="form-control form-control-sm" [(ngModel)]="oeretHeader.narration" name="Narration"    />
+						</div>
+
+					</div>
+						
+
+				<br>
+				<div class="row col-md-12">
+					<br>
+					<ag-grid-angular
+						style="width: 100%; height: 200px;" 
+						class="ag-theme-balham" 
+						[rowData]="rowData" 
+						[columnDefs]="columnDefs" 
+						[animateRows]="true"
+						[suppressDragLeaveHidesColumns]="true"
+						[rowSelection]="rowSelection"
+						[singleClickEdit]="true"
+						(cellClicked)="cellClicked($event)"
+						(cellValueChanged)="onCellValueChanged($event)"
+						(gridReady)="onGridReady($event)">
+					</ag-grid-angular>
+				</div>
+						<br>
+
+				<div class="row col-md-12">
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_TotalItems">{{l("TotalItems")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_TotalItems" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="totalItems" name="TotalItems"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_TotalQty">{{l("TotalQty")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_TotalQty" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.totalQty" name="TotalQty"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_billAmt">{{l("TotalAmt")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_billAmt" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.amount" name="billAmt"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_TotalTax">{{l("SaleTax")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_TotalTax" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.tax" name="TotalTax"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_TotalDisc">{{l("TotalDisc")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_TotalDisc" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.disc" name="TotalDisc"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_AddTotalTax">{{l("AddSaleTax")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_AddTotalTax" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.addTax" name="AddTotalTax" (keyup)="calculatetotal()"  min="0"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_TradeDisc">{{l("TradeDisc")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_TradeDisc" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.tradeDisc" name="TradeDisc" (keyup)="calculatetotal()"  min="0" required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_Freight">{{l("Freight")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_Freight" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.freight" name="Freight" (keyup)="calculatetotal()"  min="0" required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_Margin">{{l("SaleMargin")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_Margin" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.margin" name="Margin" (keyup)="calculatetotal()" min="0"  required readonly/>
+					</div>
+					<div class="form-group col-md-2">
+						<label for="SaleReturn_NetAmt">{{l("NetAmt")}}<span class="require-field">*</span></label>
+						<input type="number" id="SaleReturn_NetAmt" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="oeretHeader.totAmt" name="NetAmt"  required readonly/>
+					</div>
+				</div>
+					
+
+                </div>
+                <div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="oeretHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-1"  *ngIf="oeretHeader.id"  [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+				<!-- </div> -->
+				<button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+				<button type="button"
+					*ngIf="oeretHeader.id && !oeretHeader.approved && !oeretHeader.posted && isGranted('Sales.SaleReturn.Approve')"
+					class="btn btn-success green" 
+					[buttonBusy]="processing" (click)="approveDoc(oeretHeader.id,'Approval',true)"
+					[busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-check"></i>
+					<span>{{l("Approve")}}</span></button>
+				<button type="button"
+					*ngIf="oeretHeader.id && oeretHeader.approved && !oeretHeader.posted && isGranted('Sales.SaleReturn.UnApprove')"
+					class="btn btn-danger" [buttonBusy]="processing"
+					(click)="approveDoc(oeretHeader.id,'UnApproval',false)"
+					[busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-times"></i>
+					<span>{{l("Unapprove")}}</span></button>
+					
+					<button type="button" *ngIf="oeretHeader.id && !oeretHeader.posted && oeretHeader.approved && isGranted('Sales.SaleReturn.Process')" class="btn btn-success green"  [buttonBusy]="processing" 
+							 (click)="processSaleReturn()" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+                    <button type="submit" class="btn btn-primary blue" *ngIf="!oeretHeader.posted" [disabled]="!saleReturnForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<salesLookupTableModal #SalesLookupTableModal (modalSave)="getNewSalesModal()"></salesLookupTableModal>
+<app-log #LogTableModal></app-log>
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

@@ -1,0 +1,283 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{ l("AccountBalances") }}</span>
+            </h3>
+            <span
+                class="kt-subheader__separator kt-subheader__separator--v"
+            ></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("APTransactionListHeaderInfo")}} -->
+            </span>
+        </div>
+    </div>
+
+    <div class="kt-content" style="width:60%">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div
+                class="kt-portlet__body"
+                style="
+        padding-bottom: 0px;
+    "
+            >
+                <div class="form-group">
+                    <div class="row">
+                        <label for="FromDate" class="col-md-3 col-form-label">{{
+                            l("FROMDATE")
+                        }}</label>
+                        <div class="col-md-3">
+                            <input
+                                type="text"
+                                id="getReportParm.FromDate"
+                                class="form-control form-control-sm"
+                                bsDatepicker
+                                [(ngModel)]="fromDate"
+                                name="FromDate"
+                                required
+                                [(bsValue)]="fromDate"
+                                value="{{ fromDate | date: 'dd/MM/yyyy' }}"
+                            />
+                        </div>
+                        <label for="To Date" class="col-md-3 col-form-label">{{
+                            l("TODATE")
+                        }}</label>
+                        <div class="col-md-3">
+                            <input
+                                type="text"
+                                [(bsValue)]="toDate"
+                                value="{{ toDate | date: 'dd/MM/yyyy' }}"
+                                id="getReportParm.ToDate"
+                                class="form-control form-control-sm"
+                                bsDatepicker
+                                name="ToDate"
+                                required
+                                [(ngModel)]="toDate"
+                            />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="FromDate" class="col-md-3 col-form-label">{{
+                            l("From A/C")
+                        }}</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="accountID"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="ledgerFilters.fromAccount"
+                                    name="accountID"
+                                    required
+                                    readonly
+                                />
+                                <input
+                                    type="text"
+                                    id="accountName"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="ledgerFilters.fromAccountName"
+                                    name="accountName"
+                                    readonly
+                                />
+                                <div class="input-group-append">
+                                    <button
+                                        class="btn btn-primary blue btn-sm"
+                                        (click)="selectFromAccount()"
+                                        type="button"
+                                    >
+                                        <i class="fa fa-search"></i>
+                                        {{ l("Pick") }}
+                                    </button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button
+                                        class="btn btn-danger btn-icon btn-sm"
+                                        (click)="setFromAccount()"
+                                        type="button"
+                                    >
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="FromDate" class="col-md-3 col-form-label">{{
+                            l("To A/C")
+                        }}</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="accountID"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="ledgerFilters.toAccount"
+                                    name="toAccount"
+                                    required
+                                    readonly
+                                />
+                                <input
+                                    type="text"
+                                    id="accountName"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="ledgerFilters.toAccountName"
+                                    name="toAccountName"
+                                    readonly
+                                />
+                                <div class="input-group-append">
+                                    <button
+                                        class="btn btn-primary blue btn-sm"
+                                        (click)="selectToAccount()"
+                                        type="button"
+                                    >
+                                        <i class="fa fa-search"></i>
+                                        {{ l("Pick") }}
+                                    </button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button
+                                        class="btn btn-danger btn-icon btn-sm"
+                                        (click)="setToAccount()"
+                                        type="button"
+                                    >
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="Location" class="col-md-3 col-form-label"
+                            >Location:</label
+                        >
+                        <div class="col-md-3">
+                            <select
+                                id="Location"
+                                class="form-control form-control-sm"
+                                name="location"
+                                [(ngModel)]="location"
+                            >
+                                <option value="0">All</option>
+                                <option
+                                    *ngFor="let loc of locationList"
+                                    [value]="loc.locId"
+                                    >{{ loc.locDesc }}</option
+                                >
+                            </select>
+                        </div>
+                        <label for="Status" class="col-md-3 col-form-label"
+                            >Status:</label
+                        >
+                        <div class="col-md-3">
+                            <select
+                                id="Status"
+                                class="form-control form-control-sm"
+                                name="Status"
+                                [(ngModel)]="status"
+                            >
+                                <option value="Both">Both</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Posted">Posted</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row col-md-6">
+                        <label for="GLTRHeader_CurrencyRate">{{
+                            l("Currency")
+                        }}</label>
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                id="GLTRHeader_CurrencyRate"
+                                class="form-control form-control-sm"
+                                [(ngModel)]="curid"
+                                name="curid"
+                                required
+                                readonly
+                            />
+                            <div class="input-group-append">
+                                <button
+                                    class="btn btn-primary blue btn-sm"
+                                    (click)="openSelectCurrencyRateModal()"
+                                    type="button"
+                                >
+                                    <i class="fa fa-search"></i> {{ l("Pick") }}
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button
+                                    class="btn btn-danger btn-icon btn-sm"
+                                    type="button"
+                                    (click)="setCurrencyRateIdNull()"
+                                >
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="m-checkbox-list col-md-4 col-form-label">
+                            <label
+                                class="col-form-label"
+                                for="BookSummery_isActive"
+                                class="kt-checkbox"
+                            >
+                                Include level 3
+                                <input
+                                    id="BookSummery_isActive"
+                                    type="checkbox"
+                                    name="isActive"
+                                    [(ngModel)]="ledgerFilters.includeLevel3"
+                                />
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="m-checkbox-list col-md-4 col-form-label">
+                            <label
+                                class="col-form-label"
+                                for="includeZeroBalance"
+                                class="kt-checkbox"
+                            >
+                                include Zero Balance
+                                <input
+                                    id="includeZeroBalance"
+                                    type="checkbox"
+                                    name="isActive"
+                                    [(ngModel)]="
+                                        ledgerFilters.includeZeroBalance
+                                    "
+                                />
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr />
+                        <button
+                            type="submit"
+                            class="btn btn-primary blue"
+                            (click)="getReport()"
+                        >
+                            <i class="fa fa-save"></i>
+                            <span>{{ l("Preview") }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <commonServiceLookupTableModal
+        #CommonServiceLookupTableModal
+        (modalSave)="getNewCommonServiceModal()"
+    ></commonServiceLookupTableModal>
+    <app-reportviewr-modal #reportView></app-reportviewr-modal>
+    <appchartofcontrollookupfinder
+        #appchartofcontrollookupfinder
+        (modalSave)="getFromAndToAccount()"
+    ></appchartofcontrollookupfinder>
+</div>

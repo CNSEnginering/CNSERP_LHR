@@ -1,0 +1,325 @@
+﻿<div [@routerTransition]>
+
+
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("AllowanceSetup")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("AllowanceSetupHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('PayRoll.AllowanceSetup.Setup.Create')" 
+                [disabled]="primengTableHelper.totalRecordsCount > 0"
+                (click)="createAllowanceSetup()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewAllowanceSetup")}}</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAllowanceSetup()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocIDFilter">{{l("MinMax")}} {{l("DocID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinDocIDFilter"
+                                            [(ngModel)]="minDocIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minDocIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDocIDFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxDocIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinFuelRateFilter">{{l("MinMax")}} {{l("FuelRate")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinFuelRateFilter"
+                                            [(ngModel)]="minFuelRateFilter" placeholder="{{l('MinValue')}}"
+                                            name="minFuelRateFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxFuelRateFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxFuelRateFilter" />
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinMilageRateFilter">{{l("MinMax")}} {{l("MilageRate")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinMilageRateFilter"
+                                            [(ngModel)]="minMilageRateFilter" placeholder="{{l('MinValue')}}"
+                                            name="minMilageRateFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxMilageRateFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxMilageRateFilter" />
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinRepairRateFilter">{{l("MinMax")}} {{l("RepairRate")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinRepairRateFilter"
+                                            [(ngModel)]="minRepairRateFilter" placeholder="{{l('MinValue')}}"
+                                            name="minRepairRateFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxRepairRateFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxRepairRateFilter" />
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <label for="ActiveFilterSelect">{{l("Active")}}</label>
+                                <select class="form-control" name="ActiveFilter" id="ActiveFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("False")}}</option>
+                                    <option value="1">{{l("True")}}</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAllowanceSetup($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.AllowanceSetup.Setup.Edit', 'PayRoll.AllowanceSetup.Setup.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="docID">
+                                        {{l('DocID')}}
+                                        <p-sortIcon field="allowanceSetup.docID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="fuelRate">
+                                        {{l('FuelRate')}}
+                                        <p-sortIcon field="allowanceSetup.fuelRate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="milageRate">
+                                        {{l('MilageRate')}}
+                                        <p-sortIcon field="allowanceSetup.milageRate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="repairRate">
+                                        {{l('RepairRate')}}
+                                        <p-sortIcon field="allowanceSetup.repairRate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="allowanceSetup.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="allowanceSetup.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="allowanceSetup.audtDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="allowanceSetup.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="allowanceSetup.createDate"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.AllowanceSetup.Setup.Edit', 'PayRoll.AllowanceSetup.Setup.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewAllowanceSetupModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.AllowanceSetup.Setup.Edit')"
+                                                        (click)="createOrEditAllowanceSetupModal.show(record.allowanceSetup.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.AllowanceSetup.Setup.Delete')"
+                                                        (click)="deleteAllowanceSetup(record.allowanceSetup)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocID')}}</span>
+                                        {{record.allowanceSetup.docID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('FuelRate')}}</span>
+                                        {{record.allowanceSetup.fuelRate | number: '.2'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('MilageRate')}}</span>
+                                        {{record.allowanceSetup.milageRate | number: '.2'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('RepairRate')}}</span>
+                                        {{record.allowanceSetup.repairRate | number: '.2'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.allowanceSetup.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.allowanceSetup.active">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.allowanceSetup.audtUser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.allowanceSetup.audtDate">
+                                            {{record.allowanceSetup.audtDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.allowanceSetup.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.allowanceSetup.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.allowanceSetup.createDate">
+                                            {{record.allowanceSetup.createDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.allowanceSetup.createDate">-</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAllowanceSetup($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditAllowanceSetupModal #createOrEditAllowanceSetupModal (modalSave)="getAllowanceSetup()">
+    </createOrEditAllowanceSetupModal>
+    <viewAllowanceSetupModal #viewAllowanceSetupModal></viewAllowanceSetupModal>
+
+
+</div>

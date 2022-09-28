@@ -1,0 +1,51 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #locationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="location.id">{{l("EditLocation")}}</span>
+                        <span *ngIf="!location.id">{{l("CreateNewLocation")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-3">
+                            <label for="Location_LocID">{{l("LocID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="Location_LocID" min="1" class="form-control form-control-sm" [(ngModel)]="location.locID" 
+                            name="LocID" disabled required/>
+                        </div> 
+                        <div class="form-group col-md-6">
+                            <label for="Location_Location">{{l("Location")}}<span class="require-field">*</span></label>
+                            <input type="text" id="Location_Location" class="form-control form-control-sm"
+                                [(ngModel)]="location.location" name="Location" required/>
+                        </div>
+                        
+
+                    </div>
+                  
+                    <div class="m-checkbox-list">
+                        <label for="Location_Active" class="kt-checkbox">
+                            <input id="Location_Active" type="checkbox" name="Active" [(ngModel)]="location.active"> 
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!locationForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

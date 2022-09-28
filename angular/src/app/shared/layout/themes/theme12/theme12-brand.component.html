@@ -1,0 +1,24 @@
+<div id="kt_aside_brand" class="kt-aside__brand kt-grid__item" [ngClass]="brandBg">
+    <div class="kt-aside__brand-logo"  *ngIf="logoHide">
+        <a routerLink="/">
+            <img src="/assets/common/images/logos/{{sideBarcolorser.logoName}}" class="larger-logo">
+            <!-- <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="38" /> -->
+            <!-- <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" /> -->
+        </a>
+    </div>
+    <div class="kt-aside__brand-logo-small" *ngIf="!logoHide">
+        <a routerLink="/">
+            <img src="/assets/common/images/logos/erp-logo-icon.png" width="60" class="small-logo">
+            <!-- <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="38" /> -->
+            <!-- <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" /> -->
+        </a>
+    </div>
+    <div class="kt-aside__brand-tools">
+        <div class="kt-aside__brand-tools">
+            <button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler" (click)="logoHideShow()">
+                <span></span>
+            </button>
+        </div>
+    </div>
+ 
+</div>

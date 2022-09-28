@@ -1,0 +1,485 @@
+<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Banks")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("BanksHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.Banks.Create')" (click)="createBank()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewBank")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getBanks()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CMPIDFilter">{{l("CMPID")}}</label>
+									<input type="text" class="form-control" id="CMPIDFilter" name="cmpidFilter" [(ngModel)]="cmpidFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="BANKIDFilter">{{l("BANKID")}}</label>
+									<input type="text" class="form-control" id="BANKIDFilter" name="bankidFilter" [(ngModel)]="bankidFilter">
+								</div>
+                            </div>
+                            <!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="BranchNameFilter">{{l("BranchName")}}</label>
+									<input type="text" class="form-control" id="BranchNameFilter" name="branchNameFilter" [(ngModel)]="branchNameFilter">
+								</div>
+                            </div> -->
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ADDR1Filter">{{l("ADDR1")}}</label>
+									<input type="text" class="form-control" id="ADDR1Filter" name="addR1Filter" [(ngModel)]="addR1Filter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ADDR2Filter">{{l("ADDR2")}}</label>
+									<input type="text" class="form-control" id="ADDR2Filter" name="addR2Filter" [(ngModel)]="addR2Filter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ADDR3Filter">{{l("ADDR3")}}</label>
+									<input type="text" class="form-control" id="ADDR3Filter" name="addR3Filter" [(ngModel)]="addR3Filter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ADDR4Filter">{{l("ADDR4")}}</label>
+									<input type="text" class="form-control" id="ADDR4Filter" name="addR4Filter" [(ngModel)]="addR4Filter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CITYFilter">{{l("CITY")}}</label>
+									<input type="text" class="form-control" id="CITYFilter" name="cityFilter" [(ngModel)]="cityFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="STATEFilter">{{l("STATE")}}</label>
+									<input type="text" class="form-control" id="STATEFilter" name="stateFilter" [(ngModel)]="stateFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="COUNTRYFilter">{{l("COUNTRY")}}</label>
+									<input type="text" class="form-control" id="COUNTRYFilter" name="countryFilter" [(ngModel)]="countryFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="POSTALFilter">{{l("POSTAL")}}</label>
+									<input type="text" class="form-control" id="POSTALFilter" name="postalFilter" [(ngModel)]="postalFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CONTACTFilter">{{l("CONTACT")}}</label>
+									<input type="text" class="form-control" id="CONTACTFilter" name="contactFilter" [(ngModel)]="contactFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="PHONEFilter">{{l("PHONE")}}</label>
+									<input type="text" class="form-control" id="PHONEFilter" name="phoneFilter" [(ngModel)]="phoneFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="FAXFilter">{{l("FAX")}}</label>
+									<input type="text" class="form-control" id="FAXFilter" name="faxFilter" [(ngModel)]="faxFilter">
+								</div>
+                            </div>	
+							<div class="col-md-3">
+								<label for="INACTIVEFilterSelect">{{l("INACTIVE")}}</label>
+								<select class="form-control" name="INACTIVEFilter" id="INACTIVEFilterSelect" [(ngModel)]="inactiveFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="1">{{l("Yes")}}</option>
+								<option value="0">{{l("No")}}</option>
+								</select>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinINACTDATEFilter">{{l("INACTDATERange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinINACTDATEFilter" name="MinINACTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minINACTDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxINACTDATEFilter" name="MaxINACTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxINACTDATEFilter">
+									</div>
+                                </div>
+                            </div> -->
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="BKACCTNUMBERFilter">{{l("BKACCTNUMBER")}}</label>
+									<input type="text" class="form-control" id="BKACCTNUMBERFilter" name="bkacctnumberFilter" [(ngModel)]="bkacctnumberFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="IDACCTBANKFilter">{{l("IDACCTBANK")}}</label>
+									<input type="text" class="form-control" id="IDACCTBANKFilter" name="idacctbankFilter" [(ngModel)]="idacctbankFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="IDACCTWOFFFilter">{{l("IDACCTWOFF")}}</label>
+									<input type="text" class="form-control" id="IDACCTWOFFFilter" name="idacctwoffFilter" [(ngModel)]="idacctwoffFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="IDACCTCRCARDFilter">{{l("IDACCTCRCARD")}}</label>
+									<input type="text" class="form-control" id="IDACCTCRCARDFilter" name="idacctcrcardFilter" [(ngModel)]="idacctcrcardFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAUDTDATEFilter">{{l("AUDTDATERange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAUDTDATEFilter" name="MinAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minAUDTDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAUDTDATEFilter" name="MaxAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxAUDTDATEFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AUDTUSERFilter">{{l("AUDTUSER")}}</label>
+									<input type="text" class="form-control" id="AUDTUSERFilter" name="audtuserFilter" [(ngModel)]="audtuserFilter">
+								</div>
+                            </div>
+							<!-- <div class="col-md-3">
+								<div class="form-group">
+									<label for="ChartofControlIdFilter">({{l("ChartofControl")}}) {{l("Id")}}</label>
+									<input type="text" class="form-control" id="ChartofControlIdFilter" name="chartofControlIdFilter" [(ngModel)]="chartofControlIdFilter">
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getBanks($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px" [hidden]="!isGrantedAny('Pages.Banks.Edit', 'Pages.Banks.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="accountFk.id" hidden>
+                                        {{l('Id')}}
+                                        <p-sortIcon field="chartofControlId"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="cmpid" hidden>
+                                        {{l('CMPID')}}
+                                        <p-sortIcon field="bank.cmpid"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bankid">
+                                        {{l('BANKID')}}
+                                        <p-sortIcon field="bank.bankid"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 130px" pSortableColumn="docType">
+                                        {{l('DocType')}}
+                                        <p-sortIcon field="bank.docType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="bankname">
+                                        {{l('BANKNAME')}}
+                                        <p-sortIcon field="bank.bankname"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="branchName">
+                                        {{l('BranchName')}}
+                                        <p-sortIcon field="bank.branchName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bkacctnumber">
+                                        {{l('BKACCTNUMBER')}}
+                                        <p-sortIcon field="bank.bkacctnumber"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="idacctbank">
+                                        {{l('IDACCTBANK')}}
+                                        <p-sortIcon field="bank.idacctbank"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="idacctwoff">
+                                        {{l('IDACCTWOFF')}}
+                                        <p-sortIcon field="bank.idacctwoff"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="idacctcrcard">
+                                        {{l('IDACCTCRCARD')}}
+                                        <p-sortIcon field="bank.idacctcrcard"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="addR1" hidden>
+                                        {{l('ADDR1')}}
+                                        <p-sortIcon field="bank.addR1"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="addR2" hidden>
+                                        {{l('ADDR2')}}
+                                        <p-sortIcon field="bank.addR2"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="addR3" hidden>
+                                        {{l('ADDR3')}}
+                                        <p-sortIcon field="bank.addR3"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="addR4" hidden>
+                                        {{l('ADDR4')}}
+                                        <p-sortIcon field="bank.addR4"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="city" hidden>
+                                        {{l('CITY')}}
+                                        <p-sortIcon field="bank.city"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="state" hidden>
+                                        {{l('STATE')}}
+                                        <p-sortIcon field="bank.state"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="country" hidden>
+                                        {{l('COUNTRY')}}
+                                        <p-sortIcon field="bank.country"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="postal" hidden>
+                                        {{l('POSTAL')}}
+                                        <p-sortIcon field="bank.postal"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="contact" hidden>
+                                        {{l('CONTACT')}}
+                                        <p-sortIcon field="bank.contact"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="phone" hidden>
+                                        {{l('PHONE')}}
+                                        <p-sortIcon field="bank.phone"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="fax" hidden>
+                                        {{l('FAX')}}
+                                        <p-sortIcon field="bank.fax"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="inactive">
+                                        {{l('INACTIVE')}}
+                                        <p-sortIcon field="bank.inactive"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="inactdate" hidden>
+                                        {{l('INACTDATE')}}
+                                        <p-sortIcon field="bank.inactdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtdate">
+                                        {{l('AUDTDATE')}}
+                                        <p-sortIcon field="bank.audtdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtuser">
+                                        {{l('AUDTUSER')}}
+                                        <p-sortIcon field="bank.audtuser"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('Pages.Banks.Edit', 'Pages.Banks.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewBankModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.Banks.Edit')"
+														(click)="createOrEditBankModal.show(record.bank.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.Banks.Delete')"
+														(click)="deleteBank(record.bank)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px" hidden>
+												<span class="ui-column-title"> {{l('Id')}}</span>
+												{{record.chartofControlId}}
+											</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('CMPID')}}</span>
+											{{record.bank.cmpid}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('BANKID')}}</span>
+											{{record.bank.bankid}}
+                                        </td>
+                                    <td style="width:130px">
+											<span class="ui-column-title"> {{l('DocType')}}</span>
+											{{record.bank.docType==2?"Cash":"Bank"}}
+										</td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('BANKNAME')}}</span>
+											{{record.bank.bankname}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('BranchName')}}</span>
+											{{record.bank.branchName}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('BKACCTNUMBER')}}</span>
+											{{record.bank.bkacctnumber}}
+										</td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('IDACCTBANK')}}</span>
+											{{record.bank.idacctbank}}
+										</td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('IDACCTWOFF')}}</span>
+											{{record.bank.idacctwoff}}
+										</td>
+                                    <td style="width:200px">
+											<span class="ui-column-title"> {{l('IDACCTCRCARD')}}</span>
+											{{record.bank.idacctcrcard}}
+										</td>
+                                    <td style="width:200px" hidden>
+											<span class="ui-column-title"> {{l('ADDR1')}}</span>
+											{{record.bank.addR1}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('ADDR2')}}</span>
+											{{record.bank.addR2}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('ADDR3')}}</span>
+											{{record.bank.addR3}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('ADDR4')}}</span>
+											{{record.bank.addR4}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('CITY')}}</span>
+											{{record.bank.city}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('STATE')}}</span>
+											{{record.bank.state}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('COUNTRY')}}</span>
+											{{record.bank.country}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('POSTAL')}}</span>
+											{{record.bank.postal}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('CONTACT')}}</span>
+											{{record.bank.contact}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('PHONE')}}</span>
+											{{record.bank.phone}}
+										</td>
+                                    <td style="width:150px" hidden>
+											<span class="ui-column-title"> {{l('FAX')}}</span>
+											{{record.bank.fax}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('INACTIVE')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.bank.inactive">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.bank.inactive">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px" hidden>
+										<span class="ui-column-title"> {{l('INACTDATE')}}</span>
+                                        <span *ngIf="record.bank.inactdate">
+											{{record.bank.inactdate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.bank.inactdate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AUDTDATE')}}</span>
+                                        <span *ngIf="record.bank.audtdate">
+											{{record.bank.audtdate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.bank.audtdate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AUDTUSER')}}</span>
+											{{record.bank.audtuser}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getBanks($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditBankModal #createOrEditBankModal (modalSave)="getBanks()"></createOrEditBankModal>
+    <viewBankModal #viewBankModal></viewBankModal>
+    
+  
+</div>

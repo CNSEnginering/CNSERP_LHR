@@ -1,0 +1,207 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #bkTransferForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="bkTransfer.id">{{l("BANKTRANSFER")}}</span>
+						<span *ngIf="!bkTransfer.id">{{l("BANKTRANSFER")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body form-group ">
+					<div class="row">
+						
+						
+						<div class="col-sm-4">
+							<label for="BkTransfer_DOCID" >{{l("DOCID")}}</label>
+							<input type="number" disabled id="BkTransfer_DOCID" class="form-control form-control-sm"
+								[(ngModel)]="bkTransfer.docid" name="DOCID" />
+						</div>
+						
+						
+						<div class="col-sm-4">
+							<label for="BkTransfer_DOCDATE" >{{l("DOCDATE")}}</label>
+							<input required class="form-control form-control-sm" type="datetime" bsDatepicker
+								[(ngModel)]="bkTransfer.docdate._d" id="BkTransfer_DOCDATE" name="BkTransfer_DOCDATE"
+								(ngModelChange) = "docDate($event)"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+						</div>
+						<div class="col-sm-4">
+							<label for="BkTransfer_DESCRIPTION">{{l("DESCRIPTION")}}</label>
+							<input required type="text" id="BkTransfer_DESCRIPTION" class="form-control form-control-sm"
+								[(ngModel)]="bkTransfer.description" name="DESCRIPTION" />
+						</div>
+					
+						<div class="col-sm-4">
+							<label for="BkTransfer_TRANSFERDATE">{{l("TRANSFERDATE")}}</label>
+							<input required class="form-control form-control-sm" type="datetime" bsDatepicker
+								[(ngModel)]="bkTransfer.transferdate._d" id="BkTransfer_TRANSFERDATE"
+								(ngModelChange) = "transferDate($event)"
+								name="BkTransfer_TRANSFERDATE" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+						</div>
+						<div class="col-sm-4">
+							<label for="BankBANKNAME" >{{l("FROMBANK")}}</label>
+							<div class="input-group ">
+								<input class="form-control form-control-sm" id="BankBANKNAME" name="bankBANKNAME"
+									[(ngModel)]="bankBANKNAME" type="text" disabled required>
+								<div class="input-group-append" *ngIf="!bkStatus">
+									<button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectBankModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" hidden>
+									<button class="btn btn-danger btn-icon" type="button" (click)="setBankIdNull()"><i
+											class="fa fa-times"></i></button>
+								</div>
+							</div>
+							
+							
+						</div>
+						<div class="col-sm-4">
+							<label for="Bank Address" >{{l("BANKADDRESS")}}</label>
+							<input type="text" class="form-control form-control-sm" name="BankAddress" disabled
+								[(ngModel)]="BankAddress" />
+						</div>
+	
+						<div class="col-sm-4">
+							<label for="Bank Account" >{{l("BANKACCOUNT")}}</label>				
+								<input type="text" class="form-control form-control-sm" name="BankAccount" disabled
+									[(ngModel)]="BankAccount" />
+						</div>
+					
+							
+							<div class="col-sm-4">
+								<label for="BkTransfer_FROMCONFIGID">{{l("FROMCONFIGID")}}</label>
+								<input type="number" id="BkTransfer_FROMCONFIGID" class="form-control form-control-sm"
+									[(ngModel)]="bkTransfer.fromconfigid" name="FROMCONFIGID" disabled />
+							</div>
+							<div class="col-sm-4">
+								<label for="BankBANKNAME" >{{l("TOBANK")}}</label>
+								<div class="input-group ">	
+									<input class="form-control form-control-sm" id="BankBANKNAME1" name="bankBANKNAME1"
+										[(ngModel)]="bankBANKNAME1" type="text" disabled required>
+									<div class="input-group-append" *ngIf="!bkStatus">
+										<button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectBankModal1()"
+											type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div>
+									<div class="input-group-prepend" hidden>
+										<button class="btn btn-danger btn-icon" type="button" (click)="setBankIdNull()"><i
+												class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+						
+							
+					</div>
+					
+					<div class="form-group" hidden>
+						<label for="BkTransfer_FROMBANKID">{{l("FROMBANKID")}}</label>
+						<input type="number" id="BkTransfer_FROMBANKID" class="form-control form-control-sm"
+							[(ngModel)]="bkTransfer.frombankid" name="FROMBANKID" />
+					</div>
+					<div class="form-group" hidden>
+						<label for="BkTransfer_TOBANKID">{{l("TOBANKID")}}</label>
+						<input type="number" id="BkTransfer_TOBANKID" class="form-control form-control-sm"
+							[(ngModel)]="bkTransfer.tobankid" name="TOBANKID" />
+					</div>
+					<div class="row">
+						
+						
+						<div class="col-sm-4">
+							<label for="Bank Address" >{{l("BANKADDRESS")}}</label>
+							<input type="text" class="form-control form-control-sm" name="BankAddress1" disabled
+								[(ngModel)]="BankAddress1" />
+						</div>
+						<div class="col-sm-4">
+							<label for="Bank Account">{{l("BANKACCOUNT")}}</label>
+							<input type="text" class="form-control form-control-sm" name="BankAccount1" disabled
+								[(ngModel)]="BankAccount1" />
+						</div>
+						<div class="col-sm-4">
+							<label for="BkTransfer_TOCONFIGID" >{{l("To Config ID")}}</label>
+							<input type="number" disabled id="BkTransfer_TOCONFIGID"
+								class="form-control form-control-sm " [(ngModel)]="bkTransfer.toconfigid"
+								name="TOCONFIGID" />
+						</div>
+					</div>
+
+					<!-- <input class="form-control" name="bkTransfer.bankId" [(ngModel)]="bkTransfer.bankId" type="text" required hidden> -->
+
+
+					<!-- <div class="form-group">
+									<label for="BkTransfer_CMPID">{{l("CMPID")}}</label>
+									<input type="text" id="BkTransfer_CMPID" class="form-control" [(ngModel)]="bkTransfer.cmpid" name="CMPID"    />
+								</div> -->
+
+
+
+
+
+
+
+
+
+					<!-- <div class="form-group">
+									<label for="BkTransfer_FROMBANKID">{{l("FROMBANKID")}}</label>
+									<input type="number" id="BkTransfer_FROMBANKID" class="form-control" [(ngModel)]="bkTransfer.frombankid" name="FROMBANKID"  />
+								</div> -->
+				<div class=" mt-3	" style="background-color:rgb(129, 179, 236); color: white; padding:5px;">
+						<div class="row col-md-12 p-3">
+						
+							<div class="col-md-6">
+								<label for="BkTransfer_AVAILLIMIT">{{l("AVAILABLELIMIT")}}</label>
+								<input type="text" disabled required id="BkTransfer_AVAILLIMIT"
+									class="form-control form-control-sm" [(ngModel)]="bkTransfer.availlimit"
+									name="AVAILLIMIT" currencyMask [options]="{ prefix: ' ', thousands: ',' }" />
+							</div>
+							
+							<div class=" col-md-6">
+								<label for="BkTransfer_TRANSFERAMOUNT">{{l("TRANSFERAMOUNT")}}</label>
+								<input type="text" required id="BkTransfer_TRANSFERAMOUNT"
+									class="form-control form-control-sm" [(ngModel)]="bkTransfer.transferamount"
+									currencyMask [options]="{ prefix: ' ', thousands: ',' }" name="TRANSFERAMOUNT"
+									(ngModelChange)="chkTransfer()" min="0" />
+							</div>
+						</div>
+					</div>
+					<!-- <div class="form-group">
+									<label for="BkTransfer_AUDTDATE">{{l("AUDTDATE")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="audtdate" id="BkTransfer_AUDTDATE" name="BkTransfer_AUDTDATE">
+								</div>
+					
+								<div class="form-group">
+									<label for="BkTransfer_AUDTUSER">{{l("AUDTUSER")}}</label>
+									<input type="text" id="BkTransfer_AUDTUSER" class="form-control" [(ngModel)]="bkTransfer.audtuser" name="AUDTUSER"    />
+								</div> -->
+
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<span *ngIf="!bkStatus">
+						<button type="button" class="btn btn-success green" *ngIf="bkTransfer.id"
+							[disabled]="!bkTransferForm.form.valid || duplicateBank || bankBANKNAME == '' || bankBANKNAME1 == '' || validTransfer == false || bkTransfer.transferamount <= 0"
+							[buttonBusy]="processing" [busyText]="l('ProcessingWithThreeDot')"
+							(click)="processBKTransfer()"><i class="fa fa-spinner"></i>
+							<span>{{l("Process")}}</span></button>
+						<button type="submit" class="btn btn-primary blue"
+							[disabled]="!bkTransferForm.form.valid || duplicateBank || bankBANKNAME == '' || bankBANKNAME1 == '' || validTransfer == false || bkTransfer.transferamount <= 0
+							|| !dateValid
+							"
+							[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+							<span>{{l("Save")}}</span></button>
+					</span>
+				</div>
+			</form>
+		</div>
+	</div>
+	<bkTransferBankLookupTableModal #bkTransferBankLookupTableModal (modalSave)="getNewBankId()">
+	</bkTransferBankLookupTableModal>
+	<bkTransferBankLookupTableModal1 #bkTransferBankLookupTableModal1 (modalSave1)="getNewBankId1()">
+	</bkTransferBankLookupTableModal1>
+	<!-- <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewIDACCTBANK()"></financeLookupTableModal>	 	  -->
+</div>

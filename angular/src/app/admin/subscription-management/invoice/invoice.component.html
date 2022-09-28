@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <div class="kt-content">
+        <div class="kt-portlet">
+            <div class="kt-portlet__body">
+    
+                <div class="kt-invoice-1">
+                    <div class="kt-invoice__wrapper">
+                        <div class="kt-invoice__head" [ngStyle]="{ 'background': 'url(' + appRootUrl() + 'assets/common/images/bg-6.jpg)', 'background-size': 'cover'}">
+                            <div class="kt-invoice__container kt-invoice__container--centered">
+                                <div class="kt-invoice__logo">
+                                    <a href="#">
+                                        <h1>{{'Invoice' | localize}}</h1>
+                                    </a>
+                                    <a href="#">
+                                        <img [src]="companyLogo">
+                                    </a>
+                                </div>
+                                <span class="kt-invoice__desc">
+                                    {{invoiceInfo.hostLegalName}}
+                                    <span *ngFor="let addressLine of invoiceInfo.hostAddress">
+                                        <br />{{addressLine}}
+                                    </span>
+                                </span>
+                                <div class="kt-invoice__items">
+                                    <div class="kt-invoice__item">
+                                        <span class="kt-invoice__subtitle">{{'Date' | localize}}</span>
+                                        <span class="kt-invoice__text">{{invoiceInfo.invoiceDate | momentFormat:'YYYY-MM-DD'}}</span>
+                                    </div>
+                                    <div class="kt-invoice__item">
+                                        <span class="kt-invoice__subtitle">{{'Invoice' | localize}}</span>
+                                        <span class="kt-invoice__text">#{{invoiceInfo.invoiceNo}}</span>
+                                    </div>
+                                    <div class="kt-invoice__item">
+                                        <span class="kt-invoice__subtitle">{{'InvoiceTo' | localize}}</span>
+                                        <span class="kt-invoice__text">
+                                            {{invoiceInfo.tenantLegalName}}
+                                            <span *ngFor="let addressLine of invoiceInfo.tenantAddress">
+                                                <br />{{addressLine}}
+                                            </span>
+                                            <br />{{"Tax/VatNo" | localize}}: {{invoiceInfo.tenantTaxNo}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-invoice__body kt-invoice__body--centered">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50px;">#</th>
+                                            <th style="text-align: left;">{{"Edition" | localize}}</th>
+                                            <th style="width: 100px;">{{"Amount" | localize}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td style="text-align: left;">{{invoiceInfo.editionDisplayName}}</td>
+                                            <td>{{appSession.application.currencySign}}{{invoiceInfo.amount | number: '1.2-2'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="kt-invoice__footer">
+                            <div class="kt-invoice__container kt-invoice__container--centered">
+                                <div class="kt-invoice__content">
+                                    <button type="button" class="btn btn-primary d-print-none print-btn" onclick="javascript:window.print();">{{("Print")}}</button>
+                                </div>
+                                <div class="kt-invoice__content">
+                                    <span>{{"Total" | localize}}</span>
+                                    <span class="kt-invoice__price">{{appSession.application.currencySign}}{{invoiceInfo.amount | number: '1.2-2'}}</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>ERP.Tests</AssemblyName>
+    <PackageId>ERP.Tests</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ERP.Test.Base\ERP.Test.Base.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="4.6.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="4.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+  </ItemGroup>
+</Project>

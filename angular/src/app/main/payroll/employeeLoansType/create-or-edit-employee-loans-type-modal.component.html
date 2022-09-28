@@ -1,0 +1,96 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #LoansTypeForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+                autocomplete="off"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="loansType.id">{{
+                            l("EditEmployeeLoansType")
+                        }}</span>
+                        <span *ngIf="!loansType.id">{{
+                            l("CreateNewEmployeeLoansType")
+                        }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="LoanType_ID"
+                                >{{ l("LoanTypeID")
+                                }}<span class="require-field">*</span></label
+                            >
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    style="background-color: #f4f4f4"
+                                    id="LoanType_ID"
+                                    class="form-control form-control-sm"
+                                    [(ngModel)]="loansType.LoanTypeID"
+                                    name="LoanTypeID"
+                                    readonly
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <label for="LoanType_Name">{{
+                                l("LoanType")
+                            }}</label>
+                            <input
+                                class="form-control form-control-sm"
+                                id="LoanType_Name"
+                                name="LoanTypeName"
+                                [(ngModel)]="loansType.LoanTypeName"
+                                type="text"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="close()"
+                    >
+                        {{ l("Cancel") }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!LoansTypeForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

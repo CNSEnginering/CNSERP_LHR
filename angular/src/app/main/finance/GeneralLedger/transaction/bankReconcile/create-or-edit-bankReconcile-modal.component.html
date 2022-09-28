@@ -1,0 +1,227 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<form *ngIf="active" #adjustmentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="glReconHeader.id">{{l("EditBankReconcile")}}</span>
+						<span *ngIf="!glReconHeader.id">{{l("CreateNewBankReconcile")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<tabset>
+						<tab heading="Header Information">
+
+							<div class="row">
+								<div class="form-group col-md-3">
+									<label for="BankReconcile_DocNo">{{l("DocNo")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="BankReconcile_DocNo" class="form-control form-control-sm"
+										[(ngModel)]="glReconHeader.docNo" name="DocNo" required disabled />
+								</div>
+
+								<div class="form-group m-form__group col-md-3">
+									<label for="BankReconcile_BankID">{{l("Bank")}}<span
+											class="require-field"></span></label>
+									<div class="input-group">
+										<input type="text" id="BankReconcile_BankID"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.bankID"
+											name="BankID" required readonly />
+										<div class="input-group-append">
+											<button *ngIf="!glReconHeader.id" class="btn btn-primary blue btn-sm"
+												(click)="openBankModal()" type="button"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button *ngIf="!glReconHeader.id" class="btn btn-danger btn-icon btn-sm"
+												type="button" (click)="setBankIdNull()"><i
+													class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group col-md-6">
+									<label for="BankReconcile_BankName">{{l("Bank Name")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="BankReconcile_BankName" class="form-control form-control-sm"
+										[(ngModel)]="glReconHeader.bankName" name="BankName" required disabled />
+								</div>
+
+								<div class="form-group col-md-3">
+									<label for="GLReconHeader_ReconcileDate">{{l("ReconcileDate")}}<span
+											class="require-field">*</span></label>
+									<input required class="form-control m-input  form-control-sm" type="text"
+										bsDatepicker id="GLReconHeader_ReconcileDate"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="bsValue"
+										(ngModelChange)="getClosingBalance($event)" name="GLReconHeader_ReconcileDate">
+								</div>
+								
+								<div class="form-group col-md-3">
+									<label for="BankReconcile_BeginingBalance">{{l("BeginingBalance")}}</label>
+									<input type="text" id="BankReconcile_BeginingBalance"
+										class="form-control form-control-sm" [(ngModel)]="glReconHeader.beginBalance"
+										name="BeginBalance" currencyMask [options]="{ prefix: ' ', thousands: ',' }"
+										disabled />
+								</div>
+								<div class="form-group col-md-3">
+									<label for="BankReconcile_EndingBalance">{{l("StatementBalance")}}</label>
+									<input type="text" id="BankReconcile_EndingBalance"
+										class="form-control form-control-sm" [(ngModel)]="glReconHeader.endBalance"
+										(ngModelChange)="calculateDiff($event)" name="EndingBalance" currencyMask
+										[options]="{ prefix: ' ', thousands: ',' }" />
+								</div>
+
+								<div class="form-group col-md-3">
+									<label for="BankReconcile_ReconcileAmt">{{l("ReconcileAmount")}}</label>
+									<input class="form-control form-control-sm" id="BankReconcile_ReconcileAmt"
+										name="ReconcileAmt" [(ngModel)]="glReconHeader.reconcileAmt"
+										(ngModelChange)="calculateDiff($event)" type="text" disabled currencyMask
+										[options]="{ prefix: ' ', thousands: ',' }">
+								</div>
+
+								<div class="form-group col-md-3">
+									<label for="BankReconcile_StatementAmt">{{l("EndingBalance")}}</label>
+									<input class="form-control form-control-sm" id="BankReconcile_StatementAmt"
+										name="StatementAmt" [(ngModel)]="glReconHeader.statementAmt"
+										(ngModelChange)="calculateDiff($event)" type="text" disabled currencyMask
+										[options]="{ prefix: ' ', thousands: ',' }">
+								</div>
+								<div class="form-group col-md-3">
+									<label for="BankReconcile_Difference">{{l("Difference")}}</label>
+									<input class="form-control form-control-sm" id="BankReconcile_Difference"
+										name="DiffAmount" [(ngModel)]="glReconHeader.diffAmount" type="text" disabled
+										currencyMask [options]="{ prefix: ' ', thousands: ',' }">
+								</div>
+
+							</div>
+							
+
+							<div class="form-group form-group-sm">
+
+								<div class="clearfix ">
+
+									<span class="float-left">
+										<button type="button" class="btn btn-primary"
+											(click)="onAddRow()">Filter</button>
+									</span>
+
+									<span class="float-right">
+										<div class="kt-checkbox-list">
+											<label for="checkAll" class="kt-checkbox">
+												<input id="checkAll" type="checkbox" name="headerselection"
+													(change)="headerCheckboxSelection($event)">
+												{{"Check All" | localize}}
+												<span></span>
+											</label>
+										</div>
+									</span>
+
+								</div>
+							</div>
+						</tab>
+						<tab heading="General">
+							<div class="form-group">
+
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="ClearedDeposits">{{l("ClearedDeposits")}}</label>
+										<input type="text" id="BankReconcile_ClearedDeposits"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.clDepAmt"
+											name="ClearedDeposits" currencyMask
+											[options]="{ prefix: ' ', thousands: ',' }" disabled />
+									</div>
+									<div class="col-md-6">
+										<label for="ClearedPayment">{{l("ClearedPayment")}}</label>
+										<input type="text" id="BankReconcile_ClearedPayment"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.clPayAmt"
+											name="ClearedPayment" currencyMask
+											[options]="{ prefix: ' ', thousands: ',' }" disabled />
+									</div>
+								</div>
+
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="UnClearedDeposits">{{l("UnClearedDeposits")}}</label>
+										<input type="text" id="BankReconcile_UnClearedDeposits"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.unClDepAmt"
+											name="UnClearedDeposits" currencyMask
+											[options]="{ prefix: ' ', thousands: ',' }" disabled />
+									</div>
+									<div class="col-md-6">
+										<label for="UnClearedPayment">{{l("UnClearedPayment")}}</label>
+										<input type="text" id="BankReconcile_UnClearedPayment"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.unClPayAmt"
+											name="UnClearedPayment" currencyMask
+											[options]="{ prefix: ' ', thousands: ',' }" disabled />
+									</div>
+								</div>
+
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="ClearedItems">{{l("ClearedItems")}}</label>
+										<input type="text" id="BankReconcile_ClearedItems"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.clItems"
+											name="ClearedItems" currencyMask
+											[options]="{ prefix: ' ', thousands: ',' , precision:0 }" disabled />
+									</div>
+									<div class="col-md-6">
+										<label for="UnClearedItems">{{l("UnClearedItems")}}</label>
+										<input type="text" id="BankReconcile_UnClearedItems"
+											class="form-control form-control-sm" [(ngModel)]="glReconHeader.unClItems"
+											name="UnClearedItems" currencyMask
+											[options]="{ prefix: ' ', thousands: ',' , precision:0 }" disabled />
+									</div>
+								</div>
+							</div>
+
+						</tab>
+					</tabset>
+
+					<div class="row">
+						<br>
+
+						<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [modules]="modules"
+							[rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+							[suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+							[singleClickEdit]="true" (cellValueChanged)="onCellValueChanged($event)"
+							(cellEditingStarted)="onCellEditingStarted($event)" (gridReady)="onGridReady($event)"
+							(cellClicked)="onCellClicked($event)">
+						</ag-grid-angular>
+					</div><br>
+
+				</div>
+				<div class="modal-footer">
+					<!-- <div class=" pull-right"  > -->
+						<button type="button" class="btn btn-success green col-md-1"  *ngIf="glReconHeader.id"[buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="button"
+						*ngIf="glReconHeader.id && glReconHeader.approved == true && isGranted('Transaction.VoucherEntry.UnApprove')"
+						class="btn btn-danger" [disabled]="" [buttonBusy]="unapproving"
+						(click)="approveBnkReconcile(glReconHeader.id,false)" [busyText]="l('ApprovingWithThreeDot')"><i
+							class="fa fa-times"></i>
+						<span>{{l("Unapprove")}}</span></button>
+					<button type="button"
+						*ngIf="glReconHeader.id && (glReconHeader.approved==false || glReconHeader.approved==undefined )  && isGranted('Transaction.VoucherEntry.Approve')"
+						class="btn btn-success green" [disabled]="" [buttonBusy]="approving"
+						(click)="approveBnkReconcile(glReconHeader.id,true)" [busyText]="l('ApprovingWithThreeDot')"><i
+							class="fa fa-check"></i>
+						<span>{{l("Approve")}}</span></button>
+					<button type="submit" class="btn btn-primary blue" [buttonBusy]="saving"
+						*ngIf="(glReconHeader.approved==false || glReconHeader.approved==undefined)" [busyText]="l('SavingWithThreeDot')"><i
+							class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+<commonServiceLookupTableModal #bankfinderModal (modalSave)="getNewbank()"></commonServiceLookupTableModal>
+<app-log #LogTableModal></app-log>

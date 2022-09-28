@@ -1,0 +1,8 @@
+<!-- <input class="form-control m-input  form-control-sm" type="text"
+    [(ngModel)]="createdDate" id="GLReconHeader_ReconcileDate" name="GLReconHeader_ReconcileDate"
+     (show)="refresh($event)" (click) ="getDatePicker()"> -->
+<!-- 
+<input type="text" placeholder="Datepicker" class="form-control" bsDatepicker (onshow)="refresh($event)"> -->
+
+<input id="createDate" type="datetime" #createDate name="createDate" class="form-control" bsDatepicker
+    [(ngModel)]="createdDate" (click) = "this.refresh(this.params)" autocomplete="off">

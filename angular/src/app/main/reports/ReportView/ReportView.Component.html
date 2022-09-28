@@ -1,0 +1,18 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Report View")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("APTransactionListHeaderInfo")}} -->
+            </span>
+        </div>
+
+    </div>
+    <ssrs-reportviewer [reportserver]="reportServer" [reporturl]="reportUrl" [showparameters]="showParameters"
+        [parameters]="parameters" [language]="language" [width]="width" [height]="height" [toolbar]="toolbar">
+    </ssrs-reportviewer>

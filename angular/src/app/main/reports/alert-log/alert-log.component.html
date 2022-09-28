@@ -1,0 +1,39 @@
+<div [@routerTransition]>
+  <div class="kt-subheader kt-grid__item">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        <span>Alert Log</span>
+      </h3>
+      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+      <span class="kt-subheader__desc">
+        {{"" | localize}}
+      </span>
+    </div>
+  </div>
+  <div class="kt-content">
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__body">
+        <form class="kt-form">
+          <div class="row">
+            <div class="form-group  col-md-4">
+              <label for="form_Id">{{("Delete Log")}} <span class="require-field"></span> </label>
+              <select id="form_Id" class="form-control" [(ngModel)]="voucherDto.formName" name="formId" required>
+                <option value=0>Choose Form</option>
+									<option *ngFor="let forms of formName" [value]="forms.formName">{{forms.formName}}</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div class="row mb-4">
+              <div class="col-sm-12 text-right">
+                <button type="button" (click)="getReport()" class="btn btn-primary blue">
+                  Preview</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <app-reportviewr-modal #reportView></app-reportviewr-modal>

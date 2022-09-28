@@ -1,0 +1,28 @@
+.kt-header-mobile .kt-header__brand-logo-default {
+  height: 52px !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.cc-window {
+  background-color: #282a3a;
+}
+.cc-btn {
+  background-color: #5867dd;
+  border-color: #5867dd;
+  color: #ffffff;
+}
+.cc-message {
+  color: #fefefe;
+}
+.kt-badge.kt-badge--inline {
+  border-radius: 0px;
+}
+.kt-user-card .kt-user-card__name {
+  color: #6c7293 !important;
+}
+.kt-header__topbar .subscription-warning {
+  padding-top: 24px;
+}
+.kt-header__topbar .subscription-warning span {
+  color: #fff;
+}

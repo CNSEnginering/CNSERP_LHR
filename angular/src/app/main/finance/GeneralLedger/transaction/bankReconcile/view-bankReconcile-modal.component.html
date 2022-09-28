@@ -1,0 +1,98 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l("Details") }}</span>
+                </h4>
+                <button
+                    type="button"
+                    class="close"
+                    (click)="close()"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DocID") }} :</h6>
+                        {{ gLReconHeader.docID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DocDate") }} :</h6>
+                        {{ gLReconHeader.docDate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("BankID") }} :</h6>
+                        {{ gLReconHeader.bankID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("BankName") }} :</h6>
+                        {{ gLReconHeader.bankName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("BeginBalance") }} :</h6>
+                        {{ gLReconHeader.beginBalance }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("EndBalance") }} :</h6>
+                        {{ gLReconHeader.endBalance }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Completed") }} :</h6>
+                        {{ gLReconHeader.Completed == true ? "Yes" : "No" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("ReconcileAmt") }} :</h6>
+                        {{ gLReconHeader.reconcileAmt }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Narration") }} :</h6>
+                        {{ gLReconHeader.narration }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtUser") }} :</h6>
+                        {{ gLReconHeader.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("CreatedBy") }} :</h6>
+                        {{ gLReconHeader.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("CreateDate") }} :</h6>
+                        {{ gLReconHeader.createdDate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtUser") }} :</h6>
+                        {{ gLReconHeader.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtDate") }} :</h6>
+                        {{ gLReconHeader.audtDate | date: "dd/MM/yyyy" }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-primary blue"
+                    (click)="close()"
+                >
+                    {{ l("Close") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

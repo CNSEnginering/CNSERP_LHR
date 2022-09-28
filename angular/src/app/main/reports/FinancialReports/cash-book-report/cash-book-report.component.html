@@ -1,0 +1,141 @@
+<div [@routerTransition]>
+  <div class="kt-subheader kt-grid__item">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        <span>{{rptCashBook == true ? "Cash Book" : "Bank Book"}}</span>
+      </h3>
+      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+      <span class="kt-subheader__desc">
+        {{"" | localize}}
+      </span>
+    </div>
+  </div>
+  <div class="kt-content">
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__body">
+        <form class="kt-form">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="MinDocDateFilter">{{l("DocDate")}}</label>
+                <div class="input-group">
+                  <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime"
+                    bsDatepicker placeholder="{{l('From')}}" [(ngModel)]="fromDate" [(bsValue)]="fromDate"
+                    value="{{ fromDate | date: 'dd/MM/yyyy' }}">
+                  <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                  <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime"
+                    bsDatepicker placeholder="{{l('To')}}" [(ngModel)]="toDate" [(bsValue)]="toDate"
+                    value="{{ toDate | date: 'dd/MM/yyyy' }}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-10">
+
+              <div class="form-group row">
+                <label class="col-form-label col-lg-1">From A/C:</label>
+                <div class="col-lg-5">
+                  <div class="input-group">
+                    <input type="text" id="accountID" class="form-control form-control-sm" [(ngModel)]="fromAccount"
+                      name="accountID" required readonly />
+                    <input type="text" id="accountName" class="form-control form-control-sm"
+                      [(ngModel)]="fromAccountName" name="accountName" readonly />
+                    <div class="input-group-append">
+                      <button class="btn btn-primary blue btn-sm" (click)="selectFromAccount()" type="button"><i
+                          class="fa fa-search"></i> {{l("Pick")}}</button>
+                    </div>
+                    <div class="input-group-prepend">
+                      <button class="btn btn-danger btn-icon btn-sm" (click)="setToAllAccount()" type="button"><i
+                          class="fa fa-times"></i></button>
+                    </div>
+                  </div>
+
+                </div>
+                <label class="col-form-label col-lg-1">To A/C:</label>
+                <div class="col-lg-5">
+                  <div class="input-group">
+                    <input type="text" id="toAccountID" class="form-control form-control-sm" [(ngModel)]="toAccount"
+                      name="toAccountID" required readonly />
+                    <input type="text" id="toAccountName" class="form-control form-control-sm"
+                      [(ngModel)]="toAccountName" name="toAccountName" readonly />
+                    <div class="input-group-append">
+                      <button class="btn btn-primary blue btn-sm" (click)="selectToAccount()" type="button"><i
+                          class="fa fa-search"></i> {{l("Pick")}}</button>
+                    </div>
+                    <div class="input-group-prepend">
+                      <button class="btn btn-danger btn-icon btn-sm" (click)="setToAllAccount1()" type="button"><i
+                          class="fa fa-times"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="LedgerFilters_Location" class="col-md-1 col-form-label">Location:</label>
+            <div class="col-md-5">
+              <select id="LedgerFilters_Location" class="form-control form-control-sm" name="location"
+                [(ngModel)]="location">
+                <option value=0>All</option>
+                <option *ngFor="let loc of locationList" [value]="loc.locId">{{loc.locDesc}}</option>
+              </select>
+            </div>
+
+            <label for="LedgerFilters_Status" class="col-md-1 col-form-label">Status:</label>
+            <div class="col-md-2">
+              <select id="LedgerFilters_Status" class="form-control form-control-sm" name="Status" [(ngModel)]="status">
+                <option value="Both">Both</option>
+                <option value="Approved">Approved</option>
+                <option value="Posted">Posted</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+            <label class="col-form-label col-lg-1">{{l("Currency")}}</label>
+            <div class="col-lg-5">
+              <div class="input-group">
+                <input type="text" id="curid" class="form-control form-control-sm" [(ngModel)]="curid" name="curid"
+                  required readonly />
+                <!-- <input type="text" id="accountName"
+                  class="form-control form-control-sm"
+                  [(ngModel)]="ledgerFilters.fromAccountName" name="accountName"
+                  readonly /> -->
+                <div class="input-group-append">
+                  <button class="btn btn-primary blue btn-sm" (click)="openSelectCurrencyRateModal()" type="button"><i
+                      class="fa fa-search"></i> {{l("Pick")}}</button>
+                </div>
+                <div class="input-group-prepend">
+                  <button class="btn btn-danger btn-icon btn-sm" (click)="setCurrencyRateIdNull()" type="button"><i
+                      class="fa fa-times"></i></button>
+                </div>
+              </div>
+              <!-- <select id="fromAccount" name="fromAccount" class="form-control" (change)="getSubLedger()"    [(ngModel)]="ledgerFilters.fromAccount" >
+          <option *ngFor="let account of chartOfAccountList" [value]="account.accountID">{{account.accountName}}
+            </option>
+          </select>     -->
+            </div>
+          </div>
+          <div>
+            <div class="row mb-4">
+              <div class="col-sm-12 text-right">
+                <button type="button" (click)="getReport()" class="btn btn-primary blue">
+                  Preview</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <appchartofcontrollookupfinder #fromAccountFinder (modalSave)="getFromAccount()">
+  </appchartofcontrollookupfinder>
+  <appchartofcontrollookupfinder #toAccountFinder (modalSave)="getToAccount()">
+  </appchartofcontrollookupfinder>
+  <app-reportviewr-modal #reportView></app-reportviewr-modal>
+  <commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+  </commonServiceLookupTableModal>

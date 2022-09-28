@@ -1,0 +1,109 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #departmentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="department.id">{{l("EditDepartment")}}</span>
+						<span *ngIf="!department.id">{{l("CreateNewDepartment")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="row">
+						<div class="form-group col-md-3">
+							<label for="Department_DeptID">{{l("DepartmentID")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="Department_DeptID" min="1" class="form-control form-control-sm"
+								[(ngModel)]="department.deptID" name="DeptID" disabled required />
+						</div>
+						<div class="form-group col-md-8">
+							<label for="Department_DeptID">{{l("Cader ID")}}</label>
+							<div class="input-group">
+								<input class="form-control form-control-sm" name="cader_Id"
+													[(ngModel)]="department.cader_Id" type="text" readonly>
+								<div class="input-group-append">
+									<button class="btn btn-primary btn-sm blue"
+										(click)="openCaderModal()" type="button"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon" type="button"
+										(click)="setCaderIdNull()"><i
+											class="fa fa-times"></i></button>
+								</div>
+								<input class="form-control form-control-sm ml-2" id="caderName"
+									name="caderName" [(ngModel)]="department.caderName" type="text"
+									disabled>
+							</div>
+						</div>
+						<div class="form-group col-md-10">
+							<label for="Department_DeptName">{{l("DepartmentName")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="Department_DeptName" class="form-control form-control-sm"
+								[(ngModel)]="department.deptName" name="DeptName" required />
+						</div>
+					</div>
+					<!-- <div class="form-group form-group-md">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="m-form__group">
+									<div class="row">
+										<label for="ChartofControlAccountName"
+											class="col-form-label col-md-4">{{l("Account ID")}}</label>
+										<div class="col-md-8">
+											<div class="input-group">
+												<input class="form-control form-control-sm"
+													name="accountSubLedger.accountID"
+													[(ngModel)]="department.expenseAcc" type="text" readonly
+													required >
+												<div class="input-group-append">
+													<button class="btn btn-primary btn-sm blue"
+														(click)="openSelectChartofControlModal()" type="button"
+														[disabled]="flag"><i class="fa fa-search"></i>
+														{{l("Pick")}}</button>
+												</div>
+												<div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon" type="button"
+														(click)="setChartofControlIdNull()" [disabled]="flag"><i
+															class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<input class="form-control form-control-sm" id="ChartofControlAccountName"
+									name="chartofControlAccountName" [(ngModel)]="chartofControlAccountName" type="text"
+									disabled>
+							</div>
+						</div>
+					</div> -->
+					<br />
+					<div class="m-checkbox-list">
+						<label for="Department_Active" class="kt-checkbox">
+							<input id="Department_Active" type="checkbox" name="Active" [(ngModel)]="department.active">
+							{{l("Active")}}
+							<span></span>
+						</label>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!departmentForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>

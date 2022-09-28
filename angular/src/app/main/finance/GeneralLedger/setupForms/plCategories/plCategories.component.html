@@ -1,0 +1,191 @@
+﻿<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("PLCategories")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("PLCategoriesHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.PLCategories.Create')" (click)="createPLCategory()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewPLCategory")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getPLCategories()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinTenantIDFilter">{{l("MinMax")}} {{l("TenantID")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinTenantIDFilter" [(ngModel)]="minTenantIDFilter" placeholder="{{l('MinValue')}}" name="minTenantIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxTenantIDFilter" placeholder="{{l('MaxValue')}}" name="maxTenantIDFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TypeIDFilter">{{l("TypeID")}}</label>
+									<input type="text" class="form-control" id="TypeIDFilter" name="typeIDFilter" [(ngModel)]="typeIDFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="HeadingTextFilter">{{l("HeadingText")}}</label>
+									<input type="text" class="form-control" id="HeadingTextFilter" name="headingTextFilter" [(ngModel)]="headingTextFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinSortOrderFilter">{{l("MinMax")}} {{l("SortOrder")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinSortOrderFilter" [(ngModel)]="minSortOrderFilter" placeholder="{{l('MinValue')}}" name="minSortOrderFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSortOrderFilter" placeholder="{{l('MaxValue')}}" name="maxSortOrderFilter" />
+									</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getPLCategories($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.PLCategories.Edit', 'Pages.PLCategories.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="tenantID">
+                                        {{l('TenantID')}}
+                                        <p-sortIcon field="plCategory.tenantID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="typeID">
+                                        {{l('TypeID')}}
+                                        <p-sortIcon field="plCategory.typeID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="headingText">
+                                        {{l('HeadingText')}}
+                                        <p-sortIcon field="plCategory.headingText"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="sortOrder">
+                                        {{l('SortOrder')}}
+                                        <p-sortIcon field="plCategory.sortOrder"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.PLCategories.Edit', 'Pages.PLCategories.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewPLCategoryModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.PLCategories.Edit')"
+														(click)="createOrEditPLCategoryModal.show(record.plCategory.id)">{{l('Edit')}}</a>												
+                                                </li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.PLCategories.Delete')"
+														(click)="deletePLCategory(record.plCategory)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TenantID')}}</span>
+											{{record.plCategory.tenantID}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TypeID')}}</span>
+											{{record.plCategory.typeID}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('HeadingText')}}</span>
+											{{record.plCategory.headingText}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('SortOrder')}}</span>
+											{{record.plCategory.sortOrder}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getPLCategories($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditPLCategoryModal #createOrEditPLCategoryModal (modalSave)="getPLCategories()"></createOrEditPLCategoryModal>    
+    <viewPLCategoryModal #viewPLCategoryModal></viewPLCategoryModal>
+    
+  
+</div>

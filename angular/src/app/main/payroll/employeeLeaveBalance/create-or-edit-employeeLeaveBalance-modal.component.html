@@ -1,0 +1,89 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #employeeLeavesTotalForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="employeeLeavesTotal.id">{{l("EditemployeeLeavesTotal")}}</span>
+                        <span *ngIf="!employeeLeavesTotal.id">{{l("CreateNewemployeeLeavesTotal")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="EmployeeLeaveTotal_EmployeeID">{{l("Employee ID")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" style="background-color:#F4F4F4;" id="EmployeeLeaves_EmployeeID"
+                                    class="form-control form-control-sm" [(ngModel)]="employeeLeavesTotal.employeeID"
+                                    name="EmployeeID" readonly required />
+                                <div class="input-group-append" *ngIf="this.employeeLeavesTotal.id == 0 
+                                ||  
+                                this.employeeLeavesTotal.id == undefined">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openEmployeeModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" *ngIf="this.employeeLeavesTotal.id == 0 
+                                ||  
+                                this.employeeLeavesTotal.id == undefined">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setEmployeeNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <label for="EmployeeLeaves_EmployeeName">{{l("EmployeeName")}}</label>
+                            <input class="form-control form-control-sm" id="EmployeeLeaves_EmployeeName"
+                                name="employeeName" [(ngModel)]="employeeName" type="text" disabled />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="EmployeeLeaveTotal_Casual">{{l("Casual")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="EmployeeLeaves_Casual" required
+                                class="form-control form-control-sm" [(ngModel)]="employeeLeavesTotal.casual"
+                                name="casual" required (change)="totalLeaves()" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeLeaves_Sick">{{l("Sick")}}<span class="require-field">*</span></label>
+                            <input type="number" id="EmployeeLeaves_Sick" required class="form-control form-control-sm"
+                                [(ngModel)]="employeeLeavesTotal.sick" name="sick" required
+                                (change)="totalLeaves()" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeLeaveTotal_Annual">{{l("Annual")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="EmployeeLeaveTotal_Annual" required
+                                class="form-control form-control-sm" [(ngModel)]="employeeLeavesTotal.annual"
+                                name="annual" required (change)="totalLeaves()" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeLeaveTotal_Leaves">{{l("Leaves")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="EmployeeLeaves_Leaves" required
+                                class="form-control form-control-sm" [(ngModel)]="employeeLeavesTotal.leaves"
+                                name="leaves" disabled required />
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!employeeLeavesTotalForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

@@ -1,0 +1,565 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl custom_model_width">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off" _ngcontent-bmt-c20 >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                       
+                        <span *ngIf="SaleQutationH.id">{{l("EditOEQH")}}</span>
+						<span *ngIf="!SaleQutationH.id">{{l("CreateNewOEQH")}}</span>
+				
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                  <div class="col-md-12">
+                    <div class="row">
+                        <div class="m-form__group col-md-2">
+                            <label for="locId">{{l("Loc")}}</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="locId" name="locId" disabled
+                                    [(ngModel)]="SaleQutationH.locID" type="text" required />
+                                <div class="input-group-append" *ngIf="LocCheckVal">
+                                    <button class="btn btn-primary btn-sm" (click)="openlookUpModal()" type="button"><i
+                                            class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="locDesc">{{l("Desc")}}</label>
+                            <input class="form-control form-control-sm" id="fromLocDesc" name="locDesc" disabled
+                                [(ngModel)]="locDesc" type="text"/>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docNo">{{l("DocNo")}}</label>
+                            <input type="text" id="docNo" class="form-control form-control-sm"
+                                [(ngModel)]="SaleQutationH.docNo" name="priceList" maxlength="10" required disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docDate">{{l("DocDate")}}</label>
+                                <input type="text" min="1" id="docDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" 
+                                bsDatepicker class="form-control form-control-sm" [(ngModel)]="this.SaleQutationH.docDate"
+                                 name="docDate" [disabled]="checkedval" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="mdocNo">{{l("ManualDoc")}}</label>
+                            <input type="text" id="mdocNo" class="form-control form-control-sm"
+                                [(ngModel)]="SaleQutationH.mDocNo" name="mdocNo" maxlength="10" required  />
+                        </div>
+                        
+                    </div>
+                  
+                    <div class="row">
+						<div class="col-md-2">
+                            <label for="mDocDate">{{l("ManualDate")}}</label>
+                                <input type="text" min="1" id="mDocDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" 
+                                bsDatepicker class="form-control form-control-sm" [(ngModel)]="this.SaleQutationH.mDocDate"
+                                 name="mDocDate"   />
+                        </div>
+    <div class="m-form__group col-md-3">
+        <label for="SaleEntry_typeID">{{l("TransactionTypes")}}<span
+                class="require-field">*</span></label>
+        <div class="input-group">
+            <input type="text" id="SaleEntry_typeID" class="form-control form-control-sm"
+                [(ngModel)]="SaleQutationH.typeID" name="typeID" required disabled />
+            <div class="input-group-append" >
+                <button class="btn btn-primary blue btn-sm" (click)="openSelectTransactionModal()"
+                    type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+            </div>
+            <div class="input-group-prepend" >
+                <button class="btn btn-danger btn-icon btn-sm" type="button"
+                    (click)="setTransactionIDNull()"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label for="TypeDesc">{{l("")}}&nbsp;</label>
+        <input class="form-control form-control-sm" id="TypeDesc" name="TypeDesc"
+            [(ngModel)]="typeDesc" type="text" disabled >
+    </div>
+    <div class="col-md-3">
+        <label for="SaleEntry_CustomerID">{{l("CustomerID")}}<span
+                class="require-field">*</span></label>
+        <div class="input-group">
+            <input type="number" id="SaleEntry_CustomerID" class="form-control form-control-sm"
+                [(ngModel)]="SaleQutationH.custID" name="CustID" disabled required />
+            <div class="input-group-append">
+                <button class="btn btn-primary blue btn-sm" (click)="openSelectCustomerModal()"
+                    type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+            </div>
+            <div class="input-group-prepend">
+                <button class="btn btn-danger btn-icon btn-sm" type="button"
+                    (click)="setCustomerIDNull()"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+   
+                    </div>
+                    <div class="row">
+                      
+                        <!-- <div class="col-sm-3 ">
+                            <label for="chAccountID" >{{l("ChAccountID")}}</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="chAccountID" name="chAccountID"
+                                    [(ngModel)]="SaleQutationH.salesCtrlAcc" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('chAccountID')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setCAIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div> -->
+                        
+                        <!-- <div class="col-sm-3  ">
+                            <label for="Description" >{{l("Description")}}</label>
+                            <input type="text" disabled  class="form-control form-control-sm" id="chAccountIDDesc"
+                                name="chAccountIDDesc" [(ngModel)]="chAccountIDDesc" />
+                        </div> -->
+                    </div>
+                    <div class="row">
+						<div class="col-md-4">
+							<label for="CustomerName">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="CustomerName" name="CustomerName"
+								[(ngModel)]="customerName" type="text" disabled >
+						</div>
+                        
+						<div class="form-group m-form__group col-md-5">
+							<label for="SaleReturn_SaleNo">{{l("SaleNo")}}</label>
+							<div class="input-group">  
+								<input type="number" min="1" id="SaleReturn_SaleNo" class="form-control form-control-sm" [(ngModel)]="SaleQutationH.saleDoc" name="SaleNo" />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectSaleNoModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div><div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setSaleNoNull()"><i class="fa fa-times"></i></button>
+								</div>
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm"  *ngIf="permission.isGranted('Pages.OEQH.Edit')" (click)="getSaleNoRecord()" type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<label for="SaleEntry_BasicStyle">{{l("Basic Style")}}</label>
+							<input type="text" id="SaleEntry_BasicStyle" class="form-control form-control-sm"
+								[(ngModel)]="SaleQutationH.basicStyle" name="SaleEntry_BasicStyle" />
+						</div>
+					
+						<!-- <div class="form-group col-md-2">
+							<button class="btn btn-primary green btn-sm  col-md-8" style="margin-top: 25px;" *ngIf="permission.isGranted('Pages.OEQH.Edit')" (click)="getSaleNoRecord()" type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+						</div> -->
+                    </div>
+					<div class="row">
+						<div class="col-md-3">
+							<label for="SaleEntry_License">{{l("License")}}</label>
+							<input type="text" id="SaleEntry_License" class="form-control form-control-sm"
+								[(ngModel)]="SaleQutationH.license" name="SaleEntry_License" />
+						</div>
+						<div class="col-md-6">
+                            <label for="fromLocDesc">{{l("Narration")}}</label>
+                            <input class="form-control form-control-sm" id="narration" name="narration"
+                                [(ngModel)]="SaleQutationH.narration" type="text" maxlength="100"/>
+                        </div>
+						
+					</div>
+                  
+                </div>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="removeRecordFromGrid()">Remove</button>
+
+                    <tabset >
+                        <tab heading="Item Detail">
+                            <fieldset>
+                                <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                    [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                    [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                    [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                                    (cellClicked)="cellClicked($event)"
+                                    (cellValueChanged)="onCellValueChanged($event)"
+                                    (cellEditingStarted)="cellEditingStarted($event)">
+                                </ag-grid-angular>
+                            </fieldset>
+                        </tab>
+                        <tab heading="Tax">
+                            <p>Tax Authority 1</p>
+                            <hr>
+                            <div class="row col-md-12">
+                               
+								<div class="form-group m-form__group col-md-2">
+                                    
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_TAXAUTH"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAuth1"
+											name="TAXAUTH" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxAuthorityGridModal1()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxAuthorityIdGridNull1()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group m-form__group col-md-2">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_taxClass"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxClass1"
+											name="taxClass" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxClassGridModal1()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxClassIdGridNull1()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_taxClassDesc"
+										name="taxClassDesc" [(ngModel)]="SaleQutationH.taxClassDesc1" type="text" readonly>
+								</div>
+
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_taxRate">{{l("TaxRate")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_taxRate"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxRate1"
+										name="taxRate" readonly />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_VenderTax">{{l("VenderTax")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_VenderTax"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAmt1" name="VenderTax"
+										readonly />
+								</div>
+							</div>
+
+                            <p>Tax Authority 2</p>
+                            <hr>
+                            <div class="row col-md-12">
+                               
+								<div class="form-group m-form__group col-md-2">
+                                    
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_TAXAUTH"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAuth2"
+											name="TAXAUTH2" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxAuthorityGridModal2()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxAuthorityIdGridNull2()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group m-form__group col-md-2">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_taxClass"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxClass2"
+											name="taxClass2" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxClassGridModal2()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxClassIdGridNull2()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_taxClassDesc"
+										name="taxClassDesc2" [(ngModel)]="SaleQutationH.taxClassDesc2" type="text" readonly>
+								</div>
+
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_taxRate">{{l("TaxRate")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_taxRate"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxRate2"
+										name="taxRate2" readonly />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_VenderTax">{{l("VenderTax")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_VenderTax"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAmt2" name="VenderTax2"
+										readonly />
+								</div>
+							</div>
+
+                            <p>Tax Authority 3</p>
+                            <hr>
+                            <div class="row col-md-12">
+                               
+								<div class="form-group m-form__group col-md-2">
+                                    
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_TAXAUTH"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAuth3"
+											name="TAXAUTH3" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxAuthorityGridModal3()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxAuthorityIdGridNull3()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group m-form__group col-md-2">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_taxClass"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxClass3"
+											name="taxClass3" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxClassGridModal3()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxClassIdGridNull3()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_taxClassDesc"
+										name="taxClassDesc3" [(ngModel)]="SaleQutationH.taxClassDesc3" type="text" readonly>
+								</div>
+
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_taxRate">{{l("TaxRate")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_taxRate"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxRate3"
+										name="taxRate3" readonly />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_VenderTax">{{l("VenderTax")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_VenderTax"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAmt3" name="VenderTax3"
+										readonly />
+								</div>
+							</div>
+
+                            <p>Tax Authority 4</p>
+                            <hr>
+                            <div class="row col-md-12">
+                               
+								<div class="form-group m-form__group col-md-2">
+                                    
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_TAXAUTH"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAuth4"
+											name="TAXAUTH4" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxAuthorityGridModal4()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxAuthorityIdGridNull4()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group m-form__group col-md-2">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_taxClass"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxClass4"
+											name="taxClass4" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxClassGridModal4()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxClassIdGridNull4()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_taxClassDesc"
+										name="taxClassDesc4" [(ngModel)]="SaleQutationH.taxClassDesc4" type="text" readonly>
+								</div>
+
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_taxRate">{{l("TaxRate")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_taxRate"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxRate4"
+										name="taxRate4" readonly />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_VenderTax">{{l("VenderTax")}}<span
+											class="require-field">*</span></label>
+									<input type="number" id="PurchaseOrders_VenderTax"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAmt4" name="VenderTax4"
+										readonly />
+								</div>
+							</div>
+
+                            <p>Tax Authority 5</p>
+                            <hr>
+                            <div class="row col-md-12">
+                               
+								<div class="form-group m-form__group col-md-2">
+                                    
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_TAXAUTH"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAuth5"
+											name="TAXAUTH5" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxAuthorityGridModal5()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxAuthorityIdGridNull5()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group m-form__group col-md-2">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">
+										<input type="text" id="PurchaseOrders_taxClass"
+											class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxClass5"
+											name="taxClass5" readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm"
+												(click)="openSelectTaxClassGridModal5()" type="button"><i
+													class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setTaxClassIdGridNull5()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="PurchaseOrders_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="PurchaseOrders_taxClassDesc"
+										name="taxClassDesc5" [(ngModel)]="SaleQutationH.taxClassDesc5" type="text" readonly>
+								</div>
+
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_taxRate">{{l("TaxRate")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_taxRate"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxRate5"
+										name="taxRate5" readonly />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="PurchaseOrders_VenderTax">{{l("VenderTax")}}<span
+											class="require-field">*</span></label>
+									<input type="text" id="PurchaseOrders_VenderTax"
+										class="form-control form-control-sm" [(ngModel)]="SaleQutationH.taxAmt5" name="VenderTax5"
+										readonly />
+								</div>
+							</div>
+                        </tab>
+                        <tab heading="Terms">
+                            <div class="col-sm-12  ">
+                                <label for="noteText" >{{l("Note Text")}}</label>
+                                <textarea type="text" class="form-control form-control-sm" id="noteText"
+                                    name="noteText" [(ngModel)]="SaleQutationH.noteText" ></textarea>
+                            </div>
+                            <div class="col-sm-12  ">
+                                <label for="payTerms" >{{l("Pay Terms")}}</label>
+                                <textarea type="text"   class="form-control form-control-sm" id="payTerms"
+                                    name="chAccountIDDesca" [(ngModel)]="SaleQutationH.payTerms" ></textarea>
+                            </div>
+                            <div class="col-sm-12  ">
+                                <label for="delvTerms" >{{l("Delievery Terms")}}</label>
+                                <textarea type="text"   class="form-control form-control-sm" id="delvTerms"
+                                    name="chAccountIDDescw" [(ngModel)]="SaleQutationH.delvTerms" ></textarea>
+                            </div>
+                            <div class="col-sm-12  ">
+                                <label for="validityTerms" >{{l("Validity Terms")}}</label>
+                                <textarea type="text"   class="form-control form-control-sm" id="validityTerms"
+                                    name="chAccountIDDescw" [(ngModel)]="SaleQutationH.validityTerms" ></textarea>
+                                    
+                            </div>
+                        </tab> 
+                       
+                         
+                    </tabset>
+
+                    <div class="form-group col-md-2">
+                        <label for="PurchaseOrders_VenderTax">{{l("Net Amount")}}<span
+                                class="require-field">*</span></label>
+                        <input type="number" id="PurchaseOrders_VenderTax"
+                            class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="SaleQutationH.netAmount" name="VenderTax124"
+                            readonly />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="SaleQutationH.id"> -->
+						<button type="button" class="btn btn-success green  col-md-2"  *ngIf="SaleQutationH.id"  (click)="OpenLog()" ><span>{{l("Open Log")}}</span></button>
+					
+					<!-- </div> -->
+					<button type="button" class="btn btn-primary blue" *ngIf="this.SaleQutationH.id && !this.SaleQutationH.approved"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="approveDoc(this.SaleQutationH.id,'Approve',true)"  ><i class="fa fa-save"></i>
+						Approved</button>
+						<button type="button" class="btn btn-primary blue" *ngIf="this.SaleQutationH.id && this.SaleQutationH.approved"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="approveDoc(this.SaleQutationH.id,'UnApproval',false)"  ><i class="fa fa-save"></i>
+						UnApproved</button>
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <InventoryGlLinkLookupTableModal #InventoryGlLinkLookupTableModal (modalSave)="getLookUpData()">
+</InventoryGlLinkLookupTableModal>
+<ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getLookUpData()"></ItemPricingLookupTableModal> -->
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getLookUpData()"></financeLookupTableModal>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>
+<salesLookupTableModal #SalesLookupTableModal (modalSave)="getNewSaleNo()"></salesLookupTableModal>
+<app-log #LogTableModal ></app-log>

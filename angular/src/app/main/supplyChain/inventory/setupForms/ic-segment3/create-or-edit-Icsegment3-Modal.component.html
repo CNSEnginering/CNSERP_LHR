@@ -1,0 +1,122 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-3" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #ICSegment3Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="flag">{{seg3Setup != '' ? ("Edit ") + seg3Setup: l("EditICSegment3")}}</span>
+                        <span *ngIf="!flag">{{seg3Setup != '' ? ("Create New ") + seg3Setup: l("CreateNewICSegment3")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="m-form__group">
+                                    <div class="row">
+                                        <label for="ICSegment3_Seg1ID" class="col-md-4">{{ seg1Setup != '' ?  seg1Setup: l("ICSeg1Name")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="ICSegment3_Seg1ID"
+                                                    name="ICSegment3_Seg1ID" [(ngModel)]="iCSegment3.seg1ID" type="text"
+                                                    [disabled]="flag" required readonly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue "
+                                                        (click)="openSelectICSegment1Modal()" type="button"
+                                                        [disabled]="flag"><i class="fa fa-search"></i>
+                                                        {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setICSegment1IdNull()" [disabled]="flag"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control form-control-sm" name="ICSegment3_Seg1Name"
+                                    [(ngModel)]="seg1Name" type="text" required disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-group-md">
+                        <div class="m-form__group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="ICSegment3_Seg2ID" class="col-md-4">{{seg2Setup != '' ? seg2Setup: l("ICSeg2Name")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="ICSegment3_Seg2ID"
+                                                    name="ICSegment3_Seg2ID" [(ngModel)]="iCSegment3.seg2ID" type="text"
+                                                    [disabled]="flag"
+                                                    readonly required>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue"
+                                                        (click)="openSelectICSegment2Modal()" type="button"
+                                                        [disabled]="iCSegment3.seg1ID == undefined || Isupdate == true || flag"><i
+                                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setICSegment2IdNull()" [disabled]="flag"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" name="ICSegment3_Seg2Name"
+                                        [(ngModel)]="seg2Name" type="text" required disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="ICSegment3_Seg3ID" class="col-md-2">{{seg3Setup != '' ? seg3Setup: l("ICSeg3ID")}} *</label>
+                            <div class="col-md-3">
+                                <input type="text" id="ICSegment3_Seg3ID" class="form-control form-control-sm"
+                                    [(ngModel)]="iCSegment3.seg3ID" name="Seg3ID" minlength="2" maxlength="2"
+                                    pattern="^\d{2}$" #segNo="ngModel" [disabled]="flag" required />
+                                    <validation-messages [formCtrl]="segNo"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="ICSegment3_Seg3Name" class="col-md-2">{{seg3Setup != '' ? seg3Setup + ("Description") : l("ICSeg3Name")}} *</label>
+                            <div class="col-md-10">
+                                <input type="text" id="ICSegment3_Seg3Name" class="form-control form-control-sm"
+                                    [(ngModel)]="iCSegment3.seg3Name" pattern="^\d*[A-Za-z.#@-_][A-Za-z-@./#&+\w\s\d]*$" #segName="ngModel" name="Seg3Name" maxlength="200" required />
+                                    <validation-messages [formCtrl]="segName"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!ICSegment3Form.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<icsegmentfindermodal #ICSegment1FinderModal (modalSelect)="getNewICSegment1Id()"></icsegmentfindermodal>
+<icsegment2findermodal #ICSegment2FinderModal (modalSelect)="getNewICSegment2Id()"></icsegment2findermodal>

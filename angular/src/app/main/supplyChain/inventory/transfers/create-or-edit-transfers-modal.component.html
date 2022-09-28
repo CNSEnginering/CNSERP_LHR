@@ -1,0 +1,214 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("Transfer")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="docNo">{{l("DocNo")}}</label>
+                            <input type="text" id="docNo" class="form-control form-control-sm"
+                                [(ngModel)]="transfer.docNo" name="docNo" maxlength="10" required disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docDate">{{l("DocDate")}}</label>
+                            <input (focus)="enterDate()" (blur)="leaveDate()" [disabled]="CheckDate" (ngModelChange)="dateChange($event)"
+                                type="datetime" bsDatepicker id="docDate" class="form-control form-control-sm"
+                                [(ngModel)]="transfer.docDate" name="docDate" required [(bsValue)]="transfer.docDate"
+                                value="{{ transfer.docDate | date: 'dd/MM/yyyy' }}" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="ordNo">{{l("OrderNo")}}</label>
+                            <input type="text" id="ordNo" class="form-control form-control-sm"
+                                [(ngModel)]="transfer.ordNo" name="ordNo" maxlength="25" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vehicleNo">{{l("VehicleNo")}}</label>
+                            <input type="text" id="vehicleNo" class="form-control form-control-sm"
+                                [(ngModel)]="transfer.vehicleNo" name="vehicleNo" maxlength="50" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="docDate">{{l("RefNo")}}</label>
+                            <input type="text" id="referenceNo" class="form-control form-control-sm"
+                                [(ngModel)]="transfer.referenceNo" name="referenceNo" maxlength="50" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="docDate">{{l("FromLoc")}}</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="fromLocId" name="fromLocId" disabled
+                                    [(ngModel)]="transfer.fromLocId" type="text" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm" (click)="openlookUpModal('fromLoc')"
+                                        type="button"><i class="fa fa-search"  ></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="fromLocDesc">{{l("Desc")}}</label>
+                            <input class="form-control form-control-sm" id="fromLocDesc" name="fromLocDesc" disabled
+                                [(ngModel)]="transfer.fromLocDesc" type="text" (change)="checkLocValidTrasnfer()" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="toLocId">{{l("ToLoc")}}</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="toLocId" name="toLocId" disabled
+                                    [(ngModel)]="transfer.toLocId" type="text" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm" (click)="openlookUpModal('toLoc')"
+                                        type="button"><i class="fa fa-search"  ></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="toLocDesc">{{l("Desc")}}</label>
+                            <input class="form-control form-control-sm" id="toLocDesc" name="toLocDesc" disabled
+                                [(ngModel)]="transfer.toLocDesc" type="text" (change)="checkLocValidTrasnfer()" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="Consumption_CostCenter">{{l("CostCenter")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="Consumption_CostCenter" class="form-control form-control-sm"
+                                    [(ngModel)]="transfer.ccid" name="CostCenter" readonly disabled />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectCostCenterModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <!-- <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setCostCenterNull()"><i class="fa fa-times"></i></button>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="Consumption_CCDesc">{{l("")}}&nbsp;</label>
+                            <input class="form-control form-control-sm" id="Consumption_CCDesc" name="ccDesc"
+                                [(ngModel)]="transfer.ccdesc" type="text" readonly disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fromLocDesc">{{l("Narration")}}</label>
+                            <input class="form-control form-control-sm" id="narration" name="narration"
+                                [(ngModel)]="transfer.narration" type="text" maxlength="100" />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="removeRecordFromGrid()">Remove</button>
+                    <tabset>
+                        <tab heading="GatPass">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                        [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                        [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                        [singleClickEdit]="true" (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                        (cellValueChanged)="cellValueChanged($event)"
+                                        (cellEditingStarted)="cellEditingStarted($event)"
+                                        (gridReady)="onGridReady($event)">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="Attachment">
+                            <div class="form-group">
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <label for="FileAttachment">File Attachment</label>
+                                        <p-fileUpload id="FileAttachment" name="FileAttachment[]" [url]="uploadUrl"
+                                            accept=".jpg,.jpeg" maxFileSize="1000000"
+                                            (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onUpload($event)">
+
+                                            <ng-template pTemplate="content">
+                                                <ul *ngIf="uploadedFiles.length">
+                                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+                                                        bytes</li>
+                                                </ul>
+                                            </ng-template>
+                                        </p-fileUpload>
+                                    </div>
+                                </div>
+                                <img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached"
+                                    width="100" height="100" (click)="open()">
+
+                            </div>
+                        </tab>
+                    </tabset>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label for="totalItems">{{l("Total Items")}}</label>
+                            <input type="text" [(ngModel)]="totalItems" id="totalItems" name="totalItems"
+                                class="form-control form-control- inputFormBoldSize" currencyMask
+                                [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" disabled>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="totalQty">{{l("Total Qty")}}</label>
+                            <input type="text" [(ngModel)]="totalQty" id="totalQty" name="totalQty"
+                                class="form-control form-control-sm inputFormBoldSize" currencyMask
+                                [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" disabled>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <!-- <div class="form-group col-md-2 pull-right"  *ngIf="transfer.id">
+                                						<button type="button" class="btn btn-success green" style="margin-left: -400%;width: 60%;" [disabled]="!formValid" [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+                                					</div> -->
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <!-- <button type="button"
+                                                        *ngIf="transfer.id && !transfer.posted && transfer.approved && isGranted('Inventory.Transfers.Process')"
+                                                        class="btn btn-success green" [buttonBusy]="processing" (click)="processTransfer()"
+                                                        [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i>
+                                                        <span>{{l("Process")}}</span></button> -->
+                
+                    <button type="button" *ngIf="transfer.id && transfer.approved && !transfer.posted "
+                        class="btn btn-success green" [disabled]="!formValid" [buttonBusy]="processing"
+                        (click)="postDoc(transfer.docNo,'Posting',true)" [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i><span>{{l("Post")}}</span></button>
+                    <button type="button"
+                        *ngIf="editMode && !transfer.approved && !transfer.posted && isGranted('Inventory.Transfers.Approve')"
+                        class="btn btn-success green" [disabled]="!formValid" [buttonBusy]="approving"
+                        (click)="approveDoc(transfer.docNo,'Approval',true)" [busyText]="l('ApprovingWithThreeDot')"><i
+                            class="fa fa-check"></i> <span>{{l("Approve")}}</span></button>
+                    <button type="button"
+                        *ngIf="transfer.id && transfer.approved && !transfer.posted && isGranted('Inventory.Transfers.UnApprove')"
+                        class="btn btn-danger" [disabled]="!formValid" [buttonBusy]="approving"
+                        (click)="approveDoc(transfer.docNo,'UnApproval',false)" [busyText]="l('ApprovingWithThreeDot')"><i
+                            class="fa fa-times"></i> <span>{{l("Unapprove")}}</span></button>
+                    <button type="submit" *ngIf="!transfer.approved && !transfer.posted" class="btn btn-primary blue"
+                        [disabled]="!formValid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="button" *ngIf="transfer.id && !transfer.posted && isGranted('Inventory.Transfers.Process')" class="btn btn-success green"  [buttonBusy]="processing" 
+                        (click)="processTransfer()" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()" [disabled]="!formValid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <InventoryGlLinkLookupTableModal #InventoryGlLinkLookupTableModal (modalSave)="getLookUpData()">
+</InventoryGlLinkLookupTableModal>
+<ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getLookUpData()"></ItemPricingLookupTableModal> -->
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getLookUpData()"></financeLookupTableModal>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getLookUpData()"></inventoryLookupTableModal>
+<app-log #LogTableModal ></app-log>

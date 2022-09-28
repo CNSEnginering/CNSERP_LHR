@@ -1,0 +1,76 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeID")}} :</h6>
+                        {{ item.employeeSalary.employeeID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EmployeeName")}} :</h6>
+                        {{ item.employeeSalary.employeeName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("StartDate")}} :</h6>
+                        {{ item.employeeSalary.startDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("GrossSalary")}} :</h6>
+                        {{ item.employeeSalary.gross_Salary | number: '.2'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BasicSalary")}} :</h6>
+                        {{ item.employeeSalary.basic_Salary | number: '.2'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Tax")}} :</h6>
+                        {{ item.employeeSalary.tax | number: '.2'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("HouseRent")}} :</h6>
+                        {{ item.employeeSalary.house_Rent | number: '.2'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("NetSalary")}} :</h6>
+                        {{ item.employeeSalary.net_Salary | number: '.2'}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.employeeSalary.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.employeeSalary.audtDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.employeeSalary.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.employeeSalary.createDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

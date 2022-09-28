@@ -1,0 +1,225 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #consumptionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="iccnsHeader.id">{{l("EditConsumption")}}</span>
+                        <span *ngIf="!iccnsHeader.id">{{l("CreateNewConsumption")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+						<div class="row col-md-12">
+
+							<div class="form-group col-md-2">
+								<label for="Consumption_DocNo">{{l("DOCNO")}}<span class="require-field">*</span></label>
+								<input type="number" id="Consumption_DocNo" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.docNo" name="DocNo" readonly  required/>
+							</div>
+							<div class="form-group col-md-2">
+								<label for="GLTRHeader_DocDate">{{l("DOCDATE")}}<span class="require-field">*</span></label>
+								<input 
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+								required class="form-control m-input  form-control-sm" [disabled]="checkedval" type="text" bsDatepicker [(ngModel)]="iccnsHeader.docDate._d" id="GLTRHeader_DocDate" name="GLTRHeader_DocDate">
+							</div> 
+
+							<div class="form-group col-md-2">
+								<label for="Consumption_Type">{{l("Type")}}<span class="require-field">*</span></label>
+								<select id="Consumption_Type" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.type" name="Type"   required>
+									<option value='1'>New Installation</option>
+									<option value='2'>Lost/Theft</option>
+									<option value='3'>Damage/Replacement</option>
+								</select>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="Consumption_LocID">{{l("Location")}}<span class="require-field">*</span></label>
+								<select id="Consumption_LocID"   [disabled]="LocCheckVal" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.locID" name="LocID"   required>
+									<option value=0>Choose Location</option>
+									<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+								</select>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="Consumption_OrdNo">{{l("OrdNo")}}</label>
+								<div class="input-group">
+									<input type="number" id="Consumption_OrdNo" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.ordNo" name="OrdNo"  />
+									
+									<div class="input-group-append" *ngIf="!iccnsHeader.approved">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectworkOrderModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div> <div class="input-group-prepend" *ngIf="!iccnsHeader.approved">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setworkOrderNull()"><i class="fa fa-times"></i></button>
+									</div>
+									
+									<div class="input-group-append" *ngIf="!iccnsHeader.approved">
+										<button class="btn btn-primary blue btn-sm" 
+										[disabled] = "iccnsHeader.approved"
+										(click)="getWorkOrderData()" type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+									</div>
+							   </div>
+						    </div>
+
+							<div class="form-group m-form__group col-md-3" >
+								<label for="Consumption_CostCenter">{{l("CostCenter")}}<span class="require-field">*</span></label>
+								<div class="input-group">
+									<input type="text" id="Consumption_CostCenter" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.ccid" name="CostCenter"   readonly/>
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectCostCenterModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div> <div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCostCenterNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-md-5">
+								<label for="Consumption_CCDesc">{{l("")}}&nbsp;</label>
+								<input class="form-control form-control-sm" id="Consumption_CCDesc" name="ccDesc" [(ngModel)]="ccDesc" type="text" readonly>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="Consumption_Narration">{{l("Narration")}}</label>
+								<input type="text" id="Consumption_Narration" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.narration" name="Narration"    />
+							</div>
+							
+
+						</div>
+
+						<tabset>
+							<tab heading="Accounts Detail">
+
+						<div class="row col-md-12">
+							<br>
+							<button type="button" *ngIf="!iccnsHeader.ordNo" class="btn btn-primary blue btn-sm" (click)="onAddRow()">Add Row</button>
+							<button type="button" *ngIf="!iccnsHeader.ordNo"  class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()">Remove Row</button>
+							<ag-grid-angular
+								style="width: 100%; height: 200px;" 
+								class="ag-theme-balham" 
+								[rowData]="rowData" 
+								[columnDefs]="columnDefs" 
+								[animateRows]="true"
+								[suppressDragLeaveHidesColumns]="true"
+								[rowSelection]="rowSelection"
+								[singleClickEdit]="true"
+								(cellClicked)="cellClicked($event)"
+								(cellValueChanged)="onCellValueChanged($event)"
+								(gridReady)="onGridReady($event)">
+							</ag-grid-angular>
+						</div><br>
+
+						<div class="row col-md-12">
+							<div class="form-group col-md-2">
+								<label for="Consumption_TotalQty">{{l("TotalQty")}}<span class="require-field">*</span></label>
+								<input type="number" id="Consumption_TotalQty" class="form-control form-control-sm inputFormBoldSize" [(ngModel)]="iccnsHeader.totalQty" name="TotalQty"  required readonly/>
+							</div>
+							<!-- <div class="form-group col-md-2">
+								<label for="Consumption_TotalAmt">{{l("TotalAmt")}}<span class="require-field">*</span></label>
+								<input type="number" id="Consumption_TotalAmt" class="form-control form-control-sm" [(ngModel)]="iccnsHeader.totalAmt" name="TotalAmt"  required readonly/>
+							</div> -->
+						</div>
+						</tab>
+						<tab heading="Attachment">
+							<div class="form-group">
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="FileAttachment">File Attachment</label>
+										<p-fileUpload
+													  id="FileAttachment"
+													  name="FileAttachment[]"
+													  [url]="uploadUrl"
+													  accept=".jpg,.jpeg"
+													  maxFileSize="1000000"
+													  (onBeforeUpload)="onBeforeUpload($event)"
+													  (onUpload)="onUpload($event)">
+		
+											<ng-template pTemplate="content">
+												<ul *ngIf="uploadedFiles.length">
+													<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+												</ul>
+											</ng-template>
+										</p-fileUpload>
+									</div>
+								</div>
+								<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached" width="100" height="100" (click)="open()">
+		
+							</div>
+		
+						</tab>
+						</tabset>
+
+
+								<!-- 
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Consumption_Posted" class="kt-checkbox">
+										<input id="Consumption_Posted" type="checkbox" name="Posted" [(ngModel)]="adjustment.posted"> 
+										{{l("Posted")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="Consumption_LinkDetID">{{l("LinkDetID")}}</label>
+									<input type="number" id="Consumption_LinkDetID" class="form-control" [(ngModel)]="adjustment.linkDetID" name="LinkDetID"  />
+								</div>
+					
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Consumption_Active" class="kt-checkbox">
+										<input id="Consumption_Active" type="checkbox" name="Active" [(ngModel)]="adjustment.active"> 
+										{{l("Active")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="Consumption_CreatedBy">{{l("CreatedBy")}}</label>
+									<input type="text" id="Consumption_CreatedBy" class="form-control" [(ngModel)]="adjustment.createdBy" name="CreatedBy"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Consumption_CreateDate">{{l("CreateDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="createDate" id="Consumption_CreateDate" name="Consumption_CreateDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="Consumption_AudtUser">{{l("AudtUser")}}</label>
+									<input type="text" id="Consumption_AudtUser" class="form-control" [(ngModel)]="adjustment.audtUser" name="AudtUser"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="Consumption_AudtDate">{{l("AudtDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="audtDate" id="Consumption_AudtDate" name="Consumption_AudtDate">
+								</div> -->
+					
+
+                </div>
+                <div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  > -->
+						<button type="button" class="btn btn-success green  col-md-1" *ngIf="iccnsHeader.id" [disabled]="!consumptionForm.form.valid" [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+					<button type="button" *ngIf="iccnsHeader.id && !iccnsHeader.posted && iccnsHeader.approved && isGranted('Inventory.Consumptions.Process')" class="btn btn-success green"  [buttonBusy]="processing" 
+							 (click)="processConsumption()" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+					<button type="button" *ngIf="iccnsHeader.id && !iccnsHeader.approved && !iccnsHeader.posted && isGranted('Inventory.Consumptions.Approve')" class="btn btn-success green" [disabled]="!consumptionForm.form.valid" [buttonBusy]="approving" (click)="approveDoc(iccnsHeader.docNo,'Approval',true)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-check"></i> <span>{{l("Approve")}}</span></button>
+					<button type="button" *ngIf="iccnsHeader.id && iccnsHeader.approved && !iccnsHeader.posted && isGranted('Inventory.Consumptions.UnApprove')" class="btn btn-danger" [disabled]="!consumptionForm.form.valid" [buttonBusy]="approving" (click)="approveDoc(iccnsHeader.docNo,'UnApproval',false)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-times"></i> <span>{{l("Unapprove")}}</span></button>
+                    <button type="submit"  *ngIf="!iccnsHeader.approved && !iccnsHeader.posted" class="btn btn-primary blue" [disabled]="!consumptionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<app-log #LogTableModal ></app-log>
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

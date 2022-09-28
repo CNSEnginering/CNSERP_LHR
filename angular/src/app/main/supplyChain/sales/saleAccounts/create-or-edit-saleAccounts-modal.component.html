@@ -1,0 +1,254 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span >{{l("SaleAccounts")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="locId" class="col-sm-2 col-form-label">{{l("Loc")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" disabled required class="form-control form-control-sm" id="locId"
+                                    name="locId" [(ngModel)]="saleAccounts.locId" />
+                                <div class="input-group-append">
+                                    <button 
+                                    [disabled] = "editMode"
+                                    class="btn btn-primary blue btn-sm btn-pick" (click)="openLocationModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setLocIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="locDesc"
+                                name="locDesc" [(ngModel)]="saleAccounts.locDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="segId" class="col-sm-2 col-form-label">{{l("TRANSTYPE")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ">
+                                <input class="form-control form-control-sm" id="typeId" name="typeId"                       
+                                [(ngModel)]="saleAccounts.typeId" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button  [disabled] = "editMode" class="btn btn-primary blue btn-sm btn-pick" (click)="openTransModal()"
+                                        type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="typeDesc"
+                                name="typeDesc" [(ngModel)]="saleAccounts.typeDesc" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <label for="locId" class="col-sm-2 col-form-label">{{l("SalesACC")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="salesACC" name="salesACC"
+                                    [(ngModel)]="saleAccounts.salesACC" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('salesACC')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setLocIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="salesACCDesc"
+                                name="salesACCDesc" [(ngModel)]="saleAccounts.salesACCDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="salesRetACC" class="col-sm-2 col-form-label">{{l("SalesRetACC")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ">
+                                <input class="form-control form-control-sm" id="salesRetACC" name="salesRetACC"
+                                    [(ngModel)]="saleAccounts.salesRetACC" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('salesRetACC')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="salesRetACCDesc"
+                                name="salesRetACCDesc" [(ngModel)]="saleAccounts.salesRetACCDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="cogsacc" class="col-sm-2 col-form-label">{{l("COGSACC")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="cogsacc" name="cogsacc"
+                                    [(ngModel)]="saleAccounts.cogsacc" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('cogsacc')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setLocIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="cogsaccDesc"
+                                name="cogsaccDesc" [(ngModel)]="saleAccounts.cogsaccDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="chAccountID" class="col-sm-2 col-form-label">{{l("ChAccountID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="chAccountID" name="chAccountID"
+                                    [(ngModel)]="saleAccounts.chAccountID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('chAccountID')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="chAccountIDDesc"
+                                name="chAccountIDDesc" [(ngModel)]="saleAccounts.chAccountIDDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="discAcc" class="col-sm-2 col-form-label">{{l("DiscAcc")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="discAcc" name="accWip"
+                                    [(ngModel)]="saleAccounts.discAcc" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('discAcc')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="discAccDesc"
+                                name="discAccDesc" [(ngModel)]="saleAccounts.discAccDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="writeOffAcc" class="col-sm-2 col-form-label">{{l("WriteOffAcc")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="writeOffAcc" name="writeOffAcc"
+                                    [(ngModel)]="saleAccounts.writeOffAcc" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('writeOffAcc')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="writeOffAccDesc"
+                                name="writeOffAccDesc" [(ngModel)]="saleAccounts.writeOffAccDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="payableAcc" class="col-sm-2 col-form-label">{{l("PayableAcc")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="payableAcc" name="payableAcc"
+                                    [(ngModel)]="saleAccounts.payableAcc" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('payableAcc')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="payableAccDesc"
+                                name="payableAccDesc" [(ngModel)]="saleAccounts.payableAccDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="RefundableAcc" class="col-sm-2 col-form-label">{{l("RefundableAcc")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="refundableAcc" name="refundableAcc"
+                                    [(ngModel)]="saleAccounts.refundableAcc" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('refundableAcc')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend" hidden>
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setSegIdNull()"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="refundableAccDesc"
+                                name="refundableAccDesc" [(ngModel)]="saleAccounts.refundableAccDesc" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="formValid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- <saleAccountsLookupTableModal #saleAccountsLookupTableModal (modalSave)="getLookUpData()">
+    </saleAccountsLookupTableModal> -->
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+    <inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+</div>

@@ -1,0 +1,97 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #subCostCenterForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("SubCostCenter")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="priceList" class="col-sm-2 col-form-label">{{l("CostCenterId")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="ccid" name="ccid" disabled
+                                    [(ngModel)]="subCostCenterDto.ccid" type="text" required />
+                                <div class="input-group-append" *ngIf="edit == false">
+                                    <button class="btn btn-primary btn-sm" (click)="openlookUpModal()" type="button"><i
+                                            class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="ccName" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control-sm" id="ccName" name="ccName"
+                                [(ngModel)]="subCostCenterDto.ccName" type="text" required min="1" disabled required
+                                [disabled]="edit">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="CCId" class="col-sm-2 col-form-label">{{l("SubCostCenterId")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="ccid" name="subccid"
+                                [(ngModel)]="subCostCenterDto.subccid" type="text" required min="1" disabled required
+                                [disabled]="edit">
+                        </div>
+                    <!-- </div>
+                    <div class="row"> -->
+                        <label for="subCCName" class="col-sm-2 col-form-label">{{l("SubCostCenterName")}}</label>
+                        <div class="input-group col-sm-4">
+                            <input class="form-control form-control-sm" id="subCCName" name="subCCName"
+                                [(ngModel)]="subCostCenterDto.subCCName" type="text" required min="0" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="accountId" class="col-sm-2 col-form-label">{{l("AccountID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accountId" name="accountId"
+                                    [(ngModel)]="subCostCenterDto.accountId" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="accountName"
+                                name="accountName" [(ngModel)]="subCostCenterDto.accountName" />
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="m-checkbox-list">
+                                    <label for="itemPricing_Active" class="kt-checkbox">
+                                        <input id="itemPricing_Active" type="checkbox" name="active"
+                                            [(ngModel)]="subCostCenterDto.active">
+                                        {{l("Active")}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()"
+                        [disabled]="!subCostCenterForm.form.valid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<CostCenterLookupTableModal #CostCenterLookupTableModal (modalSave)="getLookUpData()"></CostCenterLookupTableModal>
+<financeLookupTableModal #financeLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>

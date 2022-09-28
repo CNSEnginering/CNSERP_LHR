@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.6.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Designation" Margins="30, 30, 133, 66" PageWidth="850" PageHeight="1100" Version="19.2" EventsInfo="|Designation,BeforePrint,Designation_BeforePrint;pictureBox1,BeforePrint,pictureBox1_BeforePrint" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Visible="false" Description="CompanyName" Name="CompanyName" />
+    <Item2 Ref="4" Visible="false" Description="Address" Name="Address" />
+    <Item3 Ref="5" Visible="false" Description="Phone" Name="Phone" />
+    <Item4 Ref="6" Visible="false" Description="TenantId" Name="TenantId" />
+    <Item5 Ref="7" Visible="false" Description="Address2" Name="Address2" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="8" ControlType="TopMarginBand" Name="TopMargin" HeightF="133.124985">
+      <Controls>
+        <Item1 Ref="9" ControlType="XRLabel" Name="label11" Multiline="true" Text="label18" TextAlignment="TopCenter" SizeF="126.041656,23" LocationFloat="322.400665, 50.9999924" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="10" EventName="BeforePrint" PropertyName="Text" Expression="?Phone" />
+          </ExpressionBindings>
+          <StylePriority Ref="11" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="12" ControlType="XRLabel" Name="label13" Multiline="true" Text="label15" TextAlignment="TopCenter" SizeF="360.165527,23" LocationFloat="201.02652, 28.0000057" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="?Address +'-'+ ?Address2" />
+          </ExpressionBindings>
+          <StylePriority Ref="14" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="15" ControlType="XRLabel" Name="label49" Multiline="true" Text="label10" TextAlignment="TopCenter" SizeF="239.583282,22.9999847" LocationFloat="257.025452, 5.000019" Font="Segoe UI, 14pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="16" EventName="BeforePrint" PropertyName="Text" Expression="?CompanyName" />
+          </ExpressionBindings>
+          <StylePriority Ref="17" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="18" ControlType="XRLabel" Name="label1" Text="List of Designations" SizeF="330.499969,24.1943359" LocationFloat="0, 90.80569" StyleName="Title" Font="Arial, 11pt">
+          <StylePriority Ref="19" UseFont="false" />
+        </Item4>
+        <Item5 Ref="20" ControlType="XRPictureBox" Name="pictureBox1" Sizing="Squeeze" SizeF="120,80" LocationFloat="0, 5.000019">
+          <Scripts Ref="21" OnBeforePrint="pictureBox1_BeforePrint" />
+        </Item5>
+      </Controls>
+    </Item1>
+    <Item2 Ref="22" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="66">
+      <Controls>
+        <Item1 Ref="23" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" SizeF="307,23" LocationFloat="6.00000238, 10.0000067" StyleName="PageInfo" />
+        <Item2 Ref="24" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="Page {0} of {1}" TextAlignment="TopRight" SizeF="243.999939,23" LocationFloat="536.000061, 10.0000067" StyleName="PageInfo" />
+      </Controls>
+    </Item2>
+    <Item3 Ref="25" ControlType="ReportHeaderBand" Name="ReportHeader" Expanded="false" HeightF="130" />
+    <Item4 Ref="26" ControlType="GroupHeaderBand" Name="GroupHeader1" GroupUnion="WithFirstDetail" HeightF="28">
+      <Controls>
+        <Item1 Ref="27" ControlType="XRTable" Name="table1" SizeF="789.9999,28" LocationFloat="0, 0">
+          <Rows>
+            <Item1 Ref="28" ControlType="XRTableRow" Name="tableRow1" Weight="1">
+              <Cells>
+                <Item1 Ref="29" ControlType="XRTableCell" Name="tableCell1" Weight="0.16130186197555579" Text="Designation ID" StyleName="DetailCaption1" Borders="None">
+                  <StylePriority Ref="30" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="31" ControlType="XRTableCell" Name="tableCell2" Weight="1.0540826226710238" Text="Designation" StyleName="DetailCaption1" />
+              </Cells>
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item4>
+    <Item5 Ref="32" ControlType="DetailBand" Name="Detail" HeightF="26.0416355">
+      <Controls>
+        <Item1 Ref="33" ControlType="XRTable" Name="table2" SizeF="789.9999,25" LocationFloat="0, 0" OddStyleName="DetailData3_Odd">
+          <Rows>
+            <Item1 Ref="34" ControlType="XRTableRow" Name="tableRow2" Weight="11.5">
+              <Cells>
+                <Item1 Ref="35" ControlType="XRTableCell" Name="tableCell3" Weight="0.16130183293269224" StyleName="DetailData1" Borders="None">
+                  <ExpressionBindings>
+                    <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="[designationID]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="37" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="38" ControlType="XRTableCell" Name="tableCell4" Weight="1.0540825946514425" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="[designation]" />
+                  </ExpressionBindings>
+                </Item2>
+              </Cells>
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item5>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="40" Name="Title" BorderStyle="Inset" Font="Arial, 14.25pt" ForeColor="255,64,70,80" BackColor="Transparent" BorderColor="Black" Sides="None" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item2 Ref="41" Name="DetailCaption1" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="White" BackColor="255,46,148,130" BorderColor="White" Sides="Left" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item3 Ref="42" Name="DetailData1" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 8.25pt" ForeColor="Black" BorderColor="Transparent" Sides="Left" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item4 Ref="43" Name="DetailData3_Odd" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 8.25pt" ForeColor="Black" BackColor="255,243,245,248" BorderColor="Transparent" Sides="None" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="1" />
+    <Item5 Ref="44" Name="PageInfo" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="255,64,70,80" StringFormat="Near;Near;0;None;Character;Default" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Json.JsonDataSource,DevExpress.DataAccess.v19.2" Name="jsonDataSource1" Base64="PEpzb25EYXRhU291cmNlIE5hbWU9Impzb25EYXRhU291cmNlMSI+PFNvdXJjZSBTb3VyY2VUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuSnNvbi5DdXN0b21Kc29uU291cmNlIiBKc29uPSJbeyZxdW90O2Rlc2lnbmF0aW9uSUQmcXVvdDs6JnF1b3Q7MSZxdW90OywmcXVvdDtkZXNpZ25hdGlvbiZxdW90OzogJnF1b3Q7U29mdHdhcmUgRW5naW5lZXImcXVvdDt9XSIgLz48U2NoZW1hPjxOb2RlIE5hbWU9InJvb3QiIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iQXJyYXkiPjxOb2RlIE5hbWU9ImRlc2lnbmF0aW9uSUQiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iZGVzaWduYXRpb24iIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PC9Ob2RlPjwvU2NoZW1hPjwvSnNvbkRhdGFTb3VyY2U+" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

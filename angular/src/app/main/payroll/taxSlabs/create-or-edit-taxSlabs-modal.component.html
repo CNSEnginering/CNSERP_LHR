@@ -1,0 +1,73 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="dto.id">{{l("EdittaxSlabs")}}</span>
+                        <span *ngIf="!dto.id">{{l("CreateNewtaxSlabs")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="SlabSetup_TypeID">{{l("SlabTypeID")}}<span
+                                    class="require-field">*</span></label>
+                            <select id="SlabSetup_TypeID" class="form-control form-control-sm" [(ngModel)]="dto.typeID"
+                                name="SlabSetup_TypeID" required>
+                                <option [value]="1">Income Tax</option>
+                                <option [value]="2">Lunch</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 35px;">
+                            <div class="m-checkbox-list">
+                                <input id="SlabSetup_Active" type="checkbox" name="SlabSetup_Active"
+                                    [(ngModel)]="dto.active">
+                                {{l("Active")}}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="SlabSetup-FromSlab">{{l("FromSlab")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="SlabSetup-FromSlab" class="form-control form-control-sm"
+                                [(ngModel)]="dto.slabFrom" name="FromSlab" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="SlabSetup-ToSlab">{{l("ToSlab")}}<span class="require-field">*</span></label>
+                            <input type="number" id="SlabSetup-ToSlab" class="form-control form-control-sm"
+                                [(ngModel)]="dto.slabTo" name="ToSlab" required />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="SlabSetup-Rate">{{l("SlabRate")}}<span class="require-field">*</span></label>
+                            <input type="number" id="SlabSetup-Rate" class="form-control form-control-sm"
+                                [(ngModel)]="dto.rate" name="SlabRate" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="SlabSetup-Amount">{{l("Amount")}}<span class="require-field">*</span></label>
+                            <input type="number" id="SlabSetup-Amount" class="form-control form-control-sm"
+                                [(ngModel)]="dto.amount" name="Amount" required />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="Form.invalid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

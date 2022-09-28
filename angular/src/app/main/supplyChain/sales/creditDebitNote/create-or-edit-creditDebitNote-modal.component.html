@@ -1,0 +1,211 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <!-- <span>{{l("CreditDebitNote")}}</span> -->
+                        <span>{{noteType}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="docNo" class="col-sm-2 col-form-label">{{l("DocNo")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" required class="form-control form-control-sm"
+                                [(ngModel)]="creditDebitNote.docNo"
+                                id="docNo"  name="docNo" disabled/>
+                            </div>
+                        </div>
+                        <label for="DocDate" class="col-sm-2 col-form-label">{{l("DocDate")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" bsDatepicker
+                            [(ngModel)] = "creditDebitNote.docDate"
+                            (ngModelChange) = "dateChange($event)"
+							class="form-control form-control-sm" id="docDate" name="docDate" 
+							[(bsValue)]="creditDebitNote.docDate"
+                            value="{{ creditDebitNote.docDate | date: 'dd/MM/yyyy' }}"
+							/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="postdate" class="col-sm-2 col-form-label">{{l("PostingDate")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" bsDatepicker class="form-control form-control-sm" 
+                            [(ngModel)] = "creditDebitNote.postingDate"
+							id="postdate" name="postdate" 
+							[(bsValue)]="creditDebitNote.docDate"
+                            value="{{ creditDebitNote.docDate | date: 'dd/MM/yyyy' }}"
+							/>
+                        </div>
+                        <label for="payDate" class="col-sm-2 col-form-label">{{l("PaymentDate")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" bsDatepicker class="form-control form-control-sm"
+							[(ngModel)] = "creditDebitNote.paymentDate"
+							[(bsValue)]="creditDebitNote.docDate"
+                            value="{{ creditDebitNote.docDate | date: 'dd/MM/yyyy' }}"
+                            id="payDate" name="payDate" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="locID" class="col-sm-2 col-form-label">{{l("Loc")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" disabled required class="form-control form-control-sm" id="locID"
+                                    name="locID" [(ngModel)]="creditDebitNote.locID" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openLocationModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="locDesc"
+                                name="locDesc" [(ngModel)]="creditDebitNote.locDesc" />
+                        </div>
+                    </div>  
+                    <div class="row" *ngIf="this.creditDebitNote.typeID == 1">
+                        <label for="trTypeID" class="col-sm-2 col-form-label">{{l("TRANSTYPE")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="trTypeID" name="trTypeID"
+                                    [(ngModel)]="creditDebitNote.trTypeID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openTRTypeID()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="trTypeDesc"
+                                name="trTypeDesc" [(ngModel)]="creditDebitNote.trTypeDesc" />
+                        </div>
+                    </div>               
+                    <div class="row">
+                        <label for="accountID" class="col-sm-2 col-form-label">{{l("AccountID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accountID" name="accountID"
+                                    [(ngModel)]="creditDebitNote.accountID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button 
+                                    [disabled] = "this.creditDebitNote.typeID == 1"
+                                    class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="accountName"
+                                name="accountName" [(ngModel)]="creditDebitNote.accountName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="subAccId" class="col-sm-2 col-form-label">{{l("SubAccID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="subAccId" name="subAccId"
+                                    [(ngModel)]="creditDebitNote.subAccID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSubACModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="subAccName"
+                                name="subAccName" [(ngModel)]="creditDebitNote.subAccName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="narration" class="col-sm-2 col-form-label">{{l("Narration")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" required class="form-control form-control-sm" id="narration"
+                                name="narration"
+                                maxlength="100"
+                                [(ngModel)] = "creditDebitNote.narration"/>
+                        </div>                  
+                    </div>
+                    <div class="row">
+                        <label for="transType" class="col-sm-2 col-form-label">{{l("Type")}}</label>
+                        <div class=" col-sm-4">
+                            <select disabled [(ngModel)] = "creditDebitNote.transType" name="transType" id="transType"
+                            class="form-control">
+                                <option value="1">Payable</option>
+                                <option value="2">Receivable</option>
+                            </select>
+                        </div>
+                       <label for="typeID" class="col-sm-2 col-form-label">{{l("Type")}}</label>
+                        <div class=" col-sm-4">
+                            <select disabled [(ngModel)] = "creditDebitNote.typeID" name="typeID" id="typeID"
+                            class="form-control">
+                                <option value="1">Credit Note</option>
+                                <option value="2">Debit Note</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm"  type="button" (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm"  type="button"
+                        (click)="removeRecordFromGrid()">Remove</button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                                (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                (cellValueChanged)="cellValueChanged($event)"
+                                (cellEditingStarted)="cellEditingStarted($event)"
+                                >
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label for="totalItems">{{l("Total Items")}}</label>
+                            <input type="number" [(ngModel)]="totalItems" id="totalItems" name="totalItems"
+                                class="form-control form-control-sm" disabled>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="totalQty">{{l("Total Qty")}}</label>
+                            <input type="number" [(ngModel)]="totalQty" id="totalQty" name="totalQty"
+                                class="form-control form-control-sm" disabled>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="totalAmount">{{l("Total Amount")}}</label>
+                            <input type="number" [(ngModel)]="totalAmount" id="totalAmount" name="totalAmount"
+                                class="form-control form-control-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                        <button type="button" *ngIf="creditDebitNote.id && (this.saveBtnShow == true)
+                         && 
+                         isGranted('Sales.CreditDebitNotes.Process')"
+                          class="btn btn-success green"  [buttonBusy]="processing" 
+                        (click)="process()" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+                        <button *ngIf="this.saveBtnShow == true" type="submit" class="btn btn-primary blue" [disabled]="!formValid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- <creditDebitNoteLookupTableModal #creditDebitNoteLookupTableModal (modalSave)="getLookUpData()">
+    </creditDebitNoteLookupTableModal> -->
+    <financeLookupTableModal #financeLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+    <inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getNewInventoryModal()">
+    </inventoryLookupTableModal>
+</div>

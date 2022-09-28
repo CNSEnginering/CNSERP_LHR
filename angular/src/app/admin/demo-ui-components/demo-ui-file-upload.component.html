@@ -1,0 +1,31 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                {{"FileUpload" | localize}}
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <form role="form" class="kt-form">
+            <div class="form-group">
+                <label for="DefaultFileUploadFileInput">Default file uploader</label>
+                <p-fileUpload multiple="multiple"
+                              id="DefaultFileUploadFileInput"
+                              name="DefaultFileUploadFileInput[]"
+                              [url]="uploadUrl"
+                              accept="image/*"
+                              maxFileSize="1000000"
+                              (onUpload)="onUpload($event)"
+                              (onBeforeSend)="onBeforeSend($event)">
+
+                    <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                        </ul>
+                    </ng-template>
+                </p-fileUpload>
+            </div>
+        </form>
+    </div>
+</div>

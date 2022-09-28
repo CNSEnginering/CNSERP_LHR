@@ -1,0 +1,225 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("BankReconcile")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("BankReconcileHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button *ngIf="isGranted('Transaction.BankReconcile.Create')" (click)="createBankReconcile()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewBankReconcile")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getBankReconciles()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="DocNoFilter">{{l("DOCID")}}</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="DocNoFilter"
+                                            [(ngModel)]="docNoFilter" name="docNoFilter" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="BankIDFilter">{{l("BankID")}}</label>
+                                    <input type="text" class="form-control" id="BankIDFilterFilter" name="bankIDFilter"
+                                        [(ngModel)]="bankIDFilter">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="BankNameFilter">{{l("BANKNAME")}}</label>
+                                    <input type="text" class="form-control" id="BankNameFilter" name="bankNameFilter"
+                                        [(ngModel)]="bankNameFilter">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocDateFilter">{{l("ReconcileDate")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter"
+                                            name="MinDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('From')}}"
+                                            value="{{ minDocDateFilter | date:'dd/MM/yyyy' }}"
+                                            [(ngModel)]="minDocDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter"
+                                            name="MaxDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('To')}}" value="{{ maxDocDateFilter | date:'dd/MM/yyyy' }}"
+                                            [(ngModel)]="maxDocDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getBankReconciles($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 80px"
+                                        [hidden]="!isGrantedAny('Transaction.BankReconcile.Edit', 'Transaction.BankReconcile.Delete')">
+                                        {{l('Actions')}}</th>
+
+                                    <th style="width: 150px" pSortableColumn="docNo">
+                                        {{l('DocNo')}}
+                                        <p-sortIcon field="gLReconHeader.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docID">
+                                        {{l('DOCID')}}
+                                        <p-sortIcon field="gLReconHeader.docID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bankID">
+                                        {{l('BankID')}}
+                                        <p-sortIcon field="gLReconHeader.bankID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bankName">
+                                        {{l('BANKNAME')}}
+                                        <p-sortIcon field="gLReconHeader.bankName"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 200px" pSortableColumn="narration">
+                                        {{l('Narration')}}
+                                        <p-sortIcon field="gLReconHeader.narration"></p-sortIcon>
+                                    </th> -->
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('ReconcileDate')}}
+                                        <p-sortIcon field="gLReconHeader.docDate"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 80px"
+                                        [hidden]="!isGrantedAny('Transaction.BankReconcile.Edit', 'Transaction.BankReconcile.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewBankReconcileModal.show(record.gLReconHeader)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="!record.posted && permission.isGranted('Transaction.BankReconcile.Edit')"
+                                                        (click)="createOrEditBankReconcileModal.show(true, record.gLReconHeader.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="(record.gLReconHeader.approved==false || record.gLReconHeader.approved==undefined)  && permission.isGranted('Transaction.BankReconcile.Delete')"
+                                                        (click)="deleteBankReconcile(record.gLReconHeader)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                        {{record.gLReconHeader.docNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocID')}}</span>
+                                        {{record.gLReconHeader.docID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('BankID')}}</span>
+                                        {{record.gLReconHeader.bankID}}
+                                    </td>
+
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('BANKNAME')}}</span>
+                                        {{record.gLReconHeader.bankName}}
+                                    </td>
+                                    <!-- <td style="width:200px">
+                                        <span class="ui-column-title"> {{l('Narration')}}</span>
+                                        {{record.gLReconHeader.narration}}
+                                    </td> -->
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ReconcileDate')}}</span>
+                                        {{record.gLReconHeader.docDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getBankReconciles($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditBankReconcileModal #createOrEditBankReconcileModal (modalSave)="getBankReconciles()">
+    </createOrEditBankReconcileModal>
+    <viewBankReconcileModal #viewBankReconcileModal></viewBankReconcileModal>
+
+
+</div>

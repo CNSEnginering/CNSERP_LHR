@@ -1,0 +1,1257 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>ERP.Web.Host</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>ERP.Web.Host</PackageId>
+    <UserSecretsId>MyCompanyName-ERP-894FDFC1-6482-4A56-926A-3C46C9FE0329</UserSecretsId>
+    <RootNamespace>ERP.Web</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="App_Data\**" />
+    <Content Remove="App_Data\**" />
+    <EmbeddedResource Remove="App_Data\**" />
+    <None Remove="App_Data\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\swagger\ui\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="DXServices\Reports\AlertLog.repx" />
+    <None Remove="DXServices\Reports\AuditLogRpt.repx" />
+    <None Remove="DXServices\Reports\AuditPostingLogs.repx" />
+    <None Remove="DXServices\Reports\Finance\AgeingInvoice.repx" />
+    <None Remove="DXServices\Reports\Finance\BalanceSheet.repx" />
+    <None Remove="DXServices\Reports\Finance\BankReconcilationReport.repx" />
+    <None Remove="DXServices\Reports\Finance\BankReconcilationReportDetail.repx" />
+    <None Remove="DXServices\Reports\Finance\BankReconcileReport.repx" />
+    <None Remove="DXServices\Reports\Finance\BillWiseAgingReport.repx" />
+    <None Remove="DXServices\Reports\Finance\CashFlowStatement.repx" />
+    <None Remove="DXServices\Reports\Finance\CashReceipt.repx" />
+    <None Remove="DXServices\Reports\Finance\CashReceiptNew.repx" />
+    <None Remove="DXServices\Reports\Finance\ChartOfACListing.repx" />
+    <None Remove="DXServices\Reports\Finance\CPRNumbersReport.repx" />
+    <None Remove="DXServices\Reports\Finance\CustAnalysisReport.repx" />
+    <None Remove="DXServices\Reports\Finance\CustAnalysisReportSummary.repx" />
+    <None Remove="DXServices\Reports\Finance\CustomerAging.repx" />
+    <None Remove="DXServices\Reports\Finance\FinanceTransList.repx" />
+    <None Remove="DXServices\Reports\Finance\GeneralLedger.repx" />
+    <None Remove="DXServices\Reports\Finance\GeneralLedgerBookWise.repx" />
+    <None Remove="DXServices\Reports\Finance\LCExpenses.repx" />
+    <None Remove="DXServices\Reports\Finance\PartyBalances.repx" />
+    <None Remove="DXServices\Reports\Finance\PartyTax.repx" />
+    <None Remove="DXServices\Reports\Finance\PDCSubReport.repx" />
+    <None Remove="DXServices\Reports\Finance\PLStatement.repx" />
+    <None Remove="DXServices\Reports\Finance\PlStatementCategoryDetail.repx" />
+    <None Remove="DXServices\Reports\Finance\PLStatementNew.repx" />
+    <None Remove="DXServices\Reports\Finance\PlStatementVoucherDetail.repx" />
+    <None Remove="DXServices\Reports\Finance\ReceivingSlip.repx" />
+    <None Remove="DXServices\Reports\Finance\RptCashBook.repx" />
+    <None Remove="DXServices\Reports\Finance\rptCashBookNew.repx" />
+    <None Remove="DXServices\Reports\Finance\RptMonthlyConsolidated.repx" />
+    <None Remove="DXServices\Reports\Finance\SalesTaxDeduction.repx" />
+    <None Remove="DXServices\Reports\Finance\SalesTaxWithheld.repx" />
+    <None Remove="DXServices\Reports\Finance\Subledger.repx" />
+    <None Remove="DXServices\Reports\Finance\SubledgerListing.repx" />
+    <None Remove="DXServices\Reports\Finance\SubledgerSummary.repx" />
+    <None Remove="DXServices\Reports\Finance\TaxDueReport.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalance.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalance1.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalance2.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalance3.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalanceOpening.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalanceOpening1.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalanceOpening2.repx" />
+    <None Remove="DXServices\Reports\Finance\TrialBalanceOpening3.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLBooks.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLCategories.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLConfig.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLGroup.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLLevel1.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLLevel2.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLLevel3.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\GLLocations.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\LedgerTypes.repx" />
+    <None Remove="DXServices\Reports\GeneralLedger\PostDatedCheque.repx" />
+    <None Remove="DXServices\Reports\Inventory\ActualAndBudget.repx" />
+    <None Remove="DXServices\Reports\Inventory\AdjustmentActivityReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\AdjustmentReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\AdjustmentReportWithoutRates.repx" />
+    <None Remove="DXServices\Reports\Inventory\AssemblyCost.repx" />
+    <None Remove="DXServices\Reports\Inventory\AssemblyRegister.repx" />
+    <None Remove="DXServices\Reports\Inventory\AssemblyStock.repx" />
+    <None Remove="DXServices\Reports\Inventory\AssetRegistraionReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\AssetRegListing.repx" />
+    <None Remove="DXServices\Reports\Inventory\AssetResourceListing.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsolidateStockReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionActivityReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionActivityReportCostWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionReportAccWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionReportDepartmentWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionReportItemWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionReportOrderWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\ConsumptionSummaryDepartmentWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\InwardGatePass.repx" />
+    <None Remove="DXServices\Reports\Inventory\InwardGatePassRegister.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemLedgerDetail.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemLedgerQuantitative.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemListing.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemsPriceList.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemStatusListing.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemStockSegment2.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemStockSegment3.repx" />
+    <None Remove="DXServices\Reports\Inventory\ItemStockSegmentSummary.repx" />
+    <None Remove="DXServices\Reports\Inventory\OpeningActivityReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\OpeningReport.repx" />
+    <None Remove="DXServices\Reports\Inventory\OpeningReportWithoutRates.repx" />
+    <None Remove="DXServices\Reports\Inventory\OutwardGatePass.repx" />
+    <None Remove="DXServices\Reports\Inventory\OutwardGatePassRegister.repx" />
+    <None Remove="DXServices\Reports\Inventory\QuantitativeStock.repx" />
+    <None Remove="DXServices\Reports\Inventory\QuantitativeStock3.repx" />
+    <None Remove="DXServices\Reports\Inventory\StockReportDetail.repx" />
+    <None Remove="DXServices\Reports\Inventory\StockReportLevelWise.repx" />
+    <None Remove="DXServices\Reports\Inventory\StockReportQuantitative.repx" />
+    <None Remove="DXServices\Reports\Inventory\StockTransfer.repx" />
+    <None Remove="DXServices\Reports\Inventory\TransferRegister.repx" />
+    <None Remove="DXServices\Reports\Inventory\TrialBalance.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Allowance.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AllowanceBank.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AllowanceBike.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AllowanceDisbrsment.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AllowanceDisbursment.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AllowanceRegister.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AllowanceSummary.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Attendance.repx" />
+    <None Remove="DXServices\Reports\PayRoll\AttendanceSummary.repx" />
+    <None Remove="DXServices\Reports\PayRoll\BankAdvice.repx" />
+    <None Remove="DXServices\Reports\PayRoll\DeductionRegister.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Departments.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Designation.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Education.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Employee.repx" />
+    <None Remove="DXServices\Reports\PayRoll\EmployeeArrears.repx" />
+    <None Remove="DXServices\Reports\PayRoll\EmployeeCard.repx" />
+    <None Remove="DXServices\Reports\PayRoll\EmployeeDeductions.repx" />
+    <None Remove="DXServices\Reports\PayRoll\EmployeeEarnings.repx" />
+    <None Remove="DXServices\Reports\PayRoll\EmployeeLeaves.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Employees.repx" />
+    <None Remove="DXServices\Reports\PayRoll\EmployeeType.repx" />
+    <None Remove="DXServices\Reports\PayRoll\FixedAllowance.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Grade.repx" />
+    <None Remove="DXServices\Reports\PayRoll\LoanLedger.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Location.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Religion.repx" />
+    <None Remove="DXServices\Reports\PayRoll\SalarySheet.repx" />
+    <None Remove="DXServices\Reports\PayRoll\SalarySheetSummary.repx" />
+    <None Remove="DXServices\Reports\PayRoll\SalarySheetSummaryNew.repx" />
+    <None Remove="DXServices\Reports\PayRoll\SalarySlips.repx" />
+    <None Remove="DXServices\Reports\PayRoll\SalarySlipsNew.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Sections.repx" />
+    <None Remove="DXServices\Reports\PayRoll\Shift.repx" />
+    <None Remove="DXServices\Reports\PayRoll\TaxCertificate.repx" />
+    <None Remove="DXServices\Reports\Purchase\GroupRequisition.repx" />
+    <None Remove="DXServices\Reports\Purchase\PurchaseOrder.repx" />
+    <None Remove="DXServices\Reports\Purchase\PurchaseOrderStatus.repx" />
+    <None Remove="DXServices\Reports\Purchase\Receipt.repx" />
+    <None Remove="DXServices\Reports\Purchase\ReceiptReturn.repx" />
+    <None Remove="DXServices\Reports\Purchase\ReceiptReturnWithoutRates.repx" />
+    <None Remove="DXServices\Reports\Purchase\ReceiptWithoutRates.repx" />
+    <None Remove="DXServices\Reports\Purchase\ReqOrderStatus.repx" />
+    <None Remove="DXServices\Reports\Purchase\Requisition.repx" />
+    <None Remove="DXServices\Reports\rptSubLedgerTrail.repx" />
+    <None Remove="DXServices\Reports\Sales\CostSheet.repx" />
+    <None Remove="DXServices\Reports\Sales\Invoice.repx" />
+    <None Remove="DXServices\Reports\Sales\InvoiceTax.repx" />
+    <None Remove="DXServices\Reports\Sales\SaleQuotation.repx" />
+    <None Remove="DXServices\Reports\Sales\SalesRegister.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="wwwroot\Plugins\.gitkeep" />
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="wwwroot\**\*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ERP.Web.Core\ERP.Web.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="4.6.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="4.6.0" />
+    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="19.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Abp.Castle.Log4Net" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DXServices\Reports\AlertLog.repx" />
+    <EmbeddedResource Include="DXServices\Reports\AuditLogRpt.repx" />
+    <EmbeddedResource Include="DXServices\Reports\AuditPostingLogs.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\AgeingInvoice.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\BalanceSheet.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\BankReconcilationReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\BankReconcilationReportDetail.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\BankReconcileReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\BillWiseAgingReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CashFlowStatement.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CashReceipt.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CashReceiptNew.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\ChartOfACListing.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CPRNumbersReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CustAnalysisReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CustAnalysisReportSummary.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\CustomerAging.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\FinanceTransList.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\GeneralLedger.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\GeneralLedgerBookWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\LCExpenses.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PartyBalances.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PartyTax.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PDCSubReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PLStatement.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PlStatementCategoryDetail.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PLStatementNew.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\PlStatementVoucherDetail.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\ReceivingSlip.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\RptCashBook.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\rptCashBookNew.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\RptMonthlyConsolidated.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\SalesTaxDeduction.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\SalesTaxWithheld.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\Subledger.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\SubledgerListing.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\SubledgerSummary.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TaxDueReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalance.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalance1.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalance2.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalance3.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalanceOpening.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalanceOpening1.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalanceOpening2.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Finance\TrialBalanceOpening3.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLBooks.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLCategories.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLConfig.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLGroup.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLLevel1.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLLevel2.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLLevel3.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\GLLocations.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\LedgerTypes.repx" />
+    <EmbeddedResource Include="DXServices\Reports\GeneralLedger\PostDatedCheque.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ActualAndBudget.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AdjustmentActivityReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AdjustmentReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AdjustmentReportWithoutRates.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AssemblyCost.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AssemblyRegister.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AssemblyStock.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AssetRegistraionReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AssetRegListing.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\AssetResourceListing.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsolidateStockReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionActivityReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionActivityReportCostWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionReportAccWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionReportDepartmentWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionReportItemWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionReportOrderWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ConsumptionSummaryDepartmentWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\InwardGatePass.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\InwardGatePassRegister.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemLedgerDetail.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemLedgerQuantitative.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemListing.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemsPriceList.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemStatusListing.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemStockSegment2.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemStockSegment3.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\ItemStockSegmentSummary.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\OpeningActivityReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\OpeningReport.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\OpeningReportWithoutRates.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\OutwardGatePass.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\OutwardGatePassRegister.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\QuantitativeStock.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\QuantitativeStock3.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\StockReportDetail.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\StockReportLevelWise.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\StockReportQuantitative.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\StockTransfer.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Inventory\TransferRegister.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Allowance.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AllowanceBank.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AllowanceBike.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AllowanceDisbrsment.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AllowanceDisbursment.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AllowanceRegister.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AllowanceSummary.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Attendance.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\AttendanceSummary.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\BankAdvice.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\DeductionRegister.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Departments.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Designation.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Education.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Employee.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\EmployeeArrears.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\EmployeeCard.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\EmployeeDeductions.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\EmployeeEarnings.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\EmployeeLeaves.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Employees.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\EmployeeType.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\FixedAllowance.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Grade.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\LoanLedger.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Location.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Religion.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\SalarySheet.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\SalarySheetSummary.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\SalarySheetSummaryNew.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\SalarySlips.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\SalarySlipsNew.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Sections.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\Shift.repx" />
+    <EmbeddedResource Include="DXServices\Reports\PayRoll\TaxCertificate.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\GroupRequisition.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\PurchaseOrder.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\PurchaseOrderStatus.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\Receipt.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\ReceiptReturn.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\ReceiptReturnWithoutRates.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\ReceiptWithoutRates.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\ReqOrderStatus.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Purchase\Requisition.repx" />
+    <EmbeddedResource Include="DXServices\Reports\rptSubLedgerTrail.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Sales\CostSheet.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Sales\Invoice.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Sales\InvoiceTax.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Sales\SaleQuotation.repx" />
+    <EmbeddedResource Include="DXServices\Reports\Sales\SalesRegister.repx" />
+    <EmbeddedResource Include="wwwroot\swagger\ui\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\Plugins\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="DXServices\Reports\AlertLog.cs">
+      <DependentUpon>AlertLog.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\AlertLog.Designer.cs">
+      <DependentUpon>AlertLog.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\AuditLogRpt.cs">
+      <DependentUpon>AuditLogRpt.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\AuditLogRpt.Designer.cs">
+      <DependentUpon>AuditLogRpt.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\AuditPostingLogs.cs">
+      <DependentUpon>AuditPostingLogs.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\AuditPostingLogs.Designer.cs">
+      <DependentUpon>AuditPostingLogs.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\AgeingInvoice.cs">
+      <DependentUpon>AgeingInvoice.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\AgeingInvoice.Designer.cs">
+      <DependentUpon>AgeingInvoice.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BalanceSheet.cs">
+      <DependentUpon>BalanceSheet.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BalanceSheet.Designer.cs">
+      <DependentUpon>BalanceSheet.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BankReconcilationReport.cs">
+      <DependentUpon>BankReconcilationReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BankReconcilationReport.Designer.cs">
+      <DependentUpon>BankReconcilationReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BankReconcilationReportDetail.cs">
+      <DependentUpon>BankReconcilationReportDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BankReconcilationReportDetail.Designer.cs">
+      <DependentUpon>BankReconcilationReportDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BankReconcileReport.cs">
+      <DependentUpon>BankReconcileReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BankReconcileReport.Designer.cs">
+      <DependentUpon>BankReconcileReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BillWiseAgingReport.cs">
+      <DependentUpon>BillWiseAgingReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\BillWiseAgingReport.Designer.cs">
+      <DependentUpon>BillWiseAgingReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CashFlowStatement.cs">
+      <DependentUpon>CashFlowStatement.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CashFlowStatement.Designer.cs">
+      <DependentUpon>CashFlowStatement.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CashReceipt.cs">
+      <DependentUpon>CashReceipt.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CashReceipt.Designer.cs">
+      <DependentUpon>CashReceipt.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CashReceiptNew.cs">
+      <DependentUpon>CashReceiptNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CashReceiptNew.Designer.cs">
+      <DependentUpon>CashReceiptNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\ChartOfACListing.cs">
+      <DependentUpon>ChartOfACListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\ChartOfACListing.Designer.cs">
+      <DependentUpon>ChartOfACListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CPRNumbersReport.cs">
+      <DependentUpon>CPRNumbersReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CPRNumbersReport.Designer.cs">
+      <DependentUpon>CPRNumbersReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CustAnalysisReport.cs">
+      <DependentUpon>CustAnalysisReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CustAnalysisReport.Designer.cs">
+      <DependentUpon>CustAnalysisReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CustAnalysisReportSummary.cs">
+      <DependentUpon>CustAnalysisReportSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CustAnalysisReportSummary.Designer.cs">
+      <DependentUpon>CustAnalysisReportSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CustomerAging.cs">
+      <DependentUpon>CustomerAging.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\CustomerAging.Designer.cs">
+      <DependentUpon>CustomerAging.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\FinanceTransList.cs">
+      <DependentUpon>FinanceTransList.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\FinanceTransList.Designer.cs">
+      <DependentUpon>FinanceTransList.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\GeneralLedger.cs">
+      <DependentUpon>GeneralLedger.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\GeneralLedger.Designer.cs">
+      <DependentUpon>GeneralLedger.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\GeneralLedgerBookWise.cs">
+      <DependentUpon>GeneralLedgerBookWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\GeneralLedgerBookWise.Designer.cs">
+      <DependentUpon>GeneralLedgerBookWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\LCExpenses.cs">
+      <DependentUpon>LCExpenses.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\LCExpenses.Designer.cs">
+      <DependentUpon>LCExpenses.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PartyBalances.cs">
+      <DependentUpon>PartyBalances.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PartyBalances.Designer.cs">
+      <DependentUpon>PartyBalances.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PartyTax.cs">
+      <DependentUpon>PartyTax.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PartyTax.Designer.cs">
+      <DependentUpon>PartyTax.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PDCSubReport.cs">
+      <DependentUpon>PDCSubReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PDCSubReport.Designer.cs">
+      <DependentUpon>PDCSubReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PLStatement.cs">
+      <DependentUpon>PLStatement.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PLStatement.Designer.cs">
+      <DependentUpon>PLStatement.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PlStatementCategoryDetail.cs">
+      <DependentUpon>PlStatementCategoryDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PlStatementCategoryDetail.Designer.cs">
+      <DependentUpon>PlStatementCategoryDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PLStatementNew.cs">
+      <DependentUpon>PLStatementNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PLStatementNew.Designer.cs">
+      <DependentUpon>PLStatementNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PlStatementVoucherDetail.cs">
+      <DependentUpon>PlStatementVoucherDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\PlStatementVoucherDetail.Designer.cs">
+      <DependentUpon>PlStatementVoucherDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\ReceivingSlip.cs">
+      <DependentUpon>ReceivingSlip.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\ReceivingSlip.Designer.cs">
+      <DependentUpon>ReceivingSlip.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\RptCashBook.cs">
+      <DependentUpon>RptCashBook.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\RptCashBook.Designer.cs">
+      <DependentUpon>RptCashBook.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\rptCashBookNew.cs">
+      <DependentUpon>rptCashBookNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\rptCashBookNew.Designer.cs">
+      <DependentUpon>rptCashBookNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\RptMonthlyConsolidated.cs">
+      <DependentUpon>RptMonthlyConsolidated.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\RptMonthlyConsolidated.Designer.cs">
+      <DependentUpon>RptMonthlyConsolidated.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SalesTaxDeduction.cs">
+      <DependentUpon>SalesTaxDeduction.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SalesTaxDeduction.Designer.cs">
+      <DependentUpon>SalesTaxDeduction.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SalesTaxWithheld.cs">
+      <DependentUpon>SalesTaxWithheld.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SalesTaxWithheld.Designer.cs">
+      <DependentUpon>SalesTaxWithheld.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\Subledger.cs">
+      <DependentUpon>Subledger.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\Subledger.Designer.cs">
+      <DependentUpon>Subledger.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SubledgerListing.cs">
+      <DependentUpon>SubledgerListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SubledgerListing.Designer.cs">
+      <DependentUpon>SubledgerListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SubledgerSummary.cs">
+      <DependentUpon>SubledgerSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\SubledgerSummary.Designer.cs">
+      <DependentUpon>SubledgerSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TaxDueReport.cs">
+      <DependentUpon>TaxDueReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TaxDueReport.Designer.cs">
+      <DependentUpon>TaxDueReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance.cs">
+      <DependentUpon>TrialBalance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance.Designer.cs">
+      <DependentUpon>TrialBalance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance1.cs">
+      <DependentUpon>TrialBalance1.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance1.Designer.cs">
+      <DependentUpon>TrialBalance1.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance2.cs">
+      <DependentUpon>TrialBalance2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance2.Designer.cs">
+      <DependentUpon>TrialBalance2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance3.cs">
+      <DependentUpon>TrialBalance3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalance3.Designer.cs">
+      <DependentUpon>TrialBalance3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening.cs">
+      <DependentUpon>TrialBalanceOpening.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening.Designer.cs">
+      <DependentUpon>TrialBalanceOpening.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening1.cs">
+      <DependentUpon>TrialBalanceOpening1.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening1.Designer.cs">
+      <DependentUpon>TrialBalanceOpening1.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening2.cs">
+      <DependentUpon>TrialBalanceOpening2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening2.Designer.cs">
+      <DependentUpon>TrialBalanceOpening2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening3.cs">
+      <DependentUpon>TrialBalanceOpening3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Finance\TrialBalanceOpening3.Designer.cs">
+      <DependentUpon>TrialBalanceOpening3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLBooks.cs">
+      <DependentUpon>GLBooks.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLBooks.Designer.cs">
+      <DependentUpon>GLBooks.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLCategories.cs">
+      <DependentUpon>GLCategories.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLCategories.Designer.cs">
+      <DependentUpon>GLCategories.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLConfig.cs">
+      <DependentUpon>GLConfig.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLConfig.Designer.cs">
+      <DependentUpon>GLConfig.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLGroup.cs">
+      <DependentUpon>GLGroup.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLGroup.Designer.cs">
+      <DependentUpon>GLGroup.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLevel1.cs">
+      <DependentUpon>GLLevel1.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLevel1.Designer.cs">
+      <DependentUpon>GLLevel1.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLevel2.cs">
+      <DependentUpon>GLLevel2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLevel2.Designer.cs">
+      <DependentUpon>GLLevel2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLevel3.cs">
+      <DependentUpon>GLLevel3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLevel3.Designer.cs">
+      <DependentUpon>GLLevel3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLocations.cs">
+      <DependentUpon>GLLocations.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\GLLocations.Designer.cs">
+      <DependentUpon>GLLocations.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\LedgerTypes.cs">
+      <DependentUpon>LedgerTypes.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\LedgerTypes.Designer.cs">
+      <DependentUpon>LedgerTypes.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\PostDatedCheque.cs">
+      <DependentUpon>PostDatedCheque.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\GeneralLedger\PostDatedCheque.Designer.cs">
+      <DependentUpon>PostDatedCheque.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ActualAndBudget.cs">
+      <DependentUpon>ActualAndBudget.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ActualAndBudget.Designer.cs">
+      <DependentUpon>ActualAndBudget.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AdjustmentActivityReport.cs">
+      <DependentUpon>AdjustmentActivityReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AdjustmentActivityReport.Designer.cs">
+      <DependentUpon>AdjustmentActivityReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AdjustmentReport.cs">
+      <DependentUpon>AdjustmentReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AdjustmentReport.Designer.cs">
+      <DependentUpon>AdjustmentReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AdjustmentReportWithoutRates.cs">
+      <DependentUpon>AdjustmentReportWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AdjustmentReportWithoutRates.Designer.cs">
+      <DependentUpon>AdjustmentReportWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssemblyCost.cs">
+      <DependentUpon>AssemblyCost.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssemblyCost.Designer.cs">
+      <DependentUpon>AssemblyCost.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssemblyRegister.cs">
+      <DependentUpon>AssemblyRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssemblyRegister.Designer.cs">
+      <DependentUpon>AssemblyRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssemblyStock.cs">
+      <DependentUpon>AssemblyStock.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssemblyStock.Designer.cs">
+      <DependentUpon>AssemblyStock.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssetRegistraionReport.cs">
+      <DependentUpon>AssetRegistraionReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssetRegistraionReport.Designer.cs">
+      <DependentUpon>AssetRegistraionReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssetRegListing.cs">
+      <DependentUpon>AssetRegListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssetRegListing.Designer.cs">
+      <DependentUpon>AssetRegListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssetResourceListing.cs">
+      <DependentUpon>AssetResourceListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\AssetResourceListing.Designer.cs">
+      <DependentUpon>AssetResourceListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsolidateStockReport.cs">
+      <DependentUpon>ConsolidateStockReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsolidateStockReport.Designer.cs">
+      <DependentUpon>ConsolidateStockReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionActivityReport.cs">
+      <DependentUpon>ConsumptionActivityReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionActivityReport.Designer.cs">
+      <DependentUpon>ConsumptionActivityReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionActivityReportCostWise.cs">
+      <DependentUpon>ConsumptionActivityReportCostWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionActivityReportCostWise.Designer.cs">
+      <DependentUpon>ConsumptionActivityReportCostWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReport.cs">
+      <DependentUpon>ConsumptionReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReport.Designer.cs">
+      <DependentUpon>ConsumptionReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportAccWise.cs">
+      <DependentUpon>ConsumptionReportAccWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportAccWise.Designer.cs">
+      <DependentUpon>ConsumptionReportAccWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportDepartmentWise.cs">
+      <DependentUpon>ConsumptionReportDepartmentWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportDepartmentWise.Designer.cs">
+      <DependentUpon>ConsumptionReportDepartmentWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportItemWise.cs">
+      <DependentUpon>ConsumptionReportItemWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportItemWise.Designer.cs">
+      <DependentUpon>ConsumptionReportItemWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportOrderWise.cs">
+      <DependentUpon>ConsumptionReportOrderWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionReportOrderWise.Designer.cs">
+      <DependentUpon>ConsumptionReportOrderWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionSummaryDepartmentWise.cs">
+      <DependentUpon>ConsumptionSummaryDepartmentWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ConsumptionSummaryDepartmentWise.Designer.cs">
+      <DependentUpon>ConsumptionSummaryDepartmentWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\InwardGatePass.cs">
+      <DependentUpon>InwardGatePass.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\InwardGatePass.Designer.cs">
+      <DependentUpon>InwardGatePass.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\InwardGatePassRegister.cs">
+      <DependentUpon>InwardGatePassRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\InwardGatePassRegister.Designer.cs">
+      <DependentUpon>InwardGatePassRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemLedgerDetail.cs">
+      <DependentUpon>ItemLedgerDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemLedgerDetail.Designer.cs">
+      <DependentUpon>ItemLedgerDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemLedgerQuantitative.cs">
+      <DependentUpon>ItemLedgerQuantitative.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemLedgerQuantitative.Designer.cs">
+      <DependentUpon>ItemLedgerQuantitative.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemListing.cs">
+      <DependentUpon>ItemListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemListing.Designer.cs">
+      <DependentUpon>ItemListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemsPriceList.cs">
+      <DependentUpon>ItemsPriceList.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemsPriceList.Designer.cs">
+      <DependentUpon>ItemsPriceList.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStatusListing.cs">
+      <DependentUpon>ItemStatusListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStatusListing.Designer.cs">
+      <DependentUpon>ItemStatusListing.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStockSegment2.cs">
+      <DependentUpon>ItemStockSegment2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStockSegment2.Designer.cs">
+      <DependentUpon>ItemStockSegment2.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStockSegment3.cs">
+      <DependentUpon>ItemStockSegment3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStockSegment3.Designer.cs">
+      <DependentUpon>ItemStockSegment3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStockSegmentSummary.cs">
+      <DependentUpon>ItemStockSegmentSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\ItemStockSegmentSummary.Designer.cs">
+      <DependentUpon>ItemStockSegmentSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OpeningActivityReport.cs">
+      <DependentUpon>OpeningActivityReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OpeningActivityReport.Designer.cs">
+      <DependentUpon>OpeningActivityReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OpeningReport.cs">
+      <DependentUpon>OpeningReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OpeningReport.Designer.cs">
+      <DependentUpon>OpeningReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OpeningReportWithoutRates.cs">
+      <DependentUpon>OpeningReportWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OpeningReportWithoutRates.Designer.cs">
+      <DependentUpon>OpeningReportWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OutwardGatePass.cs">
+      <DependentUpon>OutwardGatePass.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OutwardGatePass.Designer.cs">
+      <DependentUpon>OutwardGatePass.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OutwardGatePassRegister.cs">
+      <DependentUpon>OutwardGatePassRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\OutwardGatePassRegister.Designer.cs">
+      <DependentUpon>OutwardGatePassRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\QuantitativeStock.cs">
+      <DependentUpon>QuantitativeStock.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\QuantitativeStock.Designer.cs">
+      <DependentUpon>QuantitativeStock.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\QuantitativeStock3.cs">
+      <DependentUpon>QuantitativeStock3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\QuantitativeStock3.Designer.cs">
+      <DependentUpon>QuantitativeStock3.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockReportDetail.cs">
+      <DependentUpon>StockReportDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockReportDetail.Designer.cs">
+      <DependentUpon>StockReportDetail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockReportLevelWise.cs">
+      <DependentUpon>StockReportLevelWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockReportLevelWise.Designer.cs">
+      <DependentUpon>StockReportLevelWise.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockReportQuantitative.cs">
+      <DependentUpon>StockReportQuantitative.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockReportQuantitative.Designer.cs">
+      <DependentUpon>StockReportQuantitative.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockTransfer.cs">
+      <DependentUpon>StockTransfer.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\StockTransfer.Designer.cs">
+      <DependentUpon>StockTransfer.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\TransferRegister.cs">
+      <DependentUpon>TransferRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\TransferRegister.Designer.cs">
+      <DependentUpon>TransferRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\TrialBalance.cs">
+      <DependentUpon>TrialBalance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Inventory\TrialBalance.Designer.cs">
+      <DependentUpon>TrialBalance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Allowance.cs">
+      <DependentUpon>Allowance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Allowance.Designer.cs">
+      <DependentUpon>Allowance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceBank.cs">
+      <DependentUpon>AllowanceBank.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceBank.Designer.cs">
+      <DependentUpon>AllowanceBank.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceBike.cs">
+      <DependentUpon>AllowanceBike.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceBike.Designer.cs">
+      <DependentUpon>AllowanceBike.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceDisbrsment.cs">
+      <DependentUpon>AllowanceDisbrsment.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceDisbrsment.Designer.cs">
+      <DependentUpon>AllowanceDisbrsment.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceDisbursment.cs">
+      <DependentUpon>AllowanceDisbursment.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceDisbursment.Designer.cs">
+      <DependentUpon>AllowanceDisbursment.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceRegister.cs">
+      <DependentUpon>AllowanceRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceRegister.Designer.cs">
+      <DependentUpon>AllowanceRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceSummary.cs">
+      <DependentUpon>AllowanceSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AllowanceSummary.Designer.cs">
+      <DependentUpon>AllowanceSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Attendance.cs">
+      <DependentUpon>Attendance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Attendance.Designer.cs">
+      <DependentUpon>Attendance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AttendanceSummary.cs">
+      <DependentUpon>AttendanceSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\AttendanceSummary.Designer.cs">
+      <DependentUpon>AttendanceSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\BankAdvice.cs">
+      <DependentUpon>BankAdvice.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\BankAdvice.Designer.cs">
+      <DependentUpon>BankAdvice.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\DeductionRegister.cs">
+      <DependentUpon>DeductionRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\DeductionRegister.Designer.cs">
+      <DependentUpon>DeductionRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Departments.cs">
+      <DependentUpon>Departments.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Departments.Designer.cs">
+      <DependentUpon>Departments.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Designation.cs">
+      <DependentUpon>Designation.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Designation.Designer.cs">
+      <DependentUpon>Designation.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Education.cs">
+      <DependentUpon>Education.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Education.Designer.cs">
+      <DependentUpon>Education.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Employee.cs">
+      <DependentUpon>Employee.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Employee.Designer.cs">
+      <DependentUpon>Employee.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeArrears.cs">
+      <DependentUpon>EmployeeArrears.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeArrears.Designer.cs">
+      <DependentUpon>EmployeeArrears.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeCard.cs">
+      <DependentUpon>EmployeeCard.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeCard.Designer.cs">
+      <DependentUpon>EmployeeCard.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeDeductions.cs">
+      <DependentUpon>EmployeeDeductions.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeDeductions.Designer.cs">
+      <DependentUpon>EmployeeDeductions.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeEarnings.cs">
+      <DependentUpon>EmployeeEarnings.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeEarnings.Designer.cs">
+      <DependentUpon>EmployeeEarnings.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeLeaves.cs">
+      <DependentUpon>EmployeeLeaves.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeLeaves.Designer.cs">
+      <DependentUpon>EmployeeLeaves.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Employees.cs">
+      <DependentUpon>Employees.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Employees.Designer.cs">
+      <DependentUpon>Employees.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeType.cs">
+      <DependentUpon>EmployeeType.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\EmployeeType.Designer.cs">
+      <DependentUpon>EmployeeType.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\FixedAllowance.cs">
+      <DependentUpon>FixedAllowance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\FixedAllowance.Designer.cs">
+      <DependentUpon>FixedAllowance.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Grade.cs">
+      <DependentUpon>Grade.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Grade.Designer.cs">
+      <DependentUpon>Grade.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\LoanLedger.cs">
+      <DependentUpon>LoanLedger.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\LoanLedger.Designer.cs">
+      <DependentUpon>LoanLedger.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Location.cs">
+      <DependentUpon>Location.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Location.Designer.cs">
+      <DependentUpon>Location.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Religion.cs">
+      <DependentUpon>Religion.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Religion.Designer.cs">
+      <DependentUpon>Religion.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySheet.cs">
+      <DependentUpon>SalarySheet.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySheet.Designer.cs">
+      <DependentUpon>SalarySheet.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySheetSummary.cs">
+      <DependentUpon>SalarySheetSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySheetSummary.Designer.cs">
+      <DependentUpon>SalarySheetSummary.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySheetSummaryNew.cs">
+      <DependentUpon>SalarySheetSummaryNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySheetSummaryNew.Designer.cs">
+      <DependentUpon>SalarySheetSummaryNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySlips.cs">
+      <DependentUpon>SalarySlips.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySlips.Designer.cs">
+      <DependentUpon>SalarySlips.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySlipsNew.cs">
+      <DependentUpon>SalarySlipsNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\SalarySlipsNew.Designer.cs">
+      <DependentUpon>SalarySlipsNew.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Sections.cs">
+      <DependentUpon>Sections.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Sections.Designer.cs">
+      <DependentUpon>Sections.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Shift.cs">
+      <DependentUpon>Shift.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\Shift.Designer.cs">
+      <DependentUpon>Shift.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\TaxCertificate.cs">
+      <DependentUpon>TaxCertificate.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\PayRoll\TaxCertificate.Designer.cs">
+      <DependentUpon>TaxCertificate.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\GroupRequisition.cs">
+      <DependentUpon>GroupRequisition.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\GroupRequisition.Designer.cs">
+      <DependentUpon>GroupRequisition.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\PurchaseOrder.cs">
+      <DependentUpon>PurchaseOrder.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\PurchaseOrder.Designer.cs">
+      <DependentUpon>PurchaseOrder.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\PurchaseOrderStatus.cs">
+      <DependentUpon>PurchaseOrderStatus.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\PurchaseOrderStatus.Designer.cs">
+      <DependentUpon>PurchaseOrderStatus.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\Receipt.cs">
+      <DependentUpon>Receipt.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\Receipt.Designer.cs">
+      <DependentUpon>Receipt.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReceiptReturn.cs">
+      <DependentUpon>ReceiptReturn.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReceiptReturn.Designer.cs">
+      <DependentUpon>ReceiptReturn.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReceiptReturnWithoutRates.cs">
+      <DependentUpon>ReceiptReturnWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReceiptReturnWithoutRates.Designer.cs">
+      <DependentUpon>ReceiptReturnWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReceiptWithoutRates.cs">
+      <DependentUpon>ReceiptWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReceiptWithoutRates.Designer.cs">
+      <DependentUpon>ReceiptWithoutRates.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReqOrderStatus.cs">
+      <DependentUpon>ReqOrderStatus.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\ReqOrderStatus.Designer.cs">
+      <DependentUpon>ReqOrderStatus.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\Requisition.cs">
+      <DependentUpon>Requisition.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Purchase\Requisition.Designer.cs">
+      <DependentUpon>Requisition.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\rptSubLedgerTrail.cs">
+      <DependentUpon>rptSubLedgerTrail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\rptSubLedgerTrail.Designer.cs">
+      <DependentUpon>rptSubLedgerTrail.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\CostSheet.cs">
+      <DependentUpon>CostSheet.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\CostSheet.Designer.cs">
+      <DependentUpon>CostSheet.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\Invoice.cs">
+      <DependentUpon>Invoice.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\Invoice.Designer.cs">
+      <DependentUpon>Invoice.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\InvoiceTax.cs">
+      <DependentUpon>InvoiceTax.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\InvoiceTax.Designer.cs">
+      <DependentUpon>InvoiceTax.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\SaleQuotation.cs">
+      <DependentUpon>SaleQuotation.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\SaleQuotation.Designer.cs">
+      <DependentUpon>SaleQuotation.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\SalesRegister.cs">
+      <DependentUpon>SalesRegister.repx</DependentUpon>
+    </Compile>
+    <Compile Update="DXServices\Reports\Sales\SalesRegister.Designer.cs">
+      <DependentUpon>SalesRegister.repx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

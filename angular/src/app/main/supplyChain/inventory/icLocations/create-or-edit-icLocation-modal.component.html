@@ -1,0 +1,211 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #icLocationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="icLocation.id">{{l("EditICLocation")}}</span>
+                        <span *ngIf="!icLocation.id">{{l("CreateNewICLocation")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+					<tabset>
+                        <tab heading="Location">
+                            <fieldset>
+						<div class="row">
+							<div class="form-group col-md-2">
+								<label for="ICLocation_LocID">{{l("LocID")}}<span class="require-field">*</span></label>
+								<input type="number" id="ICLocation_LocID" min="1" class="form-control form-control-sm" [(ngModel)]="icLocation.locID" name="LocID"  required/>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="ICLocation_LocName">{{l("LocName")}}<span class="require-field">*</span></label>
+								<input type="text" id="ICLocation_LocName" class="form-control form-control-sm" [(ngModel)]="icLocation.locName" name="LocName"  required  />
+							</div>
+							<div class="form-group col-md-4">
+								<label for="ICLocation_LocShort">{{l("LocShort")}}</label>
+								<input type="text" id="ICLocation_LocShort" class="form-control form-control-sm" [(ngModel)]="icLocation.locShort" name="LocShort"    />
+							</div>
+
+							<div class="form-group col-md-12">
+								<label for="ICLocation_Address">{{l("Address")}}</label>
+								<input type="text" id="ICLocation_Address" class="form-control form-control-sm" [(ngModel)]="icLocation.address" name="Address"    />
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="ICLocation_City">{{l("City")}}</label>
+								<input type="text" id="ICLocation_City" class="form-control form-control-sm" [(ngModel)]="icLocation.city" name="City"    />
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="icLocation_ParentID">{{l("ParentLocation")}}<span class="require-field">*</span></label>
+								<select id="icLocation_ParentID" class="form-control form-control-sm" [(ngModel)]="icLocation.parentID" name="ParentID"   required>
+									<option [value]="0">Choose Location</option>
+									<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+								</select>
+							</div>
+
+
+						</div>
+
+						<div class="row">
+							<br/><div class="m-checkbox-list col-md-3">
+								<label for="ICLocation_AllowRec" class="kt-checkbox">
+									<input id="ICLocation_AllowRec" type="checkbox" name="AllowRec" [(ngModel)]="icLocation.allowRec">
+									{{l("AllowRec")}}
+									<span></span>
+								</label>
+							</div>
+
+							<br/><div class="m-checkbox-list col-md-4">
+								<label for="ICLocation_AllowNeg" class="kt-checkbox">
+									<input id="ICLocation_AllowNeg" type="checkbox" name="AllowNeg" [(ngModel)]="icLocation.allowNeg">
+									{{l("AllowNeg")}}
+									<span></span>
+								</label>
+							</div>
+
+							<br/> <div class="m-checkbox-list col-md-3">
+								<label for="ICLocation_Active" class="kt-checkbox">
+									<input id="ICLocation_Active" type="checkbox" name="Active" [(ngModel)]="icLocation.active">
+									{{l("Active")}}
+									<span></span>
+								</label>
+							</div>
+						</div>
+
+								<!-- <div class="form-group">
+									<label for="ICLocation_CreatedBy">{{l("CreatedBy")}}</label>
+									<input type="text" id="ICLocation_CreatedBy" class="form-control" [(ngModel)]="icLocation.createdBy" name="CreatedBy"    />
+								</div>
+
+								<div class="form-group">
+									<label for="ICLocation_CreateDate">{{l("CreateDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="createDate" id="ICLocation_CreateDate" name="ICLocation_CreateDate">
+								</div>
+
+								<div class="form-group">
+									<label for="ICLocation_AudtUser">{{l("AudtUser")}}</label>
+									<input type="text" id="ICLocation_AudtUser" class="form-control" [(ngModel)]="icLocation.audtUser" name="AudtUser"    />
+								</div>
+
+								<div class="form-group">
+									<label for="ICLocation_AudtDate">{{l("AudtDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="audtDate" id="ICLocation_AudtDate" name="ICLocation_AudtDate">
+								</div> -->
+
+                           </fieldset>
+					   </tab>
+					   <!-- <tab heading="Regions">
+						    <fieldset>
+								<div class="row">
+										<div class="col-md-4">
+												<label for="">{{
+													l("Eloc1")
+												}}</label>
+											 <select
+											 id="eloc1"
+											 class="form-control form-control-sm"
+											 [(ngModel)]="icLocation.eLoc1"
+											 (change) = "changeEloc('eLoc1')"
+											 name="eloc1">
+											 <option
+												 *ngFor="let loc of eLoc1List;"
+												 [value]="loc.id"
+												 >{{ loc.locationTitle }}</option
+											 >
+										 </select>
+											</div>
+											<div class="col-md-4">
+												<label for="">{{
+													l("Eloc2")
+												}}</label>
+											 <select
+											 id="eloc2"
+											 class="form-control form-control-sm"
+											 [(ngModel)]="icLocation.eLoc2"
+											 (change) = "changeEloc('eLoc2')"
+											 name="eloc2">
+											 <option
+												 *ngFor="let loc of eLoc2List;"
+												 [value]="loc.id"
+												 >{{ loc.locationTitle }}</option
+											 >
+										 </select>
+											</div>
+											<div class="col-md-4">
+												<label for="">{{
+													l("Eloc3")
+												}}</label>
+											 <select
+											 id="eloc3"
+											 class="form-control form-control-sm"
+											 name="eloc3"
+											 [(ngModel)]="icLocation.eLoc3"
+											 (change) = "changeEloc('eLoc3')"
+											 >
+											 <option
+												 *ngFor="let loc of eLoc3List;"
+												 [value]="loc.id"
+												 >{{ loc.locationTitle }}</option
+											 >
+										 </select>
+											</div>
+								</div>
+								<div class="row">
+									<div class="col-md-4">
+										<label for="">{{
+											l("Eloc4")
+										}}</label>
+									 <select
+									 id="eloc4"
+									 class="form-control form-control-sm"
+									 [(ngModel)]="icLocation.eLoc4"
+									 (change) = "changeEloc('eLoc4')"
+									 name="eloc4">
+									 <option
+										 *ngFor="let loc of eLoc4List;"
+										 [value]="loc.id"
+										 >{{ loc.locationTitle }}</option
+									 >
+								 </select>
+									</div>
+									<div class="col-md-4">
+										<label for="">{{
+											l("Eloc5")
+										}}</label>
+									 <select
+									 id="eloc5"
+									 class="form-control form-control-sm"
+									 [(ngModel)]="icLocation.eLoc5"
+									 name="eloc5">
+									 <option
+										 *ngFor="let loc of eLoc5List;"
+										 [value]="loc.id"
+										 >{{ loc.locationTitle }}</option
+									 >
+								 </select>
+									</div>
+								</div>
+							</fieldset>
+					   </tab> -->
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!icLocationForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+</style>

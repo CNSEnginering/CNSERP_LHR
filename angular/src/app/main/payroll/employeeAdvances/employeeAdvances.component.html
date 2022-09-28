@@ -1,0 +1,239 @@
+<div [@routerTransition]>
+
+  <div class="kt-subheader kt-grid__item">
+
+      <div class="kt-subheader__main">
+          <h3 class="kt-subheader__title">
+              <span>{{l("EmployeeAdvances")}}</span>
+          </h3>
+          <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+          <span class="kt-subheader__desc">
+              {{l("EmployeeAdvancesHeaderInfo")}}
+          </span> -->
+      </div>
+      <div class="kt-subheader__toolbar">
+          <div class="kt-subheader__wrapper">
+              <!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                  {{l("ExportToExcel")}}</button> -->
+              <button *ngIf="isGranted('PayRoll.EmployeeAdvances.Transactions.Create')" (click)="createEmployeeAdvances()"
+                  class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                  {{l("CreateNewEmployeeAdvances")}}</button>
+          </div>
+      </div>
+
+  </div>
+  <div class="kt-content">
+      <div class="kt-portlet kt-portlet--mobile">
+          <div class="kt-portlet__body">
+              <form class="kt-form" autocomplete="off">
+                  <div>
+                      <div class="row align-items-center">
+                          <div class="col-xl-12">
+                              <div class="form-group m-form__group align-items-center">
+                                  <div class="input-group">
+                                      <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                          class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                          type="text">
+                                      <span class="input-group-btn">
+                                          <button (click)="getEmployeeAdvances()" class="btn btn-primary"
+                                              type="submit"><i class="flaticon-search-1"></i></button>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                     
+                  </div>
+              </form>
+
+              <div class="row align-items-center">
+                  <!--<Primeng-Datatable-Start>-->
+                  <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                      <p-table #dataTable (onLazyLoad)="getEmployeeAdvances($event)"
+                          [value]="primengTableHelper.records"
+                          rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                          [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                          [resizableColumns]="primengTableHelper.resizableColumns">
+                          <ng-template pTemplate="header">
+                              <tr>
+                                  <th style="width: 130px"
+                                      [hidden]="!isGrantedAny('PayRoll.EmployeeAdvances.Transactions.Edit', 'PayRoll.EmployeeAdvances.Transactions.Delete')">
+                                      {{l('Actions')}}</th>
+                                  <th style="width: 150px" pSortableColumn="advanceID">
+                                      {{l('AdvanceID')}}
+                                      <p-sortIcon field="EmployeeAdvances.advanceID"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="employeeID">
+                                      {{l('EmployeeID')}}
+                                      <p-sortIcon field="EmployeeAdvances.employeeID"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 170px" pSortableColumn="employeeName">
+                                      {{l('EmployeeName')}}
+                                      <p-sortIcon field="EmployeeAdvances.employeeName"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="salaryYear">
+                                      {{l('SalaryYear')}}
+                                      <p-sortIcon field="EmployeeAdvances.salaryYear"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="salaryMonth">
+                                      {{l('SalaryMonth')}}
+                                      <p-sortIcon field="EmployeeAdvances.salaryMonth"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="advanceDate">
+                                      {{l('Advance Date')}}
+                                      <p-sortIcon field="EmployeeAdvances.advanceDate"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="amount">
+                                      {{l('Amount')}}
+                                      <p-sortIcon field="EmployeeAdvances.amount"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="active">
+                                      {{l('Active')}}
+                                      <p-sortIcon field="EmployeeAdvances.active"></p-sortIcon>
+                                  </th>
+                                  <!-- <th style="width: 150px" pSortableColumn="audtUser">
+                                      {{l('AudtUser')}}
+                                      <p-sortIcon field="EmployeeAdvances.audtUser"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="audtDate">
+                                      {{l('AudtDate')}}
+                                      <p-sortIcon field="EmployeeAdvances.audtDate"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="createdBy">
+                                      {{l('CreatedBy')}}
+                                      <p-sortIcon field="EmployeeAdvances.createdBy"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="createDate">
+                                      {{l('CreateDate')}}
+                                      <p-sortIcon field="EmployeeAdvances.createDate"></p-sortIcon>
+                                  </th> -->
+
+                              </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-record="$implicit">
+                              <tr>
+                                  <td style="width: 130px"
+                                      [hidden]="!isGrantedAny('PayRoll.EmployeeAdvances.Transactions.Edit', 'PayRoll.EmployeeAdvances.Transactions.Delete')">
+                                      <div class="btn-group dropdown" dropdown container="body">
+                                          <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                              <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                          </button>
+                                          <ul class="dropdown-menu" *dropdownMenu>
+                                              <li>
+                                                  <a href="javascript:;"
+                                                      (click)="viewEmployeeAdvancesModal.show(record)">{{l('View')}}</a>
+                                              </li>
+                                              <li>
+                                                  <a href="javascript:;"
+                                                      *ngIf="permission.isGranted('PayRoll.EmployeeAdvances.Transactions.Edit')"
+                                                      (click)="createOrEditEmployeeAdvancesModal.show(record.employeeAdvances.id)">{{l('Edit')}}</a>
+                                              </li>
+                                              <li>
+                                                  <a href="javascript:;"
+                                                      *ngIf="permission.isGranted('PayRoll.EmployeeAdvances.Transactions.Delete')"
+                                                      (click)="deleteEmployeeAdvances(record.employeeAdvances)">{{l('Delete')}}</a>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('AdvanceID')}}</span>
+                                      {{record.employeeAdvances.advanceID}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('EmployeeID')}}</span>
+                                      {{record.employeeAdvances.employeeID}}
+                                  </td>
+                                  <td style="width:170px">
+                                      <span class="ui-column-title"> {{l('EmployeeName')}}</span>
+                                      {{record.employeeAdvances.employeeName}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('SalaryYear')}}</span>
+                                      {{record.employeeAdvances.salaryYear}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('SalaryMonth')}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==1">{{'January'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==2">{{'February'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==3">{{'March'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==4">{{'April'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==5">{{'May'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==6">{{'June'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==7">{{'July'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==8">{{'August'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==9">{{'September'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==10">{{'October'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==11">{{'November'}}</span>
+                                      <span *ngIf="record.employeeAdvances.salaryMonth==12">{{'December'}}</span>
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('AdvanceDate')}}</span>
+                                      <span *ngIf="record.employeeAdvances.advanceDate">
+                                          {{record.employeeAdvances.advanceDate | momentFormat:'DD/MM/YYYY'}}
+                                      </span>
+                                      <span *ngIf="!record.employeeAdvances.advanceDate">-</span>
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('Amount')}}</span>
+                                      {{record.employeeAdvances.amount | number: '.2'}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('Active')}}</span>
+                                      <span class="kt-badge kt-badge--success kt-badge--inline"
+                                          *ngIf="record.employeeAdvances.active">{{'Yes' | localize}}</span>
+                                      <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                          *ngIf="!record.employeeAdvances.active">{{'No' | localize}}</span>
+                                  </td>
+                                  <!-- <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                      {{record.employeeAdvances.audtUser}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                      <span *ngIf="record.employeeAdvances.audtDate">
+                                          {{record.employeeAdvances.audtDate | momentFormat:'DD/MM/YYYY'}}
+                                      </span>
+                                      <span *ngIf="!record.employeeAdvances.audtDate">-</span>
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                      {{record.employeeAdvances.createdBy}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                      <span *ngIf="record.employeeAdvances.createDate">
+                                          {{record.employeeAdvances.createDate | momentFormat:'DD/MM/YYYY'}}
+                                      </span>
+                                      <span *ngIf="!record.employeeAdvances.createDate">-</span>
+                                  </td> -->
+
+                              </tr>
+                          </ng-template>
+                      </p-table>
+                      <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                          {{l('NoData')}}
+                      </div>
+                      <div class="primeng-paging-container">
+                          <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                              (onPageChange)="getEmployeeAdvances($event)"
+                              [totalRecords]="primengTableHelper.totalRecordsCount"
+                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                          </p-paginator>
+                          <span class="total-records-count">
+                              {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                          </span>
+                      </div>
+                  </div>
+                  <!--<Primeng-Datatable-End>-->
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <createOrEditEmployeeAdvancesModal #createOrEditEmployeeAdvancesModal (modalSave)="getEmployeeAdvances()">
+  </createOrEditEmployeeAdvancesModal>
+  <viewEmployeeAdvancesModal #viewEmployeeAdvancesModal></viewEmployeeAdvancesModal>
+
+
+</div>

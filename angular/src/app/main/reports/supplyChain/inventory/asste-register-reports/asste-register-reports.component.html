@@ -1,0 +1,129 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+           
+          
+            <span class="kt-subheader__desc">
+               <h3>
+                {{l("AssetRsrclisting")}}
+               </h3>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body parentSection">
+                        <div class="row row-col-separator-xl">
+                         
+                            <div class="col-lg-8">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="FromDate"
+                                                    class="col-md-3 col-form-label">{{l("FROMDATE")}}</label>
+                                                <div class="col-md-3">
+													<input type="text" id="FromDate"
+												     	[(bsValue)]="fromDate"    
+                                                        class="form-control form-control-sm" bsDatepicker
+														[(ngModel)]="fromDate" name="FromDate" required
+														value="{{ fromDate | date:'dd/MM/yyyy' }}"
+														>
+                                                </div>
+												<label for="To Date"												
+                                                    class="col-md-3 col-form-label">{{l("TODATE")}}</label>
+                                                <div class="col-md-3">
+													<input type="text" 
+													[(bsValue)]="toDate" 
+												    value="{{ toDate | date:'dd/MM/yyyy' }}"
+													id="ToDate" class="form-control form-control-sm"
+                                                        bsDatepicker name="toDate" required [(ngModel)]="toDate">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for="fromLoc"
+                                                    class="col-md-3 col-form-label">{{l("FROMLOC")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <ng-multiselect-dropdown required
+                                                        [placeholder]="'Location'"
+                               [settings]="dropdownSettings" class="col-md-8"
+                               [data]="locationList"  
+                               [(ngModel)]="locIdlist"
+                               
+                               >
+                               </ng-multiselect-dropdown>
+                                                        <!-- <input type="text" id="fromLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromLoc"
+                                                            name="fromLoc" required>
+                                                        <input type="text" id="fromLoc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromLocName" name="fromLoc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('fromLoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('fromLoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
+                                                <label for="toLoc"
+                                                    class="col-md-3 col-form-label">{{l("TOLOC")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toLoc"
+                                                            name="toLoc" required>
+                                                        <input type="text" id="toLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toLocName"
+                                                            name="toLoc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('toLoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('toLoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+											</div> -->
+											
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot footerSection">
+                                    <div class="col-lg-12" style="text-align: right">
+                                        <button type="submit" class="btn btn-primary blue" (click)="getReport()">
+                                            <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ssrs-reportviewer  [reportserver]="reportServer" [reporturl]="reportUrl"
+    [showparameters]="showParameters" [parameters]="parameters" [language]="language" [width]="width" [height]="height"
+    [toolbar]="toolbar">
+</ssrs-reportviewer>
+
+<LocLookupTableModal #LocLookupTableModal (modalSave)="getLookUpData()"></LocLookupTableModal>
+<app-reportviewr-modal #reportView  ></app-reportviewr-modal>

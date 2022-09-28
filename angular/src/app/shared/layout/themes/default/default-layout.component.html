@@ -1,0 +1,60 @@
+<div [@routerTransition]>
+    <div id="kt_header_mobile" class="kt-header-mobile {{currentTheme.baseSettings.header.mobileFixedHeader ? 'kt-header-mobile--fixed':''}}">
+        <div class="kt-header-mobile__logo">
+            <a routerLink="/" target="_blank">
+                <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="28" />
+                <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" />
+            </a>
+        </div>
+        <div class="kt-header-mobile__toolbar">
+            <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left" id="kt_aside_mobile_toggler">
+                <span></span>
+            </button>
+            <button ktToggle [options]="userMenuToggleOptions" class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler">
+                <i class="flaticon-more"></i>
+            </button>
+        </div>
+    </div>
+    <div class="kt-grid kt-grid--hor kt-grid--root">
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
+            <!-- BEGIN: Left Aside -->
+            <button class="kt-aside-close" id="kt_aside_close_btn">
+                <i class="la la-close" [attr.aria-label]="l('Close')"></i>
+            </button>
+            <div id="kt_aside" ktOffcanvas [options]="menuCanvasOptions" class="kt-aside kt-aside--{{currentTheme.baseSettings.menu.fixedAside ? 'fixed':'static'}} kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop">
+                <!-- BEGIN: Brand -->
+                <default-brand></default-brand>
+                <!-- END: Brand -->
+                <!-- BEGIN: Aside Menu -->
+                <div id="kt_aside_menu_wrapper" class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid">
+                    <side-bar-menu></side-bar-menu>
+                </div>
+                <!-- END: Aside Menu -->
+            </div>
+            <!-- END: Left Aside -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+                <!-- BEGIN: Header -->
+                <div class="kt-header kt-grid__item kt-header--{{currentTheme.baseSettings.header.desktopFixedHeader ? 'fixed':'static'}} kt-head--skin-{{currentTheme.baseSettings.header.headerSkin}}" id="kt_header">
+                    <div class="kt-header-menu-wrapper" id="kt_header_menu_wrapper"></div>
+                    <topbar></topbar>
+                </div>
+                <!-- END: Header -->
+                <div class="d-lg-none p-3 mobile-subscription-warning">
+                    <div *ngIf="subscriptionStatusBarVisible()"
+                         [ngClass]="{'hidden': !subscriptionStatusBarVisible()}" class="d-inline-block d-sm-none mt-3 ml-3">
+                        <span *ngIf="appSession.tenant.isInTrialPeriod && !subscriptionIsExpiringSoon()" [innerHTML]="getTrialSubscriptionNotification()"></span>
+                        <a *ngIf="subscriptionIsExpiringSoon()" routerLink="/app/admin/subscription-management">
+                            <span *ngIf="subscriptionIsExpiringSoon() && appSession.tenant.isInTrialPeriod"><i class="fa fa-exclamation-circle"></i> {{getExpireNotification("TrialExpireNotification")}}</span>
+                            <span *ngIf="subscriptionIsExpiringSoon() && !appSession.tenant.isInTrialPeriod"><i class="fa fa-exclamation-circle"></i> {{getExpireNotification("SubscriptionExpireNotification")}}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+                    <router-outlet></router-outlet>
+                </div>
+                <footer-bar></footer-bar>
+            </div>
+        </div>
+    </div>
+</div>

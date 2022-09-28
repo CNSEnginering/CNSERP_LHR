@@ -1,0 +1,2 @@
+<!-- <input type="checkbox" [checked]="params.value" (change)="refresh($event)"> -->
+<input type="checkbox" [(ngModel)]="params.value" (change)="this.refresh(this.params)">

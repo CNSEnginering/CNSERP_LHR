@@ -1,0 +1,204 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #fiscalCalenderForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="fiscalCalender.id || isCalendarEdit">{{l("EditFiscalCalender")}}</span>
+						<span *ngIf="!fiscalCalender.id && !isCalendarEdit">{{l("CreateNewFiscalCalender")}}</span>						
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+				</div>
+				
+                <div *ngIf="fiscalCalender.id && !isCalendarEdit" class="modal-body">
+                 
+
+					<div class="row">
+							<div class="form-group col-lg-12">
+									<label for="FiscalCalender_Period">{{l("Period")}}</label>
+									<input type="number" id="FiscalCalender_Period" class="form-control" [(ngModel)]="fiscalCalender.period" name="Period" disabled hidden/>
+									<input type="text" id="FiscalCalender_Period" class="form-control" [(ngModel)]="period" name="Period" disabled />
+								</div>
+							</div>
+							<div class="row">
+
+									<div class="form-group col-lg-6">
+											<label for="FiscalCalender_StartDate">{{l("StartDate")}}</label>
+											 <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="fiscalCalender.startDate._d" id="FiscalCalender_StartDate" name="FiscalCalender_StartDate" disabled>
+										</div>
+							
+										<div class="form-group col-lg-6">
+											<label for="FiscalCalender_EndDate">{{l("EndDate")}}</label>
+											 <input required class="form-control m-input" type="datetime" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="fiscalCalender.endDate._d" id="FiscalCalender_EndDate" name="FiscalCalender_EndDate" disabled>
+										</div>
+
+							</div>
+
+							<div class="row">
+									<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_GL" class="kt-checkbox">
+												<input id="FiscalCalender_GL" type="checkbox" name="GL" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.gl"> 
+												{{l("GL")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_AP" class="kt-checkbox">
+												<input id="FiscalCalender_AP" type="checkbox" name="AP" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.ap"> 
+												{{l("AP")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_AR" class="kt-checkbox">
+												<input id="FiscalCalender_AR" type="checkbox" name="AR" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.ar"> 
+												{{l("AR")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_IN" class="kt-checkbox">
+												<input id="FiscalCalender_IN" type="checkbox" name="IN" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.in"> 
+												{{l("IN")}}
+												<span></span>
+											</label>
+										</div>
+							
+									   <div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_PO" class="kt-checkbox">
+												<input id="FiscalCalender_PO" type="checkbox" name="PO" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.po"> 
+												{{l("PO")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_OE" class="kt-checkbox">
+												<input id="FiscalCalender_OE" type="checkbox" name="OE" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.oe"> 
+												{{l("OE")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_BK" class="kt-checkbox">
+												<input id="FiscalCalender_BK" type="checkbox" name="BK" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.bk"> 
+												{{l("BK")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_HR" class="kt-checkbox">
+												<input id="FiscalCalender_HR" type="checkbox" name="HR" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.hr"> 
+												{{l("HR")}}
+												<span></span>
+											</label>
+										</div>
+							
+										<div class="m-checkbox-list col-lg-3">
+											<label for="FiscalCalender_PR" class="kt-checkbox">
+												<input id="FiscalCalender_PR" type="checkbox" name="PR" (change)="onCheckedChange()" [(ngModel)]="fiscalCalender.pr"> 
+												{{l("PR")}}
+												<span></span>
+											</label>
+										</div>
+
+										<div class="m-checkbox-list col-lg-3">
+												<label for="FiscalCalender_ALL" class="kt-checkbox">
+													<input id="FiscalCalender_ALL" type="checkbox" (change)="allModuleChecked()" name="ALL" [(ngModel)]="allChecked"> 
+													ALL
+													<span></span>
+												</label>
+											</div>
+							</div>			
+
+				</div> 
+				
+				<div *ngIf="!fiscalCalender.id && !isCalendarEdit" class="modal-body">
+                
+					<div class="form-group row">
+							<label class="col-form-label" for="createFiscalCalender_Period">{{l("Period")}}</label>
+							<div class="col-lg-4">
+									<select class="form-control" name="createPeriod" id="createFiscalCalender_Period" [(ngModel)]="fiscalCalender.period">
+										<option value="0">Choose Years</option>
+											<option *ngFor="let ran of range" [value]="ran.value">
+											  {{ran.label}}
+											</option>
+									</select>	
+
+							</div>
+
+							<div class="m-checkbox-list col-lg-3 col-form-label">
+								<label  class="col-form-label" for="CreateFiscalCalender_isActive" class="kt-checkbox">
+									<input class="form-control" id="CreateFiscalCalender_isActive" type="checkbox" name="createIsActive" [(ngModel)]="fiscalCalender.isActive"> 
+									{{l("ActiveStatus")}}
+									<span></span>
+								</label>
+							</div>
+					</div>
+
+				</div>
+
+				<div *ngIf="isCalendarEdit" class="modal-body">
+						
+				<div class="form-group row">
+						<label class="col-form-label" for="FiscalCalender_Period">{{l("Period")}}</label>
+						<div class="col-lg-4">
+								<!-- <select class="form-control" name="Period" id="FiscalCalender_Period" [(ngModel)]="fiscalCalenderEdit.period">
+										<option *ngFor="let ran of range" [value]="ran.value">
+										  {{ran.label}}
+										</option>
+								</select>	 -->
+
+								<input type="number" class="form-control" [(ngModel)]="fiscalCalenderEdit.period" placeholder="{{l('Period')}}" name="maxPeriodFilter" disabled hidden/>
+
+								<input type="text" class="form-control" [(ngModel)]="period" placeholder="{{l('Period')}}" name="maxPeriodFilter" disabled />
+											
+									
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="m-checkbox-list col-lg-2">
+							<label for="EditFiscalCalender_isActive" class="kt-checkbox"> 
+								<input id="EditFiscalCalender_isActive" type="checkbox" name="editIsActive" [(ngModel)]="fiscalCalenderEdit.isActive" [disabled]="lockedCalendar" (change)="clearLock()"> 
+								{{l("ActiveStatus")}}
+								<span></span>
+							</label>
+						</div>
+
+						<div class="m-checkbox-list col-lg-2">
+							<label for="EditFiscalCalender_isLocked" class="kt-checkbox">
+								<input id="EditFiscalCalender_isLocked" type="checkbox" name="editIsLocked" [(ngModel)]="fiscalCalenderEdit.isLocked"  (change)="clearActive()"> 
+								{{l("Locked")}}
+								<span></span>
+							</label>
+						</div>
+						<div class="m-checkbox-list col-lg-2">
+							<label for="EditFiscalCalender_checkAll" class="kt-checkbox"> 
+								<input id="EditFiscalCalender_checkAll" type="checkbox" name="editcheckAll" [(ngModel)]="trueAll"  >
+								{{l("CloseAll")}}
+								<span></span>
+							</label>
+						</div>
+				
+				 </div>
+			    </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+					<button  type="submit" class="btn btn-primary blue" [disabled]="!fiscalCalenderForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>  <span>{{l("Save")}}</span></button>
+					<button *ngIf="isCalendarEdit && !fiscalCalenderEdit.isActive && !lockedCalendar && !fiscalCalenderEdit.isLocked && !activeCalendar" type="button" (click)="delete()" class="btn btn-primary red" [disabled]="!fiscalCalenderForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-trash"></i>  <span>{{l("Delete")}}</span></button>
+					
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

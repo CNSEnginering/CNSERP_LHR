@@ -1,0 +1,83 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #allowanceSetupForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="allowanceSetup.id">{{l("EditAllowanceSetup")}}</span>
+						<span *ngIf="!allowanceSetup.id">{{l("CreateNewAllowanceSetup")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="row mt-2">
+						<div class="col-md-4">
+							<label for="AllowanceSetup_DocID">{{l("DocID")}}</label>
+							<input type="number" id="AllowanceSetup_DocID" class="form-control form-control-sm"
+								[(ngModel)]="allowanceSetup.docID" name="DocID" disabled required />
+						</div>
+						<div class="col-md-4">
+							<label for="AllowanceSetup_FuelRate">{{l("FuelRate")}}</label>
+							<input id="AllowanceSetup_FuelRate" class="form-control form-control-sm"
+								[(ngModel)]="allowanceSetup.fuelRate" (keyup)="PerlitrFul()" name="FuelRate" currencyMask
+								[options]="{ prefix: '', thousands: ',', decimal: '.' }" required />
+						</div>
+						
+						<div class="col-md-4">
+                            <label for="EmployeeSalary_ExpiryDate">{{l("Fuel Date")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="text" name="EmployeeSalary_ExpiryDate" id="EmployeeSalary_ExpiryDate"
+                                class="form-control form-control-sm" bsDatepicker [(ngModel)]="allowanceSetup.fuelDate"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required />
+                        </div>
+					</div>
+
+					<div class="row mt-2">
+						<div class="col-md-4">
+							<label for="AllowanceSetup_MilageRate">{{l("PerLiterMilage")}}</label>
+							<input id="AllowanceSetup_MilageRate" class="form-control form-control-sm"
+								[(ngModel)]="allowanceSetup.milageRate" (keyup)="PerlitrFul()" name="MilageRate" currencyMask
+								[options]="{ prefix: '', thousands: ',', decimal: '.' }" required />
+						</div>
+						<div class="col-md-4">
+							<label for="AllowanceSetup_MilageRat">{{l("MilageRate")}} </label>
+							<input id="AllowanceSetup_MilageRat" class="form-control form-control-sm"
+								[(ngModel)]="allowanceSetup.perLiterMilage" name="perLiterMilage" currencyMask
+								[options]="{ prefix: '', thousands: ',', decimal: '.' }" required readonly />
+						</div>
+						<div class="col-md-4">
+							<label for="AllowanceSetup_RepairRate">{{l("RepairRate")}}</label>
+							<input id="AllowanceSetup_RepairRate" class="form-control form-control-sm"
+								[(ngModel)]="allowanceSetup.repairRate" name="RepairRate" currencyMask
+								[options]="{ prefix: '', thousands: ',', decimal: '.' }" required />
+						</div>
+					</div>
+
+					<br />
+					<div class="m-checkbox-list">
+						<label for="AllowanceSetup_Active" class="kt-checkbox">
+							<input id="AllowanceSetup_Active" type="checkbox" name="Active"
+								[(ngModel)]="allowanceSetup.active">
+							{{l("Active")}}
+							<span></span>
+						</label>
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!allowanceSetupForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

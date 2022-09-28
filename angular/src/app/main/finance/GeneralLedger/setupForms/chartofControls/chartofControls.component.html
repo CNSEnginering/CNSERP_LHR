@@ -1,0 +1,297 @@
+<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("ChartofControls")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("ChartofControlsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown>
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        <a class="dropdown-item" id="ExportUsersToExcelButton" (click)="exportToExcel()" href="javascript:;">
+                            <i class="fa fa-download" style="font-size: 1rem;"></i>
+                            {{'ExportToExcel' | localize}}
+                        </a>
+                        <a href="javascript:;" *ngIf="isGranted('SetupForms.ChartofControls.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true"
+                                        name="ExcelFileUpload"
+                                        #ExcelFileUpload
+                                        maxFileSize="10000000"
+                                        auto="auto"
+                                        accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)"
+                                        (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload>
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportChartofControlsSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+				<!-- <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button> -->
+                <button *ngIf="isGranted('SetupForms.ChartofControls.Create')" (click)="createChartofControl()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewChartofControl")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getChartofControls()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AccountIDFilter">{{l("AccountID")}}</label>
+									<input type="text" class="form-control" id="AccountIDFilter" name="accountIDFilter" [(ngModel)]="accountIDFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AccountNameFilter">{{l("AccountName")}}</label>
+									<input type="text" class="form-control" id="AccountNameFilter" name="accountNameFilter" [(ngModel)]="accountNameFilter">
+								</div>
+                            </div>	
+							<div class="col-md-3">
+								<label for="SubLedgerFilterSelect">{{l("SubLedger")}}</label>
+								<select class="form-control" name="SubLedgerFilter" id="SubLedgerFilterSelect" [(ngModel)]="subLedgerFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+                           
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinSLTypeFilter">{{l("Sub Ledger Type")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinSLTypeFilter" [(ngModel)]="minSLTypeFilter" placeholder="{{l('From')}}" name="minSLTypeFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSLTypeFilter" placeholder="{{l('To')}}" name="maxSLTypeFilter" />
+									</div>
+                                </div>
+                            </div>	
+							<div class="col-md-3">
+								<label for="InactiveFilterSelect">{{l("Inactive")}}</label>
+								<select class="form-control" name="InactiveFilter" id="InactiveFilterSelect" [(ngModel)]="inactiveFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinCreationDateFilter">{{l("CreationDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinCreationDateFilter" name="MinCreationDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minCreationDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreationDateFilter" name="MaxCreationDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreationDateFilter">
+									</div>
+                                </div>
+                            </div> -->
+							
+							
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ControlDetailSegmentNameFilter">{{segment1 != '' ? segment1 : "segment1"}}</label>
+									<input type="text" class="form-control" id="ControlDetailSegmentNameFilter" name="controlDetailSegmentNameFilter" [(ngModel)]="controlDetailSegmentNameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="SubControlDetailSegmentNameFilter">{{segment2 != '' ? segment2 : "segment2"}}</label>
+									<input type="text" class="form-control" id="SubControlDetailSegmentNameFilter" name="subControlDetailSegmentNameFilter" [(ngModel)]="subControlDetailSegmentNameFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="Segmentlevel3SegmentNameFilter">{{segment3 != '' ? segment3 : "segment3"}}</label>
+									<input type="text" class="form-control" id="Segmentlevel3SegmentNameFilter" name="segmentlevel3SegmentNameFilter" [(ngModel)]="segmentlevel3SegmentNameFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getChartofControls($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 80px" [hidden]="!isGrantedAny('SetupForms.ChartofControls.Edit', 'SetupForms.ChartofControls.Delete')">{{l('Actions')}}</th>
+                                   
+                                    <th style="width: 150px" pSortableColumn="id">
+                                            {{l('AccountID')}}
+                                            <p-sortIcon field="chartofControl.accountID"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 250px" pSortableColumn="accountName">
+                                            {{l('AccountName')}}
+                                            <p-sortIcon field="chartofControl.accountName"></p-sortIcon>
+                                        </th>
+                                    <th style="width: 150px" pSortableColumn="segmentName1">
+                                        {{segment1 != '' ? segment1 : "segment1"}}
+                                        <p-sortIcon field="controlDetailSegmentName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="segmentName2">
+                                        {{segment2 != '' ? segment2 : "segment2"}}
+                                        <p-sortIcon field="subControlDetailSegmentName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="segmentName3">
+                                        {{segment3 != '' ? segment3 : "segment3"}}
+                                        <p-sortIcon field="segmentlevel3SegmentName"></p-sortIcon>
+                                    </th>
+                                    
+                                    <th style="width: 150px" pSortableColumn="subLedger">
+                                        {{l('SubLedger')}}
+                                        <p-sortIcon field="chartofControl.subLedger"></p-sortIcon>
+                                    </th>
+                                    
+                                   
+                                    <th style="width: 150px" pSortableColumn="inactive">
+                                        {{l('Inactive')}}
+                                        <p-sortIcon field="chartofControl.inactive"></p-sortIcon>
+                                    </th>
+                                  
+                                   
+                                  
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 80px"
+                                        [hidden]="!isGrantedAny('SetupForms.ChartofControls.Edit', 'SetupForms.ChartofControls.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> 
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewChartofControlModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('SetupForms.ChartofControls.Edit')"
+														(click)="createOrEditChartofControlModal.show(true,record.chartofControl.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('SetupForms.ChartofControls.Delete')"
+														(click)="deleteChartofControl(record.chartofControl)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AccountID')}}</span>
+											{{record.chartofControl.id}}
+										</td>
+                                    <td style="width:250px;  white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;">
+											<span class="ui-column-title"> {{l('AccountName')}}</span>
+											{{record.chartofControl.accountName}}
+										</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('SegmentName')}}</span>
+												{{record.controlDetailSegmentName}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('SegmentName')}}</span>
+												{{record.subControlDetailSegmentName}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('SegmentName')}}</span>
+												{{record.segmentlevel3SegmentName}}
+											</td>
+                                    
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('SubLedger')}}</span>
+                                        <span *ngIf="record.chartofControl.subLedger" class="kt-badge kt-badge--success kt-badge--inline">{{'Yes' | localize}}</span>
+										<span *ngIf="!record.chartofControl.subLedger" class="kt-badge kt-badge--danger kt-badge--inline">{{'No' | localize}}</span>
+                                    </td>
+                                   
+                                    
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('Inactive')}}</span>
+                                        <span *ngIf="record.chartofControl.inactive" class="kt-badge kt-badge--success kt-badge--inline">{{'Yes' | localize}}</span>
+										<span *ngIf="!record.chartofControl.inactive" class="kt-badge kt-badge--danger kt-badge--inline">{{'No' | localize}}</span>
+                                    </td>
+                                    
+                                  
+                                  
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getChartofControls($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditChartofControlModal #createOrEditChartofControlModal (modalSave)="getChartofControls()"></createOrEditChartofControlModal>
+    <viewChartofControlModal #viewChartofControlModal></viewChartofControlModal>
+    
+  
+</div>

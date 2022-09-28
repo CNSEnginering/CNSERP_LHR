@@ -1,0 +1,53 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #iCSegment1Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="flag">{{segSetup != '' ? ("Edit ") + segSetup: l("EditICSegment1")}}</span>
+                        <span *ngIf="!flag">{{segSetup != '' ? ("Create New ") + segSetup: l("CreateNewICSegment1")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="iCSegment1_Seg1ID" class="col-md-2">{{segSetup != '' ? segSetup + l("ICSeg1ID"): l("ICSeg1ID")}} *</label>
+                            <div class="col-md-3">
+                                <input type="text" id="iCSegment1_Seg1ID" #segNo="ngModel"
+                                    class="form-control form-control-sm" [(ngModel)]="iCSegment1.seg1ID" name="Seg1ID"
+                                    minlength="2" maxlength="2" pattern="^[0-9][0-9]?$|^100$" [disabled]="flag"
+                                    required />
+                                <validation-messages [formCtrl]="segNo"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="iCSegment1_SegmentName" class="col-md-2">{{segSetup != '' ? segSetup + ("Description") :l("Seg1Name")}}*</label>
+                            <div class="col-md-10">
+                                <input type="text" id="iCSegment1_SegmentName" class="form-control form-control-sm"
+                                    [(ngModel)]="iCSegment1.seg1Name" #segName="ngModel" name="SegmentName"
+                                    maxlength="100" pattern="^\d*[A-Za-z.#@-_][A-Za-z-@./#&+\w\s\d]*$"  required />
+                                <validation-messages [formCtrl]="segName"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!iCSegment1Form.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

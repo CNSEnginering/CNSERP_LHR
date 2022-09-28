@@ -1,0 +1,226 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("Requisition")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="docNo">{{l("DocNo")}}</label>
+                            <input type="text" id="docNo" class="form-control form-control-sm"
+                                [(ngModel)]="requisition.docNo" name="priceList" maxlength="10" required disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docDate">{{l("DocDate")}}</label>
+                            <input type="datetime" bsDatepicker id="docDate" class="form-control form-control-sm"
+                                [(ngModel)]="requisition.docDate" (ngModelChange)="dateChange($event)" name="docDate"
+                                maxlength="50" required [(bsValue)]="requisition.docDate"
+                                value="{{ requisition.docDate | date: 'dd/MM/yyyy' }}" [disabled]="checkedval" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="expArrivalDate">{{l("ExpectedArrival")}}</label>
+                            <input type="datetime" bsDatepicker id="expArrivalDate" class="form-control form-control-sm"
+                                (ngModelChange)="dateExpChange($event)" [(ngModel)]="requisition.expArrivalDate"
+                                name="expArrivalDate" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="loc">{{l("Loc")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="loc" class="form-control form-control-sm"
+                                    [(ngModel)]="requisition.locID" name="loc" maxlength="10" required disabled />
+                                <div class="input-group-append" *ngIf="LocCheckVal">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openModal('Location')"
+                                        type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="LocationName">{{l("LOCNAME")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="LocationName" class="form-control form-control-sm"
+                                    [(ngModel)]="requisition.locName" name="LocationName" maxlength="50" required
+                                    disabled />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-3">
+                            <label for="CCID">{{l("CostCenter")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CCID" class="form-control form-control-sm"
+                                    [(ngModel)]="requisition.ccid" name="CCID" maxlength="10" required disabled />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openModal('CostCenter')" type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="partyName">{{l("CostCenterName")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="CostCenterName" class="form-control form-control-sm"
+                                    [(ngModel)]="requisition.costCenterName" name="CostCenterName" maxlength="50"
+                                    required disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="docDate">{{l("OrderNo")}}</label>
+                            <input type="number" id="ordNo" class="form-control form-control-sm"
+                                [(ngModel)]="requisition.ordNo" name="ordNo" maxlength="50" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="reqNo">{{l("ManualReqNo")}}</label>
+                            <input id="reqNo" class="form-control form-control-sm" [(ngModel)]="requisition.reqNo"
+                                maxlength="20" name="reqNo" required />
+                        </div>
+                    </div>
+
+                    <!-- <div class="row mt-1"> -->
+
+                    <!-- <div class="col-md-2 mt-5">
+                            <label class="col-form-label" for="active" class="kt-checkbox">
+                                Active
+                                <input id="active" type="checkbox" name="active"
+                                    [(ngModel)]="requisition.active">
+                                <span></span>
+                            </label>
+                        </div> -->
+                    <!-- <div class="col-md-2 mt-5">
+                            <label class="col-form-label" for="hold" class="kt-checkbox">
+                                Hold
+                                <input id="active" type="checkbox" name="hold"
+                                    [(ngModel)]="requisition.hold">
+                                <span></span>
+                            </label>
+                        </div> -->
+                    <!-- </div> -->
+                    <div class="row mt-1">
+                        <div class="col-md-8">
+                            <label for="docNo">{{l("Narration")}}</label>
+                            <input type="text" id="narration" class="form-control form-control-sm"
+                                [(ngModel)]="requisition.narration" name="narration" maxlength="100" required />
+                        </div>
+                        <div class="col-md-1 mt-4">
+                            <label class="col-form-label" for="active" class="kt-checkbox">
+                                Active
+                                <input id="active" type="checkbox" name="active" [(ngModel)]="requisition.active">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <tabset>
+                        <tab heading="Detail">
+
+                            <button class="btn btn-primary mb-3 btn-sm" type="button"
+                                (click)="addRecordToGrid()">Add</button>
+                            <button class="btn btn-primary mb-3 btn-sm" type="button"
+                                (click)="removeRecordFromGrid()">Remove</button>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                        [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                        [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                        [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                                        (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                        (cellValueChanged)="cellValueChanged($event)"
+                                        (cellEditingStarted)="cellEditingStarted($event)">
+
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-2">
+                                    <label for="totalItems">{{l("Total Items")}}</label>
+                                    <input type="text" [(ngModel)]="totalItems" id="totalItems" name="totalItems"
+                                        class="form-control form-control-sm inputFormBoldSize" currencyMask
+                                        [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" disabled>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="totalQty">{{l("Total Qty")}}</label>
+                                    <input type="text" [(ngModel)]="totalQty" id="totalQty" name="totalQty"
+                                        class="form-control form-control-sm inputFormBoldSize" currencyMask
+                                        [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" disabled>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="Attachment">
+                            <div class="form-group">
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <label for="FileAttachment">File Attachment</label>
+                                        <p-fileUpload id="FileAttachment" name="FileAttachment[]" [url]="uploadUrl"
+                                            accept=".jpg,.jpeg" maxFileSize="1000000"
+                                            (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onUpload($event)">
+
+                                            <ng-template pTemplate="content">
+                                                <ul *ngIf="uploadedFiles.length">
+                                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+                                                        bytes</li>
+                                                </ul>
+                                            </ng-template>
+                                        </p-fileUpload>
+                                    </div>
+                                </div>
+                                <img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached"
+                                    width="100" height="100" (click)="open()">
+
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+
+                    <button type="button" *ngIf="requisition.id && requisition.approved && !requisition.posted "
+                        class="btn btn-success green" [disabled]="!formValid" [buttonBusy]="saving"
+                        (click)="postDoc(requisition.docNo,'Posting',true)" [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i><span>{{l("Post")}}</span></button>
+
+                    <button type="button" class="btn btn-success green"
+                        *ngIf="requisition.id && !requisition.approved  && !requisition.posted" [buttonBusy]="saving"
+                        [busyText]="l('ApprovingWithThreeDot')"
+                        (click)="approveDoc(requisition.docNo,'Approval',true)"><i class="fa fa-check"></i>
+                        <span>{{l("Approve")}}</span></button>
+                    <button type="button" class="btn btn-danger"
+                        *ngIf="requisition.id && requisition.approved  && !requisition.posted" [buttonBusy]="saving"
+                        [busyText]="l('ApprovingWithThreeDot')"
+                        (click)="approveDoc(requisition.docNo,'UnApproval',false)"><i class="fa fa-times"></i>
+                        <span>{{l("Unapprove")}}</span></button>
+                    <button type="submit" class="btn btn-primary blue"
+                        *ngIf="!requisition.hold && !requisition.approved && !requisition.posted" (click)="save()"
+                        [disabled]="!formValid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
+                            class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getData()"></inventoryLookupTableModal>
+
+<!-- <ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getLookUpData()"></ItemPricingLookupTableModal>
+<CostCenterLookupTableModal #CostCenterLookupTableModal (modalSave)="getAccLookUpData()"></CostCenterLookupTableModal>
+<requisitionLookupTableModal #requisitionLookupTableModal (modalSave)="getOGPLookUpData()"></requisitionLookupTableModal> -->
+<!-- 
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style> -->

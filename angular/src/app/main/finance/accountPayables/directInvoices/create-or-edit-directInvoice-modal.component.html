@@ -1,0 +1,537 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #directInvoiceForm="ngForm" novalidate (ngSubmit)="saveAfter()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glinvHeader.id">{{TypeIdShow}}</span>
+                        <span *ngIf="!glinvHeader.id">{{TypeIdShow}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+					<tabset class="tab-container tabbable-line">
+						<tab heading="{{'Document' | localize}}">
+							<div class="row col-md-12">
+								
+									<div class="form-group m-form__group col-md-2">
+											<label for="GLINVHeader_Location">{{l("Location")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="number" min="1" id="GLINVHeader_Location" class="form-control form-control-sm" [(ngModel)]="glinvHeader.locID" name="LocID" required readonly/>
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectLocationModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div><div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setLocationIDNull()"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-md-2">
+											<label for="LocationDesc">{{l("")}}&nbsp;</label>
+											<input class="form-control form-control-sm" id="LocationDesc" name="LocDesc" [(ngModel)]="locDesc" type="text" readonly>
+										</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_DocNo">{{l("InvoiceNo")}}<span class="require-field">*</span></label>
+									<input type="number" id="GLINVHeader_DocNo" class="form-control form-control-sm" [(ngModel)]="glinvHeader.docNo" name="DocNo"  disabled/>
+								</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_DocDate">{{l("InvoiceDate")}}<span class="require-field">*</span></label>
+									<input 
+									[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+									(ngModelChange) = "getDateParams()"
+									required class="form-control m-input  form-control-sm" type="text" bsDatepicker [(ngModel)]="glinvHeader.docDate._d" id="GLINVHeader_DocDate" name="DocDate">
+								</div> 
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_PostDate">{{l("PostDate")}}<span class="require-field">*</span></label>
+									<input 
+									[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+									type="text" id="GLINVHeader_PostDate" class="form-control form-control-sm" bsDatepicker [ngModel]="glinvHeader.docDate._d" name="PostDate" required/>
+								</div>
+		
+								
+								<div class="form-group col-md-2" hidden>
+									<label for="GLINVHeader_TypeID">{{l("TypeID")}} *</label>
+									<input type="text" id="GLINVHeader_TypeID" class="form-control form-control-sm" [(ngModel)]="glinvHeader.typeID" name="TypeID"  required/>
+								</div>
+		
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_RefNo">{{l("RefNo")}}</label>
+									<input type="text" id="GLINVHeader_RefNo" class="form-control form-control-sm" [(ngModel)]="glinvHeader.refNo" name="RefNo" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_PayReason">{{l("PayReason")}}</label>
+									<select id="GLINVHeader_PayReason" class="form-control form-control-sm" [(ngModel)]="glinvHeader.payReason" name="PayReason">
+										<option value="">Choose Pay Reason</option>
+										<option value="Adv Payment">Adv Payment</option>
+										<option value="Balance Payment">Balance Payment</option>
+										<option value="Panality Payment">Panality Payment</option>
+										<option value="Misc Payment">Misc Payment</option>
+									</select>
+								</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_PartyInvNo">{{l("PartyInvNo")}}</label>
+									<input type="text" id="GLINVHeader_PartyInvNo" class="form-control form-control-sm" [(ngModel)]="glinvHeader.partyInvNo" name="PartyInvNo" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_PartyInvDate">{{l("PartyInvDate")}}</label>
+									<input
+									[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+									type="text" id="GLINVHeader_PartyInvDate" class="form-control form-control-sm" bsDatepicker [(ngModel)]="glinvHeader.partyInvDate._d" name="PartyInvDate" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_DocStatus">{{l("InvoiceStatus")}}<span class="require-field">*</span></label>
+									<select id="GLINVHeader_DocStatus" class="form-control form-control-sm" [(ngModel)]="glinvHeader.docStatus" name="DocStatus">
+										<option value="Open">Open</option>
+										<option value="Hold">Hold</option>
+										<option value="Void">Void</option>
+									</select>
+								</div>
+								<div class="form-group col-md-2"> 
+									<label for="GLINVHeader_CreditLimit">{{l("CreditLimit")}}</label>
+									<input type="text" id="GLINVHeader_CreditLimit" class="form-control form-control-sm" [(ngModel)]="glinvHeader.creditLimit" name="CreditLimit" currencyMask  [options]="{ prefix: ' ', thousands: ',' }"   disabled/>
+								</div>
+								<div class="form-group col-md-2"> 
+									<label for="GLINVHeader_ClosingBalance">{{l("ClosingBalance")}}</label>
+									<input type="text" id="GLINVHeader_ClosingBalance" class="form-control form-control-sm" [(ngModel)]="glinvHeader.closingBalance" name="ClosingBalance"  currencyMask  [options]="{ prefix: ' ', thousands: ',' }" disabled/>
+								</div>
+								<div class="form-group col-md-6"> 
+									<label for="GLINVHeader_NARRATION">{{l("NARRATION")}}<span class="require-field">*</span></label>
+									<input type="text" id="GLINVHeader_NARRATION" class="form-control form-control-sm" [(ngModel)]="glinvHeader.narration" name="NARRATION"  maxlength=250  required/>
+								</div>
+								
+
+
+
+								<div class="form-group m-form__group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="TaxAuthorityTAXAUTH">{{l("SalesTaxAuthority")}}</label>
+									<div class="input-group">    
+										<input type="text" id="GLINVHeader_TAXAUTH" class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxAuth" name="TAXAUTH"   readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxAuthorityModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_TAXAUTHDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="GLINVHeader_TAXAUTHDesc" name="taxAuthDesc" [(ngModel)]="taxAuthDesc" type="text" readonly>  
+								</div>
+								
+								
+
+							</div>
+							<div class="row col-md-12 borders_outsight " *ngIf="glinvHeader.typeID == 'ST'">
+								<div class="form-group m-form__group col-md-2" *ngIf="glinvHeader.typeID == 'ST'"> 
+									<label for="TaxAuthorityTAXAUTH">{{l("SalesTaxClass")}}</label>
+									<div class="input-group">    
+										<input type="text" id="GLINVHeader_taxClass" class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxClass" name="taxClass"   readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxClassModal('Tab1','')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxClassIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-2" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="GLINVHeader_taxClassDesc" name="taxClassDesc" [(ngModel)]="taxClassDesc" type="text" readonly>  
+								</div>
+
+								<div class="form-group col-md-2" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_ACCode">{{l("SalesTAXACCID")}}<span class="require-field" *ngIf="glinvHeader.taxAuth!=null">*</span></label>
+									<input type="text" id="GLINVHeader_ACCode" class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxAccID" name="taxAccID" [required]="glinvHeader.taxAuth!=null ? 'required' : null"   readonly/>
+								</div>
+								
+								<div class="form-group col-md-2" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_taxRate">{{l("SalesTaxRate")}}<span class="require-field">*</span></label>
+									<input type="text" id="GLINVHeader_taxRate" class="form-control form-control-sm" 
+									currencyMask  [options]="{ prefix: ' ', thousands: ',' }" [(ngModel)]="glinvHeader.taxRate" name="taxRate" readonly/>
+								</div>
+								<div class="form-group col-md-2" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_VenderTax">{{l("SalesTaxAmount")}}<span class="require-field">*</span></label>
+									<input type="text" id="GLINVHeader_VenderTax" class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxAmount" 
+									name="taxAmount" readonly currencyMask  [options]="{ prefix: ' ', thousands: ',' }"/>
+								</div>
+								<div class="form-group col-md-2" *ngIf="glinvHeader.typeID == 'ST'">
+									<button type="button" class="btn btn-primary blue" style="margin-top:23px;" (click)="getUpdate()"><span>Get Defualts</span></button>
+								</div>
+							</div>
+						</tab>
+						<tab heading="{{'Tax' | localize}}" *ngIf="glinvHeader.id &&  glinvHeader.postedStock && isGranted('Pages.DirectInvoice.PaymentProcess')" >
+							<div class="row col-md-12">
+
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_PaymentOptions">{{l("PaymentOption")}}<span class="require-field">*</span></label>
+									<select id="GLINVHeader_PaymentOptions" class="form-control form-control-sm" [(ngModel)]="glinvHeader.paymentOption" name="PaymentOption" [required]="(glinvHeader.id &&  glinvHeader.postedStock) ? 'required' : null">
+										<option value="Bank">Bank</option>
+										<option value="Cash">Cash</option>
+									</select>
+								</div>
+
+								<div class="form-group m-form__group col-md-3">
+									<label for="GLINVHeader_BankID">{{glinvHeader.paymentOption}}<span class="require-field" >*</span></label>
+									<div class="input-group">
+										<input type="text" id="GLINVHeader_BankID" class="form-control form-control-sm" [(ngModel)]="glinvHeader.bankID" name="BankID" [required]="(glinvHeader.id  && glinvHeader.postedStock) ? 'required' : null" readonly/>
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectBankIdModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBankIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3">
+									<label for="GLINVHeader_accountID">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="GLINVHeader_accountID" name="accountID" [(ngModel)]="glinvHeader.accountID" type="text" readonly>
+								</div>
+								<!-- <div class="form-group col-md-3">
+									<label for="GLINVHeader_ChequeNo">{{l("ChequeNo")}}</label>
+									<input type="text" id="GLINVHeader_ChequeNo" class="form-control form-control-sm" [(ngModel)]="glinvHeader.chequeNo" name="ChequeNo" />
+								</div> -->
+
+								<div class="form-group col-md-2" *ngIf="glinvHeader.paymentOption.toLowerCase() == 'bank'"> 
+									<!-- <label for="GLTRDetail_ChequeType">{{l("ChequeType")}} -->
+									<label for="GLTRDetail_ChequeType">{{l("InstrumentType")}}
+									<span class="require-field">*</span></label>
+									<select type="text" id="GLTRDetail_ChequeType" 
+									 class="form-control form-control-sm" [(ngModel)]="glinvHeader.chType"
+									 name="chequeType" 
+									 required>
+									 <!-- <option value="1">Cash</option>
+									 <option value="2">Cross</option> -->
+									 <option value="1">Cheque-Cash</option>
+									 <option value="2">Cheque-Cross</option>
+									 <option value="3">P.O.</option>
+									 <option value="4">Online</option>
+									 <option value="5">Other</option>
+									 </select>
+								</div>		
+						<div class="form-group m-form__group col-md-2" *ngIf="glinvHeader.paymentOption.toLowerCase() == 'bank'">
+							<label for="InstrumentNo">{{l("InstrumentNo")}}<span class="require-field">*</span></label>
+							<div class="input-group">
+								<input
+								[disabled] = "!instrumentNoChk && (glinvHeader.typeID == 'AP' 
+								|| glinvHeader.typeID == 'BP')"
+								type="text" id="InstrumentNo" class="form-control form-control-sm" [(ngModel)]="glinvHeader.chNumber" name="InstrumentNo"  required/>
+								<div class="input-group-append" *ngIf="glinvHeader.typeID!='AR'">
+									<button class="btn btn-primary blue btn-sm" (click)="openInstrumentNo('Tab2')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div> <div class="input-group-prepend">
+									<!-- <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setInstrumentNoNull()"><i class="fa fa-times"></i></button> -->
+								</div>
+							</div>
+						</div>
+
+						
+						
+		
+								<div class="form-group m-form__group col-md-3">
+									<label for="GLINVHeader_CurrencyId">{{l("Currency")}}<span class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="GLINVHeader_CurrencyId" class="form-control form-control-sm" [(ngModel)]="glinvHeader.curID" name="CurID" [required]="(glinvHeader.id &&  glinvHeader.postedStock) ? 'required' : null" readonly/>
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectCurrencyRateModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCurrencyRateIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<label for="GLINVHeader_CurRate">{{l("Rate")}}&nbsp;<span class="require-field">*</span></label>
+									<input type="number" class="form-control form-control-sm" id="GLINVHeader_CurRate" name="CurRate" [(ngModel)]="glinvHeader.curRate" readonly>
+								</div>
+
+							
+								<div class="form-group m-form__group col-md-5" *ngIf="glinvHeader.typeID == 'ST'">
+								</div>				
+								<div class="form-group m-form__group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<h4>{{l("IncomeTaxDetail")}}</h4>
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group">    
+										<input type="text" id="GLINVHeader_icTaxAuth" class="form-control form-control-sm" [(ngModel)]="glinvHeader.icTaxAuth" name="icTaxAuth"   readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxAuthorityModal('Tab2')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3" style="margin-top: 30px;" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_TAXAUTHDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="GLINVHeader_ictaxAuthDesc" name="ictaxAuthDesc" [(ngModel)]="ictaxAuthDesc" type="text" readonly>  
+								</div>
+								<div class="form-group col-md-1" *ngIf="glinvHeader.typeID == 'ST'" style="margin-top: 30px;">
+									<button type="button" class="btn btn-primary blue" style="margin-top:23px;" (click)="getUpdate('Tab2')"><span>{{l("Update")}}</span></button>
+								</div>
+
+								
+								<div class="form-group m-form__group col-md-3" style="margin-top: 30px;"  *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">    
+										<input 
+										type="text" id="GLINVHeader_icTaxClass" class="form-control form-control-sm"
+										 [(ngModel)]="glinvHeader.icTaxClass"
+										 name="icTaxClass"   readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxClassModal('Tab2','IncomeTax')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxClassIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_taxClassDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="GLINVHeader_ictaxClassDesc" name="ictaxClassDesc" [(ngModel)]="ictaxClassDesc" type="text" readonly>  
+								</div>
+
+								<div class="form-group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_ACCode">{{l("TAXACCID")}}<span class="require-field" *ngIf="glinvHeader.taxAuth!=null">*</span></label>
+									<input 	*ngIf="glinvHeader.typeID == 'ST'" type="text" id="GLINVHeader_icTaxAccID" 
+									class="form-control form-control-sm" [(ngModel)]="glinvHeader.icTaxAccID" 
+									name="icTaxAccID" [required]="glinvHeader.taxAuth!=null ? 'required' : null" 
+									readonly/>
+								</div>
+								
+								<div class="form-group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_icTaxRate">{{l("TaxRate")}}<span class="require-field">*</span></label>
+									<input 
+									*ngIf="glinvHeader.typeID == 'ST'"
+									type="text" id="GLINVHeader_icTaxRate" 
+									class="form-control form-control-sm" 
+									currencyMask  [options]="{ prefix: ' ', thousands: ',' }"
+									 [(ngModel)]="glinvHeader.icTaxRate"  name="icTaxRate" readonly/>								
+								</div>
+								<div class="form-group col-md-3" *ngIf="glinvHeader.typeID == 'ST'">
+									<label for="GLINVHeader_VenderTax">{{l("TaxAmount")}}<span class="require-field">*</span></label>
+									<input
+									type="text" id="GLINVHeader_icTaxAmount" class="form-control form-control-sm" [(ngModel)]="glinvHeader.icTaxAmount"
+									name="icTaxAmount" readonly currencyMask  [options]="{ prefix: ' ', thousands: ',' }"/>
+								</div>
+
+
+								<!-- <div class="form-group m-form__group col-md-2" >
+									
+								</div>		
+	 -->
+								<div class="form-group m-form__group col-md-3"  *ngIf="glinvHeader.typeID != 'ST'">			
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+									<div class="input-group" *ngIf="glinvHeader.typeID != 'ST'">    
+										<input type="text" id="GLINVHeader_TAXAUTH" class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxAuth" name="TAXAUTH"   readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" *ngIf="glinvHeader.typeID != 'ST'" (click)="openSelectTaxAuthorityModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend" *ngIf="glinvHeader.typeID != 'ST'">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3" *ngIf="glinvHeader.typeID != 'ST'" [ngStyle]="{'margin-top.px':glinvHeader.typeID == 'ST' ? '30' : '0' }">
+									<label for="GLINVHeader_TAXAUTHDesc">{{l("")}}&nbsp;</label>
+									<input class="form-control form-control-sm" id="GLINVHeader_TAXAUTHDesc" name="taxAuthDesc" [(ngModel)]="taxAuthDesc" type="text" readonly>  
+								</div>
+								<div class="form-group col-md-1" *ngIf="glinvHeader.typeID != 'ST'" [ngStyle]="{'margin-top.px':glinvHeader.typeID == 'ST' ? '30' : '0' }">
+									<button type="button" class="btn btn-primary blue" style="margin-top:23px;" (click)="getUpdate()"><span>{{l("Update")}}</span></button>
+								</div>
+
+								<div class="form-group m-form__group col-md-12" >
+									
+								</div>	
+								
+								<div class="form-group m-form__group col-md-3" [ngStyle]="{'margin-top.px':glinvHeader.typeID == 'ST' ? '30' : '0' }">
+									<h4 *ngIf="glinvHeader.typeID == 'ST'">{{l("WithHeldTaxDetail")}}</h4>	
+									<label for="TaxAuthorityTAXAUTH">{{l("TaxClass")}}</label>
+									<div class="input-group">    
+										<input 
+										*ngIf="glinvHeader.typeID != 'ST'"
+										type="text" id="GLINVHeader_taxClass" class="form-control form-control-sm"
+										 [(ngModel)]="glinvHeader.taxClass"
+										 name="taxClass"   readonly />
+										 <input
+										 *ngIf="glinvHeader.typeID == 'ST'"
+										 type="text" id="GLINVHeader_arClass" class="form-control form-control-sm"
+										 [(ngModel)]="glinvHeader.arClass"
+										 name="arClass"   readonly />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" (click)="openSelectTaxClassModal('Tab2','')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+										</div> <div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-3" [ngStyle]="{'margin-top.px':glinvHeader.typeID == 'ST' ? '59' : '0' }">
+									<label for="GLINVHeader_artaxClassDesc">{{l("")}}&nbsp;</label>
+									<input
+									*ngIf="glinvHeader.typeID == 'ST'"
+									 class="form-control form-control-sm" 
+									 id="GLINVHeader_artaxClassDesc" 
+									 name="artaxClassDesc" 
+									 [(ngModel)]="arTaxClassDesc" type="text" readonly>  
+
+									 <input
+									 *ngIf="glinvHeader.typeID != 'ST'"
+									  class="form-control form-control-sm" 
+									  id="GLINVHeader_taxClassDesc" 
+									  name="taxClassDesc" 
+									  [(ngModel)]="taxClassDesc" type="text" readonly>  
+								</div>
+
+								<div class="form-group col-md-3" [ngStyle]="{'margin-top.px':glinvHeader.typeID == 'ST' ? '59' : '0' }">
+									<label for="GLINVHeader_ACCode">{{l("TAXACCID")}}<span class="require-field" *ngIf="glinvHeader.taxAuth!=null">*</span></label>
+									<input 	*ngIf="glinvHeader.typeID != 'ST'" type="text" id="GLINVHeader_ACCode" 
+									class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxAccID" 
+									name="taxAccID" [required]="glinvHeader.taxAuth!=null ? 'required' : null" 
+									readonly/>
+
+									<input type="text"  *ngIf="glinvHeader.typeID == 'ST'" 
+									id="GLINVHeader_ArAccID" 
+									class="form-control form-control-sm" [(ngModel)]="glinvHeader.arAccID" 
+									name="ArAccID" [required]="glinvHeader.taxAuth!=null ? 'required' : null" 
+									readonly/>
+								</div>
+								
+								<div class="form-group col-md-3" [ngStyle]="{'margin-top.px':glinvHeader.typeID == 'ST' ? '59' : '0' }">
+									<label for="GLINVHeader_taxRate">{{l("TaxRate")}}<span class="require-field">*</span></label>
+									<input 
+									*ngIf="glinvHeader.typeID != 'ST'"
+									type="text" id="GLINVHeader_taxRate" 
+									class="form-control form-control-sm" 
+									currencyMask  [options]="{ prefix: ' ', thousands: ',' }"
+									 [(ngModel)]="glinvHeader.taxRate"  name="taxRate" readonly/>
+
+									 <input  *ngIf="glinvHeader.typeID == 'ST'"
+									  type="text" id="GLINVHeader_arRate" 
+									class="form-control form-control-sm" 
+									currencyMask  [options]="{ prefix: ' ', thousands: ',' }"
+									 [(ngModel)]="glinvHeader.arRate"  name="arRate" readonly/>
+								</div>
+								<div class="form-group col-md-3" >
+									<label for="GLINVHeader_VenderTax">{{l("TaxAmount")}}<span class="require-field">*</span></label>
+									<input
+									*ngIf="glinvHeader.typeID != 'ST'"
+									type="text" id="GLINVHeader_VenderTax" class="form-control form-control-sm" [(ngModel)]="glinvHeader.taxAmount"
+									name="taxAmount" readonly currencyMask  [options]="{ prefix: ' ', thousands: ',' }"/>
+									<input  
+									*ngIf="glinvHeader.typeID == 'ST'"
+									 type="text" id="GLINVHeader_ArAmount"
+									  class="form-control form-control-sm" 
+									  [(ngModel)]="glinvHeader.arAmount"
+									name="arAmount" readonly currencyMask  
+									[options]="{ prefix: ' ', thousands: ',' }"/>
+								</div>
+
+
+								
+							</div>
+						</tab>
+						<tab heading="CPR" *ngIf="glinvHeader.id && glinvHeader.typeID=='AP' && glinvHeader.posted">
+							<div class="row col-md-12">
+							<div class="form-group m-form__group col-md-6 col-xs-12">
+								<label for="GLINVHeader_CPR">{{l("CPRID")}}<span class="require-field">*</span></label>
+								<div class="input-group">  
+									<input type="number" min="1" id="GLINVHeader_CPR" class="form-control form-control-sm" [(ngModel)]="glinvHeader.cprID" name="CPRID" required readonly/>
+									<div class="input-group-append">
+										<button class="btn btn-primary blue btn-sm" (click)="openSelectCPRModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+									</div><div class="input-group-prepend">
+										<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCPRIDNull()"><i class="fa fa-times"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="LocationDesc">{{l("CPRNO")}}&nbsp;</label>
+								<input class="form-control form-control-sm" id="LocationDesc" name="cprNo" [(ngModel)]="glinvHeader.cprNo" type="text" readonly>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="GLINVHeader_CPR">{{l("DepositDate")}}</label>
+                            <input type="text" id="GLINVHeader_CPR" class="form-control form-control-sm"
+                                bsDatepicker [(ngModel)]="depositDate" name="DepositDate"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" />
+							</div>
+							<div class="col-lg-12" style="text-align: right">
+								<button type="button" class="btn btn-primary blue" *ngIf="glinvHeader.id && isGranted('Pages.DirectInvoice.UpdateCpr')"
+								class="btn btn-success green" [disabled]="!glinvHeader.cprNo" [buttonBusy]="processing1" 
+								(click)="updateCPR()" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Update")}}</span></button>
+							</div>
+						</div>
+						</tab>
+					</tabset>
+					
+
+					<div class="row col-md-12">
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()">Add Row</button>
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()">Remove Row</button>
+							<ag-grid-angular
+								style="width: 100%; height: 200px;" 
+								class="ag-theme-balham" 
+								[rowData]="rowData" 
+								[columnDefs]="columnDefs" 
+								[animateRows]="true"
+								[suppressDragLeaveHidesColumns]="true"
+								[rowSelection]="rowSelection"
+								[singleClickEdit]="true"
+								(cellValueChanged)="onCellValueChanged($event)"
+								(cellClicked)="cellClicked($event)"
+								(gridReady)="onGridReady($event)">
+							</ag-grid-angular>
+					</div><br>
+
+					<div class="row">
+						<div class="form-group col-md-2">
+							<label for="GLINVHeader_Debit">{{l("Debit")}}<span class="require-field">*</span></label>
+							<input type="text" id="GLINVHeader_Debit" class="form-control form-control-sm inputFormBoldSize" 
+							readonly [ngModel]="totalDebit" name="TotalDebit" id=""  currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="GLINVHeader_Credit">{{l("Credit")}}<span class="require-field">*</span></label>
+							<input type="text" id="GLINVHeader_Credit" class="form-control form-control-sm inputFormBoldSize" 
+							readonly [ngModel]="totalCredit" name="TotalCebit" id="" currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="GLINVHeader_Balance">{{l("OutOfBalance")}}<span class="require-field">*</span></label>
+							<input type="text" id="GLINVHeader_Balance" class="form-control form-control-sm inputFormBoldSize"  
+							readonly [ngModel]="totalBalance" name="TotalBalance" id=""
+							currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2"> 
+							<label for="GLINVHeader_Amount">{{l("Amount")}}<span class="require-field">*</span></label>
+							<input type="text" id="GLINVHeader_Amount" class="form-control form-control-sm inputFormBoldSize" 
+							readonly [(ngModel)]="totalAmount" name="TotalAmount"    required currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2"> 
+							<label for="GLINVHeader_InvAmount">{{l("InvAmount")}}</label>
+							<input type="text" id="GLINVHeader_InvAmount" class="form-control form-control-sm" 
+							readonly [(ngModel)]="glinvHeader.invAmount" name="InvAmount inputFormBoldSize"   
+						    currencyMask  [options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+					</div>
+
+				</div>
+				
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+					<button type="button" *ngIf="glinvHeader.id &&  glinvHeader.postedStock && !glinvHeader.posted && isGranted('Pages.DirectInvoice.PaymentProcess')" class="btn btn-success green" 
+					[disabled]="!validDate"
+					[buttonBusy]="processing" (click)="processDirectInv('Payment')" 
+					[busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> 
+					<span>{{l("Process")}}</span></button>
+					<button type="button" *ngIf="glinvHeader.id && !glinvHeader.postedStock
+					 && isGranted('Pages.DirectInvoice.StockProcess')" class="btn btn-success green" 
+					[disabled]="!validDate"
+					[buttonBusy]="processing" (click)="processDirectInv('Stock')" [busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+					<button type="submit"  class="btn btn-primary blue" *ngIf="!glinvHeader.postedStock && totalAmount!=null" [disabled]="!directInvoiceForm.form.valid || !validDate" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+	<commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()"></commonServiceLookupTableModal>
+	<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+</div>
+
+<style>
+.form-group {
+    margin-bottom: 0.8rem;
+}
+.modal-dialog.modal-xl {
+    max-width: 90%;
+}
+</style>

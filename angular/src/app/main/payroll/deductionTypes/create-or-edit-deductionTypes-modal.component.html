@@ -1,0 +1,56 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #deductionTypesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="deductionTypes.id">{{l("EditDeductionTypes")}}</span>
+                        <span *ngIf="!deductionTypes.id">{{l("CreateNewDeductionTypes")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="DeductionTypes_TypeID">{{l("DeductionTypeID")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="DeductionTypes_TypeID" class="form-control form-control-sm"
+                                [(ngModel)]="deductionTypes.typeID" name="TypeID" disabled required />
+                        </div>
+                        <div class="form-group col-md-9">
+                            <label for="DeductionTypes_TypeDesc">{{l("DeductionTypeDesc")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="text" id="DeductionTypes_TypeDesc" class="form-control form-control-sm"
+                                [(ngModel)]="deductionTypes.typeDesc" name="TypeDesc" minlength="0" maxlength="50"
+                                required />
+                        </div>
+                    </div>
+
+                 
+                    <div class="m-checkbox-list">
+                        <label for="DeductionTypes_Active" class="kt-checkbox">
+                            <input id="DeductionTypes_Active" type="checkbox" name="Active"
+                                [(ngModel)]="deductionTypes.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!deductionTypesForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

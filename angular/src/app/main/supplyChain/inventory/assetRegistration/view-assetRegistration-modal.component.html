@@ -1,0 +1,177 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l("Details") }}</span>
+                </h4>
+                <button
+                    type="button"
+                    class="close"
+                    (click)="close()"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AssetID") }} :</h6>
+                        {{ item.assetRegistration.assetID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("FmtAssetID") }} :</h6>
+                        {{ item.assetRegistration.fmtAssetID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AssetName") }} :</h6>
+                        {{ item.assetRegistration.assetName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("ItemID") }} :</h6>
+                        {{ item.assetRegistration.itemID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("LocID") }} :</h6>
+                        {{ item.assetRegistration.locID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("RegDate") }} :</h6>
+                        {{
+                            item.assetRegistration.regDate | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("PurchaseDate") }} :</h6>
+                        {{
+                            item.assetRegistration.purchaseDate
+                                | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("ExpiryDate") }} :</h6>
+                        {{
+                            item.assetRegistration.expiryDate
+                                | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Warranty") }} :</h6>
+                        {{ item.assetRegistration.warranty }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AssetType") }} :</h6>
+                        {{ item.assetRegistration.assetType }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DepRate") }} :</h6>
+                        {{ item.assetRegistration.depRate }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DepMethod") }} :</h6>
+                        {{ item.assetRegistration.depMethod }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("SerialNumber") }} :</h6>
+                        {{ item.assetRegistration.serialNumber }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("PurchasePrice") }} :</h6>
+                        {{ item.assetRegistration.purchasePrice }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Narration") }} :</h6>
+                        {{ item.assetRegistration.narration }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AccAsset") }} :</h6>
+                        {{ item.assetRegistration.accAsset }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AccDepr") }} :</h6>
+                        {{ item.assetRegistration.accDepr }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AccExp") }} :</h6>
+                        {{ item.assetRegistration.accExp }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DepStartDate") }} :</h6>
+                        {{
+                            item.assetRegistration.depStartDate
+                                | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AssetLife") }} :</h6>
+                        {{ item.assetRegistration.assetLife }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("BookValue") }} :</h6>
+                        {{ item.assetRegistration.bookValue }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("LastDepAmount") }} :</h6>
+                        {{ item.assetRegistration.lastDepAmount }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("LastDepDate") }} :</h6>
+                        {{
+                            item.assetRegistration.lastDepDate
+                                | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Disolved") }} :</h6>
+                        {{ item.assetRegistration.disolved }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Active") }} :</h6>
+                        {{ item.assetRegistration.active }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtUser") }} :</h6>
+                        {{ item.assetRegistration.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AudtDate") }} :</h6>
+                        {{
+                            item.assetRegistration.audtDate | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("CreatedBy") }} :</h6>
+                        {{ item.assetRegistration.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("CreateDate") }} :</h6>
+                        {{
+                            item.assetRegistration.createDate
+                                | date: "dd/MM/yyyy"
+                        }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-primary blue"
+                    (click)="close()"
+                >
+                    {{ l("Close") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

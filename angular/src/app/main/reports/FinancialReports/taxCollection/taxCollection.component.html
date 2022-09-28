@@ -1,0 +1,303 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("TaxCollection")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("APTransactionListHeaderInfo")}} -->
+            </span>
+        </div>
+
+    </div>
+
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body parentSection">
+                        <div class="row row-col-separator-xl">
+                            <div class="col-lg-4">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()" 
+                                                            value="salesTaxOutput">
+                                                        Sales Tax Output Report (AR)
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()" 
+                                                            value="salesTaxInput">
+                                                        Sales Tax Input Report (AP)
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()"
+                                                            value="partyTax">
+                                                        Advance Tax Deducted/Collected Report
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()"
+                                                            value="CPRNumbers" >
+                                                        CPR Report Tax
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()"
+                                                            value="incomeTax" >
+                                                        Income Tax Due Report (AP)
+                                                        <span></span>
+                                                    </label>
+                                                    <!-- <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()"
+                                                            value="salesTax" >
+                                                        Sales Tax Due Report (AR)
+                                                        <span></span>
+                                                    </label> -->
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="taxCollection"
+                                                            [(ngModel)]="taxCollection" (ngModelChange)="hideFields()"
+                                                            value="salesTaxDeduction" >
+                                                        Sales Tax Deduction at Source Report
+                                                        <span></span>
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group">
+
+                                            <div class="row">
+                                                <label for="FromDate"
+                                                    class="col-md-3 col-form-label">{{l("FROMDATE")}}</label>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="FromDate"
+                                                        class="form-control form-control-sm" bsDatepicker
+                                                        [(ngModel)]="fromDate" name="fromDate"
+                                                        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required />
+                                                </div>
+                                                <label for="ToDate"
+                                                    class="col-md-3 col-form-label">{{l("TODATE")}}</label>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="ToDate" class="form-control form-control-sm"
+                                                        bsDatepicker [(ngModel)]="toDate" name="toDate"
+                                                        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required />
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showFromAcc">
+                                                <label for="fromAcc"
+                                                    class="col-md-3 col-form-label">{{l("FromAcc")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="fromAcc"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromAcc"
+                                                            name="fromAcc" required>
+                                                        <input type="text" id="fromAccDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromAccDesc" name="fromAccDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectChartofACModal('FromAC')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setChartOfACNull('FromAC')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showToAcc">
+                                                <label for="toAcc"
+                                                    class="col-md-3 col-form-label">{{l("ToAcc")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toAcc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toAcc"
+                                                            name="toAcc" required>
+                                                        <input type="text" id="toAccDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="toAccDesc" name="toAccDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectChartofACModal('ToAC')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setChartOfACNull('ToAC')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showFromSubAcc">
+                                                <label for="fromSubAcc"
+                                                    class="col-md-3 col-form-label">{{l("FromSubAcc")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="fromSubAcc"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromSubAcc"
+                                                            name="fromSubAcc" required>
+                                                        <input type="text" id="fromSubAccDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromSubAccDesc" name="fromSubAccDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectSubAccModal('FromSubAcc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setSubAccNull('FromSubAcc')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showToSubAcc">
+                                                <label for="toSubAcc"
+                                                    class="col-md-3 col-form-label">{{l("ToSubAcc")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toSubAcc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toSubAcc"
+                                                            name="toSubAcc" required>
+                                                        <input type="text" id="toSubAccDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="toSubAccDesc" name="toSubAccDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectSubAccModal('ToSubAcc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setSubAccNull('ToSubAcc')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for="taxAuth"
+                                                    class="col-md-3 col-form-label">{{l("TaxAuthority")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="taxAuth"
+                                                            class="form-control form-control-sm" [(ngModel)]="taxAuth"
+                                                            name="taxAuth" required>
+                                                        <input type="text" id="taxAuthDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="taxAuthDesc" name="taxAuthDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectTaxAuthorityModal()" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setTaxAuthorityIdNull()"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="FromtaxClass"
+                                                    class="col-md-3 col-form-label">{{l("FromTaxClass")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="fromTaxClass"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromTaxClass"
+                                                            name="fromTaxClass" required>
+                                                        <input type="text" id="fromTaxClassDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromTaxClassDesc" name="fromTaxClassDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectTaxClassModal('FromTax')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setTaxClassIdNull('FromTax')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="TotaxClass"
+                                                    class="col-md-3 col-form-label">{{l("ToTaxClass")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toTaxClass"
+                                                            class="form-control form-control-sm" [(ngModel)]="toTaxClass"
+                                                            name="toTaxClass" required>
+                                                        <input type="text" id="toTaxClassDesc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="toTaxClassDesc" name="toTaxClassDesc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openSelectTaxClassModal('ToTax')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setTaxClassIdNull('ToTax')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot footerSection">
+                                    <div class="col-lg-12" style="text-align: right">
+                                        <button type="submit" class="btn btn-primary blue"
+                                            [disabled]="!fromDate || !toDate || !taxAuth "
+                                            (click)="getReport()">
+                                            <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<app-reportviewr-modal #reportView></app-reportviewr-modal>

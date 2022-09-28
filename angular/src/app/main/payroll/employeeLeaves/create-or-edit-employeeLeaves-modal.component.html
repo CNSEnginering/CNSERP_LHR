@@ -1,0 +1,177 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #employeeLeavesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="employeeLeaves.id">{{l("EditEmployeeLeaves")}}</span>
+						<span *ngIf="!employeeLeaves.id">{{l("CreateNewEmployeeLeaves")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body form-group">
+
+
+					<div class="row mt-2">
+						<div class="col-md-2">
+							<label for="EmployeeLeaves_LeaveID">{{l("LeaveID")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="EmployeeLeaves_LeaveID" class="form-control form-control-sm"
+								[(ngModel)]="employeeLeaves.leaveID" name="LeaveID" disabled required />
+						</div>
+						<div class="col-md-4">
+							<label for="EmployeeLeaves_LeaveType">{{l("Leave Type")}}<span
+									class="require-field">*</span></label>
+							<select type="text" id="EmployeeLeaves_LeaveType" class="form-control form-control-sm"
+								name="LeaveType" [(ngModel)]="leaveType" (onchange)="GetLeaveBalance()" required>
+								<option value="Select Leave Type" disabled selected>Select Leave Type</option>
+								<option value="1">Casual</option>
+								<option value="2">Sick</option>
+								<option value="3">Annual</option>
+								<option value="4">Paid</option>
+								<option value="5">Un Paid</option>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<label for="EmployeeLeaves_EmployeeID">{{l("Employee ID")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" style="background-color:#F4F4F4;" id="EmployeeLeaves_EmployeeID" class="form-control form-control-sm"
+									[(ngModel)]="employeeLeaves.employeeID" name="EmployeeID" readonly required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openEmployeeModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setEmployeeNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row mt-2">						
+						<div class="col-md-6">
+							<label for="EmployeeLeaves_EmployeeName">{{l("EmployeeName")}}</label>
+							<input class="form-control form-control-sm" id="EmployeeLeaves_EmployeeName"
+								name="employeeName" [(ngModel)]="employeeName" type="text" disabled />
+						</div>
+						<div class="col-md-2 mt-3">
+							<span required>
+								<div class="kt-radio-inline ">
+									<label class="kt-radio kt-radio--solid">
+										<input type="radio" name="leaveType" value="fullLeave" [(ngModel)]="type">
+										Full Leave
+										<span></span>
+									</label>
+									<label class="kt-radio kt-radio--solid">
+										<input type="radio" name="leaveType" value="halfLeave" [(ngModel)]="type">
+										Half Leave
+										<span></span>
+									</label>
+								</div>
+							</span>
+						</div>
+						<div class="col-md-4">
+							<label for="EmployeeLeaves_EmployeeLeave">Leave Balance</label>
+							<input class="form-control form-control-sm" id="EmployeeLeaves_EmployeeLeave"
+								name="employeeName" [(ngModel)]="employeeName" type="text" disabled />
+						</div>
+					</div>
+
+
+				
+
+					<!-- <div class="row mt-2">
+						<div class="col-md-6">
+							<label for="EmployeeLeaves_SalaryYear">{{l("Salary Year")}}<span
+									class="require-field">*</span></label>
+							<select type="text" id="EmployeeLeaves_SalaryYear" class="form-control form-control-sm"
+								name="SalaryYear" [(ngModel)]="salaryYear" required>
+								<option value="Select Year" disabled selected>Select Year</option>
+								<option *ngFor="let year of years">{{year}}</option>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<label for="EmployeeLeaves_SalaryMonth">{{l("Salary Month")}}<span
+									class="require-field">*</span></label>
+							<select type="text" id="EmployeeLeaves_SalaryMonth" class="form-control form-control-sm"
+								name="SalaryMonth" [(ngModel)]="salaryMonth" required>
+								<option value="Select Month" disabled selected>Select Month</option>
+								<option value="1">January</option>
+								<option value="2">February</option>
+								<option value="3">March</option>
+								<option value="4">April</option>
+								<option value="5">May</option>
+								<option value="6">June</option>
+								<option value="7">July</option>
+								<option value="8">August</option>
+								<option value="9">September</option>
+								<option value="10">October</option>
+								<option value="11">November</option>
+								<option value="12">December</option>
+							</select>
+						</div>
+					</div> -->
+
+					<div class="row mt-2">
+						<div class="col-md-2">
+							<label for="EmployeeLeaves_StartDate">{{l("StartDate")}}<span
+									class="require-field">*</span></label>
+							<input class="form-control form-control-sm" type="datetime" bsDatepicker
+								[(ngModel)]="startDate" id="EmployeeLeaves_StartDate" name="EmployeeLeaves_StartDate"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (ngModelChange)="onChange($event)" required>
+                        </div>
+                        <div class="col-md-6">
+							<label for="EmployeeLeaves_Remarks">{{l("Remarks")}}</label>
+							<input type="text" id="EmployeeLeaves_Remarks" class="form-control form-control-sm"
+								[(ngModel)]="employeeLeaves.remarks" name="Remarks" />
+                        </div>
+						<div class="col-md-2">
+							<label for="EmployeeLeaves_SalaryYear">{{l("Salary Year")}}</label>
+							<input type="text" style="background-color:#F4F4F4;" id="EmployeeLeaves_SalaryYear"
+								class="form-control form-control-sm" name="SalaryYear" [(ngModel)]="salaryYear"
+								readonly>
+						</div>
+						<div class="col-md-2">
+							<label for="EmployeeLeaves_SalaryMonth">{{l("Salary Month")}}</label>
+							<input type="text" style="background-color:#F4F4F4;" id="EmployeeLeaves_SalaryMonth"
+								class="form-control form-control-sm" name="SalaryMonth" [(ngModel)]="salaryMonth"
+								readonly>
+						</div>
+                    </div>
+
+                    <div class="row mt-2">
+						
+					</div>
+
+					<!-- <div class="row mt-2">
+						<div class="col-md-6">
+							<label for="EmployeeLeaves_PayType">{{l("Pay Type")}}<span
+									class="require-field">*</span></label>
+							<input type="text" maxlength="1" id="EmployeeLeaves_PayType"
+								class="form-control form-control-sm" [(ngModel)]="employeeLeaves.payType" name="PayType"
+								required />
+						</div>
+					</div> -->
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!employeeLeavesForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

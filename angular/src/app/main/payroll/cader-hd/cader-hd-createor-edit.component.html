@@ -1,0 +1,105 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("GL Link")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="PFW">{{l("PayType")}}</label>
+                           <select name="PFW" [ngModel]="this.PFW" #p id="PFW" (change)="payChange(p.value)" class="form-control form-control-sm">
+                            <option *ngFor="let pt of PayTypeList" [value]="pt.text">{{pt.text}}</option>
+                           </select>
+                        </div>
+                    </div>
+                    <!-- <br /> -->
+                 
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="removeRecordFromGrid()">Remove</button>
+
+                    <tabset (click)="setTabMode($event)">
+                        <tab heading="PayRoll Work Days">
+                            <fieldset>
+                                <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                    [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                    [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                    [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                                    (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                    (cellValueChanged)="cellValueChanged($event)"
+                                    (cellEditingStarted)="cellEditingStarted($event)">
+                                </ag-grid-angular>
+                            </fieldset>
+                        </tab>
+                     
+                       
+                    </tabset>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="overHead3">{{l("Cader")}}</label>
+                           <select name="Cader" id="overHead3" class="form-control form-control-sm" (change)="CaderChange($event)"  >
+                            <option value='0'>Choose Cader</option>
+                            <option *ngFor="let Cad of CaderList" [value]="Cad.value">{{Cad.text}}</option>
+                           </select>
+                        </div>
+                        <div class="col-md-3">
+                            <!-- <div class="row"> -->
+                                <!-- <div class="col-md-6"> -->
+                                    <label for="EmployeeLeaveTotal_EmployeeID">{{l("Account ID")}}<span
+                                            class="require-field">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" style="background-color:#F4F4F4;" id="EmployeeLeaves_EmployeeID"
+                                            class="form-control form-control-sm" [(ngModel)]="AccID"
+                                            name="AccID" readonly />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                (click)="openCaderModal()"><i class="fa fa-search"></i>
+                                                {{l("Pick")}}</button>
+                                        </div>
+                                        <div class="input-group-prepend" >
+                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                (click)="setCaderNull()"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+                               
+                            <!-- </div> -->
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeLeaves_EmployeeName">{{l("Account Name")}}</label>
+                            <input class="form-control form-control-sm" id="EmployeeLeaves_EmployeeName"
+                                name="desc" [(ngModel)]="desc" type="text" disabled />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="TypeDC1">{{l("Type")}}</label>
+                           <select name="TypeDC" [ngModel]="this.TypeDC1" id="TypeDC1" #r (change)="DrCr(r.value)"  class="form-control form-control-sm" >
+                               <option value="Dr">Debit</option>
+                               <option value="Cr">Credit</option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()" [disabled]="!formValid "
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewCaderModal()"></payRollLookupTableModal>

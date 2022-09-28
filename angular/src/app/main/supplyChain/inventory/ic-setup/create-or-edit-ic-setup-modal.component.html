@@ -1,0 +1,305 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #icSetupForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="icSetup.id">{{l("EditICSetup")}}</span>
+                        <span *ngIf="!icSetup.id">{{l("CreateNewICSetup")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+					<div class="row">
+						<div class="col-md-12">
+							<tabset class="tab-container tabbable-line">
+								<tab heading="{{'General' | localize}}">
+									
+									<div class="row">
+										<div class="form-group col-md-3">
+											<label for="ICSetup_Segment1">{{l("Segment1")}}</label>
+											<input type="text" id="ICSetup_Segment1" required class="form-control form-control-sm" [(ngModel)]="icSetup.segment1" name="Segment1"    />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_Segment2">{{l("Segment2")}}</label>
+											<input type="text" id="ICSetup_Segment2" required class="form-control form-control-sm" [(ngModel)]="icSetup.segment2" name="Segment2"    />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_Segment3">{{l("Segment3")}}</label>
+											<input type="text" id="ICSetup_Segment3" required class="form-control form-control-sm" [(ngModel)]="icSetup.segment3" name="Segment3"    />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_Opt4">{{l("Opt4")}}</label>
+											<input type="text" id="ICSetup_Opt4" class="form-control form-control-sm" [(ngModel)]="icSetup.opt4" name="Opt4"    />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_Opt5">{{l("Opt5")}}</label>
+											<input type="text" id="ICSetup_Opt5" class="form-control form-control-sm" [(ngModel)]="icSetup.opt5" name="Opt5"    />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_CostingMethod">{{l("CostingMethod")}}</label>
+											<select id="ICSetup_CostingMethod" class="form-control form-control-sm" [(ngModel)]="icSetup.costingMethod" name="CostingMethod" >
+												<option value=0>Choose Method</option>
+												<option value="1">Moving Average</option>
+												<option value="2">FIFO</option>
+												<option value="3">LIFO</option>
+											</select>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="ICSetup_CurrentLocID">{{l("CurrentLocID")}} <span class="require-field">*</span></label>
+											<select id="ICSetup_CurrentLocID" class="form-control form-control-sm" [(ngModel)]="icSetup.currentLocID" name="CurrentLocID"  >
+												<option value=0>Choose Location</option>
+												<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+											</select>
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_GLSegLink">{{l("GLSegLink")}}</label>
+											<select id="ICSetup_GLSegLink" class="form-control form-control-sm" [(ngModel)]="icSetup.glSegLink" name="GLSegLink" >
+												<option [value]="1">Segment 1</option>
+												<option [value]="2">Segment 2</option>
+												<option [value]="3">Segment 3</option>
+											</select>
+										</div>
+										<!-- <div class="form-group col-md-6">
+											<label for="ICSetup_DamageLoc">{{l("DamageLoc")}} </label>
+											<select id="ICSetup_DamageLoc" class="form-control form-control-sm" [(ngModel)]="icSetup.damageLocID" name="DamageLocID"  >
+												<option value=0>Choose Location</option>
+												<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+											</select>
+										</div> -->
+										<!-- <div class="form-group col-md-6">
+											<label for="ICSetup_CurrentLocID1">{{l("TransactionTypes")}} </label>
+											<select id="ICSetup_CurrentLocID1" class="form-control form-control-sm" [(ngModel)]="icSetup.transType" name="TransType"  >
+												<option value=0>Choose Sale Type</option>
+												<option *ngFor="let loc of SaleType" [value]="loc.descId">{{loc.displayName}}</option>
+											</select>
+										</div> -->
+										
+										<div class="form-group col-md-3">
+											<label for="ICSetup_point">{{l("Decimal Places")}}</label>
+											<select id="ICSetup_point" class="form-control form-control-sm" [(ngModel)]="icSetup.inventoryPoint" name="InventoryPoint" >
+												<option value=0>0</option>
+												<option value="1">0.0</option>
+												<option value="2">0.00</option>
+												<option value="3">0.000</option>
+												<option value="4">0.0000</option>
+												<option value="5">0.00000</option>
+											</select>
+										</div>
+										<div class="form-group col-md-3">
+											<label for="ICSetup_Currency">{{l("Currency")}} </label>
+											<select id="ICSetup_Currency" class="form-control form-control-sm" [(ngModel)]="icSetup.currency" name="currency"  >
+												<option value=0>Choose Currency</option>
+												<option *ngFor="let cur of CurrencyList" [value]="cur.descId">{{cur.displayName}}</option>
+											</select>
+										</div>
+										<div class="form-group  col-md-3">
+											<label for="conType">{{("Charge Consumption")}} <span
+													class="require-field">*</span> </label>
+											<select id="conType" class="form-control" [(ngModel)]="icSetup.conType"
+												id="conType" name="transType" required>
+												<option value=1>Cost Center Wise</option>
+												<option value=2>Segment Wise</option>
+
+											</select>
+										</div>
+									</div>
+								</tab>
+
+								<tab heading="{{'Integration' | localize}}">
+									
+									<div class="row">
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_PRBookID">{{l("PRBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_PRBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.prBookID" name="prBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('PR')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('PR')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_RTBookID">{{l("RTBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_RTBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.rtBookID" name="rtBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('RT')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('RT')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_SLBookID">{{l("SLBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_SLBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.slBookID" name="slBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('SL')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('SL')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_SRBookID">{{l("SRBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_SRBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.srBookID" name="srBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('SR')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('SR')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_CnsBookID">{{l("CnsBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_CnsBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.cnsBookID" name="cnsBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('CM')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('CM')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_TRBookID">{{l("TRBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_TRBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.trBookID" name="trBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('TR')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('TR')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group m-form__group col-md-6">
+											<label for="ICSetup_AsmBookID">{{l("AsmBookID")}}<span class="require-field">*</span></label>
+											<div class="input-group">  
+												<input type="text" id="ICSetup_AsmBookID" class="form-control form-control-sm" [(ngModel)]="icSetup.asmBookID" name="asmBookID"    readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary blue btn-sm" (click)="openSelectBooksModal('AS')" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+												</div> <div class="input-group-prepend">
+													<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBookIDNull('AS')"><i class="fa fa-times"></i></button>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+
+								</tab>
+
+								<tab heading="{{'Options' | localize}}">
+
+										<br/><div class="m-checkbox-list row col-md-12">
+											<label for="ICSetup_AllowNegative" class="kt-checkbox">
+												<input id="ICSetup_AllowNegative" type="checkbox" [(ngModel)]="icSetup.allowNegative" name="AllowNegative"> 
+												{{l("AllowNegative")}}
+												<span></span>
+											</label>
+										</div>
+										<br/><div class="m-checkbox-list row col-md-12">
+											<label for="ICSetup_AllowLocID" class="kt-checkbox">
+												<input id="ICSetup_AllowLocID" type="checkbox" [(ngModel)]="icSetup.allowLocID" name="AllowLocID"> 
+												{{l("AllowLocID")}}
+												<span></span>
+											</label>
+										</div>
+										<br/><div class="m-checkbox-list row col-md-12">
+											<label for="ICSetup_CDateOnly" class="kt-checkbox">
+												<input id="ICSetup_CDateOnly" type="checkbox" [(ngModel)]="icSetup.cDateOnly" name="CDateOnly"> 
+												{{l("CDateOnly")}}
+												<span></span>
+											</label>
+										</div>
+
+								</tab>
+
+							</tabset>
+						</div>
+					</div>
+
+								
+					
+								
+					
+								<!-- <div class="form-group">
+									<label for="ICSetup_ErrSrNo">{{l("ErrSrNo")}}</label>
+									<input type="number" id="ICSetup_ErrSrNo" class="form-control" [(ngModel)]="icSetup.errSrNo" name="ErrSrNo"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_PrdBookID">{{l("PrdBookID")}}</label>
+									<input type="text" id="ICSetup_PrdBookID" class="form-control" [(ngModel)]="icSetup.prdBookID" name="PrdBookID"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_PyRecBookID">{{l("PyRecBookID")}}</label>
+									<input type="text" id="ICSetup_PyRecBookID" class="form-control" [(ngModel)]="icSetup.pyRecBookID" name="PyRecBookID"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_AdjBookID">{{l("AdjBookID")}}</label>
+									<input type="text" id="ICSetup_AdjBookID" class="form-control" [(ngModel)]="icSetup.adjBookID" name="AdjBookID"    />
+								</div>
+					
+								
+								<div class="form-group">
+									<label for="ICSetup_WSBookID">{{l("WSBookID")}}</label>
+									<input type="text" id="ICSetup_WSBookID" class="form-control" [(ngModel)]="icSetup.wsBookID" name="WSBookID"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_DSBookID">{{l("DSBookID")}}</label>
+									<input type="text" id="ICSetup_DSBookID" class="form-control" [(ngModel)]="icSetup.dsBookID" name="DSBookID"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_SalesReturnLinkOn">{{l("SalesReturnLinkOn")}}</label>
+									<input type="number" id="ICSetup_SalesReturnLinkOn" class="form-control" [(ngModel)]="icSetup.salesReturnLinkOn" name="SalesReturnLinkOn"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_SalesLinkOn">{{l("SalesLinkOn")}}</label>
+									<input type="number" id="ICSetup_SalesLinkOn" class="form-control" [(ngModel)]="icSetup.salesLinkOn" name="SalesLinkOn"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_AccLinkOn">{{l("AccLinkOn")}}</label>
+									<input type="number" id="ICSetup_AccLinkOn" class="form-control" [(ngModel)]="icSetup.accLinkOn" name="AccLinkOn"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_CreatedBy">{{l("CreatedBy")}}</label>
+									<input type="text" id="ICSetup_CreatedBy" class="form-control" [(ngModel)]="icSetup.createdBy" name="CreatedBy"    />
+								</div>
+					
+								<div class="form-group">
+									<label for="ICSetup_CreateadOn">{{l("CreateadOn")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="createadOn" id="ICSetup_CreateadOn" name="ICSetup_CreateadOn">
+								</div> -->
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!icSetupForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div> 
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+</style>

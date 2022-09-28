@@ -1,0 +1,281 @@
+<div [@routerTransition]>
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                        <span>{{"Settings" | localize}}</span>
+                    </h3>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <span class="kt-subheader__desc">
+                        {{"SettingsHeaderInfo" | localize}}
+                    </span>
+            </div>
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+                    <button class="btn btn-primary" (click)="saveAll()"><i class="la la-floppy-o"></i> {{"SaveAll" | localize}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="kt-content">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <tabset *ngIf="settings">
+                        <tab heading="{{'General' | localize}}" *ngIf="showTimezoneSelection" [active]="activeTabIndex == 0">
+                            <div class="form-group" *ngIf="showTimezoneSelection">
+                                <label for="Timezone">{{"Timezone" | localize}}</label>
+                                <timezone-combo name="Timezone" [(ngModel)]="settings.general.timezone" defaultTimezoneScope="{{defaultTimezoneScope}}"></timezone-combo>
+                            </div>
+                        </tab>
+                        <tab *ngIf="true" heading="{{'Appearance' | localize}}" [active]="activeTabIndex == 1">
+                            <div class="row m-form">
+                                <div class="col-md-6">
+                                    <h5>{{"ApplicationLogo" | localize}}</h5>
+                                    <form #logoUploadForm>
+                                        <div class="form-group">
+                                            <input type="file" ng2FileSelect [uploader]="logoUploader" class="col-lg-12" required />
+                                            <span class="form-text text-muted col-lg-12">{{"UploadLogo_Info" | localize}}</span>
+                                        </div>
+                                        <button class="btn btn-primary" type="button" (click)="uploadLogo()">{{"Upload" | localize}}</button>
+                                        <button class="btn btn-default" type="button" (click)="clearLogo()">{{"Clear" | localize}}</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{"CustomCSS" | localize}}</h5>
+                                    <p *ngIf="appSession.tenant.customCssId"><a [href]="remoteServiceBaseUrl + '/TenantCustomization/GetCustomCss?id=' + appSession.tenant.customCssId" target="_blank">{{'Download' | localize}}</a></p>
+                                    <form #cssUploadForm>
+                                        <div class="form-group">
+                                            <input type="file" ng2FileSelect [uploader]="customCssUploader" class="col-lg-12" required />
+                                            <span class="form-text text-muted col-lg-12">{{"UploadCSS_Info" | localize}}</span>
+                                        </div>
+                                        <button class="btn btn-primary" type="button" (click)="uploadCustomCss()">{{"Upload" | localize}}</button>
+                                        <button class="btn btn-default" type="button" (click)="clearCustomCss()">{{"Clear" | localize}}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab *ngIf="true" heading="{{'UserManagement' | localize}}">
+                            <div class="kt-form">
+                                <h5>{{"FormBasedRegistration" | localize}}</h5>
+                                <div class="kt-checkbox-list">
+                                    <div class="form-group">
+                                        <label for="Setting_AllowSelfRegistration" class="kt-checkbox" style="margin-bottom: 0">
+                                            <input id="Setting_AllowSelfRegistration" class="kt-check" type="checkbox" name="AllowSelfRegistration" [(ngModel)]="settings.userManagement.allowSelfRegistration"> {{"AllowUsersToRegisterThemselves" | localize}}
+                                            <span></span>
+                                        </label>
+                                        <span class="form-text text-muted">{{"AllowUsersToRegisterThemselves_Hint" | localize}}</span>
+                                    </div>
+                                    <div class="form-group" [hidden]="!settings.userManagement.allowSelfRegistration">
+                                        <label for="Setting_IsNewRegisteredUserActiveByDefault" class="kt-checkbox" style="margin-bottom: 0">
+                                            <input id="Setting_IsNewRegisteredUserActiveByDefault" type="checkbox" name="IsNewRegisteredUserActiveByDefault" [(ngModel)]="settings.userManagement.isNewRegisteredUserActiveByDefault"> {{"NewRegisteredUsersIsActiveByDefault" | localize}}
+                                            <span></span>
+                                        </label>
+                                        <span class="form-text text-muted">{{"NewRegisteredUsersIsActiveByDefault_Hint" | localize}}</span>
+                                    </div>
+                                    <div class="form-group" [hidden]="!settings.userManagement.allowSelfRegistration">
+                                        <label for="Setting_UseCaptchaOnRegistration" class="kt-checkbox">
+                                            <input id="Setting_UseCaptchaOnRegistration" type="checkbox" name="UseCaptchaOnRegistration" [(ngModel)]="settings.userManagement.useCaptchaOnRegistration"> {{"UseCaptchaOnRegistration" | localize}}
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                    <h5>{{"CookieConsent" | localize}}</h5>
+                                    <label for="Settings_IsCookieConsentEnabled" class="kt-checkbox">
+                                        <input id="Settings_IsCookieConsentEnabled" class="md-check" type="checkbox" name="IsCookieConsentEnabled" [(ngModel)]="settings.userManagement.isCookieConsentEnabled"> {{"IsCookieConsentEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div *ngIf="!isMultiTenancyEnabled && settings.ldap.isModuleEnabled">
+                                <h5 class="mt-4">{{"LdapSettings" | localize}}</h5>
+                                <label for="Setting_LdapIsEnabled" class="kt-checkbox">
+                                    <input id="Setting_LdapIsEnabled" type="checkbox" name="LdapIsEnabled" [(ngModel)]="settings.ldap.isEnabled"> {{"EnableLdapAuthentication" | localize}}
+                                    <span></span>
+                                </label>
+                                <div class="form-group" [hidden]="!settings.ldap.isEnabled">
+                                    <label for="LdapDomainName">{{"DomainName" | localize}}</label>
+                                    <input id="LdapDomainName" type="text" name="LdapDomainName" class="form-control" [(ngModel)]="settings.ldap.domain" maxlength="128">
+                                </div>
+                                <div class="form-group" [hidden]="!settings.ldap.isEnabled">
+                                    <label for="LdapUserName">{{"UserName" | localize}}</label>
+                                    <input id="LdapUserName" type="text" name="LdapUserName" class="form-control" [(ngModel)]="settings.ldap.userName" maxlength="128">
+                                </div>
+                                <div class="form-group" [hidden]="!settings.ldap.isEnabled">
+                                    <label for="LdapPassword">{{"Password" | localize}}</label>
+                                    <input id="LdapPassword" type="password" name="LdapPassword" class="form-control" [(ngModel)]="settings.ldap.password" maxlength="128">
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="mt-4">{{"OtherSettings" | localize}}</h5>
+                                <label for="Setting_IsEmailConfirmationRequiredForLogin" class="kt-checkbox">
+                                    <input id="Setting_IsEmailConfirmationRequiredForLogin" type="checkbox" name="IsEmailConfirmationRequiredForLogin" [(ngModel)]="settings.userManagement.isEmailConfirmationRequiredForLogin"> {{"EmailConfirmationRequiredForLogin" | localize}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </tab>
+                        <tab *ngIf="true" heading="{{'Security' | localize}}">
+                            <!-- *ngIf="true" is a workaround for https://github.com/valor-software/ng2-bootstrap/issues/823 -->
+                            <div>
+                                <h5>{{"PasswordComplexity" | localize}}</h5>
+                                <label for="Setting_PasswordComplexity_UseDefaultSettings" class="kt-checkbox">
+                                    <input id="Setting_PasswordComplexity_UseDefaultSettings" type="checkbox" name="Setting_PasswordComplexity_UseDefaultSettings" [(ngModel)]="settings.security.useDefaultPasswordComplexitySettings"> {{"UseDefaultSettings" | localize}}
+                                    <span></span>
+                                </label>
+                                <div class="kt-checkbox-list">
+                                    <label for="Setting_PasswordComplexity_RequireDigit" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireDigit" type="checkbox" name="Setting_PasswordComplexity_RequireDigit" [(ngModel)]="settings.security.passwordComplexity.requireDigit" *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireDigit" type="checkbox" name="Setting_PasswordComplexity_RequireDigit" [(ngModel)]="settings.security.defaultPasswordComplexity.requireDigit" *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled> {{"PasswordComplexity_RequireDigit" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_PasswordComplexity_RequireLowercase" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireLowercase" type="checkbox" name="Setting_PasswordComplexity_RequireLowercase" [(ngModel)]="settings.security.passwordComplexity.requireLowercase" *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireLowercase" type="checkbox" name="Setting_PasswordComplexity_RequireLowercase" [(ngModel)]="settings.security.defaultPasswordComplexity.requireLowercase" *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled> {{"PasswordComplexity_RequireLowercase" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_PasswordComplexity_RequireNonAlphanumeric" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireNonAlphanumeric" type="checkbox" name="Setting_PasswordComplexity_RequireNonAlphanumeric" [(ngModel)]="settings.security.passwordComplexity.requireNonAlphanumeric" *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireNonAlphanumeric" type="checkbox" name="Setting_PasswordComplexity_RequireNonAlphanumeric" [(ngModel)]="settings.security.defaultPasswordComplexity.requireNonAlphanumeric" *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled> {{"PasswordComplexity_RequireNonAlphanumeric" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_PasswordComplexity_RequireUppercase" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireUppercase" type="checkbox" name="Setting_PasswordComplexity_RequireUppercase" [(ngModel)]="settings.security.passwordComplexity.requireUppercase" *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireUppercase" type="checkbox" name="Setting_PasswordComplexity_RequireUppercase" [(ngModel)]="settings.security.defaultPasswordComplexity.requireUppercase" *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled> {{"PasswordComplexity_RequireUppercase" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{"PasswordComplexity_RequiredLength" | localize}}</label>
+                                    <input type="number" name="RequiredLength" class="form-control" [ngClass]="{'edited':settings.security.passwordComplexity.requiredLength}" [(ngModel)]="settings.security.passwordComplexity.requiredLength" *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                    <input type="number" name="RequiredLength" class="form-control" [ngClass]="{'edited':settings.security.defaultPasswordComplexity.requiredLength}" [(ngModel)]="settings.security.defaultPasswordComplexity.requiredLength" *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled>
+                                </div>
+                            </div>
+                            <div>
+                                <h5>{{"UserLockOut" | localize}}</h5>
+                                <div class="md-checkbox-list">
+                                    <div>
+                                        <label for="Setting_UserLockOut_IsEnabled" class="kt-checkbox">
+                                            <input id="Setting_UserLockOut_IsEnabled" type="checkbox" name="Setting_UserLockOut_IsEnabled" [(ngModel)]="settings.security.userLockOut.isEnabled"> {{"EnableUserAccountLockingOnFailedLoginAttemts" | localize}}
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="settings.security.userLockOut.isEnabled">
+                                    <label for="MaxFailedAccessAttemptsBeforeLockout">{{"MaxFailedAccessAttemptsBeforeLockout" | localize}}</label>
+                                    <input id="MaxFailedAccessAttemptsBeforeLockout" type="number" name="MaxFailedAccessAttemptsBeforeLockout" class="form-control" [ngClass]="{'edited':settings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout}" [(ngModel)]="settings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout">
+                                </div>
+                                <div class="form-group" *ngIf="settings.security.userLockOut.isEnabled">
+                                    <label for="DefaultAccountLockoutSeconds">{{"DefaultAccountLockoutDurationAsSeconds" | localize}}</label>
+                                    <input id="DefaultAccountLockoutSeconds" type="number" name="DefaultAccountLockoutSeconds" class="form-control" [ngClass]="{'edited':settings.security.userLockOut.defaultAccountLockoutSeconds}" [(ngModel)]="settings.security.userLockOut.defaultAccountLockoutSeconds">
+                                </div>
+                            </div>
+                            <div *ngIf="!isMultiTenancyEnabled || settings.security.twoFactorLogin.isEnabledForApplication">
+                                <h5>{{"TwoFactorLogin" | localize}}</h5>
+                                <div class="kt-checkbox-list">
+                                    <label for="Setting_TwoFactorLogin_IsEnabled" class="kt-checkbox">
+                                        <input id="Setting_TwoFactorLogin_IsEnabled" type="checkbox" name="Setting_TwoFactorLogin_IsEnabled" [(ngModel)]="settings.security.twoFactorLogin.isEnabled"> {{"EnableTwoFactorLogin" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsEmailProviderEnabled" class="kt-checkbox" *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsEmailProviderEnabled" type="checkbox" name="Setting_TwoFactorLogin_IsEmailProviderEnabled" [(ngModel)]="settings.security.twoFactorLogin.isEmailProviderEnabled"> {{"IsEmailVerificationEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsSmsProviderEnabled" class="kt-checkbox" *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsSmsProviderEnabled" type="checkbox" name="Setting_TwoFactorLogin_IsSmsProviderEnabled" [(ngModel)]="settings.security.twoFactorLogin.isSmsProviderEnabled"> {{"IsSmsVerificationEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled" class="kt-checkbox" *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled" type="checkbox" name="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled" [(ngModel)]="settings.security.twoFactorLogin.isGoogleAuthenticatorEnabled"> {{"IsGoogleAuthenticatorEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsRememberBrowserEnabled" class="kt-checkbox" *ngIf="settings.security.twoFactorLogin.isEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsRememberBrowserEnabled" type="checkbox" name="Setting_TwoFactorLogin_IsRememberBrowserEnabled" [(ngModel)]="settings.security.twoFactorLogin.isRememberBrowserEnabled"> {{"AllowToRememberBrowserForTwoFactorLogin" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="{{'EmailSmtp' | localize}}" *ngIf="!isMultiTenancyEnabled || appSession.application.allowTenantsToChangeEmailSettings">
+                            <div class="form-group m-form__group" *ngIf="isMultiTenancyEnabled">
+                                <label for="Settings_UseHostDefaultEmailSettings" class="kt-checkbox">
+                                    <input id="Settings_UseHostDefaultEmailSettings" type="checkbox" name="UseHostDefaultEmailSettings" [(ngModel)]="settings.email.useHostDefaultEmailSettings"> {{"UseHostDefaultEmailSettings" | localize}}
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div [hidden]="settings.email.useHostDefaultEmailSettings">
+                                <div class="form-group">
+                                    <label for="DefaultFromAddress">{{"DefaultFromAddress" | localize}}</label>
+                                    <input id="DefaultFromAddress" type="email" name="DefaultFromAddress" class="form-control" [ngClass]="{'edited':settings.email.defaultFromAddress}" [(ngModel)]="settings.email.defaultFromAddress" maxlength="128">
+                                </div>
+                                <div class="form-group">
+                                    <label for="DefaultFromDisplayName">{{"DefaultFromDisplayName" | localize}}</label>
+                                    <input id="DefaultFromDisplayName" type="text" name="DefaultFromDisplayName" class="form-control" [ngClass]="{'edited':settings.email.defaultFromDisplayName}" [(ngModel)]="settings.email.defaultFromDisplayName" maxlength="128">
+                                </div>
+                                <div class="form-group">
+                                    <label for="SmtpHost">{{"SmtpHost" | localize}}</label>
+                                    <input id="SmtpHost" type="text" name="SmtpHost" class="form-control" [ngClass]="{'edited':settings.email.smtpHost}" [(ngModel)]="settings.email.smtpHost" maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label for="SmtpPort">{{"SmtpPort" | localize}}</label>
+                                    <input id="SmtpPort" type="number" name="SmtpPort" class="form-control" [ngClass]="{'edited':settings.email.smtpPort}" [(ngModel)]="settings.email.smtpPort" maxlength="5">
+                                </div>
+                                <div class="kt-checkbox-list">
+                                    <label for="Settings_SmtpEnableSsl" class="kt-checkbox">
+                                        <input id="Settings_SmtpEnableSsl" type="checkbox" name="SmtpEnableSsl" [(ngModel)]="settings.email.smtpEnableSsl"> {{"UseSsl" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Settings_SmtpUseDefaultCredentials" class="kt-checkbox">
+                                        <input id="Settings_SmtpUseDefaultCredentials" type="checkbox" name="SmtpUseDefaultCredentials" [(ngModel)]="settings.email.smtpUseDefaultCredentials"> {{"UseDefaultCredentials" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="form-group" [hidden]="settings.email.smtpUseDefaultCredentials">
+                                    <label for="SmtpDomainName">{{"DomainName" | localize}}</label>
+                                    <input id="SmtpDomainName" type="text" name="SmtpDomainName" class="form-control" [ngClass]="{'edited':settings.email.smtpDomain}" [(ngModel)]="settings.email.smtpDomain" maxlength="128">
+                                </div>
+                                <div class="form-group" [hidden]="settings.email.smtpUseDefaultCredentials">
+                                    <label for="SmtpUserName">{{"UserName" | localize}}</label>
+                                    <input id="SmtpUserName" type="text" name="SmtpUserName" class="form-control" [ngClass]="{'edited':settings.email.smtpUserName}" [(ngModel)]="settings.email.smtpUserName" maxlength="128">
+                                </div>
+                                <div class="form-group" *ngIf="!setRandomPassword" [hidden]="settings.email.smtpUseDefaultCredentials">
+                                    <label for="SmtpPassword">{{"Password" | localize}}</label>
+                                    <input id="SmtpPassword" type="password" name="SmtpPassword" class="form-control" [ngClass]="{'edited':settings.email.smtpPassword}" [(ngModel)]="settings.email.smtpPassword" maxlength="128">
+                                </div>
+                            </div>
+                            <hr />
+                            <h5>{{"TestEmailSettingsHeader" | localize}}</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <input type="text" class="form-control input-mini" [(ngModel)]="testEmailAddress">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <button class="btn btn-primary" type="button" (click)="sendTestEmail()">{{"SendTestEmail" | localize}}</button>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab *ngIf="true" heading="{{'Invoice' | localize}}">
+                            <!-- *ngIf="true" is a workaround for https://github.com/valor-software/ng2-bootstrap/issues/823 -->
+                            <h5>{{"InvoiceInformation" | localize}}</h5>
+                            <div class="form-group">
+                                <label for="LegalName">{{"LegalName" | localize}}</label>
+                                <input id="LegalName" type="text" name="legalName" class="form-control" [ngClass]="{'edited':settings.billing.legalName}" [(ngModel)]="settings.billing.legalName" maxlength="64">
+                            </div>
+                            <div class="form-group">
+                                <label for="Address">{{"Address" | localize}}</label>
+                                <textarea id="Address" rows="5" name="address" class="form-control" [ngClass]="{'edited':settings.billing.address}" [(ngModel)]="settings.billing.address" maxlength="256"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="taxVatNo">{{"Tax/VatNo" | localize}}</label>
+                                <input id="taxVatNo" type="text" name="taxVatNo" class="form-control" [ngClass]="{'edited':settings.billing.taxVatNo}" [(ngModel)]="settings.billing.taxVatNo" maxlength="32">
+                            </div>
+                        </tab>
+                        <tab *ngIf="!isMultiTenancyEnabled" heading="{{'OtherSettings' | localize}}">
+                            <div class="kt-checkbox-list">
+                                <h5>{{"IsQuickThemeSelectEnabled" | localize}}</h5>
+                                <label for="Settings_IsQuickThemeSelectEnabled" class="kt-checkbox">
+                                    <input id="Settings_IsQuickThemeSelectEnabled" class="md-check" type="checkbox" name="IsQuickThemeSelectEnabled" [(ngModel)]="settings.otherSettings.isQuickThemeSelectEnabled"> {{"IsQuickThemeSelectEnabled" | localize}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>

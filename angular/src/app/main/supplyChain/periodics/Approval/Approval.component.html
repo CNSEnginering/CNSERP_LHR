@@ -1,0 +1,247 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("DocumentApproval")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("approvalInfo")}}
+            </span> -->
+        </div>
+    </div>
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+
+                <form class="kt-form" autocomplete="off">
+
+                    <div class="form-group row col-md-10">
+                        <label class="col-form-label col-lg-2">From Date:</label>
+                        <div class="col-lg-4">
+							<input 
+							[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+							type="text" class="form-control form-control-sm" 
+							name="fromDate" id="fromDate"
+                                bsDatepicker [(ngModel)]="approval.fromDate._d">
+                        </div>
+                        <label class="col-form-label col-lg-2">From Doc:</label>
+                        <div class="col-lg-4">
+							<input type="number"
+							 id="fromDoc" class="form-control form-control-sm"
+                                [(ngModel)]="approval.fromDoc" name="fromDoc" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group row col-md-10">
+                        <label class="col-form-label col-lg-2">To Date:</label>
+                        <div class="col-lg-4">
+							<input type="text"
+							[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+							class="form-control form-control-sm" name="toDate" id="toDate"
+                                bsDatepicker [(ngModel)]="approval.toDate._d">
+                        </div>
+                        <label class="col-form-label col-lg-2">To Doc:</label>
+                        <div class="col-lg-4">
+                            <input type="number" id="toDoc" class="form-control form-control-sm"
+                                [(ngModel)]="approval.toDoc" name="toDoc" required />
+                        </div>
+                    </div>
+
+                    <br><br><br>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="Opening" class="kt-radio">
+                                <input id="Opening" type="radio" [value]="'opening'" name="Opening"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Opening")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="GatePass" class="kt-radio">
+                                <input id="GatePass" type="radio" [value]="'gatePass'" name="GatePass"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("GatePass")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Transfer" class="kt-radio">
+                                <input id="Transfer" type="radio" [value]="'transfer'" name="Transfer"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Transfer")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Adjustment" class="kt-radio">
+                                <input id="Adjustment" type="radio" [value]="'adjustment'" name="adjustment"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Adjustment")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Consumption" class="kt-radio">
+                                <input id="Consumption" type="radio" [value]="'consumption'" name="consumption"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Consumption")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                      
+                        <div class="col">
+                            <label for="assembly" class="kt-radio">
+                                <input id="assembly" type="radio" [value]="'assembly'" name="assembly"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Assembly")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="requisitions" class="kt-radio">
+                                <input id="requisitions" type="radio" [value]="'requisitions'" name="requisitions"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Requisitions")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="purchase" class="kt-radio">
+                                <input id="purchase" type="radio" [value]="'purchase'" name="purchase"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Purchase")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="receipt" class="kt-radio">
+                                <input id="receipt" type="radio" [value]="'receipt'" name="receipt"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("Receipt")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="receiptReturn" class="kt-radio">
+                                <input id="receiptReturn" type="radio" [value]="'receiptReturn'" name="receiptReturn"
+                                    [(ngModel)]="approval.options" (change)="handleChange($event)">
+                                {{l("ReceiptReturn")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 150px" pSortableColumn="docNo">
+                                            {{l('DocNo')}}
+                                            <p-sortIcon field="docNo"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="docDate">
+                                            {{l('DocDate')}}
+                                            <p-sortIcon field="docDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="narration">
+                                            {{l('Narration')}}
+                                            <p-sortIcon field="narration"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="posted">
+                                            {{l('Posted')}}
+                                            <p-sortIcon field="posted"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="docDate">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="docDate"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('docNo')}}</span>
+                                            {{record.docNo}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('docDate')}}</span>
+                                            {{record.docDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('narration')}}</span>
+                                            {{record.narration}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('posted')}}</span>
+                                            <input class="form-check-input ml-2" type="checkbox" value="{{record.id}}"
+                                                (change)="getDataForApproval(checkboxes)" #checkboxes />
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Status')}}</span>
+                                            {{mode == "Approval" ? "Un Approved" : "Approved"}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="clearfix col-md-10">
+                        <!-- <span class="float-left">
+                            <div class="col">
+                                <label for="CheckAll" class="kt-checkbox">
+                                    <input id="CheckAll" type="checkbox" name="CheckAll" (click)="onCheckAllChange()">
+                                    {{l("Check All")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </span> -->
+                        <span class="float-right">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary" 
+                                    [disabled]="primengTableHelper.totalRecordsCount == 0" (click)="CheckAllList()">
+                                    <span >{{listText}}</span></button>
+                                <button type="submit" class="btn btn-primary" (click)="getData('','Approval')">
+                                    <span>{{l("GetUnApprovedData")}}</span></button>
+                                <button type="submit" class="btn btn-primary" (click)="getData('','UnApproval')">
+                                    <span>{{l("GetApprovedData")}}</span></button>
+                                <button type="submit" class="btn btn-success green" [disabled]="posting.length==0"
+                                    [buttonBusy]="saving" id="Process" [busyText]="l('SavingWithThreeDot')"
+                                    (click)="save()">
+                                    <span>{{l("Process")}}</span></button>
+                            </div>
+                        </span>
+                    </div>
+                    <br>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

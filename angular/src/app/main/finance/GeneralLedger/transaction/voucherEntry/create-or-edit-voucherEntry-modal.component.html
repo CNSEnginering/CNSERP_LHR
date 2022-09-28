@@ -1,0 +1,305 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #voucherEntryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="gltrHeader.id">{{BookNameShow}}</span>
+                        <span *ngIf="!gltrHeader.id">{{BookNameShow}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">		
+					<div class="row col-md-12">					
+					<div class="form-group col-md-2"> 
+							<label  for="GLTRHeader_LocId">{{l("Location")}}<span class="require-field">*</span></label>
+							<select id="GLTRHeader_LocId" class="form-control form-control-sm" [(ngModel)]="gltrHeader.locId" name="LocId">
+								<!-- <option value=0>Choose Location</option> -->
+								<option style="color:black" *ngFor="let loc of glLocationList" [value]="loc.locId">{{loc.locDesc}}</option>
+							</select>
+						</div>
+						<div class="form-group col-md-2">
+							<label  for="gltrHeader.docNo">{{l("Sr NO")}}<span class="require-field">*</span></label>
+							<input style="color:black" type="number" id="gltrHeader.docNo" class="form-control form-control-sm" [(ngModel)]="gltrHeader.docNo" name="docNo"  disabled/>
+						</div>
+						<div class="form-group col-md-2">
+							<label  for="gltrHeader.fmtDocNo">{{l("Voucher NO")}}<span class="require-field">*</span></label>
+							<input style="color:black" type="number" id="gltrHeader.fmtDocNo" class="form-control form-control-sm" [(ngModel)]="gltrHeader.fmtDocNo" name="fmtDocNo"  disabled/>
+						</div>
+						<div class="form-group col-md-2">
+							<label  for="GLTRHeader_DocDate">{{l("DOCDATE")}}<span class="require-field">*</span></label>
+							<input
+							[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" style="color:black" 
+							required class="form-control m-input  form-control-sm" type="text" bsDatepicker [(ngModel)]="gltrHeader.docDate._d" id="GLTRHeader_DocDate" name="GLTRHeader_DocDate" (ngModelChange)="getDateParams($event)">
+						</div> 
+						<div class="form-group col-md-2">
+							<label  for="GLTRHeader_DocYear">{{l("DocYear")}}<span class="require-field">*</span></label>
+							<input type="number" style="color:black"  id="GLTRHeader_DocYear" class="form-control form-control-sm" [ngModel]="DocYear" name="DocYear"  disabled/>
+						</div>
+						<div class="form-group col-md-2">
+							<label  for="GLTRHeader_DocMonth">{{l("DocMonth")}}<span class="require-field">*</span></label>
+							<input type="number" style="color:black"  id="GLTRHeader_DocMonth" class="form-control form-control-sm" [(ngModel)]="gltrHeader.docMonth" name="DocMonth"  disabled/>
+						</div>
+						<div class="form-group col-md-2" *ngIf="!gltrHeader.id">
+							<label  for="GLTRHeader_Status">{{l("Status")}}<span class="require-field">*</span></label>
+							<input type="text" id="GLTRHeader_Status" class="form-control form-control-sm" value="New Voucher" name="Status" 
+							style="background-color: #f4f4f4 !important;color: white;text-align: center;font-weight: bold;"  disabled/>
+						</div>
+						<!-- <div class="form-group col-md-2">
+							<label  for="GLTRHeader_fmtDocNo">{{l("FmtDocNo")}}<span class="require-field">*</span></label>
+							<input type="text" style="color:black" id="GLTRHeader_fmtDocNo" class="form-control form-control-sm" [(ngModel)]="gltrHeader.fmtDocNo" name="fmtDocNo"  disabled/>
+						</div> -->
+						<div class="form-group col-md-2" *ngIf="gltrHeader.id">
+							<label  for="GLTRHeader_Approved">{{l("Status")}}<span class="require-field">*</span></label>
+							<input type="text" id="GLTRHeader_Approved" class="form-control form-control-sm" [value]="gltrHeader.approved==true?'Approved':'Unapproved'" name="Approved" 
+							style="background-color: #f4f4f4 !important;color: white;text-align: center;font-weight: bold;"  disabled/>
+						</div>
+
+						<div class="form-group m-form__group col-md-2" *ngIf="NormalEntry!=3 && !isIntegrated">
+							<label  for="GLCONFIGConfigID">{{l("ConfigID")}}<span class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="number" style="color:black" id="GLTRHeader_ConfigID" class="form-control form-control-sm" [(ngModel)]="gltrHeader.configID" name="ConfigID"  required readonly/>
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectGLCONFIGModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div> <div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setGLCONFIGIdNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						
+
+						
+						<!-- <input class="form-control" name="gltrHeader.glconfigId" [(ngModel)]="gltrHeader.glconfigId" type="text" hidden> -->
+						<div class="form-group col-md-2" *ngIf="NormalEntry!=3 && !isIntegrated">
+							<label  for="GLTRHeader_accountId">{{l("AccountID")}}&nbsp;<span class="require-field">*</span></label>
+							<input class="form-control form-control-sm" style="color:black" id="GLTRHeader_accountId" name="accountIdC" [(ngModel)]="accountIdC" type="text" readonly>
+						</div>
+
+						<div class="form-group col-md-2" *ngIf="NormalEntry!=3 && !isIntegrated">
+							<label  for="GLTRHeader_accountDescB">{{l("AccountDesc")}}&nbsp;<span class="require-field">*</span></label>
+							<input class="form-control form-control-sm" style="color:black" id="GLTRHeader_accountDescB" name="accountDescB" [(ngModel)]="accountDescB" type="text" readonly>
+						</div>
+
+						<!-- <div class="form-group col-md-2" *ngIf="gltrHeader.bookID == 'BP' || gltrHeader.bookID == 'BR'"> 
+							<label  for="GLTRDetail_ChequeNo">{{l("InstrumentNo")}}
+							<span class="require-field">*</span></label>
+							<input type="text" id="GLTRDetail_ChequeNo" 
+							 class="form-control form-control-sm" [(ngModel)]="gltrHeader.chNumber"
+							 name="chequeNo" 
+							 maxlength="20"
+							 required/>
+						</div> -->
+						<div class="form-group col-md-2" *ngIf="gltrHeader.bookID == 'BP' || gltrHeader.bookID == 'BR'"> 
+							<!-- <label  for="GLTRDetail_ChequeType">{{l("ChequeType")}} -->
+						    <label  for="GLTRDetail_ChequeType">{{l("InstrumentType")}}
+							<span class="require-field">*</span></label>
+							<select type="text" id="GLTRDetail_ChequeType" style="color:black" 
+							 class="form-control form-control-sm" [(ngModel)]="gltrHeader.chType"
+							 name="chequeType" (change)='onOptionsSelected($event)'
+							 required>
+							 <!-- <option value="1">Cash</option>
+							 <option value="2">Cross</option> -->
+							 <option value="1">Cheque-Cash</option>
+							 <option value="2">Cheque-Cross</option>
+							 <option value="3">P.O.</option>
+							 <option value="4">Online</option>
+							 <option value="5">Other</option>						
+							 <option value="6">Banker's Cheque</option>
+							 <option value="7">RTGS</option>
+							 <option value="8">Digital Payment</option>
+							 <option value="9">Demand Draft</option>
+							 </select>
+						</div>
+
+						<div class="form-group m-form__group col-md-2" *ngIf="gltrHeader.bookID == 'BP' || gltrHeader.bookID == 'BR'">
+							<label  for="InstrumentNo">{{l("InstrumentNo")}}<span class="require-field">*</span></label>
+							<div class="input-group">
+								<input 
+								[disabled] = "!instrumentNoChk && 
+								(gltrHeader.bookID == 'AP' 
+								|| gltrHeader.bookID == 'BP')"
+								type="text" id="InstrumentNo" style="color:black" class="form-control form-control-sm" [(ngModel)]="gltrHeader.chNumber" name="InstrumentNo"  required/>
+								<div class="input-group-append">
+									<button 
+									*ngIf="gltrHeader.bookID != 'BR'"
+									class="btn btn-primary blue btn-sm" (click)="openInstrumentNo()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div> <div class="input-group-prepend">
+									<!-- <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setInstrumentNoNull()"><i class="fa fa-times"></i></button> -->
+								</div>
+							</div>
+						</div>
+
+					
+						
+
+						<div class="form-group col-md-2" hidden>
+							<label  for="GLTRHeader_BookID">{{l("BookID")}} *<span class="require-field">*</span></label>
+							<input type="text" id="GLTRHeader_BookID" style="color:black" class="form-control form-control-sm" [(ngModel)]="gltrHeader.bookID" name="BookID"  required/>
+						</div>
+
+						<div class="form-group col-md-6"> 
+							<label  for="GLTRHeader_NARRATION">{{l("NARRATION")}}<span class="require-field">*</span></label>
+							<input type="text" style="color:black" id="GLTRHeader_NARRATION" class="form-control form-control-sm" [(ngModel)]="gltrHeader.narration" name="NARRATION"    required/>
+						</div>
+						
+						<div class="form-group col-md-2"> 
+							<label  for="GLTRHeader_Reference" *ngIf="gltrHeader.bookID == 'CR'
+						     || gltrHeader.bookID == 'BR'
+							">{{l("ReceivedFrom")}}</label>
+							<label  for="GLTRHeader_Reference" *ngIf="gltrHeader.bookID != 'CR'
+						     && gltrHeader.bookID != 'BR'
+							">{{l("Payee")}}</label>
+							<input type="text" id="GLTRHeader_Reference" style="color:black" 
+							maxlength="100"
+							class="form-control form-control-sm" [(ngModel)]="gltrHeader.reference" name="Reference"/>
+						</div>
+
+						<div class="form-group col-md-2"  *ngIf="gltrHeader.bookID == 'BP' && overDraftLimitApplies == true"> 
+							<label  for="GLTRHeader_OverDraftLimit">{{l("OverDraftLimit")}}</label>
+							<input disabled type="text" id="GLTRHeader_OverDraftLimit" style="color:black" 
+							maxlength="100"
+							currencyMask  
+							[options]="{ prefix: ' ', thousands: ',', decimal: '.' }" 
+							 #currency 							
+							class="form-control form-control-sm" [(ngModel)]="overDraftLimit" name="OverDraftLimit"/>
+						</div>
+
+						<div class="form-group col-md-2" hidden>
+							<label  for="GLTRHeader_BookID">{{l("BookID")}} *<span class="require-field">*</span></label>
+							<input type="text" style="color:black" id="GLTRHeader_BookID" class="form-control form-control-sm" [(ngModel)]="gltrHeader.bookID" name="BookID"  required/>
+						</div>
+						
+						
+						
+
+						
+						
+						
+					
+					</div>
+		 
+					<br/><div class="m-checkbox-list" hidden>
+						<label  for="GLTRHeader_Posted" class="kt-checkbox">
+							<input id="GLTRHeader_Posted" type="checkbox" name="Posted" style="color:black" [(ngModel)]="gltrHeader.posted"> 
+							{{l("Posted")}}
+							<span></span>
+						<span class="require-field">*</span></label>
+					</div>
+		
+					<div class="form-group" hidden>
+						<label  for="GLTRHeader_OldCode">{{l("OldCode")}}<span class="require-field">*</span></label>
+						<input type="text" id="GLTRHeader_OldCode" style="color:black" class="form-control form-control-sm" [(ngModel)]="gltrHeader.oldCode" name="OldCode"    />
+					</div>
+
+					<tabset>
+						<tab heading="Accounts Detail">
+					<div class="row col-md-12">
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()">Add Row</button>
+							<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()">Remove Row</button>
+							<ag-grid-angular
+								style="width: 100%; height: 200px;" 
+								class="ag-theme-balham" 
+								[rowData]="rowData" 
+								[columnDefs]="columnDefs" 
+								[animateRows]="true"
+								[suppressDragLeaveHidesColumns]="true"
+								[rowSelection]="rowSelection"
+								[singleClickEdit]="true"
+								(cellClicked)="cellClicked($event)"
+								(cellValueChanged)="onCellValueChanged($event)"
+								(gridReady)="onGridReady($event)">
+							</ag-grid-angular>
+					</div><br>
+
+					<div class="row">
+						<div class="form-group col-md-2">
+							<label  for="GLTRHeader_Debit">{{l("Debit")}}<span class="require-field">*</span></label>
+							<!-- <input type="number" id="GLTRHeader_Debit" class="form-control form-control-sm" readonly [ngModel]="totalDebit" name="TotalDebit" id=""  /> -->
+							<input  required style="color:black; font-weight: bold;" class="form-control form-control-sm" id="totalDebit"
+							name="totalDebit" [(ngModel)]="totalDebit" readonly
+							currencyMask  
+							[options]="{ prefix: ' ', thousands: ',', decimal: '.' }" 
+							 #currency 
+							/>
+						</div>
+						<div class="form-group col-md-2">
+							<label  for="GLTRHeader_Credit">{{l("Credit")}}<span class="require-field">*</span></label>
+							<!-- <input type="number" id="GLTRHeader_Credit" class="form-control form-control-sm" readonly [ngModel]="totalCredit" name="TotalCebit" id="" /> -->
+							<input  required style="color:black; font-weight: bold;" class="form-control form-control-sm" id="totalCredit"
+							name="totalCredit" [(ngModel)]="totalCredit" readonly
+							currencyMask  
+							[options]="{ prefix: ' ', thousands: ',', decimal: '.' }" 
+							 #currency 
+							/>
+						</div>
+						<div class="form-group col-md-2">
+							<label  for="GLTRHeader_Balance" *ngIf="NormalEntry!=3 && !isIntegrated">{{l("NetBalance")}}<span class="require-field">*</span></label>
+							<label  for="GLTRHeader_Balance" *ngIf="NormalEntry==3 && isIntegrated">{{l("OutOfBalance")}}<span class="require-field">*</span></label>
+							<!-- <input type="number" id="GLTRHeader_Balance" class="form-control form-control-sm" readonly [ngModel]="totalBalance" name="TotalBalance" id=""/> -->
+							<input  required style="color:black; font-weight: bold;" class="form-control form-control-sm" id="totalBalance"
+							name="totalBalance" [(ngModel)]="totalBalance" readonly
+							currencyMask  
+							[options]="{ prefix: ' ', thousands: ',', decimal: '.' }" 
+							 #currency 
+							/>
+						</div>
+					</div>
+				</tab>
+				<tab heading="Attachment">
+					<div class="form-group">
+						<div class="row mt-2">
+							<div class="col-md-6">
+								<label for="FileAttachment">File Attachment<span class="require-field">*</span></label>
+								<p-fileUpload
+											  id="FileAttachment"
+											  name="FileAttachment[]"
+											  [url]="uploadUrl"
+											  accept=".jpg,.jpeg"
+											  maxFileSize="1000000"
+											  (onBeforeUpload)="onBeforeUpload($event)"
+											  (onUpload)="onUpload($event)">
+
+									<ng-template pTemplate="content">
+										<ul *ngIf="uploadedFiles.length">
+											<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+										</ul>
+									</ng-template>
+								</p-fileUpload>
+								 </div>
+					</div>
+						<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached" width="100" height="100" (click)="open()">
+
+					</div>
+
+				</tab>
+				</tabset>
+
+                </div>
+                <div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="!gltrHeader.isIntegrated && gltrHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-1"  *ngIf="!gltrHeader.isIntegrated && gltrHeader.id" (click)="OpenLog()" ><span>{{l("Open Log")}}</span></button>
+					<!-- </div> -->
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="button" *ngIf="(gltrHeader.id && gltrHeader.isIntegrated  && isGranted('Transaction.VoucherEntry.Post')) || (gltrHeader.id && !gltrHeader.isIntegrated && gltrHeader.approved == true && isGranted('Transaction.VoucherEntry.Post'))" class="btn btn-success green" ><i class="fa fa-check"></i> <span>{{l("Post")}}</span></button>
+					<button type="button" *ngIf="gltrHeader.id && !gltrHeader.isIntegrated && gltrHeader.approved==false && isGranted('Transaction.VoucherEntry.Approve')" class="btn btn-success green" [disabled]="!voucherEntryForm.form.valid || dateValid == false" [buttonBusy]="approving" (click)="approveVoucher(gltrHeader.id,true)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-check"></i> <span>{{l("Approve")}}</span></button>
+					<button type="button" *ngIf="gltrHeader.id && !gltrHeader.isIntegrated && gltrHeader.approved==true && isGranted('Transaction.VoucherEntry.UnApprove')" class="btn btn-danger" [disabled]="!voucherEntryForm.form.valid || dateValid == false" [buttonBusy]="unapproving" (click)="approveVoucher(gltrHeader.id,false)" [busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-times"></i> <span>{{l("Unapprove")}}</span></button>
+					<button type="submit"  class="btn btn-primary blue" *ngIf="!gltrHeader.isIntegrated && !gltrHeader.approved" [disabled]="!voucherEntryForm.form.valid || gltrHeader.approved==true || dateValid == false || overDraftLimitExceeds" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<app-reportviewr-modal #reportviewrModalComponent></app-reportviewr-modal>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<app-log #LogTableModal ></app-log>
+</div>
+
+<style>
+.form-group {
+    margin-bottom: 0.8rem;
+}
+.modal-dialog.modal-xl {
+    max-width: 90%;
+}
+</style>

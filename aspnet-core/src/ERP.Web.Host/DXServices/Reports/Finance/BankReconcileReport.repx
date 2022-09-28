@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="BankReconcile" Margins="30, 30, 0, 50" PageWidth="850" PageHeight="1100" Version="19.2" EventsInfo="|BankReconcile,BeforePrint,BankReconcileReport_BeforePrint;pictureBox1,BeforePrint,pictureBox1_BeforePrint;crossBandLine5,BeforePrint,crossBandLine5_BeforePrint" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Visible="false" Description="CompanyName" Name="CompanyName" />
+    <Item2 Ref="4" Visible="false" Description="Address" Name="Address" />
+    <Item3 Ref="5" Visible="false" Description="Address2" Name="Address2" />
+    <Item4 Ref="6" Visible="false" Description="TenantId" Name="TenantId" />
+    <Item5 Ref="7" Visible="false" Description="Parameter1" Name="FinancePoint" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="8" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" />
+    <Item2 Ref="9" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="50">
+      <Controls>
+        <Item1 Ref="10" ControlType="XRLine" Name="line2" SizeF="790,8.416626" LocationFloat="0, 0" />
+        <Item2 Ref="11" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="Page {0} of {1}" TextAlignment="TopRight" SizeF="430.999878,23" LocationFloat="349.000183, 9.999974" />
+        <Item3 Ref="12" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" SizeF="162.999969,23" LocationFloat="9.999911, 11.458333" />
+      </Controls>
+    </Item2>
+    <Item3 Ref="13" ControlType="DetailBand" Name="Detail" HeightF="45.4166145" KeepTogether="true">
+      <Controls>
+        <Item1 Ref="14" ControlType="XRLabel" Name="label32" Multiline="true" Text="Voucher ID" SizeF="100.000031,21" LocationFloat="128.541641, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="15" EventName="BeforePrint" PropertyName="Text" Expression="[clearingDate]" />
+          </ExpressionBindings>
+          <StylePriority Ref="16" UseFont="false" />
+        </Item1>
+        <Item2 Ref="17" ControlType="XRLabel" Name="label21" Multiline="true" Text="Voucher ID" SizeF="81.25,21" LocationFloat="354.208557, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="18" EventName="BeforePrint" PropertyName="Text" Expression="[voucherID]" />
+          </ExpressionBindings>
+          <StylePriority Ref="19" UseFont="false" />
+        </Item2>
+        <Item3 Ref="20" ControlType="XRLine" Name="line3" SizeF="790,8.416626" LocationFloat="0, 36.99999" />
+        <Item4 Ref="21" ControlType="XRLabel" Name="label20" Multiline="true" Text="Voucher ID" SizeF="94.99999,21" LocationFloat="10.0000067, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="22" EventName="BeforePrint" PropertyName="Text" Expression="[voucherDate]" />
+          </ExpressionBindings>
+          <StylePriority Ref="23" UseFont="false" />
+        </Item4>
+        <Item5 Ref="24" ControlType="XRLabel" Name="label24" Multiline="true" Text="Include" SizeF="100,21" LocationFloat="676.8751, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="25" EventName="BeforePrint" PropertyName="Text" Expression="[include]" />
+          </ExpressionBindings>
+          <StylePriority Ref="26" UseFont="false" />
+        </Item5>
+        <Item6 Ref="27" ControlType="XRLabel" Name="label23" Multiline="true" Text="CR" SizeF="81.23,21" LocationFloat="572.103455, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="28" EventName="BeforePrint" PropertyName="Text" Expression="[cr]" />
+          </ExpressionBindings>
+          <StylePriority Ref="29" UseFont="false" />
+        </Item6>
+        <Item7 Ref="30" ControlType="XRLabel" Name="label22" Multiline="true" Text="DR" SizeF="81.22995,21" LocationFloat="465.645142, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="31" EventName="BeforePrint" PropertyName="Text" Expression="[dr]" />
+          </ExpressionBindings>
+          <StylePriority Ref="32" UseFont="false" />
+        </Item7>
+        <Item8 Ref="33" ControlType="XRLabel" Name="label19" Multiline="true" Text="Book ID" SizeF="76.04176,21" LocationFloat="241.041611, 10.0000067" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="34" EventName="BeforePrint" PropertyName="Text" Expression="[bookID]" />
+          </ExpressionBindings>
+          <StylePriority Ref="35" UseFont="false" />
+        </Item8>
+      </Controls>
+    </Item3>
+    <Item4 Ref="36" ControlType="GroupHeaderBand" Name="GroupHeader1" PageBreak="BeforeBandExceptFirstEntry" GroupUnion="WholePage" HeightF="293">
+      <GroupFields>
+        <Item1 Ref="37" FieldName="docID" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="38" ControlType="XRPictureBox" Name="pictureBox1" Sizing="Squeeze" SizeF="120,80" LocationFloat="10.0000067, 0">
+          <Scripts Ref="39" OnBeforePrint="pictureBox1_BeforePrint" />
+        </Item1>
+        <Item2 Ref="40" ControlType="XRLabel" Name="label4" Multiline="true" Text="label15" TextAlignment="TopCenter" SizeF="360.165527,23" LocationFloat="201.026535, 32.99998" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="41" EventName="BeforePrint" PropertyName="Text" Expression="?Address +'-'+ ?Address2" />
+          </ExpressionBindings>
+          <StylePriority Ref="42" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="43" ControlType="XRLabel" Name="label49" Multiline="true" Text="label10" TextAlignment="TopCenter" SizeF="239.583282,22.9999847" LocationFloat="257.025452, 10" Font="Segoe UI, 14pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="44" EventName="BeforePrint" PropertyName="Text" Expression="?CompanyName" />
+          </ExpressionBindings>
+          <StylePriority Ref="45" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="46" ControlType="XRLabel" Name="label35" Multiline="true" Text="Bank Reconciliation" SizeF="266.3852,24.1943359" LocationFloat="9.999911, 91.25001" Font="Arial, 12pt, style=Bold">
+          <StylePriority Ref="47" UseFont="false" />
+        </Item4>
+        <Item5 Ref="48" ControlType="XRLine" Name="line1" SizeF="790,8.416626" LocationFloat="0, 284.583374" />
+        <Item6 Ref="49" ControlType="XRLabel" Name="label34" Multiline="true" Text="Doc ID:" SizeF="80.210144,23" LocationFloat="584.583252, 30.2916679" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="50" UseFont="false" UseBorders="false" />
+        </Item6>
+        <Item7 Ref="51" ControlType="XRLabel" Name="label33" Multiline="true" Text="Doc Date:" SizeF="80.210144,23" LocationFloat="584.583252, 7.29166651" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Top">
+          <StylePriority Ref="52" UseFont="false" UseBorders="false" />
+        </Item7>
+        <Item8 Ref="53" ControlType="XRLabel" Name="label31" Multiline="true" Text="Clearing Date" SizeF="100.000015,21" LocationFloat="128.541656, 252.999969" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="54" UseFont="false" />
+        </Item8>
+        <Item9 Ref="55" ControlType="XRLabel" Name="label13" Multiline="true" Text="Voucher Date" SizeF="95.00009,21" LocationFloat="9.999911, 254.000031" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="56" UseFont="false" />
+        </Item9>
+        <Item10 Ref="57" ControlType="XRLabel" Name="label30" Multiline="true" Text="Difference:&#xD;&#xA;" SizeF="123.958374,23" LocationFloat="540.8334, 196.041611" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <StylePriority Ref="58" UseFont="false" UseBorders="false" />
+        </Item10>
+        <Item11 Ref="59" ControlType="XRLabel" Name="label28" Multiline="true" Text="Reconcile Amount:" SizeF="123.958374,23" LocationFloat="540.8334, 173.0416" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <StylePriority Ref="60" UseFont="false" UseBorders="false" />
+        </Item11>
+        <Item12 Ref="61" ControlType="XRLabel" Name="label27" Multiline="true" Text="Ending Balance" SizeF="123.958374,23" LocationFloat="540.8334, 150.041641" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <StylePriority Ref="62" UseFont="false" UseBorders="false" />
+        </Item12>
+        <Item13 Ref="63" ControlType="XRLabel" Name="label29" Multiline="true" Text="Beginning Balance:" SizeF="123.96,23" LocationFloat="540.8334, 127.041626" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="64" UseFont="false" UseBorders="false" />
+        </Item13>
+        <Item14 Ref="65" ControlType="XRLabel" Name="label26" Multiline="true" Text="Bank Name:" SizeF="87.29176,23" LocationFloat="10.0000067, 150.041672" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="66" UseFont="false" UseBorders="false" />
+        </Item14>
+        <Item15 Ref="67" ControlType="XRLabel" Name="label25" Multiline="true" Text="Bank ID:" SizeF="87.29176,23" LocationFloat="10.0000067, 127.041656" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="68" UseFont="false" UseBorders="false" />
+        </Item15>
+        <Item16 Ref="69" ControlType="XRLabel" Name="label18" Multiline="true" Text="Include" SizeF="100,21" LocationFloat="676.8751, 254" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="70" UseFont="false" />
+        </Item16>
+        <Item17 Ref="71" ControlType="XRLabel" Name="label17" Multiline="true" Text="CR" SizeF="81.23,21" LocationFloat="572.103455, 252.999969" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="72" UseFont="false" />
+        </Item17>
+        <Item18 Ref="73" ControlType="XRLabel" Name="label16" Multiline="true" Text="DR" SizeF="81.23,21" LocationFloat="465.645142, 253.999969" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="74" UseFont="false" />
+        </Item18>
+        <Item19 Ref="75" ControlType="XRLabel" Name="label15" Multiline="true" Text="Voucher ID" SizeF="81.25,21" LocationFloat="354.208557, 254.000031" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="76" UseFont="false" />
+        </Item19>
+        <Item20 Ref="77" ControlType="XRLabel" Name="label14" Multiline="true" Text="Book ID" SizeF="76.0416641,20" LocationFloat="241.041733, 254.000031" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="78" UseFont="false" />
+        </Item20>
+        <Item21 Ref="79" ControlType="XRLine" Name="line4" SizeF="790,2.08332825" LocationFloat="0, 241.499969" />
+        <Item22 Ref="80" ControlType="XRLabel" Name="label12" TextFormatString="{0:n}" Multiline="true" Text="label7" SizeF="115.208252,23" LocationFloat="664.791748, 196.041611" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100" Borders="Left, Right, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="81" EventName="BeforePrint" PropertyName="Text" Expression="[diffAmount]" />
+          </ExpressionBindings>
+          <StylePriority Ref="82" UseFont="false" UseBorders="false" />
+        </Item22>
+        <Item23 Ref="83" ControlType="XRLabel" Name="label11" TextFormatString="{0:n}" Multiline="true" Text="label7" SizeF="115.208313,23" LocationFloat="664.791748, 150.041641" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100" Borders="Left, Right, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="84" EventName="BeforePrint" PropertyName="Text" Expression="[endBalance]" />
+          </ExpressionBindings>
+          <StylePriority Ref="85" UseFont="false" UseBorders="false" />
+        </Item23>
+        <Item24 Ref="86" ControlType="XRLabel" Name="label10" TextFormatString="{0:n}" Multiline="true" Text="label7" SizeF="115.208313,23" LocationFloat="664.791748, 173.041626" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100" Borders="Left, Right, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="87" EventName="BeforePrint" PropertyName="Text" Expression="[reconcileAmt]" />
+          </ExpressionBindings>
+          <StylePriority Ref="88" UseFont="false" UseBorders="false" />
+        </Item24>
+        <Item25 Ref="89" ControlType="XRLabel" Name="label8" TextFormatString="{0:n}" Multiline="true" Text="label7" SizeF="115.21,23" LocationFloat="664.79, 127.041656" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="90" EventName="BeforePrint" PropertyName="Text" Expression="[beginBalance]" />
+          </ExpressionBindings>
+          <StylePriority Ref="91" UseFont="false" UseBorders="false" />
+        </Item25>
+        <Item26 Ref="92" ControlType="XRLabel" Name="label9" Multiline="true" Text="label7" SizeF="194.7916,23" LocationFloat="97.29177, 150.041672" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="93" EventName="BeforePrint" PropertyName="Text" Expression=" ToStr([bankName])" />
+          </ExpressionBindings>
+          <StylePriority Ref="94" UseFont="false" UseBorders="false" />
+        </Item26>
+        <Item27 Ref="95" ControlType="XRLabel" Name="label7" Multiline="true" Text="label7" SizeF="194.791656,23" LocationFloat="97.29177, 127.041656" Font="Arial, 8.25pt, charSet=0" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="96" EventName="BeforePrint" PropertyName="Text" Expression="ToStr([bankID])" />
+          </ExpressionBindings>
+          <StylePriority Ref="97" UseFont="false" UseBorders="false" />
+        </Item27>
+        <Item28 Ref="98" ControlType="XRLabel" Name="label6" Multiline="true" Text="label5" SizeF="115.206604,23.00002" LocationFloat="664.7934, 30.2916679" Font="Arial, 8.25pt" Padding="2,2,0,0,100" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="99" EventName="BeforePrint" PropertyName="Text" Expression="ToStr([docID])" />
+          </ExpressionBindings>
+          <StylePriority Ref="100" UseFont="false" UseBorders="false" />
+        </Item28>
+        <Item29 Ref="101" ControlType="XRLabel" Name="label5" Multiline="true" Text="label5" SizeF="115.208252,22.9999847" LocationFloat="664.791748, 7.29168272" Font="Arial, 8.25pt" Padding="2,2,0,0,100" Borders="Left, Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="102" EventName="BeforePrint" PropertyName="Text" Expression="ToStr([docDate])" />
+          </ExpressionBindings>
+          <StylePriority Ref="103" UseFont="false" UseBorders="false" />
+        </Item29>
+      </Controls>
+    </Item4>
+  </Bands>
+  <CrossBandControls>
+    <Item1 Ref="104" ControlType="XRCrossBandLine" Name="crossBandLine3" AnchorVertical="Bottom" WidthF="1.041687" StartBand="#Ref-36" EndBand="#Ref-9" StartPointFloat="448.666626, 243.5833" EndPointFloat="448.666626, 0.6669998" />
+    <Item2 Ref="105" ControlType="XRCrossBandLine" Name="crossBandLine6" AnchorVertical="Bottom" WidthF="1.04165649" StartBand="#Ref-36" EndBand="#Ref-9" StartPointFloat="334.4169, 241.499969" EndPointFloat="334.4169, 0.67" />
+    <Item3 Ref="106" ControlType="XRCrossBandLine" Name="crossBandLine5" AnchorVertical="Bottom" WidthF="1.041687" StartBand="#Ref-36" EndBand="#Ref-9" StartPointFloat="663.750061, 243.5833" EndPointFloat="663.750061, 0.666618347" />
+    <Item4 Ref="107" ControlType="XRCrossBandLine" Name="crossBandLine4" AnchorVertical="Bottom" WidthF="1.041626" StartBand="#Ref-36" EndBand="#Ref-9" StartPointFloat="557, 243.5833" EndPointFloat="557, 0.6668701" />
+    <Item5 Ref="108" ControlType="XRCrossBandLine" Name="crossBandLine2" AnchorVertical="Bottom" WidthF="1.041687" StartBand="#Ref-36" EndBand="#Ref-9" StartPointFloat="228.541672, 241.499969" EndPointFloat="228.541672, 0.67" />
+    <Item6 Ref="109" ControlType="XRCrossBandLine" Name="crossBandLine1" AnchorVertical="Bottom" WidthF="1.04166412" StartBand="#Ref-36" EndBand="#Ref-9" StartPointFloat="116.458336, 241.499969" EndPointFloat="116.458336, 0.67" />
+  </CrossBandControls>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Json.JsonDataSource,DevExpress.DataAccess.v19.2" Name="jsonDataSource1" Base64="PEpzb25EYXRhU291cmNlIE5hbWU9Impzb25EYXRhU291cmNlMSI+PFNvdXJjZSBTb3VyY2VUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuSnNvbi5DdXN0b21Kc29uU291cmNlIiBKc29uPSJbeyZxdW90O0RvY0lEJnF1b3Q7OiZxdW90O2Nhc2gtMjAyMDA4MTEmcXVvdDssJnF1b3Q7RG9jRGF0ZSZxdW90OzomcXVvdDsxMS8wOC8yMDIwJnF1b3Q7LCZxdW90O0JhbmtJRCZxdW90OzomcXVvdDtjYXNoJnF1b3Q7LCZxdW90O0JhbmtOYW1lJnF1b3Q7OiZxdW90O0NBU0ggUEFZRU1OVCAmcXVvdDssJnF1b3Q7QmVnaW5CYWxhbmNlJnF1b3Q7OiZxdW90OzAmcXVvdDssJnF1b3Q7RW5kQmFsYW5jZSZxdW90OzomcXVvdDszNDMuMjImcXVvdDssJnF1b3Q7UmVjb25jaWxlQW10JnF1b3Q7OiZxdW90OzEwMCZxdW90OywmcXVvdDtEaWZmQW1vdW50JnF1b3Q7OiZxdW90OzI0My4yMiZxdW90OywmcXVvdDtCb29rSUQmcXVvdDs6JnF1b3Q7SlYtMCZxdW90OywmcXVvdDtWb3VjaGVyRGF0ZSZxdW90OzomcXVvdDswMy8wOC8yMDIwJnF1b3Q7LCZxdW90O0NsZWFyaW5nRGF0ZSZxdW90OzomcXVvdDsxMC8wOC8yMDIwJnF1b3Q7LCZxdW90O1ZvdWNoZXJJRCZxdW90OzomcXVvdDszJnF1b3Q7LCZxdW90O0RyJnF1b3Q7OiZxdW90OzEwMCZxdW90OywmcXVvdDtDciZxdW90OzomcXVvdDswJnF1b3Q7LCZxdW90O0luY2x1ZGUmcXVvdDs6JnF1b3Q7WWVzJnF1b3Q7fSx7JnF1b3Q7RG9jSUQmcXVvdDs6JnF1b3Q7Y2FzaC0yMDIwMDgxMSZxdW90OywmcXVvdDtEb2NEYXRlJnF1b3Q7OiZxdW90OzExLzA4LzIwMjAmcXVvdDssJnF1b3Q7QmFua0lEJnF1b3Q7OiZxdW90O2Nhc2gmcXVvdDssJnF1b3Q7QmFua05hbWUmcXVvdDs6JnF1b3Q7Q0FTSCBQQVlFTU5UICZxdW90OywmcXVvdDtCZWdpbkJhbGFuY2UmcXVvdDs6JnF1b3Q7MCZxdW90OywmcXVvdDtFbmRCYWxhbmNlJnF1b3Q7OiZxdW90OzM0My4yMiZxdW90OywmcXVvdDtSZWNvbmNpbGVBbXQmcXVvdDs6JnF1b3Q7MTAwJnF1b3Q7LCZxdW90O0RpZmZBbW91bnQmcXVvdDs6JnF1b3Q7MjQzLjIyJnF1b3Q7LCZxdW90O0Jvb2tJRCZxdW90OzomcXVvdDtKVi0wJnF1b3Q7LCZxdW90O1ZvdWNoZXJEYXRlJnF1b3Q7OiZxdW90OzAzLzA4LzIwMjAmcXVvdDssJnF1b3Q7Q2xlYXJpbmdEYXRlJnF1b3Q7OiZxdW90OzEwLzA4LzIwMjAmcXVvdDssJnF1b3Q7Vm91Y2hlcklEJnF1b3Q7OiZxdW90OzQmcXVvdDssJnF1b3Q7RHImcXVvdDs6JnF1b3Q7MyZxdW90OywmcXVvdDtDciZxdW90OzomcXVvdDswJnF1b3Q7LCZxdW90O0luY2x1ZGUmcXVvdDs6JnF1b3Q7Tm8mcXVvdDt9XSIgLz48U2NoZW1hPjxOb2RlIE5hbWU9InJvb3QiIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iQXJyYXkiPjxOb2RlIE5hbWU9IkRvY0lEIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRvY0RhdGUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iQmFua0lEIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkJhbmtOYW1lIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkJlZ2luQmFsYW5jZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJFbmRCYWxhbmNlIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IlJlY29uY2lsZUFtdCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJEaWZmQW1vdW50IiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkJvb2tJRCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJWb3VjaGVyRGF0ZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJDbGVhcmluZ0RhdGUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iVm91Y2hlcklEIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRyIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkNyIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkluY2x1ZGUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PC9Ob2RlPjwvU2NoZW1hPjwvSnNvbkRhdGFTb3VyY2U+" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

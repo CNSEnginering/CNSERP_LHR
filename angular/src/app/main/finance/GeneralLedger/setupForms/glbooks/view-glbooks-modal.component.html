@@ -1,0 +1,42 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("VoucherTypeID")}} :</h6>
+                        {{ item.glbooks.bookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("VoucherTypeName")}} :</h6>
+                        {{ item.glbooks.bookName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("NormalEntry")}} :</h6>
+                        {{item.glbooks.normalEntry == 1 ? 'Credit' : (item.glbooks.normalEntry == 2 ? 'Debit' : 'Open Transaction')}}
+                    </div>
+                  
+                 
+                 
+                 
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

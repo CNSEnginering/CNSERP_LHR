@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="ItemsPriceList" Margins="30, 30, 30, 100" PageWidth="850" PageHeight="1100" Version="19.2" EventsInfo="|tableCell12,BeforePrint,tableCell12_BeforePrint;tableCell13,BeforePrint,tableCell13_BeforePrint;tableCell14,BeforePrint,tableCell14_BeforePrint;tableCell15,BeforePrint,tableCell15_BeforePrint;tableCell16,BeforePrint,tableCell16_BeforePrint;Detail,BeforePrint,Detail_BeforePrint" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Visible="false" Description="Parameter1" Name="InventoryPoint" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="4" ControlType="TopMarginBand" Name="TopMargin" HeightF="30" />
+    <Item2 Ref="5" ControlType="BottomMarginBand" Name="BottomMargin">
+      <Controls>
+        <Item1 Ref="6" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" SizeF="313,23" LocationFloat="6, 6" StyleName="PageInfo" />
+        <Item2 Ref="7" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="Page {0} of {1}" TextAlignment="TopRight" SizeF="313,23" LocationFloat="467, 6.00001" StyleName="PageInfo" />
+      </Controls>
+    </Item2>
+    <Item3 Ref="8" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="60">
+      <Controls>
+        <Item1 Ref="9" ControlType="XRLabel" Name="label1" Text="Items Price Listing" SizeF="244.249969,24.194334" LocationFloat="5.99999428, 5.99999428" StyleName="Title" Font="Arial, 14.25pt, style=Bold, charSet=0">
+          <StylePriority Ref="10" UseFont="false" />
+        </Item1>
+      </Controls>
+    </Item3>
+    <Item4 Ref="11" ControlType="GroupHeaderBand" Name="GroupHeader1" GroupUnion="WithFirstDetail" Level="1" HeightF="27.0000134">
+      <GroupFields>
+        <Item1 Ref="12" FieldName="priceList" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="13" ControlType="XRTable" Name="table1" SizeF="790.000061,25" LocationFloat="0, 2.000014">
+          <Rows>
+            <Item1 Ref="14" ControlType="XRTableRow" Name="tableRow1" Weight="1">
+              <Cells>
+                <Item1 Ref="15" ControlType="XRTableCell" Name="tableCell2" Weight="1.0612800930251898" StyleName="GroupData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="16" EventName="BeforePrint" PropertyName="Text" Expression="[priceList]" />
+                  </ExpressionBindings>
+                </Item1>
+              </Cells>
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item4>
+    <Item5 Ref="17" ControlType="GroupHeaderBand" Name="GroupHeader2" GroupUnion="WithFirstDetail" Level="2" HeightF="28">
+      <Controls>
+        <Item1 Ref="18" ControlType="XRTable" Name="table2" SizeF="790.000061,28" LocationFloat="0, 0">
+          <Rows>
+            <Item1 Ref="19" ControlType="XRTableRow" Name="tableRow2" Weight="1">
+              <Cells>
+                <Item1 Ref="20" ControlType="XRTableCell" Name="tableCell3" Weight="0.17013020442082333" Text="Item ID" StyleName="DetailCaption1" Borders="None">
+                  <StylePriority Ref="21" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="22" ControlType="XRTableCell" Name="tableCell4" Weight="0.27321735088641824" Text="Description" StyleName="DetailCaption1" />
+                <Item3 Ref="23" ControlType="XRTableCell" Name="tableCell5" Weight="0.14812429574819711" Text=" UOM" StyleName="DetailCaption1" />
+                <Item4 Ref="24" ControlType="XRTableCell" Name="tableCell6" Weight="0.16653893103966347" Text="Purchase Price" StyleName="DetailCaption1" />
+                <Item5 Ref="25" ControlType="XRTableCell" Name="tableCell7" Weight="0.15764916053185096" Text="Sale Price" StyleName="DetailCaption1" />
+                <Item6 Ref="26" ControlType="XRTableCell" Name="tableCell8" Weight="0.14583336463341351" Text="Discount" StyleName="DetailCaption1" />
+                <Item7 Ref="27" ControlType="XRTableCell" Name="tableCell9" Weight="0.15389140202448917" Text="Net Sale Price" StyleName="DetailCaption1" />
+              </Cells>
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item5>
+    <Item6 Ref="28" ControlType="DetailBand" Name="Detail" HeightF="25">
+      <Controls>
+        <Item1 Ref="29" ControlType="XRTable" Name="table3" SizeF="790.000061,25" LocationFloat="0, 0" OddStyleName="DetailData3_Odd">
+          <Rows>
+            <Item1 Ref="30" ControlType="XRTableRow" Name="tableRow3" Weight="11.5">
+              <Cells>
+                <Item1 Ref="31" ControlType="XRTableCell" Name="tableCell10" Weight="0.17013020321697397" StyleName="DetailData1" Borders="None">
+                  <ExpressionBindings>
+                    <Item1 Ref="32" EventName="BeforePrint" PropertyName="Text" Expression="[itemID]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="33" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="34" ControlType="XRTableCell" Name="tableCell11" Weight="0.27321733525368364" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="35" EventName="BeforePrint" PropertyName="Text" Expression="[descp]" />
+                  </ExpressionBindings>
+                </Item2>
+                <Item3 Ref="36" ControlType="XRTableCell" Name="tableCell12" Weight="0.14812429597807184" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="37" EventName="BeforePrint" PropertyName="Text" Expression="[stockUnit]" />
+                  </ExpressionBindings>
+                </Item3>
+                <Item4 Ref="38" ControlType="XRTableCell" Name="tableCell13" Weight="0.16653893053213892" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="[purPrice]" />
+                  </ExpressionBindings>
+                </Item4>
+                <Item5 Ref="40" ControlType="XRTableCell" Name="tableCell14" Weight="0.15764914904063035" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="41" EventName="BeforePrint" PropertyName="Text" Expression="[salesPrice]" />
+                  </ExpressionBindings>
+                </Item5>
+                <Item6 Ref="42" ControlType="XRTableCell" Name="tableCell15" Weight="0.14583335324850252" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="43" EventName="BeforePrint" PropertyName="Text" Expression="[discValue]" />
+                  </ExpressionBindings>
+                </Item6>
+                <Item7 Ref="44" ControlType="XRTableCell" Name="tableCell16" Weight="0.15389141348362539" StyleName="DetailData1">
+                  <ExpressionBindings>
+                    <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[netPrice]" />
+                  </ExpressionBindings>
+                </Item7>
+              </Cells>
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item6>
+    <Item7 Ref="46" ControlType="GroupFooterBand" Name="GroupFooter1" GroupUnion="WithLastDetail" HeightF="6" />
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="47" Name="Title" BorderStyle="Inset" Font="Arial, 14.25pt" ForeColor="255,64,70,80" BackColor="Transparent" BorderColor="Black" Sides="None" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item2 Ref="48" Name="GroupCaption1" BorderStyle="Inset" Padding="6,2,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="255,228,228,228" BackColor="255,46,148,130" BorderColor="White" Sides="Bottom" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item3 Ref="49" Name="GroupData1" BorderStyle="Inset" Padding="6,2,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="White" BackColor="255,46,148,130" BorderColor="White" Sides="Bottom" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item4 Ref="50" Name="DetailCaption1" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="White" BackColor="255,46,148,130" BorderColor="White" Sides="Left" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item5 Ref="51" Name="DetailData1" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 8.25pt" ForeColor="Black" BorderColor="Transparent" Sides="Left" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item6 Ref="52" Name="GroupFooterBackground3" BorderStyle="Inset" Padding="6,2,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="255,228,228,228" BackColor="255,109,117,129" BorderColor="White" Sides="Bottom" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item7 Ref="53" Name="DetailData3_Odd" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 8.25pt" ForeColor="Black" BackColor="255,243,245,248" BorderColor="Transparent" Sides="None" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="1" />
+    <Item8 Ref="54" Name="PageInfo" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 8.25pt, style=Bold" ForeColor="255,64,70,80" StringFormat="Near;Near;0;None;Character;Default" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Json.JsonDataSource,DevExpress.DataAccess.v19.2" Name="jsonDataSource1" Base64="PEpzb25EYXRhU291cmNlIE5hbWU9Impzb25EYXRhU291cmNlMSI+PFNvdXJjZSBTb3VyY2VUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuSnNvbi5DdXN0b21Kc29uU291cmNlIiBKc29uPSJbeyYjeEQ7JiN4QTsmcXVvdDtwcmljZUxpc3QmcXVvdDs6JnF1b3Q7R2VuZXJhbCZxdW90OywgJiN4RDsmI3hBOyZxdW90O2l0ZW1JRCZxdW90OzomcXVvdDswMS0wMDEtMDEtMDAwMiZxdW90OywmI3hEOyYjeEE7JnF1b3Q7ZGVzY3AmcXVvdDs6JnF1b3Q7aHAmcXVvdDssJiN4RDsmI3hBOyZxdW90O3N0b2NrVW5pdCZxdW90OzomcXVvdDtQQ1MmcXVvdDssJiN4RDsmI3hBOyZxdW90O3B1clByaWNlJnF1b3Q7OiZxdW90OzE1MCZxdW90OywmI3hEOyYjeEE7JnF1b3Q7c2FsZXNQcmljZSZxdW90OzomcXVvdDsxNTAwJnF1b3Q7LCYjeEQ7JiN4QTsmcXVvdDtkaXNjVmFsdWUmcXVvdDs6JnF1b3Q7MCZxdW90OywmI3hEOyYjeEE7JnF1b3Q7bmV0UHJpY2UmcXVvdDs6JnF1b3Q7MTUwJnF1b3Q7JiN4RDsmI3hBO31dIiAvPjxTY2hlbWE+PE5vZGUgTmFtZT0icm9vdCIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJBcnJheSI+PE5vZGUgTmFtZT0icHJpY2VMaXN0IiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9Iml0ZW1JRCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJkZXNjcCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJzdG9ja1VuaXQiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0icHVyUHJpY2UiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0ic2FsZXNQcmljZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJkaXNjVmFsdWUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0ibmV0UHJpY2UiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PC9Ob2RlPjwvU2NoZW1hPjwvSnNvbkRhdGFTb3VyY2U+" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

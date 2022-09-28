@@ -1,0 +1,81 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label for="setcode" class="col-sm-2 col-form-label">{{l("ACSetCode")}} </label>
+                    <div class="col-sm-4">
+                        {{item.acctset}}
+                    </div>
+
+                </div>
+                <div class="row">
+                    <label for="Description" class="col-sm-2 col-form-label">{{l("ACSetDesc")}}</label>
+                    <div class=" col-sm-6">
+                        {{item.desc}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <label for="wipacct" class="col-sm-2 col-form-label">{{l("WIPACC")}}
+                    </label>
+                    <div class="col-sm-4">
+                        {{item.wipacct}}
+                    </div>
+                    <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} </label>
+                    <div class=" col-sm-4">
+                        {{item.wipaccDesc}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="labacct" class="col-sm-2 col-form-label">{{l("labacct")}}</label>
+                    <div class="col-sm-4">
+                        {{item.setlabacct}}
+                    </div>
+                    <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} </label>
+                    <div class=" col-sm-4">
+                        {{item.labaccDesc}}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label for="runlabacct" class="col-sm-2 col-form-label">{{l("runlabacct")}} </label>
+                    <div class="col-sm-4">
+                        {{item.runlabacct}}
+                    </div>
+                    <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} </label>
+                    <div class=" col-sm-4">
+                        {{item.runLabAccDesc}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="ovhacct" class="col-sm-2 col-form-label">{{l("ovhacct")}}
+                    </label>
+                    <div class="col-sm-4">
+                        {{item.ovhacct}}
+                    </div>
+                    <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                    <div class=" col-sm-4">
+                        {{item.ovhacctDesc}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

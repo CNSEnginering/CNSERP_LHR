@@ -1,0 +1,66 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("VoucherTypeID")}} :</h6>
+                        {{ item.gltrHeader.bookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocNo")}} :</h6>
+                        {{ item.gltrHeader.docNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocMonth")}} :</h6>
+                        {{ item.gltrHeader.docMonth }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocDate")}} :</h6>
+                        {{ item.gltrHeader.docDate | date:'dd/MM/yyyy' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("NARRATION")}} :</h6>
+                        {{ item.gltrHeader.narration }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Posted")}} :</h6>
+                        {{ item.gltrHeader.posted }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AuditUser")}} :</h6>
+                        {{ item.gltrHeader.auditUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AuditTime")}} :</h6>
+                        {{ item.gltrHeader.auditTime | date:'dd/MM/yyyy' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("OldCode")}} :</h6>
+                        {{ item.gltrHeader.oldCode }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("GLCONFIG")}}) {{l("ConfigID")}} :</h6>
+                        {{item.glconfigConfigID}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

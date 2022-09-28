@@ -1,0 +1,384 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("Document Printing")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("APTransactionListHeaderInfo")}} -->
+            </span>
+        </div>
+
+    </div>
+
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body parentSection">
+                        <div class="row row-col-separator-xl">
+                            <div class="col-lg-4">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="opening" (ngModelChange)="hideFields()">
+                                                        Opening Document
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="transfer" (ngModelChange)="hideFields()">
+                                                        Stock Transfer Note
+                                                        <span></span>
+                                                    </label>
+
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="consumption" (ngModelChange)="hideFields()">
+                                                        Consumption Document
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="adjustment" (ngModelChange)="hideFields()">
+                                                        Adjustment Document
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="assembly" (ngModelChange)="hideFields()">
+                                                        Stock Assembly
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="assemblyCost" (ngModelChange)="hideFields()">
+                                                        Stock Assembly Cost
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="inwardGatePass" (ngModelChange)="hideFields()">
+                                                        Inward Slip
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="outwardGatePass" (ngModelChange)="hideFields()">
+                                                        Outward Slip
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="requisition" (ngModelChange)="hideFields()">
+                                                        Requisition
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="Grouprequisition" (ngModelChange)="hideFields()">
+                                                       Requisition / Work Order
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="purchaseOrder" (ngModelChange)="hideFields()">
+                                                        Purchase Order
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="purchaseOrderStatus" (ngModelChange)="hideFields()">
+                                                        Purchase Order Status
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="reqOrderStatus" (ngModelChange)="hideFields()">
+                                                            Requisition Order Status
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="receipt" (ngModelChange)="hideFields()">
+                                                            Receipt
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="receiptReturn" (ngModelChange)="hideFields()">
+                                                            Receipt Return
+                                                        <span></span>
+													</label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="itemsPriceList" (ngModelChange)="hideFields()">
+                                                            Items Price Listing 
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="assetRegList" (ngModelChange)="hideFields()">
+                                                            Asset Registration Listing 
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="assetRegReport" (ngModelChange)="hideFields()">
+                                                            Asset Registration Report 
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group">
+                                            <div class="row" *ngIf="showFromDate">
+                                                <label for="FromDate"
+                                                    class="col-md-3 col-form-label">{{l("FROMDATE")}}</label>
+                                                <div class="col-md-3">
+													<input type="text" id="FromDate"
+													[(bsValue)]="fromDate" 
+												    value="{{ fromDate | date:'dd/MM/yyyy' }}"
+                                                        class="form-control form-control-sm" bsDatepicker
+                                                        [(ngModel)]="fromDate" name="FromDate" required>
+                                                </div>
+                                                <label for="To Date"
+                                                    class="col-md-3 col-form-label">{{l("TODATE")}}</label>
+                                                <div class="col-md-3">
+													<input type="text"
+													[(bsValue)]="toDate" 
+												    value="{{ toDate | date:'dd/MM/yyyy' }}"
+													id="ToDate" class="form-control form-control-sm"
+                                                        bsDatepicker name="toDate" required [(ngModel)]="toDate">
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showFromDoc">
+                                                <label for="FromDoc"
+                                                    class="col-md-3 col-form-label">{{l("From Doc")}}</label>
+                                                   
+                                                <div class="col-md-3">
+                                                    <input type="number" id="FromDoc"
+                                                        class="form-control form-control-sm" [(ngModel)]="fromDoc"
+                                                        name="FromDoc" min="0" oninput="validity.valid||(value='');"
+                                                        required>
+                                                </div>
+                                                <label for="ToDoc"
+                                                    class="col-md-3 col-form-label">{{l("TODOC")}}</label>
+                                                <div class="col-md-3">
+                                                    <input type="number" id="ToDoc" class="form-control form-control-sm"
+                                                        [(ngModel)]="toDoc" name="toDoc" min="0"
+                                                        oninput="validity.valid||(value='');" required>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showExFromDate">
+                                                <label for="FromDate"
+                                                    class="col-md-3 col-form-label">{{l("Arrival From Date")}}</label>
+                                                <div class="col-md-3">
+													<input type="text" id="exfromDate"
+													[(bsValue)]="exfromDate" 
+												    value="{{ exfromDate | date:'dd/MM/yyyy' }}"
+                                                        class="form-control form-control-sm" bsDatepicker
+                                                        [(ngModel)]="exfromDate" name="exfromDate" required>
+                                                </div>
+                                                <label for="To Date"
+                                                    class="col-md-3 col-form-label">{{l("Arrival To Date")}}</label>
+                                                <div class="col-md-3">
+													<input type="text"
+													[(bsValue)]="extoDate" 
+												    value="{{ extoDate | date:'dd/MM/yyyy' }}"
+													id="extoDate" class="form-control form-control-sm"
+                                                        bsDatepicker name="extoDate" required [(ngModel)]="extoDate">
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row" *ngIf="showToLoc">
+                                                <label for="toLoc"
+                                                    class="col-md-3 col-form-label">{{l("TOLOC")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toLoc"
+                                                            name="toLoc" required />
+                                                        <input type="text" id="toLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toLocName"
+                                                            name="toLoc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('toLoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('toLoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="row" *ngIf="showFromItem">
+
+                                                <label for="fromItem"
+                                                    class="col-md-3 col-form-label">{{l("FROMITEM")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="fromItem"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromItem"
+                                                            name="fromItem" required>
+                                                        <input type="text" id="fromItemName"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromItemName" name="fromItemName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('fromItem')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setIdNull('fromItem')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showToItem">
+                                                <label for="toItem"
+                                                    class="col-md-3 col-form-label">{{l("TOITEM")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toItem"
+                                                            class="form-control form-control-sm" [(ngModel)]="toItem"
+                                                            name="toItem" required>
+                                                        <input type="text" id="toItemName"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="toItemName" name="toItemName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('toItem')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('toItem')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showPriceList">
+                                                <label for="PriceList"
+                                                    class="col-md-3 col-form-label">{{l("PriceList")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="PriceList"
+                                                            class="form-control form-control-sm" [(ngModel)]="priceList"
+                                                            name="PriceList" required>
+                                                        <input type="text" id="PriceListName"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="priceListName" name="PriceListName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openPriceListModal()" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setPriceListNull()" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showOrderCost">
+                                                <label for="PriceList"
+                                                    class="col-md-3 col-form-label">{{l("Order No")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="OrderCost"
+                                                            class="form-control form-control-sm" [(ngModel)]="OrderCost"
+                                                            name="OrderCost" required>
+                                                        <!-- <input type="text" id="PriceListName"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="priceListName" name="PriceListName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openPriceListModal()" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setPriceListNull()" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="showFromLoc">
+                                                <label for="fromLoc"
+                                                    class="col-md-3 col-form-label">{{l("Location")}}</label>
+                                                <div class="col-md-9">
+                                                    <ng-multiselect-dropdown
+                                                    [placeholder]="'Location'"
+                           [settings]="dropdownSettings" class="col-md-8"
+                           [data]="locationList"  
+                           [(ngModel)]="locIdlist"
+                           
+                           >
+                           </ng-multiselect-dropdown>
+                                                    <!-- <div class="input-group">
+                                                        <input type="text" id="fromLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromLoc"
+                                                            name="fromLoc" required />
+                                                        <input type="text" id="fromLoc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromLocName" name="fromLoc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('fromLoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('fromLoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot footerSection">
+                                    <div class="col-lg-12" style="text-align: right">
+                                        <button type="submit" class="btn btn-primary blue" (click)="getReport()">
+                                            <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ssrs-reportviewer *ngIf="showReport" [reportserver]="reportServer" [reporturl]="reportUrl"
+    [showparameters]="showParameters" [parameters]="parameters" [language]="language" [width]="width" [height]="height"
+    [toolbar]="toolbar">
+</ssrs-reportviewer>
+<ItemLookupTableModal #ItemLookupTableModal (modalSave)="getLookUpData()"></ItemLookupTableModal>
+<LocLookupTableModal #LocLookupTableModal (modalSave)="getLookUpData()"></LocLookupTableModal>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getInventoryModal()"></inventoryLookupTableModal>
+<app-reportviewr-modal #reportView  ></app-reportviewr-modal>

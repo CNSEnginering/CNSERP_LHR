@@ -1,0 +1,138 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Segment1")}} :</h6>
+                        {{ item.segment1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Segment2")}} :</h6>
+                        {{ item.segment2 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Segment3")}} :</h6>
+                        {{ item.segment3 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AllowNegative")}} :</h6>
+                        {{ item.allowNegative }}
+                    </div>
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("ErrSrNo")}} :</h6>
+                        {{ item.errSrNo }}
+                    </div> -->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CostingMethod")}} :</h6>
+                        {{ item.costingMethod }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PRBookID")}} :</h6>
+                        {{ item.prBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("RTBookID")}} :</h6>
+                        {{ item.rtBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CnsBookID")}} :</h6>
+                        {{ item.cnsBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SLBookID")}} :</h6>
+                        {{ item.slBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SRBookID")}} :</h6>
+                        {{ item.srBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TRBookID")}} :</h6>
+                        {{ item.trBookID }}
+                    </div>
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("PrdBookID")}} :</h6>
+                        {{ item.prdBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PyRecBookID")}} :</h6>
+                        {{ item.pyRecBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AdjBookID")}} :</h6>
+                        {{ item.adjBookID }}
+                    </div> -->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AsmBookID")}} :</h6>
+                        {{ item.asmBookID }}
+                    </div>
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("WSBookID")}} :</h6>
+                        {{ item.wsBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DSBookID")}} :</h6>
+                        {{ item.dsBookID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SalesReturnLinkOn")}} :</h6>
+                        {{ item.salesReturnLinkOn }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SalesLinkOn")}} :</h6>
+                        {{ item.salesLinkOn }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AccLinkOn")}} :</h6>
+                        {{ item.accLinkOn }}
+                    </div> -->
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CurrentLocID")}} :</h6>
+                        {{ item.currentLocID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AllowLocID")}} :</h6>
+                        {{ item.allowLocID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CDateOnly")}} :</h6>
+                        {{ item.cDateOnly }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Opt4")}} :</h6>
+                        {{ item.opt4 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Opt5")}} :</h6>
+                        {{ item.opt5 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateadOn")}} :</h6>
+                        {{ item.createadOn | date: 'dd/MM/yyyy' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

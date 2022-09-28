@@ -1,0 +1,60 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #controlDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="flag">{{GloptionSetup != '' ? ("Edit ") + GloptionSetup: l("EditLevel1")}} </span>
+                        <span *ngIf="!flag">{{GloptionSetup != '' ? ("Create ") + GloptionSetup: l("CreateLevel1")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="ControlDetail_Seg1ID" class="col-md-2">{{GloptionSetup != '' ? GloptionSetup + l("ID"): l("Seg1ID")}} *</label>
+                            <div class="col-md-3">
+                                <input type="text" id="ControlDetail_Seg1ID" class="form-control form-control-sm"
+                                    [(ngModel)]="controlDetail.seg1ID" name="Seg1ID" minlength="2" maxlength="2" pattern="^[0-9][0-9]?$|^100$" [disabled] = "flag" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="GroupCategory" class="col-md-2">{{l("Family")}}</label>
+                            <div class="col-md-3">
+                                <select id="GroupCategory" name="groupCategory" class="form-control form-control-sm"
+                                    [(ngModel)]="controlDetail.family">
+                                    <option *ngFor="let Group of grgcat" [value]="Group.id">{{Group.displayName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="ControlDetail_SegmentName" class="col-md-2">{{GloptionSetup != '' ? GloptionSetup + l("Description"): l("Level 1 Description")}} *</label>
+                            <div class="col-md-10">
+                                <input type="text" id="ControlDetail_SegmentName" class="form-control form-control-sm"
+                                    [(ngModel)]="controlDetail.segmentName" name="SegmentName" maxlength="100" required />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!controlDetailForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

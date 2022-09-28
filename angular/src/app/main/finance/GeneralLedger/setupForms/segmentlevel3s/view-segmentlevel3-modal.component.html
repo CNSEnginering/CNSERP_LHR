@@ -1,0 +1,59 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-6 mb-3">
+                        <h6>{{Gloptionlevel1 != '' ? Gloptionlevel1 + l("ID"): l("Seg1ID")}} :</h6>
+                        {{ item.controlDetailId }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{Gloptionlevel1 != '' ? Gloptionlevel1 + l("Description"): l("Level 1 Description")}} :</h6>
+                        {{ item.controlDetailDesc }}
+                    </div>
+
+
+                    <div class="col-6 mb-3">
+                        <h6>{{Gloptionlevel2 != '' ? Gloptionlevel2 + l("ID"): l("Level2ID")}}:</h6>
+                        {{ item.subControlDetailId }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{Gloptionlevel2 != '' ? Gloptionlevel2 + l("Description"): l("Level 2 Description") }}:</h6>
+                        {{ item.subControlDetailDesc }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{GloptionSetup != '' ? GloptionSetup + l("ID"): l("Level3ID") }} :</h6>
+                        {{ item.segmentlevel3.seg3ID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{GloptionSetup != '' ? GloptionSetup + l("Description"): l("Level 3 Description") }} :</h6>
+                        {{ item.segmentlevel3.segmentName }}
+                    </div>
+
+
+
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

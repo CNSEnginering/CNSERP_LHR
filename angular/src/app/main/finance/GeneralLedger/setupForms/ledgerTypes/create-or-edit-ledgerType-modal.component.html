@@ -1,0 +1,51 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #ledgerTypeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="ledgerType.id">{{l("EditLedgerType")}}</span>
+                        <span *ngIf="!ledgerType.id">{{l("CreateNewLedgerType")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="LedgerType_LedgerID">{{l("LedgerID")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="LedgerType_LedgerID" min="1" class="form-control form-control-sm"
+                                [(ngModel)]="ledgerType.ledgerID" name="LedgerID" disabled required />
+                        </div>
+                        <div class="form-group col-md-9">
+                            <label for="LedgerType_LedgerDesc">{{l("LedgerDesc")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="text" id="LedgerType_LedgerDesc" class="form-control form-control-sm"
+                                [(ngModel)]="ledgerType.ledgerDesc" name="LedgerDesc" required />
+                        </div>
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label for="LedgerType_Active" class="kt-checkbox">
+                            <input id="LedgerType_Active" type="checkbox" name="Active" [(ngModel)]="ledgerType.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!ledgerTypeForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

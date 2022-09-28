@@ -1,0 +1,344 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("ItemMovement")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("APTransactionListHeaderInfo")}} -->
+            </span>
+        </div>
+
+    </div>
+
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body parentSection">
+                        <div class="row row-col-separator-xl">
+                            <div class="col-lg-4">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="itemLedgerDetail" (ngModelChange)="hideFields()">
+                                                        Item Ledger Detail
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="itemStatus" (ngModelChange)="hideFields()">
+                                                        Item Status 
+                                                        <span></span>
+                                                    </label>
+                                                    <!-- <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="itemLedgerDetailNew">
+                                                        Item Ledger Detail New
+                                                        <span></span>
+                                                    </label> -->
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="itemLedgerQuantitative" (ngModelChange)="hideFields()">
+                                                        Item Ledger Quantitative
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="itemListing" (ngModelChange)="hideFields()">
+                                                        Item Listing
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="segment2" (ngModelChange)="hideFields()">
+                                                        Stock Report (Seg2)
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="segment3" (ngModelChange)="hideFields()">
+                                                        Stock Report (Seg3)
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="segment2Summary" (ngModelChange)="hideFields()">
+                                                        Stock Report Summary (Seg2)
+                                                        <span></span>
+													</label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="StocklevelWise" (ngModelChange)="hideFields()">
+                                                        Stock Report Level Wise
+                                                        <span></span>
+													</label>
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="quantitativeStock" (ngModelChange)="hideFields()">
+                                                        Stock Report Location Wise 
+                                                        <span></span>
+													</label>  
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="quantitativeStock3" (ngModelChange)="hideFields()">
+                                                        Stock Report Location Wise (Seg3)
+                                                        <span></span>
+													</label> 
+													<label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="stockReportDetail" (ngModelChange)="hideFields()">
+														   Stock Report Detail
+                                                        <span></span>
+                                                    </label>
+													<label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="stockReportQuantitative" (ngModelChange)="hideFields()">
+                                                        Stock Report Quantitative
+                                                        <span></span>
+                                                    </label>  
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="itemLedger" [(ngModel)]="itemLedger"
+                                                            value="ConsolidatstockReport" (ngModelChange)="hideFields()">
+                                                        Consolidated Stock Report Location Wise 
+                                                        <span></span>
+                                                    </label>                                                                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group">
+                                            <div class="row" *ngIf="ftdate">
+                                                <label for="FromDate"
+                                                    class="col-md-3 col-form-label">{{l("FROMDATE")}}</label>
+                                                <div class="col-md-3">
+													<input type="text" id="FromDate"
+												     	[(bsValue)]="fromDate"    
+                                                        class="form-control form-control-sm" bsDatepicker
+														[(ngModel)]="fromDate" name="FromDate" required
+														value="{{ fromDate | date:'dd/MM/yyyy' }}"
+														>
+                                                </div>
+												<label for="To Date"												
+                                                    class="col-md-3 col-form-label">{{l("TODATE")}}</label>
+                                                <div class="col-md-3">
+													<input type="text" 
+													[(bsValue)]="toDate" 
+												    value="{{ toDate | date:'dd/MM/yyyy' }}"
+													id="ToDate" class="form-control form-control-sm"
+                                                        bsDatepicker name="toDate" required [(ngModel)]="toDate">
+                                                </div>
+                                            </div>
+
+                                            <div class="row" *ngIf="Fromseg3s">
+                                                <label for="fromItem"
+                                                    class="col-md-3 col-form-label">{{l("From Segment3")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="fromseg3"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromseg3"
+                                                            name="fromseg3" >
+                                                        <input type="text" id="fromseg3Name"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromseg3Name" name="fromseg3Name" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('fromSeg')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setIdNull('fromSeg')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" *ngIf="Fromseg3s">
+                                                <label for="fromItem"
+                                                    class="col-md-3 col-form-label">{{l("To Segment3")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toseg3"
+                                                            class="form-control form-control-sm" [(ngModel)]="toseg3"
+                                                            name="toseg3" >
+                                                        <input type="text" id="toseg3Name"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="toseg3Name" name="toseg3Name" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('toseg3')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setIdNull('toseg3')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row" *ngIf="standard">
+                                                <label for="fromItem"
+                                                    class="col-md-3 col-form-label">{{l("FROMITEM")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="fromItem"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromItem"
+                                                            name="fromItem" required>
+                                                        <input type="text" id="fromItemName"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromItemName" name="fromItemName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('fromItem')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setIdNull('fromItem')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="standard">
+                                                <label for="toItem"
+                                                    class="col-md-3 col-form-label">{{l("TOITEM")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toItem"
+                                                            class="form-control form-control-sm" [(ngModel)]="toItem"
+                                                            name="toItem" required>
+                                                        <input type="text" id="toItemName"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="toItemName" name="toItemName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('toItem')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('toItem')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="dtloc">
+                                                <label for="fromLoc"
+                                                    class="col-md-3 col-form-label">{{l("Location")}}</label>
+                                                <div class="col-md-9">
+                                                    <!-- <div class="input-group">
+                                                        <input type="text" id="fromLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="fromLoc"
+                                                            name="fromLoc" required>
+                                                        <input type="text" id="fromLoc"
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fromLocName" name="fromLoc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('fromLoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('fromLoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div> -->
+                                             
+                                                    <ng-multiselect-dropdown
+                                                    [placeholder]="'Location'"
+                           [settings]="dropdownSettings"
+                           [data]="locationList"  
+                           [(ngModel)]="locIdlist"
+                           >
+                           </ng-multiselect-dropdown>
+                                             
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="itemlist">
+                                                <label for="fromLoc"
+                                                    class="col-md-3 col-form-label">{{l("Item Type")}}</label>
+                                                <div class="col-md-9">
+                                                
+                                             
+                                                    <ng-multiselect-dropdown
+                                                    [placeholder]="'Item Type'"
+                           [settings]="dropdownSettings"
+                           [data]="itemType"  
+                           [(ngModel)]="itemTypeid"
+                           >
+                           </ng-multiselect-dropdown>
+                                             
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <!-- <label for="toLoc"
+                                                    class="col-md-3 col-form-label">{{l("TOLOC")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="toLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toLoc"
+                                                            name="toLoc" required>
+                                                        <input type="text" id="toLoc"
+                                                            class="form-control form-control-sm" [(ngModel)]="toLocName"
+                                                            name="toLoc" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openModal('toLoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setIdNull('toLoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+											</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot footerSection">
+                                    <div class="col-lg-12" style="text-align: right">
+                                        <button type="submit" class="btn btn-primary blue" (click)="getReport()">
+                                            <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ssrs-reportviewer *ngIf="showReport" [reportserver]="reportServer" [reporturl]="reportUrl"
+    [showparameters]="showParameters" [parameters]="parameters" [language]="language" [width]="width" [height]="height"
+    [toolbar]="toolbar">
+</ssrs-reportviewer>
+<ItemLookupTableModal #ItemLookupTableModal (modalSave)="getLookUpData()"></ItemLookupTableModal>
+
+<LocLookupTableModal #LocLookupTableModal (modalSave)="getLookUpData()"></LocLookupTableModal>
+<app-reportviewr-modal #reportView  ></app-reportviewr-modal>
+
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getNewICSegment3Id()"></inventoryLookupTableModal>

@@ -1,0 +1,1072 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
+  <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="ChartOfAcListingDS">
+      <ConnectionProperties>
+        <DataProvider>XML</DataProvider>
+        <ConnectString>="http://"+Parameters!ServerURL.Value.ToString()+"/api/services/app/ChartOfACListingReport/GetChartOfAccountsData?tenantId="+
+Parameters!tenantId.Value.ToString()
++"&amp;slType="+Parameters!slType.Value.ToString()
++"&amp;FromAccount="+Parameters!fromAccount.Value.ToString()
++"&amp;ToAccount="+Parameters!toAccount.Value.ToString()</ConnectString>
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>1510473c-11a7-4efc-950b-b1b145dadc87</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="ChartOfACListingDSet">
+      <Query>
+        <DataSourceName>ChartOfAcListingDS</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="AccountCode">
+          <DataField>AccountCode</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="AccountTitle">
+          <DataField>AccountTitle</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Family">
+          <DataField>Family</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="SubLedger">
+          <DataField>SubLedger</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="GroupDesc">
+          <DataField>GroupDesc</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Segment1">
+          <DataField>Segment1</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Segment1Name">
+          <DataField>Segment1Name</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Segment2">
+          <DataField>Segment2</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Segment2Name">
+          <DataField>Segment2Name</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Segment3">
+          <DataField>Segment3</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Segment3Name">
+          <DataField>Segment3Name</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix3">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>2.67167cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>5.43687cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.89146cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.12958cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3.2673cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Segment11">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Segment1.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Segment11</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Segment1Name">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Segment1Name.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Segment1Name</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox5">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Segment2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Segment2.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Segment2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Segment2Name1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Segment2Name.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Segment2Name1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox98">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox98</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Segment3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Segment3.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Segment3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Segment3Name1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Segment3Name.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Segment3Name1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox117">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox117</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="AccountCode2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!AccountCode.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>AccountCode2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="AccountTitle1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!AccountTitle.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>AccountTitle1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Family">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Family.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Family</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="SubLedger3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Fields!SubLedger.Value = True, "Yes", "No")</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>SubLedger</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="GroupDesc">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!GroupDesc.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>GroupDesc</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Group1">
+                    <GroupExpressions>
+                      <GroupExpression>Seg2</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>Seg2</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixMembers>
+                    <TablixMember>
+                      <Group Name="Segment2">
+                        <GroupExpressions>
+                          <GroupExpression>=Fields!Segment2.Value</GroupExpression>
+                        </GroupExpressions>
+                      </Group>
+                      <SortExpressions>
+                        <SortExpression>
+                          <Value>=Fields!Segment2.Value</Value>
+                        </SortExpression>
+                      </SortExpressions>
+                      <TablixMembers>
+                        <TablixMember />
+                        <TablixMember />
+                        <TablixMember>
+                          <Group Name="Segment3">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!Segment3.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!Segment3.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                          <TablixMembers>
+                            <TablixMember />
+                          </TablixMembers>
+                        </TablixMember>
+                        <TablixMember>
+                          <Group Name="AccountCode1">
+                            <GroupExpressions>
+                              <GroupExpression>=Fields!AccountCode.Value</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                          <SortExpressions>
+                            <SortExpression>
+                              <Value>=Fields!AccountCode.Value</Value>
+                            </SortExpression>
+                          </SortExpressions>
+                        </TablixMember>
+                      </TablixMembers>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>ChartOfACListingDSet</DataSetName>
+            <Left>0.51307cm</Left>
+            <Height>2.4cm</Height>
+            <Width>15.39688cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>1.76378in</Height>
+        <Style />
+      </Body>
+      <Width>6.26376in</Width>
+      <Page>
+        <PageHeader>
+          <Height>3.03127cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="CompanyName">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Parameters!CompanyName.Value.ToString()</Value>
+                      <Style>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>CompanyName</rd:DefaultName>
+              <Top>0.34078cm</Top>
+              <Left>0.55245cm</Left>
+              <Height>0.6cm</Height>
+              <Width>10.83438cm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox15">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="Print Date: "+FormatDateTime(today,DateFormat.ShortDate)</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox15</rd:DefaultName>
+              <Top>1.57606cm</Top>
+              <Left>0.55245cm</Left>
+              <Height>0.6cm</Height>
+              <Width>4.74896cm</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox225">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Chart of Accounts Listing</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox225</rd:DefaultName>
+              <Top>0.97606cm</Top>
+              <Left>0.55245cm</Left>
+              <Height>0.6cm</Height>
+              <Width>4.74896cm</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox1">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Account Code</Value>
+                      <Style>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.39599cm</Top>
+              <Left>0.51307cm</Left>
+              <Height>0.6cm</Height>
+              <Width>2.67167cm</Width>
+              <ZIndex>3</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>LightGrey</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox2">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Account Title</Value>
+                      <Style>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.39599cm</Top>
+              <Left>3.09244cm</Left>
+              <Height>0.6cm</Height>
+              <Width>5.52917cm</Width>
+              <ZIndex>4</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>LightGrey</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox3">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Family</Value>
+                      <Style>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.39599cm</Top>
+              <Left>8.62161cm</Left>
+              <Height>0.6cm</Height>
+              <Width>1.89146cm</Width>
+              <ZIndex>5</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>LightGrey</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox4">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Sub Ledger</Value>
+                      <Style>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.39599cm</Top>
+              <Left>10.51307cm</Left>
+              <Height>0.6cm</Height>
+              <Width>2.12958cm</Width>
+              <ZIndex>6</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>LightGrey</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox6">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Account Group</Value>
+                      <Style>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>2.39599cm</Top>
+              <Left>12.64265cm</Left>
+              <Height>0.6cm</Height>
+              <Width>3.2673cm</Width>
+              <ZIndex>7</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>LightGrey</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageHeader>
+        <PageFooter>
+          <Height>1.52287cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="PageNumber">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>PageNumber</rd:DefaultName>
+              <Top>0.07056cm</Top>
+              <Height>0.6cm</Height>
+              <Width>2.5cm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>29.7cm</PageHeight>
+        <PageWidth>21cm</PageWidth>
+        <LeftMargin>2cm</LeftMargin>
+        <RightMargin>2cm</RightMargin>
+        <TopMargin>2cm</TopMargin>
+        <BottomMargin>2cm</BottomMargin>
+        <ColumnSpacing>0.13cm</ColumnSpacing>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="tenantId">
+      <DataType>Integer</DataType>
+      <Prompt>tenantId</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ServerURL">
+      <DataType>String</DataType>
+      <Prompt>ServerURL</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="CompanyName">
+      <DataType>String</DataType>
+      <Prompt>CompanyName</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="slType">
+      <DataType>Integer</DataType>
+      <Prompt>slType</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="fromAccount">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>fromAccount</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="toAccount">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>toAccount</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>5</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>tenantId</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ServerURL</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>CompanyName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>slType</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>4</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>fromAccount</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>toAccount</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>3c2c66ef-b91f-43f3-b93d-8253d4227ad4</rd:ReportID>
+</Report>

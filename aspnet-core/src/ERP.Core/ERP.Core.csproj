@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>ERP.Core</AssemblyName>
+    <PackageId>ERP.Core</PackageId>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <UserSecretsId>MyCompanyName-ERP-894FDFC1-6482-4A56-926A-3C46C9FE0329</UserSecretsId>
+    <RootNamespace>ERP</RootNamespace>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\ERP\*.xml;Net\Emailing\EmailTemplates\default.html" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="4.6.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="4.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
+    <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.3.1" />
+    <PackageReference Include="Stripe.net" Version="25.3.0" />
+    <PackageReference Include="PayPal" Version="2.0.0-rc2" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.1.0" />
+    <PackageReference Include="Abp.AspNetZeroCore" Version="1.2.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.ZeroCore.IdentityServer4.EntityFrameworkCore" Version="4.6.0" />
+    <PackageReference Include="Abp.AutoMapper" Version="4.6.0" />
+    <PackageReference Include="Abp.MailKit" Version="4.6.0" />
+    <PackageReference Include="Abp.Zero.Ldap" Version="4.6.0" />
+    <PackageReference Include="Twilio" Version="5.28.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ERP.Core.Shared\ERP.Core.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SupplyChain\Inventory\" />
+  </ItemGroup>
+</Project>

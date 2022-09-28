@@ -1,0 +1,78 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocNo")}} :</h6>
+                        {{ item.chequeBook.docNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocDate")}} :</h6>
+                        {{ item.chequeBook.docDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BANKID")}} :</h6>
+                        {{ item.chequeBook.bankid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BankAccNo")}} :</h6>
+                        {{ item.chequeBook.bankAccNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("FromChNo")}} :</h6>
+                        {{ item.chequeBook.fromChNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ToChNo")}} :</h6>
+                        {{ item.chequeBook.toChNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("NoofCh")}} :</h6>
+                        {{ item.chequeBook.noofCh }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Active")}} :</h6>
+                        <span *ngIf="item.chequeBook.active">{{"Yes"}}</span>
+                        <span *ngIf="!item.chequeBook.active">{{"No"}}</span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.chequeBook.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.chequeBook.audtDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.chequeBook.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.chequeBook.createDate | momentFormat:'DD/MM/YYYY' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

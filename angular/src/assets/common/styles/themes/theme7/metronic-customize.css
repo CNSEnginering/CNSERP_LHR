@@ -1,0 +1,25 @@
+.kt-header-mobile .kt-header__brand-logo-default {
+  height: 52px !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.cc-window {
+  background-color: #282a3a;
+}
+.cc-btn {
+  background-color: #5867dd;
+  border-color: #5867dd;
+  color: #ffffff;
+}
+.cc-message {
+  color: #fefefe;
+}
+.kt-header__topbar-username {
+  color: #8a88a2 !important;
+}
+li.kt-menu__item.kt-menu__item--hover span.kt-menu__link-icon {
+  background-color: transparent !important;
+}
+.kt-header__topbar .subscription-warning {
+  padding-top: 30px;
+}

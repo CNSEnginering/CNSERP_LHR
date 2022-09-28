@@ -1,0 +1,106 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #subLedgersTransferForm="ngForm" novalidate (ngSubmit)="transfer()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+
+                        <span>{{l("Transfer Sub Ledgers from one account to another")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="m-form__group">
+                                    <div class="row">
+                                        <label for="FromChartofControlAccountName"
+                                            class="col-form-label col-md-4">{{l("From Account")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" name="fromAccountID"
+                                                    [(ngModel)]="fromAccountID" type="text" readonly required>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary btn-sm blue"
+                                                        (click)="openSelectChartofControlModal('from')" type="button"><i
+                                                            class="fa fa-search"></i>
+                                                        {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setChartofControlIdNull('from')"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control form-control-sm" id="FromChartofControlAccountName"
+                                    name="fromChartofControlAccountName" [(ngModel)]="fromChartofControlAccountName"
+                                    type="text" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="m-form__group">
+                                    <div class="row">
+                                        <label for="ToChartofControlAccountName"
+                                            class="col-form-label col-md-4">{{l("To Account")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" name="toAccountID"
+                                                    [(ngModel)]="toAccountID" type="text" readonly required>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary btn-sm blue"
+                                                        (click)="openSelectChartofControlModal('to')" type="button"><i
+                                                            class="fa fa-search"></i>
+                                                        {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setChartofControlIdNull('to')"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control form-control-sm" id="ToChartofControlAccountName"
+                                    name="toChartofControlAccountName" [(ngModel)]="toChartofControlAccountName"
+                                    type="text" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <br />
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-success green" [busyText]="l('ProcessingWithThreeDot')"
+                        [buttonBusy]="saving" (click)="transfer()" [disabled]="!subLedgersTransferForm.form.valid">
+                        <i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+</div>

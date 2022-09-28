@@ -1,0 +1,112 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #employeeAdvancesForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="employeeAdvances.id">{{l("EditEmployeeAdvances")}}</span>
+                        <span *ngIf="!employeeAdvances.id">{{l("CreateNewEmployeeAdvances")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="Employee_EarningID">{{l("AdvanceID")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" id="Employee_AdvanceID" class="form-control form-control-sm"
+                                [(ngModel)]="employeeAdvances.advanceID" name="AdvanceID" disabled required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="EmployeeAdvance_AdvanceDate">{{l("AdvanceDate")}}</label>
+                            <input type="text" id="EmployeeAdvance_AdvanceDate" class="form-control form-control-sm"
+                                [(ngModel)]="advanceDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                name="AdvanceDate" (ngModelChange)="onChange($event)" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="employeeAdvances_SalaryYear">{{l("SalaryYear")}}</label>
+                            <input type="text" style="background-color:#F4F4F4;" id="employeeAdvances_SalaryYear"
+                                class="form-control form-control-sm" name="SalaryYear" [(ngModel)]="salaryYear"
+                                readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="employeeAdvances_SalaryMonth">{{l("SalaryMonth")}}</label>
+                            <input type="text" style="background-color:#F4F4F4;" id="employeeAdvances_SalaryMonth"
+                                class="form-control form-control-sm" name="SalaryMonth" [(ngModel)]="salaryMonth"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="EmployeeAdvance_EmployeeID">{{l("EmployeeID")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" style="background-color:#F4F4F4;" id="employeeAdvances_EmployeeID"
+                                    class="form-control form-control-sm" [(ngModel)]="employeeAdvances.employeeID"
+                                    name="EmployeeID" readonly required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openEmployeeModal()"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setEmployeeNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeArrears_EmployeeName">{{l("EmployeeName")}}<span
+                                class="require-field">*</span></label>
+                            <input class="form-control form-control-sm" id="EmployeeAdvance_EmployeeName"
+                                name="employeeName" [(ngModel)]="employeeAdvances.employeeName" type="text" required
+                                disabled />
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="employeeAdvances_Amount">{{l("Amount")}}<span
+                                class="require-field">*</span></label>
+                            <input id="employeeAdvances_Amount" class="form-control form-control-sm" required
+                                [(ngModel)]="employeeAdvances.amount" name="Amount" currencyMask (focusout)="isValidAdvance($event)"
+                                [options]="{ prefix: '', thousands: ',', decimal: '.' }" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="employeeAdvances_Remarks">{{l("Remarks")}}</label>
+                            <input type="text" id="employeeAdvances_Remarks" class="form-control form-control-sm"
+                                [(ngModel)]="employeeAdvances.remarks" name="Remarks" />
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="employeeAdvances_Active" class="kt-checkbox">
+                            <input id="employeeAdvances_Active" type="checkbox" name="Active"
+                                [(ngModel)]="employeeAdvances.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <br>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!employeeAdvancesForm.form.valid || !validAdvance"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

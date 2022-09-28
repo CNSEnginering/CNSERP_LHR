@@ -1,0 +1,80 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("AreaCode")}} : </label>
+                        <label class="col-md-3 col-form-label">
+                            {{ dto.areaid}}
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("AreaDesc")}} : </label>
+                        <label class="col-md-6 col-form-label">{{dto.areadesc}}</label>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("AreaType")}} :</label>
+                        <label class="col-md-3 col-form-label">{{dto.areaty == 0 ? 'Internal':'Subcontract'}}</label>
+
+                        <label class="col-md-3 col-form-label">{{l("ActiveStatus")}} :</label>
+                        <label class="col-md-3 col-form-label">{{dto.active==true?"TRUE":"FALSE" }}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("AreaAddr")}} :</label>
+                        <label class="col-md-9 col-form-label">{{dto.address}}</label>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("ContactPerson")}} :</label>
+                        <label class="col-md-3 col-form-label">{{dto.contname}}</label>
+
+                        <label class="col-md-3 col-form-label">{{l("ContPos")}} :</label>
+                        <label class="col-md-3 col-form-label">{{dto.contpos}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("CONTPHONE")}} :</label>
+                        <label class="col-md-3 col-form-label">{{dto.contcell}}</label>
+
+               
+                        <label class="col-md-3 col-form-label">{{l("CONTEMAIL")}} :</label>
+                        <label class="col-md-3 col-form-label">{{dto.contemail}}</label>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{{l("Location")}} :</label>
+                        <label class="col-md-9 col-form-label">{{dto.locDesc}}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

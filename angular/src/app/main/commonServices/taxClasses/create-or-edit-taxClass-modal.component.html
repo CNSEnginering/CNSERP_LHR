@@ -1,0 +1,131 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #taxClassForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="taxClass.id">{{l("EditTaxClass")}}</span>
+                        <span *ngIf="!taxClass.id">{{l("CreateNewTaxClass")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="TaxAuthorityTAXAUTH">{{l("TaxAuthority")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="TaxClass_TAXAUTH" class="form-control form-control-sm"
+                                    [(ngModel)]="taxClass.taxauth" name="TAXAUTH" readonly required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectTaxAuthorityModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setTaxAuthorityIdNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="taxClass.taxAuthorityId" [(ngModel)]="taxClass.taxAuthorityId"
+                            type="text" hidden>
+                        <div class="form-group col-md-4">
+                            <label for="TaxClass_TAXAUTH">{{l("")}}&nbsp;</label>
+                            <input class="form-control form-control-sm" id="TaxAuthorityTAXAUTH"
+                                name="taxAuthorityTAXAUTH" [(ngModel)]="taxAuthorityTAXAUTH" type="text" readonly>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="TaxClass_TRANSTYPE">{{l("TRANSTYPE")}}</label>
+                            <select (change)="filterClassType($event.target.value)" [(ngModel)]="taxClass.transtype"
+                                name="TRANSTYPE" id="TaxClass_TRANSTYPE" class="form-control form-control-sm" required>
+                                <option value="1">Sale</option>
+                                <option value="2">Purchase</option>
+                                <option value="3">Services</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="TaxClass_CLASSTYPE">{{l("CLASSTYPE")}}</label>
+                            <select required [(ngModel)]="taxClass.classtype" name="CLASSTYPE" id="TaxClass_CLASSTYPE"
+                                class="form-control form-control-sm" >
+                                <option *ngFor='let type of classTypes' [ngValue]="type.val">{{type.name}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="TaxClass_CLASSID">{{l("CLASSID")}}<span class="require-field">*</span></label>
+                            <input type="text" id="TaxClass_CLASSID" class="form-control form-control-sm"
+                                [(ngModel)]="taxClass.classid" name="CLASSID" readonly required />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="TaxClass_CLASSDESC">{{l("CLASSDESC")}}</label>
+                            <input type="text" id="TaxClass_CLASSDESC" class="form-control form-control-sm"
+                                [(ngModel)]="taxClass.classdesc" name="CLASSDESC" />
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="TaxClass_CLASSRATE">{{l("CLASSRATE")}}<span
+                                    class="require-field">*</span></label>
+                            <input type="number" min="0" max="99" ng-maxlength="2" maxlength="2" id="TaxClass_CLASSRATE"
+                                class="form-control form-control-sm" [(ngModel)]="taxClass.classrate" name="CLASSRATE"
+                                required />
+                        </div>
+                        <div class="form-group m-form__group col-md-4">
+                            <label for="ReceiptEntry_ACCode">{{l("AccountID")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="ReceiptEntry_ACCode" class="form-control form-control-sm"
+                                    [(ngModel)]="taxClass.taxaccid" name="taxaccid" readonly required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" (click)="openSelectChartofACModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="ChartofAccDesc">{{l("")}}&nbsp;</label>
+                            <input class="form-control form-control-sm" id="ChartofAccDesc" name="taxaccdesc"
+                                [(ngModel)]="taxaccdesc" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list row  col-md-6">
+                        <label for="TaxClass_IsActive" class="kt-checkbox">
+                            <input id="TaxClass_IsActive" type="checkbox" name="IsActive"
+                                [(ngModel)]="taxClass.isActive">
+                            {{l("IsActive")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!taxClassForm.form.valid
+					    || taxClass.classtype === ''"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewTaxAuthorityId()">
+    </commonServiceLookupTableModal>
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+</style>

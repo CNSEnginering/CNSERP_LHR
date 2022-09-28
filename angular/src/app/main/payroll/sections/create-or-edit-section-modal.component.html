@@ -1,0 +1,79 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #sectionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="section.id">{{l("EditSection")}}</span>
+                        <span *ngIf="!section.id">{{l("CreateNewSection")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="Section_SecID">{{l("SecID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="Section_SecID" min="1" class="form-control form-control-sm"
+                                [(ngModel)]="section.secID" name="SecID" disabled required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="Employee_DepartmentID">{{l("Department")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="Employee_DepartmentID"
+                                    class="form-control form-control-sm" [(ngModel)]="section.deptID"
+                                    name="DepartmentID" required disabled/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openDepartmentModal()" ><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setDepartmentNull()"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Employee_DepartmentName">{{l("DepartmentName")}}</label>
+                            <input class="form-control form-control-sm" id="Employee_DepartmentName"
+                                name="DepartmentName" [(ngModel)]="section.deptName" type="text" disabled />
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="Section_SecName">{{l("SecName")}}<span class="require-field">*</span></label>
+                            <input type="text" id="Section_SecName" class="form-control form-control-sm"
+                                [(ngModel)]="section.secName" name="secName" required />
+                        </div>
+                        <div class="form-group col-md-4">
+							<label for="Department_sortId">{{l("sortId")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="Department_sortId" min="1" class="form-control form-control-sm"
+								[(ngModel)]="section.sortId" name="sortId"  required />
+						</div>
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label for="Section_Active" class="kt-checkbox">
+                            <input id="Section_Active" type="checkbox" name="Active" [(ngModel)]="section.active">
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!sectionForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

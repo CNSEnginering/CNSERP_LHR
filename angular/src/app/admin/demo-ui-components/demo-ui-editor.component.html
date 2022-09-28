@@ -1,0 +1,21 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                Editor
+            </h3>
+        </div>
+    </div>
+    <form class="kt-form">
+        <div class="kt-portlet__body">
+            <div class="form-group">
+                <p-editor [(ngModel)]="htmlEditorInput" name="HtmlEditorInput" [style]="{'height':'300px'}"></p-editor>
+            </div>
+        </div>
+        <div class="kt-portlet__foot">
+            <div class="kt-form__actions">
+                <button class="btn btn-primary" (click)="submitValue()" type="button">{{"Submit" | localize}}</button>
+            </div>
+        </div>
+    </form>
+</div>

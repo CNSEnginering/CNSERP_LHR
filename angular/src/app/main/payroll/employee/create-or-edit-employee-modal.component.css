@@ -1,0 +1,13 @@
+﻿
+  
+  #div1,#div2{
+    margin-bottom: 10px;
+    
+    }
+  #div2.col-md-6
+  {
+    padding:0px !important;
+  }
+  .custom-img{
+    width: 190px;
+  }

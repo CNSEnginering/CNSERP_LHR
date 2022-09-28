@@ -1,0 +1,513 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{transactionVoucher ? ("Integrated Voucher") : l("Transaction Voucher")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("VoucherEntryHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar" *ngIf="isGranted('Transaction.VoucherEntry.ShowLoader')">
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown>
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        <a class="dropdown-item" id="ExportTransactionToExcelButton" (click)="exportToExcel()"
+                            href="javascript:;">
+                            <i class="fa fa-download" style="font-size: 1rem;"></i>
+                            {{'ExportToExcel' | localize}}
+                        </a>
+                        <a href="javascript:;" *ngIf="isGranted('Transaction.VoucherEntry.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true" name="ExcelFileUpload" #ExcelFileUpload
+                                    maxFileSize="10000000" auto="auto" accept=".csv,.xls,.xlsx"
+                                    (uploadHandler)="uploadExcel($event)" (onError)="onUploadExcelError()"
+                                    chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload>
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small
+                                [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportGLTRANSSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- <button (click)="createUser()" *ngIf="isGranted('Transaction.VoucherEntry.Create')" class="btn btn-primary"><i class="fa fa-plus"></i> {{"CreateNewUser" | localize}}</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form">
+                    <div class="row align-items-center" *ngIf="!transactionVoucher">
+                        <!-- <div class="col-md-12" hidden>
+                        <div class="col-md-4" >
+                            <h5>Transactions</h5>
+                        </div><br>
+                    </div> -->
+                        <div class="row col-md-12">
+                            <div class="form-group col-md-3" *ngFor="let book of btnBooks"  [hidden]="!isGranted('Transaction.VoucherEntry.'+book.bookID)">
+                                <button (click)="createGLTRHeader(book.bookID,book.bookName)" [value]="book.bookID"
+                                    class="btn btn-primary blue col-md-12"><i class="fa fa-book"></i>
+                                    {{book.bookName}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getGLTRHeaders()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="BookIDFilter">{{l("VoucherTypeName")}}</label>
+                                    <select class="form-control" id="BookIDFilter" name="bookIDFilter"
+                                        [(ngModel)]="bookIDFilter">
+                                        <option value="">Choose Voucher</option>
+                                        <option *ngFor="let book of btnBooks" [value]="book.bookID"
+                                            [hidden]="!isGranted('Transaction.VoucherEntry.'+book.bookID)">
+                                            {{book.bookName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="LocationFilter">{{l("Location")}}</label>
+                                    <select class="form-control" id="LocationFilter" name="locationFilter"
+                                        [(ngModel)]="locationFilter">
+                                        <option value=0>Choose Location</option>
+                                        <option *ngFor="let loc of glLocationList" [value]="loc.locId">{{loc.locDesc}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocNoFilter">{{l("VoucherNo")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinDocNoFilter"
+                                            [(ngModel)]="minDocNoFilter" placeholder="{{l('From')}}"
+                                            name="minDocNoFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter"
+                                            placeholder="{{l('To')}}" name="maxDocNoFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocDateFilter">{{l("VoucherDate")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter"
+                                            name="MinDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('From')}}" [(ngModel)]="minDocDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter"
+                                            name="MaxDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('To')}}" [(ngModel)]="maxDocDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocMonthFilter">{{l("VoucherMonth")}}</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="MinDocMonthFilter"
+                                            [(ngModel)]="minDocMonthFilter" name="minDocMonthFilter">
+                                            <option value="0">From Month</option>
+                                            <option value="1">Jan</option>
+                                            <option value="2">Feb</option>
+                                            <option value="3">Mar</option>
+                                            <option value="4">Apr</option>
+                                            <option value="5">May</option>
+                                            <option value="6">Jun</option>
+                                            <option value="7">Jul</option>
+                                            <option value="8">Aug</option>
+                                            <option value="9">Sep</option>
+                                            <option value="10">Oct</option>
+                                            <option value="11">Nov</option>
+                                            <option value="12">Dec</option>
+                                        </select>
+                                        <select class="form-control" [(ngModel)]="maxDocMonthFilter"
+                                            name="maxDocMonthFilter">
+                                            <option value="0">To Month</option>
+                                            <option value="1">Jan</option>
+                                            <option value="2">Feb</option>
+                                            <option value="3">Mar</option>
+                                            <option value="4">Apr</option>
+                                            <option value="5">May</option>
+                                            <option value="6">Jun</option>
+                                            <option value="7">Jul</option>
+                                            <option value="8">Aug</option>
+                                            <option value="9">Sep</option>
+                                            <option value="10">Oct</option>
+                                            <option value="11">Nov</option>
+                                            <option value="12">Dec</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinConfigIDFilter">{{l("Cash_BankConfigID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinConfigIDFilter"
+                                            [(ngModel)]="minConfigIDFilter" placeholder="{{l('From')}}"
+                                            name="minConfigIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxConfigIDFilter"
+                                            placeholder="{{l('To')}}" name="maxConfigIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="ApprovedFilterSelect">{{l("Approved")}}</label>
+                                <select class="form-control" name="ApprovedFilter" id="ApprovedFilterSelect"
+                                    [(ngModel)]="approvedFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="1">{{l("Approved")}}</option>
+                                    <option value="0">{{l("Unapproved")}}</option>
+                                </select>
+                            </div>
+
+                            <!-- <div class="col-md-3">
+            <div class="form-group">
+              <label for="NARRATIONFilter">{{l("NARRATION")}}</label>
+              <input type="text" class="form-control" id="NARRATIONFilter" name="narrationFilter" [(ngModel)]="narrationFilter">
+            </div>
+                        </div>	 -->
+
+                            <!-- <div class="col-md-3">
+            <label for="PostedFilterSelect">{{l("Posted")}}</label>
+            <select class="form-control" name="PostedFilter" id="PostedFilterSelect" [(ngModel)]="postedFilter">
+            <option value="-1">{{l("All")}}</option>
+            <option value="0">{{l("False")}}</option>
+            <option value="1">{{l("True")}}</option>
+            </select>
+                        </div> -->
+                            <!-- <div class="col-md-3">
+            <div class="form-group">
+              <label for="AuditUserFilter">{{l("AuditUser")}}</label>
+              <input type="text" class="form-control" id="AuditUserFilter" name="auditUserFilter" [(ngModel)]="auditUserFilter">
+            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+              <label  for="MinAuditTimeFilter">{{l("AuditTimeRange")}}</label>
+              <div class="input-group">
+                                    <input class="form-control m-input" id="MinAuditTimeFilter" name="MinAuditTimeFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minAuditTimeFilter">
+                              <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                    <input class="form-control m-input" id="MaxAuditTimeFilter" name="MaxAuditTimeFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAuditTimeFilter">
+              </div>
+                            </div>
+                        </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="OldCodeFilter">{{l("OldCode")}}</label>
+              <input type="text" class="form-control" id="OldCodeFilter" name="oldCodeFilter" [(ngModel)]="oldCodeFilter">
+            </div>
+                        </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="GLCONFIGConfigIDFilter">({{l("GLCONFIG")}}) {{l("ConfigID")}}</label>
+              <input type="text" class="form-control" id="GLCONFIGConfigIDFilter" name="glconfigConfigIDFilter" [(ngModel)]="glconfigConfigIDFilter">
+                            </div>
+                        </div> -->
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getGLTRHeaders($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px"
+                                        [hidden]="!isGrantedAny('Transaction.VoucherEntry.Edit', 'Transaction.VoucherEntry.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="glconfigFk.configID" hidden>
+                                        {{l('ConfigID')}}
+                                        <p-sortIcon field="glconfigConfigID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 130px" pSortableColumn="bookID">
+                                        {{l('VoucherTypeID')}}
+                                        <p-sortIcon field="gltrHeader.bookID"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 100px" pSortableColumn="fmtDocNo">
+                                        {{l('FmtDoc')}}
+                                        <p-sortIcon field="gltrHeader.fmtDocNo"></p-sortIcon>
+                                    </th> -->
+                                    <!-- <th style="width: 150px" pSortableColumn="accountID">
+                                      {{l('AccountID')}}
+                                      <p-sortIcon field="gltrHeader.accountID"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 300px" pSortableColumn="accountDesc">
+                                      {{l('AccountDesc')}}
+                                      <p-sortIcon field="gltrHeader.accountDesc"></p-sortIcon>
+                                  </th> -->
+                                    <th style="width: 100px" pSortableColumn="docNo">
+                                        {{l('Sr No')}}
+                                        <p-sortIcon field="gltrHeader.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 110px" pSortableColumn="fmtDocNo">
+                                        {{l('Voucher No')}}
+                                        <p-sortIcon field="gltrHeader.fmtDocNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="docMonth">
+                                        {{l('DocMonth')}}
+                                        <p-sortIcon field="gltrHeader.docMonth"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 120px" pSortableColumn="docDate">
+                                        {{l('DOCDATE')}}
+                                        <p-sortIcon field="gltrHeader.docDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="locId">
+                                        {{l('Location')}}
+                                        <p-sortIcon field="gltrHeader.locDesc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 300px" pSortableColumn="narration">
+                                        {{l('NARRATION')}}
+                                        <p-sortIcon field="gltrHeader.narration"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px;display: none;" pSortableColumn="chType">
+                                        {{l('CheckType')}}
+                                        <p-sortIcon field="gltrHeader.chType"></p-sortIcon>
+                                    </th>
+                                    <th class="text-right" style="width: 150px;display: none"
+                                        pSortableColumn="chNumber">
+                                        {{l('CheckNumber')}}
+                                        <p-sortIcon field="gltrHeader.chNumber"></p-sortIcon>
+                                    </th>
+                                    <th class="text-right" style="width: 100px" pSortableColumn="amount">
+                                        {{l('Amount')}}
+                                        <p-sortIcon field="gltrHeader.amount"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 100px" pSortableColumn="amount">
+                                      {{l('Amount')}}
+                                      <p-sortIcon field="gltrHeader.amount"></p-sortIcon>
+                                  </th> -->
+                                    <th style="width: 100px" pSortableColumn="approved" *ngIf="!this.transactionVoucher">
+                                        {{l('Status')}}
+                                        <p-sortIcon field="gltrHeader.approved"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="posted" hidden>
+                                        {{l('Posted')}}
+                                        <p-sortIcon field="gltrHeader.posted"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="gltrHeader.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdOn">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="gltrHeader.createdOn"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="oldCode" hidden>
+                                        {{l('OldCode')}}
+                                        <p-sortIcon field="gltrHeader.oldCode"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('Transaction.VoucherEntry.Edit', 'Transaction.VoucherEntry.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li hidden>
+                                                    <a href="javascript:;"
+                                                        (click)="viewVoucherEntryModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Transaction.VoucherEntry.Edit')"
+                                                        (click)="createOrEditVoucherEntryModal.show(record.gltrHeader.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Transaction.VoucherEntry.Print')"
+                                                        (click)="getReport(record.gltrHeader)">{{l('Print')}}</a>
+                                                </li>
+                                                <li *ngIf="!record.gltrHeader.isIntegrated && !record.gltrHeader.approved">
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Transaction.VoucherEntry.Delete')"
+                                                        (click)="deleteGLTRHeader(record.gltrHeader)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px" hidden>
+                                        <span class="ui-column-title"> {{l('ConfigID')}}</span>
+                                        <span style="color:black">{{record.glconfigConfigID}}</span>
+                                    </td>
+                                    <td style="width:130px">
+                                        <span class="ui-column-title"> {{l('VoucherTypeID')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.bookID}}</span>
+                                    </td>
+                                    <td style="width:100px">
+                                        <span class="ui-column-title"> {{l('Sr No')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.docNo}}</span>
+                                    </td>
+                                    <td style="width:110px">
+                                        <span class="ui-column-title"> {{l('Voucher No')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.fmtDocNo}}</span>
+                                    </td>
+                                    <!-- <td style="width:150px">
+                    <span class="ui-column-title"> {{l('AccountID')}}</span>
+                    {{record.gltrHeader.accountID}}
+                                      </td>
+                                  <td style="width:300px">
+                    <span class="ui-column-title"> {{l('AccountDesc')}}</span>
+                    {{record.gltrHeader.accountDesc}}
+                  </td> -->
+                                    <!-- <td class="text-right" style="width:100px">
+                                        <span class="ui-column-title"> {{l('DOCNO')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.docNo}}</span>
+                                    </td> -->
+                                    <td style="width:100px">
+                                        <span class="ui-column-title"> {{l('DocMonth')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.docMonth}}</span>
+                                    </td>
+                                    <td style="width:120px">
+                                        <span class="ui-column-title"> {{l('DOCDATE')}}</span>
+                                        <span *ngIf="record.gltrHeader.docDate">
+                                            <span style="color:black">{{record.gltrHeader.docDate | momentFormat:'L' |
+                                                date:'dd/MM/yyyy'}}</span>
+                                        </span>
+                                        <span *ngIf="!record.gltrHeader.docDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Location')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.locDesc}}</span>
+                                    </td>
+
+                                    <td style="width:300px">
+                                        <span class="ui-column-title"> {{l('NARRATION')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.narration}}</span>
+                                    </td>
+                                    <td style="width:100px;display: none">
+                                        <span class="ui-column-title"> {{l('CheckType')}}</span>
+                                        <span *ngIf="record.gltrHeader.chType==1">{{'Cash'}}</span>
+                                        <span *ngIf="record.gltrHeader.chType==2">{{'Cross'}}</span>
+                                    </td>
+                                    <td style="width:150px;display: none">
+                                        <span class="ui-column-title"> {{l('CheckNumber')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.chNumber}}</span>
+                                    </td>
+                                    <td class="text-right" style="width:100px">
+                                        <span class="ui-column-title"> {{l('Amount')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.amount| number:'.2'}}</span>
+                                    </td>
+                                    <!-- <td style="width:100px">
+                    <span class="ui-column-title"> {{l('Amount')}}</span>
+                    {{record.gltrHeader.amount}}
+                  </td> -->
+                                    <td style="width:100px" *ngIf="!this.transactionVoucher">
+                                        <span class="ui-column-title"> {{l('Status')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.gltrHeader.approved">{{'Approved' | localize}}</span>
+                                        <!-- <span class="kt-badge kt-badge--info kt-badge--inline" *ngIf="record.gltrHeader.approved && record.gltrHeader.posted">{{'Posted' | localize}}</span> -->
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.gltrHeader.approved">{{'Unapproved' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px" hidden>
+                                        <span class="ui-column-title"> {{l('Posted')}}</span>
+                                        <div *ngIf="record.gltrHeader.posted" class="text-center"><i
+                                                class="fa fa-check-circle kt--font-success" title="True"></i></div>
+                                        <div *ngIf="!record.gltrHeader.posted" class="text-center"><i
+                                                class="fa fa-times-circle" title="False"></i></div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.createdBy}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.gltrHeader.auditTime">
+                                            <span style="color:black">{{record.gltrHeader.createdOn | momentFormat:'L' |
+                                                date:'dd/MM/yyyy'}}</span>
+                                        </span>
+                                        <span *ngIf="!record.gltrHeader.auditTime">-</span>
+                                    </td>
+                                    <td style="width:150px" hidden>
+                                        <span class="ui-column-title"> {{l('OldCode')}}</span>
+                                        <span style="color:black">{{record.gltrHeader.oldCode}}</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getGLTRHeaders($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditVoucherEntryModal #createOrEditVoucherEntryModal (modalSave)="getGLTRHeaders()">
+    </createOrEditVoucherEntryModal>
+    <viewVoucherEntryModal #viewVoucherEntryModalComponent></viewVoucherEntryModal>
+    <app-reportviewr-modal #reportviewrModalComponent></app-reportviewr-modal>
+
+
+
+
+
+</div>

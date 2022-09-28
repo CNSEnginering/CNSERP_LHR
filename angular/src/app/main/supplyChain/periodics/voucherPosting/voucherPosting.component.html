@@ -1,0 +1,365 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("VoucherPosting")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("VoucherPostingInfo")}}
+            </span> -->
+        </div>
+    </div>
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+
+                <form class="kt-form" autocomplete="off">
+
+                    <div class="form-group row col-md-10">
+                        <label class="col-form-label col-lg-2">From Date:</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control form-control-sm" name="fromDate" id="fromDate"
+								bsDatepicker [(ngModel)]="fromDate._d"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                >
+                        </div>
+
+                        <label class="col-form-label col-lg-2">To Date:</label>
+                        <div class="col-lg-4">
+							<input type="text" class="form-control form-control-sm" name="toDate" id="toDate"
+							[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                bsDatepicker [(ngModel)]="toDate._d">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row col-md-10">
+                        <label class="col-form-label col-lg-2">From Doc:</label>
+                        <div class="col-lg-4">
+                            <input type="number" id="fromDoc" class="form-control form-control-sm"
+                                [(ngModel)]="voucherPosting.fromDoc" name="fromDoc" required />
+                        </div>
+                        <label class="col-form-label col-lg-2">To Doc:</label>
+                        <div class="col-lg-4">
+                            <input type="number" id="toDoc" class="form-control form-control-sm"
+                                [(ngModel)]="voucherPosting.toDoc" name="toDoc" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group row col-md-10">
+                        <label class="col-form-label col-lg-2">Last Posted Date:</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control form-control-sm" name="lastPostedDate" id="lastPostedDate"
+								bsDatepicker [(ngModel)]="lastPostedDate._d"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                disabled
+                                >
+                        </div>
+
+                        <label class="col-form-label col-lg-2">Current Posting Date:</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control form-control-sm" name="currentPostingDate"
+							 id="currentPostingDate"
+							 [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                bsDatepicker [(ngModel)]="currentPostingDate._d"
+                                (ngModelChange) ="checkDate($event)"
+                                >
+                        </div>
+
+                    </div>
+
+                    <br><br><br>
+
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="receipt" class="kt-radio">
+                                <input id="receipt" type="radio" [value]="'receipt'" name="receipt"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("Receipt")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="sales" class="kt-radio">
+                                <input id="sales" type="radio" [value]="'sales'" name="sales"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("Sales")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="receiptReturn" class="kt-radio">
+                                <input id="receiptReturn" type="radio" [value]="'receiptReturn'"
+                                 name="receiptReturn"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("ReceiptReturn")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="salesReturn" class="kt-radio">
+                                <input id="salesReturn" type="radio" [value]="'salesReturn'"
+                                 name="salesReturn"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("Sales Return")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="transfer" class="kt-radio">
+                                <input id="transfer" type="radio" [value]="'transfer'" name="transfer"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("Transfer")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="consumption" class="kt-radio">
+                                <input id="consumption" type="radio" [value]="'consumption'" name="consumption"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("Consumption")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="bankTransfer" class="kt-radio">
+                                <input id="bankTransfer" type="radio" [value]="'bankTransfer'" name="bankTransfer"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("BankTransfer")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="assemblies" class="kt-radio">
+                                <input id="assemblies" type="radio" [value]="'assemblies'"
+                                 name="assemblies"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("Assemblies")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="creditNote" class="kt-radio">
+                                <input id="creditNote" type="radio" [value]="'creditNote'" name="creditNote"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("CreditNote")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="debitNote" class="kt-radio">
+                                <input id="debitNote" type="radio" [value]="'debitNote'" name="debitNote"
+                                    [(ngModel)]="options" (change)="handleChange($event)">
+                                {{l("DebitNote")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+<!-- 
+                    <div class="row">
+                        <div class="col">
+                            <label for="Receipt" class="kt-checkbox">
+                                <input id="Receipt" type="checkbox" name="Receipt" [(ngModel)]="voucherPosting.receipt">
+                                {{l("Receipt")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Sales" class="kt-checkbox">
+                                <input id="Sales" type="checkbox" name="Sales" [(ngModel)]="voucherPosting.sales">
+                                {{l("Sales")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="Receipt Return" class="kt-checkbox">
+                                <input id="Receipt Return" type="checkbox" name="ReceiptReturn"
+                                    [(ngModel)]="voucherPosting.receiptReturn">
+                                {{l("Receipt Return")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Sales Return" class="kt-checkbox">
+                                <input id="Sales Return" type="checkbox" name="Sales Return"
+                                    [(ngModel)]="voucherPosting.salesReturn">
+                                {{l("Sales Return")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="Transfer" class="kt-checkbox">
+                                <input id="Transfer" type="checkbox" name="Transfer"
+                                    [(ngModel)]="voucherPosting.transfer">
+                                {{l("Transfer")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Consumption" class="kt-checkbox">
+                                <input id="Consumption" type="checkbox" name="Consumption"
+                                    [(ngModel)]="voucherPosting.consumption">
+                                {{l("Consumption")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="Bank Transfer" class="kt-checkbox">
+                                <input id="Bank Transfer" type="checkbox" name="Bank Transfer"
+                                    [(ngModel)]="voucherPosting.bankTransfer">
+                                {{l("BankTransfer")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="Assemblies" class="kt-checkbox">
+                                <input id="Assemblies" type="checkbox" name="Assemblies"
+                                    [(ngModel)]="voucherPosting.assemblies">
+                                {{l("Assemblies")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="creditNote" class="kt-checkbox">
+                                <input id="creditNote" type="checkbox" name="creditNote"
+                                    [(ngModel)]="voucherPosting.creditNote">
+                                {{l("CreditNote")}}
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label for="debitNote" class="kt-checkbox">
+                                <input id="debitNote" type="checkbox" name="debitNote"
+                                    [(ngModel)]="voucherPosting.debitNote">
+                                {{l("DebitNote")}}
+                                <span></span>
+                            </label>
+                        </div>
+                    </div> -->
+                   
+                   
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 150px" pSortableColumn="docNo">
+                                            {{l('DocNo')}}
+                                            <p-sortIcon field="docNo"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="docDate">
+                                            {{l('DocDate')}}
+                                            <p-sortIcon field="docDate"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="narration">
+                                            {{l('Narration')}}
+                                            <p-sortIcon field="narration"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="posted">
+                                            {{l('Posted')}}
+                                            <p-sortIcon field="posted"></p-sortIcon>
+                                        </th>
+                                        <!-- <th style="width: 150px" pSortableColumn="docDate">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="docDate"></p-sortIcon>
+                                        </th> -->
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('docNo')}}</span>
+                                            {{record.docNo}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('docDate')}}</span>
+                                            {{record.docDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('narration')}}</span>
+                                            {{record.narration}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('posted')}}</span>
+                                            <input class="form-check-input ml-2" type="checkbox" value="{{record.id}}"
+                                                (change)="getDataForApproval(checkboxes)" #checkboxes />
+                                        </td>
+                                        <!-- <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('Status')}}</span>
+                                            {{mode == "Approval" ? "Un Approved" : "Approved"}}
+                                        </td> -->
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="clearfix col-md-10">
+                        <!-- <span class="float-left">
+                            <div class="col">
+                                <label for="CheckAll" class="kt-checkbox">
+                                    <input id="CheckAll" type="checkbox" name="CheckAll" (click)="onCheckAllChange()">
+                                    {{l("Check All")}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </span> -->
+                      
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary" 
+                                (click)="CheckAllList()"
+                                >
+                                <span >{{listText}}</span></button>
+                                <button type="submit" class="btn btn-primary" (click)="getData()">
+                                    <span>{{l("GetData")}}</span></button>
+                                <button type="submit" class="btn btn-success green" [buttonBusy]="saving"
+								[disabled]="!(this.posting.length > 0)" id="processVoucher"
+                                    [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-spinner"></i>
+                                    <span>{{l("ProcessVoucher")}}</span></button>
+                            </div>
+                    </div>
+                    <br>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

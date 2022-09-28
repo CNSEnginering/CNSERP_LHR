@@ -1,0 +1,136 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    
+                   
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CompanyID")}} :</h6>
+                        {{ item.companyProfile.id }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CompanyName")}} :</h6>
+                        {{ item.companyProfile.companyName }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Phone")}} :</h6>
+                        {{ item.companyProfile.phone }}
+                    </div>
+
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Address")}} :</h6>
+                        {{ item.companyProfile.address1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Address")}} :</h6>
+                        {{ item.companyProfile.address2 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Legal Name")}} :</h6>
+                        {{ item.companyProfile.legalName }}
+                    </div>
+
+
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Country")}} :</h6>
+                        {{ item.companyProfile.country }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("State")}} :</h6>
+                        {{ item.companyProfile.state }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("City")}} :</h6>
+                        {{ item.companyProfile.city }}
+                    </div>
+
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Phone")}} :</h6>
+                        {{ item.companyProfile.phone }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ZipCode")}} :</h6>
+                        {{ item.companyProfile.zipCode }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Fax")}} :</h6>
+                        {{ item.companyProfile.fax }}
+                    </div>
+
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Email")}} :</h6>
+                        {{ item.companyProfile.email }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("url")}} :</h6>
+                        {{ item.companyProfile.url }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SLRegNo")}} :</h6>
+                        {{ item.companyProfile.slRegNo }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTPERSON")}} :</h6>
+                        {{ item.companyProfile.contperson }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Designation")}} :</h6>
+                        {{ item.companyProfile.designation }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTPHONE")}} :</h6>
+                        {{ item.companyProfile.contphone }}
+                    </div>
+
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTEMAIL")}} :</h6>
+                        {{ item.companyProfile.contemail }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTPERSON1")}} :</h6>
+                        {{ item.companyProfile.contpersoN1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DESIGNATION")}} :</h6>
+                        {{ item.companyProfile.designatioN1 }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTPHONE1")}} :</h6>
+                        {{ item.companyProfile.contphonE1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTEMAIL1")}} :</h6>
+                        {{ item.companyProfile.contemaiL1 }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

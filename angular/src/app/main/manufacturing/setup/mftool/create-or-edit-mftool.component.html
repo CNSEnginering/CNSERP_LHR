@@ -1,0 +1,75 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("MFTOOL")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="TypeID">{{l("TypeIDF")}} <span class="text-danger">*</span> </label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="TypeID" name="TypeID"
+                                    [(ngModel)]="dto.toolid" type="text" required maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row form-group col-md-8">
+                            <label for="TypeID">{{l("ToolTypeID")}} <span class="text-danger">*</span> </label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="ToolTypedesc" disabled name="ToolTypedesc"
+                                    [(ngModel)]="dto.tooltypedesc" type="text" required maxlength="10">
+                                    <button
+                                    class="btn btn-primary blue btn-sm btn-pick"
+                                    [disabled]="this.editMode"
+                                   (click)="openlookUpModal()"
+                                    type="button"
+                                >
+                                <input class="form-control form-control-sm" id="ToolTypeID" disabled name="ToolTypeID"
+                                    [(ngModel)]="dto.tooltyid" type="hidden" required maxlength="10">
+                                    <i class="fa fa-search"></i>
+                                    {{ l("Pick") }}
+                                </button>
+                                </div>
+                         
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                        <div class="form-group col-md-4">
+                            <label for="ToolStatus">{{l("ToolStatus")}}</label>
+                            <select id="ToolStatus" class="form-control form-control-sm" [(ngModel)]="dto.status" name="active" >
+                                <option [value]="true">Active</option>
+                                <option [value]="false">InActive</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label for="ToolDesc">{{l("ToolDesc")}}<span class="text-danger">*</span> </label>
+                            <input type="text" required class="form-control form-control-md" id="ToolDesc"
+                                name="ToolDesc" [(ngModel)]="dto.tooldesc">
+                        </div>
+                    </div>
+                   
+                   
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="Form.invalid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<tooltypeLookupTableModal #tooltypeLookupTableModal (modalSave)="getToolType()"></tooltypeLookupTableModal>

@@ -1,0 +1,277 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="editMode == true">{{l("EditPostDatedCheque")}}{{type}}</span>
+                        <span *ngIf="editMode == false">{{l("NewPostDatedCheque")}}{{type}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="locID" class="col-sm-2 col-form-label">{{l("Loc")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" disabled required class="form-control form-control-sm" id="locID"
+                                    name="locID" [(ngModel)]="glCheques.locationID" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openModal('Loc')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="locDesc"
+                                name="locDesc" [(ngModel)]="glCheques.locDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="docId" class="col-sm-2 col-form-label">{{l("DOCID")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" disabled required class="form-control form-control-sm" id="docId"
+                                    name="docId" [(ngModel)]="glCheques.docID" />
+                            </div>
+                        </div>
+                        <label for="entryDate" class="col-sm-2 col-form-label">{{l("EntryDate")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" bsDatepicker required class="form-control form-control-sm" id="entryDate"
+                                name="entryDate" [(ngModel)]="glCheques.entryDate" (ngModelChange)="entryDate($event)"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" />
+                        </div>
+                    </div>
+                    <!-- </div>
+                <div class="modal-body form-group "> -->
+                    <div class="row mb-2">
+                        <label for="type" class="col-sm-2 col-form-label">{{l("DOCTYPE")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <span *ngIf="editMode == false">
+                                <select (change)="handleChange($event)" [(ngModel)]="glCheques.typeID" name="typeID"
+                                    id="typeID" class="form-control" disabled>
+                                    <option value="0">{{l("Issued")}}</option>
+                                    <option value="1"> {{l("Received")}}</option>
+                                </select>
+                            </span>
+                            <span *ngIf="editMode == true">
+                                <select (change)="handleChange($event)" [(ngModel)]="glCheques.typeID" name="typeID"
+                                    id="typeID" class="form-control" disabled>
+                                    <option value="0">{{l("Issued")}}</option>
+                                    <option value="1"> {{l("Received")}}</option>
+                                </select>
+                            </span>
+                        </div>
+                        <!-- <label for="GLTRDetail_ChequeType">{{l("ChequeType")}} -->
+                        <label for="ChequeType" class="col-sm-2 col-form-label">{{l("InstrumentType")}}
+                            <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <select type="text" id="ChequeType" class="form-control form-control-sm"
+                                [(ngModel)]="glCheques.chType" name="chequeType" required>
+                                <!-- <option value="1">Cash</option>
+							 <option value="2">Cross</option> -->
+                                <option value="1">Cheque-Cash</option>
+                                <option value="2">Cheque-Cross</option>
+                                <option value="3">P.O.</option>
+                                <option value="4">Online</option>
+                                <option value="5">Other</option>
+                            </select>
+                        </div>
+                        <!-- <label for="received" class="kt-radio">
+									<input id="received" type="radio" [value]="'1'" name="received"
+                                    [(ngModel)]="glCheques.typeID" (change)="handleChange($event)">
+                                {{l("Received")}}
+                                <span></span>
+                            </label>
+
+                            <label for="issued" class="kt-radio">
+									<input id="issued" type="radio" [value]="'0'" name="issued"
+                                    [(ngModel)]="glCheques.typeID" (change)="handleChange($event)">
+                                {{l("Issued")}}
+                                <span></span>
+                            </label> -->
+
+                    </div>
+                    <div class="row">
+                        <label for="chequeDate" class="col-sm-2 col-form-label">{{l("ChequeDate")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" bsDatepicker required class="form-control form-control-sm"
+                                    id="chequeDate" name="chequeDate" [(ngModel)]="glCheques.chequeDate"
+                                    (ngModelChange)="chequeDate($event)"
+                                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" />
+                            </div>
+                        </div>
+                        <label for="chequeNo" class="col-sm-2 col-form-label">{{l("ChequeNo")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" required class="form-control form-control-sm" id="chequeNo"
+                                [(ngModel)]="glCheques.chequeNo" (ngModelChange)="checkFormValid()" name="chequeNo"
+                                maxlength="50" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="chequeAmt" class="col-sm-2 col-form-label">{{l("ChequeAmt")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input required style="font-size:13px;" class="form-control form-control-sm"
+                                    id="chequeAmt" name="chequeAmt" [(ngModel)]="glCheques.chequeAmt" currencyMask
+                                    (ngModelChange)="checkFormValid()"
+                                    [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" #currency />
+                                <!-- <input currencyMask [(ngModel)]="value"
+                                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/> -->
+                            </div>
+                        </div>
+                        <label for="chequeStatus" class="col-sm-2 col-form-label">{{l("ChequeStatus")}} <span class="require-field">*</span></label>
+                        <div class="col-sm-4 mb-2">
+                            <span *ngIf="glCheques.typeID==0">
+                                <select [(ngModel)]="glCheques.chequeStatus" name="chequeStatus" id="chequeStatus"
+                                    class="form-control" (ngModelChange)="chequeStatus($event)">
+                                    <option value="2" >Issued</option>
+                                    <option value="4">Cleared</option>
+                                    <option value="5">Cancelled</option>
+                                    <option value="6">Holded</option>
+                                    <option value="7">Bounced</option>
+                                </select>
+                            </span>
+                            <span *ngIf="glCheques.typeID==1">
+                                <select [(ngModel)]="glCheques.chequeStatus" name="chequeStatus" id="chequeStatus"
+                                    class="form-control" (ngModelChange)="chequeStatus($event)">
+                                    <option value="1">Collected</option>
+                                    <option value="3">Deposited</option>
+                                    <option value="6">Holded</option>
+                                    <option value="7">Bounced</option>
+                                </select>
+                            </span>
+                        </div>
+
+
+                    </div>
+                    <div class="row" *ngIf="glCheques.chequeStatus=='4' || glCheques.chequeStatus=='3'">
+                        <label for="clearingDate" class="col-sm-2 col-form-label">{{l("ClearingDate")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" bsDatepicker required class="form-control form-control-sm"
+                                    id="clearingDate" name="clearingDate" (ngModelChange)="statusDate($event)"
+                                    [(ngModel)]="glCheques.statusDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="partyBank" class="col-sm-2 col-form-label">{{l("PartyBank")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" required class="form-control form-control-sm" id="partyBank"
+                                    name="partyBank" [(ngModel)]="glCheques.partyBank" maxlength="100" />
+                            </div>
+                        </div>
+                        <label for="remarks" class="col-sm-2 col-form-label">{{l("Narration")}} <span class="require-field">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" required class="form-control form-control-sm" id="remarks" name="remarks"
+                                [(ngModel)]="glCheques.remarks" (ngModelChange)="checkFormValid()" maxlength="100" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="accountID" class="col-sm-2 col-form-label">{{l("AccountID")}} <span class="require-field">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accountID" name="accountID"
+                                    [(ngModel)]="glCheques.accountID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openModal('AccId')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="accountName"
+                                name="accountName" [(ngModel)]="glCheques.accountName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="partyID" class="col-sm-2 col-form-label">{{l("PartyID")}} <span class="require-field">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="partyID" name="partyID"
+                                    [(ngModel)]="glCheques.partyID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openModal('Party')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="partyName"
+                                name="partyName" [(ngModel)]="glCheques.partyName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="bankID" class="col-sm-2 col-form-label">{{l("BankID")}} <span class="require-field">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="bankID" name="bankID"
+                                    [(ngModel)]="glCheques.bankID" type="text" disabled required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openModal('Bank')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="bankName"
+                                name="bankName" [(ngModel)]="glCheques.bankName" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="bankAccountID" class="col-sm-2 col-form-label">{{l("BankAccountID")}} <span class="require-field">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="bankAccountID" name="bankAccountID"
+                                    [(ngModel)]="glCheques.bankAccountID" type="text" disabled required>
+                            </div>
+                        </div>
+                        <label for="ConfigID" class="col-sm-2 col-form-label">{{l("ConfigID")}} <span class="require-field">*</span></label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled required class="form-control form-control-sm" id="configID"
+                                name="configID" [(ngModel)]="glCheques.configID" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+
+                    <button type="button" *ngIf="glCheques.id && (this.glCheques.chequeStatus == 3
+                        || this.glCheques.chequeStatus == 4
+                        )
+                        && this.glCheques.posted == 0
+                        " (click)="approve()" [disabled]="!validDate" class="btn btn-success green"
+                        [disabled]="!formValid || validDate == false" [buttonBusy]="processing"
+                        [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i> <span>{{l("Approve")}}</span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary blue" *ngIf="this.glCheques.posted == 0"
+                        [disabled]="!formValid || validDate == false" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- <glChequesLookupTableModal #glChequesLookupTableModal (modalSave)="getLookUpData()">
+    </glChequesLookupTableModal> -->
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getData()"></financeLookupTableModal>
+    <inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getData()"></inventoryLookupTableModal>
+    <commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getData()">
+    </commonServiceLookupTableModal>
+</div>

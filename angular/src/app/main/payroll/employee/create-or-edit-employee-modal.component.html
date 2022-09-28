@@ -1,0 +1,866 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<form *ngIf="active" #employeeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="employees.id">{{l("EditEmployee")}}</span>
+						<span *ngIf="!employees.id">{{l("CreateNewEmployee")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body form-group">
+
+					<div class="row mt-1">
+						<div class="col-md-8" id="div2">
+							<div class="row mb-3">
+								
+								<div class="col-md-4">
+
+									<label for="Employee_EmployeeID">{{l("EmployeeID")}}<span
+											class="require-field">*</span></label>
+									<input class="form-control form-control-sm" id="Employee_EmployeeID"
+										name="employeeID" [(ngModel)]="employees.employeeID" type="text"
+										(change)="isValidId($event)" required />
+								</div>
+								<div class="col-md-4">
+									<label for="Employee_EmployeeName">{{l("EmployeeName")}}<span
+											class="require-field">*</span></label>
+									<input class="form-control form-control-sm" id="Employee_EmployeeName"
+										name="employeeName" [(ngModel)]="employees.employeeName" type="text" required />
+								</div>
+								<div class="col-md-4">
+									<label for="Employee_EmployeeOldID">{{l("EmployeeOldID")}}</label>
+									<input class="form-control form-control-sm" id="Employee_EmployeeOldID"
+										name="EmployeeOldID" [(ngModel)]="employees.employeeOldId" type="text" />
+								</div>
+							</div>
+							<div class="d-flex">
+								<div class="m-checkbox-list mr-4">
+									<label for="Employee_Active" class="kt-checkbox">
+										<input id="Employee_Active" type="checkbox" name="Active"
+											[(ngModel)]="employees.active">
+										{{l("Active")}}
+										<span></span>
+									</label>
+								</div>
+								<div class="m-checkbox-list">
+									<label for="Employee_Confirmed" class="kt-checkbox">
+										<input id="Employee_Confirmed" type="checkbox" name="Confirmed"
+											[(ngModel)]="employees.confirmed">
+										{{l("Confirmed")}}
+										<span></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4" id="div1">
+							<div class="float-right">
+								<img [src]="profileUploadUrl" alt="No Profile Picture" class="custom-img">
+							</div>
+						</div>
+					</div>
+
+
+					<!-- <div class="row mt-1">
+						<div class="col-md-4">
+							<label for="Employee_EmployeeName">{{l("EmployeeName")}}<span
+									class="require-field">*</span></label>
+							<input class="form-control form-control-sm" id="Employee_EmployeeName" name="employeeName"
+								[(ngModel)]="employees.employeeName" type="text" required />
+						</div>
+					</div> -->
+
+
+
+					<br><br>
+					<tabset>
+						<tab heading="Basic Info">
+							<div class="row mt-2">
+								<div class="col-md-4">
+									<label for="Employee_FatherName">{{l("F/H Name")}}</label>
+									<input class="form-control form-control-sm" id="Employee_FatherName"
+										name="Employee_FatherName" [(ngModel)]="employees.fatherName" type="text" />
+								</div>
+								<div class="col-md-4">
+									<label for="Employee_HomeAddress">{{l("HomeAddress")}}</label>
+									<input class="form-control form-control-sm" id="Employee_HomeAddress"
+										name="Employee_HomeAddress" [(ngModel)]="employees.home_address" type="text" />
+								</div>
+
+								<div class="col-md-4">
+									<label for="Employee_DateofBirth">{{l("DateofBirth")}}</label>
+									<input class="form-control form-control-sm" id="Employee_DateofBirth"
+										name="Employee_DateofBirth" bsDatepicker [(ngModel)]="dateOfBirth"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" type="text" readonly/>
+								</div>
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-4">
+									<label for="Employee_Cnic">{{l("Cnic")}}</label>
+									<p-inputMask type="text" [style]="{'font-size': '0.875rem'}" mask="99999-9999999-9"
+										placeholder="99999-9999999-9" styleClass="form-control form-control-sm"
+										id="Employee_Cnic" name="Employee_Cnic" [(ngModel)]="employees.cnic">
+									</p-inputMask>
+								</div>
+								<div class="col-md-4">
+									<label for="Employee_PhoneNo">{{l("PhoneNo")}}</label>
+									<p-inputMask type="text" [style]="{'font-size': '0.875rem'}"
+										styleClass="form-control form-control-sm" id="Employee_phoneNo"
+										name="Employee_PhoneNo" mask="+99-999-9999999" placeholder="+92-300-9999999"
+										[(ngModel)]="employees.phoneNo">
+									</p-inputMask>
+								</div>
+								<div class="col-md-2">
+									<label for="Employee_Gender">{{l("Gender")}}</label>
+									<div class="kt-radio-inline">
+										<label class="kt-radio kt-radio--solid">
+											<input type="radio" name="Gender" [(ngModel)]="gender" value="male">
+											Male
+											<span></span>
+										</label>
+										<label class="kt-radio kt-radio--solid">
+											<input type="radio" name="Gender" [(ngModel)]="gender" value="female">
+											Female
+											<span></span>
+										</label>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label for="Marital_Status">{{l("MaritalStatus")}}</label>
+									<div class="kt-radio-inline">
+										<label class="kt-radio kt-radio--solid">
+											<input type="radio" name="Marital_Status"
+												[(ngModel)]="employees.maritalStatus" value="M">
+											Married
+											<span></span>
+										</label>
+										<label class="kt-radio kt-radio--solid">
+											<input type="radio" name="Marital_Status"
+												[(ngModel)]="employees.maritalStatus" value="S">
+											Single
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="row row mt-2">
+								<div class="col-md-4">
+									<label for="Employee_NativeCity">{{l("City")}}</label>
+									<input class="form-control form-control-sm" id="Employee_NativeCity"
+										name="NativeCity" [(ngModel)]="employees.city" type="text" />
+								</div>
+								<div class="col-md-4">
+									<label for="Employee_AcademicQualification">{{l("AcademicQualification")}}</label>
+									<input class="form-control form-control-sm" id="Employee_AcademicQualification"
+										name="AcademicQualification" [(ngModel)]="employees.academic_qualification"
+										type="text" />
+								</div>
+								<div class="col-md-4">
+									<label for="Employee_Ntn">{{l("Ntn")}}</label>
+									<p-inputMask type="text" [style]="{'font-size': '0.875rem'}"
+										styleClass="form-control form-control-sm" id="Employee_Ntn" mask="9999999-9"
+										placeholder="9999999-9" name="Ntn" [(ngModel)]="employees.ntn">
+									</p-inputMask>
+								</div>
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-3">
+									<label for="Employee_EducationID">{{l("Education")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_EducationID"
+											class="form-control form-control-sm" [(ngModel)]="employees.edID"
+											name="EducationID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openEducationModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setEducationNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="educationName">{{l("EducationName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_EducationName"
+										name="EducationName" [(ngModel)]="educationName" type="text" disabled />
+								</div>
+
+								<div class="col-md-3">
+									<label for="Employee_ReligionID">{{l("Religion")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_ReligionID" class="form-control form-control-sm"
+											[(ngModel)]="employees.religionID" name="ReligionID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openReligionModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setReligionNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_ReligionName">{{l("ReligionName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_ReligionName"
+										name="ReligionName" [(ngModel)]="religionName" type="text" disabled />
+								</div>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col-md-3">
+									<label for="Employee_LocID">{{l("LocID")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_LocID" class="form-control form-control-sm"
+											[(ngModel)]="employees.locID" name="LocID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openLocationModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setLocationNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_LocName">{{l("Location")}}</label>
+									<input class="form-control form-control-sm" id="Employee_LocName" name="LocName"
+										[(ngModel)]="locationName" type="text" disabled />
+								</div>
+
+							</div>
+
+
+						</tab>
+						<tab heading="Status">
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_AppointmentDate">{{l("AppointmentDate")}}</label>
+									<input class="form-control form-control-sm" id="Employee_AppointmentDate"
+										name="AppointmentDate" [(ngModel)]="apointment_date" type="text"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker readonly />
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_BloodGroup">{{l("BloodGroup")}}</label>
+									<input class="form-control form-control-sm" id="Employee_BloodGroup"
+										name="BloodGroup" [(ngModel)]="employees.bloodGroup" type="text" />
+								</div>
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_DateOfJoining">{{l("DateOfJoining")}}</label>
+									<input class="form-control form-control-sm" id="Employee_DateOfJoining"
+										name="DateOfJoining" [(ngModel)]="date_of_joining" type="text"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker  readonly />
+								</div>
+								<div class="col-md-6">
+									<label *ngIf="!employees.active"
+										for="Employee_DateOfLeaving">{{l("DateOfLeaving")}}</label>
+									<input class="form-control form-control-sm" *ngIf="!employees.active"
+										id="Employee_DateOfLeaving" name="DateOfLeaving" [(ngModel)]="date_of_leaving"
+										type="text" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker readonly />
+								</div>
+							</div>
+							<div class="row mt-2" *ngIf="!employees.active">
+								<div class="col-md-6">
+									<label for="Employee_TypeofNoticePeriod">{{l("TypeofNoticePeriod")}}</label>
+									<select type="text" id="Employee_TypeofNoticePeriod"
+										class="form-control form-control-sm" name="TypeofNoticePeriod"
+										[(ngModel)]="type_of_notice_period">
+										<option value="Select Type of Notice Period" disabled selected>Select Type of
+											Notice Period</option>
+										<option value="1">30 days with notice</option>
+										<option value="2">30 days without notice</option>
+										<option value="3">24 hours with notice</option>
+										<option value="4">24 hours without notice</option>
+										<option value="5">30 days with notice (self)</option>
+										<option value="6">30 days without notice (company)</option>
+									</select>
+								</div>
+
+								<div class="col-md-6">
+									<label for="Employee_WaveOff">{{l("WaveOffApproved")}}</label>
+									<br>
+									<label for="Employee_WaveOff" class="kt-checkbox">
+										<input id="Employee_WaveOff" type="checkbox" name="WaveOff"
+											[(ngModel)]="employees.waveOff">
+										<span></span>
+									</label>
+								</div>
+
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_ContractExpDate">{{l("ContractExpDate")}}</label>
+									<input class="form-control form-control-sm" id="Employee_ContractExpDate"
+										name="ContractExpDate" [(ngModel)]="contractExpDate" type="text"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker readonly />
+								</div>
+							</div>
+						</tab>
+						<tab heading="Departments">
+
+							<div class="row mt-2">
+								<div class="col-md-3">
+									<label for="Employee_DepartmentID">{{l("Department")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_DepartmentID"
+											class="form-control form-control-sm" [(ngModel)]="employees.deptID"
+											name="DepartmentID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openDepartmentModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setDepartmentNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_DepartmentName">{{l("DepartmentName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_DepartmentName"
+										name="DepartmentName" [(ngModel)]="deptName" type="text" disabled />
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_Section">{{l("Section")}}</label>
+									<div class="input-group">
+										<input type="text" id="Employee_SectionID" class="form-control form-control-sm"
+											[(ngModel)]="employees.secID" name="Section" />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openSectionModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setSectionNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_SectionName">{{l("SectionName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_SectionName"
+										name="SectionName" [(ngModel)]="secName" type="text" disabled />
+								</div>
+							</div>
+							<div class="row mt-2">
+								<!--add new fields here!-->
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-3">
+									<label for="Employee_DesignationID">{{l("Designation")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_designationID"
+											class="form-control form-control-sm" [(ngModel)]="employees.designationID"
+											name="designationID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openDesignationModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setDesignationNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_DesignationName">{{l("DesignationName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_DesignationName"
+										name="DesignationName" [(ngModel)]="designationName" type="text" disabled />
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_SubDesignationID">{{l("SubDesignation")}}</label>
+									<div class="input-group">
+										<input type="text" id="Employee_SubDesignationID"
+											class="form-control form-control-sm"
+											[(ngModel)]="employees.subDesignationID" name="SubDesignationID" />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openSubDesignationModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setSubDesignationNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_SubDesignationName">{{l("SubDesignationName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_SubDesignationName"
+										name="SubDesignationName" [(ngModel)]="subDesignationName" type="text"
+										disabled />
+								</div>
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-3">
+									<label for="Employee_ShiftID">{{l("Shift")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_ShiftID" class="form-control form-control-sm"
+											[(ngModel)]="employees.shiftID" name="ShiftID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openShiftModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setShiftNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_ShiftName">{{l("ShiftName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_ShiftName" name="ShiftName"
+										[(ngModel)]="shiftName" type="text" disabled />
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_TypeID">{{l("EmploymentType")}}<span
+											class="require-field">*</span></label>
+									<div class="input-group">
+										<input type="text" id="Employee_TypeID" class="form-control form-control-sm"
+											[(ngModel)]="employees.typeID" name="TypeID" required />
+										<div class="input-group-append">
+											<button class="btn btn-primary blue btn-sm" type="button"
+												(click)="openEmpTypeModal()"><i class="fa fa-search"></i>
+												{{l("Pick")}}</button>
+										</div>
+										<div class="input-group-prepend">
+											<button class="btn btn-danger btn-icon btn-sm" type="button"
+												(click)="setEmpTypeNull()"><i class="fa fa-times"></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_TypeName">{{l("EmploymentTypeName")}}</label>
+									<input class="form-control form-control-sm" id="Employee_EmpTypeName"
+										name="EmpTypeName" [(ngModel)]="empTypeName" type="text" disabled />
+								</div>
+							</div>
+						</tab>
+						<tab heading="Rest Days">
+							<div class="row form-group">
+								<div class="col-md-6">
+									<h5 for="Employee_FirstWeekRestDays">{{l("FirstWeekRestDays")}}</h5>
+								</div>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_FirstRestDay">{{l("FirstRestDay")}}</label>
+									<select type="text" id="Employee_FirstRestDay" class="form-control form-control-sm"
+										name="FirstRestDay" (ngModelChange)="updateFirstRestDayW2($event)"
+										[(ngModel)]="first_rest_days">
+										<option value="Select Rest Day">Select Rest Day</option>
+										<option value="0">No Rest</option>
+										<option value="1" selected>Sunday</option>
+										<option value="2">Monday</option>
+										<option value="3">Tuesday</option>
+										<option value="4">Wednesday</option>
+										<option value="5">Thursday</option>
+										<option value="6">Friday</option>
+										<option value="7">Saturday</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_SecondRestDay">{{l("SecondRestDay")}}</label>
+
+									<select type="text" id="Employee_SecondRestDay" class="form-control form-control-sm"
+										name="SecondRestDay" (ngModelChange)="updateSecondRestDayW2($event)"
+										[(ngModel)]="second_rest_days">
+										<option value="Select Rest Day">Select Rest Day</option>
+										<option value="0">No Rest</option>
+										<option value="1" selected>Sunday</option>
+										<option value="2">Monday</option>
+										<option value="3">Tuesday</option>
+										<option value="4">Wednesday</option>
+										<option value="5">Thursday</option>
+										<option value="6">Friday</option>
+										<option value="7">Saturday</option>
+									</select>
+
+								</div>
+							</div>
+
+							<br><br><br>
+							<div class="row form-group">
+								<div class="col-md-6">
+									<h5 for="Employee_SecondWeekRestDays">{{l("SecondWeekRestDays")}}</h5>
+								</div>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_FirstRestDay2">{{l("FirstRestDay")}}</label>
+									<select type="text" id="Employee_FirstRestDay2" class="form-control form-control-sm"
+										name="FirstRestDay2" [(ngModel)]="first_rest_days_w2">
+										<option value="Select Rest Day">Select Rest Day</option>
+										<option value="0">No Rest</option>
+										<option value="1" selected>Sunday</option>
+										<option value="2">Monday</option>
+										<option value="3">Tuesday</option>
+										<option value="4">Wednesday</option>
+										<option value="5">Thursday</option>
+										<option value="6">Friday</option>
+										<option value="7">Saturday</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_SecondRestDay2">{{l("SecondRestDay")}}</label>
+									<select type="text" id="Employee_SecondRestDay2"
+										class="form-control form-control-sm" name="SecondRestDay2"
+										[(ngModel)]="second_rest_days_w2">
+										<option value="Select Rest Day">Select Rest Day</option>
+										<option value="0">No Rest</option>
+										<option value="1" selected>Sunday</option>
+										<option value="2">Monday</option>
+										<option value="3">Tuesday</option>
+										<option value="4">Wednesday</option>
+										<option value="5">Thursday</option>
+										<option value="6">Friday</option>
+										<option value="7">Saturday</option>
+									</select>
+								</div>
+							</div>
+
+						</tab>
+
+						<tab heading="Salary Structure">
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_Bank_name">{{l("Bank Name")}}</label>
+									<input type="text" id="Employee_bank_name" class="form-control form-control-sm"
+										[(ngModel)]="employees.bank_name" name="bank_name" />
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_branchCode">{{l("Branch Code")}}</label>
+									<input type="text" id="Employee_branchCode" class="form-control form-control-sm"
+									[(ngModel)]="branchCode" name="Employee_branchCode" (focusout)="BindAccNumber($event.target.value, 'branch')"/>
+
+								</div>
+								<div class="col-md-3">
+									<label for="Employee_accNo">{{l("Account Number")}}</label>
+									<input type="text" id="Employee_accNo" class="form-control form-control-sm"
+									[(ngModel)]="accountNo" name="Employee_accNo" (focusout)="BindAccNumber($event.target.value,'account')"/>
+
+								</div>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_PaymentMode">{{l("PaymentMode")}}</label>
+									<select  type="text" id="Employee_PaymentMode" class="form-control form-control-sm"
+										name="PaymentMode" [(ngModel)]="employees.payment_mode"  required>
+										<option value="Select Payment Mode"   >Select Payment Mode
+										</option>
+										<option value="0">Cash</option>
+										<option value="1">Bank</option>
+										<option value="2">Cheque</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label for="EmployeeArrears_account_no">{{l("Account No")}}</label>
+									<input type="text" id="Employee_account_no" class="form-control form-control-sm"
+										[(ngModel)]="employees.account_no" name="account_no" readonly disabled />
+
+								</div>
+							</div>
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_EmployerBank">{{l("EmployerBank")}}</label>
+									<select type="text" id="Employee_EmployerBank" class="form-control form-control-sm"
+										name="EmployerBank" [(ngModel)]="employees.eBankID" >
+										<option *ngFor="let b of EmployerBanks"
+										 [value]="b.eBankID">{{b.eBankName}}
+										</option>			
+									</select>
+								</div>
+							</div>
+							<br><br>
+							<div class="row col-md-12 form-group">
+								<div class="m-checkbox-list">
+									<label for="Employee_eobi" class="kt-checkbox">
+										<input id="Employee_eobi" type="checkbox" name="eobi"
+											[(ngModel)]="employees.eobi">
+										{{l("EOBI")}}
+										<span></span>
+									</label>
+
+								</div>
+								<div class="col-md-4">
+									<input type="text" id="Employee_EOBI" class="form-control form-control-sm"
+										placeholder="EOBI Number" maxlength="45" [(ngModel)]="employees.eobiNo"
+										name="Employee_EOBI" *ngIf="employees.eobi" required="employees.eobi" />
+								</div>
+								<div class="col-md-4">
+									<input type="text" id="Employee_EobiAmt" class="form-control form-control-sm"
+										placeholder="EOBI Amount" maxlength="45" [(ngModel)]="employees.eobiAmt"
+										name="Employee_EobiAmt" *ngIf="employees.eobi" required="employees.am" />
+								</div>
+							</div>
+							<div class="row col-md-12 form-group">
+								<div class="m-checkbox-list">
+									<label for="Employee_wppf" class="kt-checkbox">
+										<input id="Employee_wppf" type="checkbox" name="wppf"
+											[(ngModel)]="employees.wppf">
+										{{l("WPPF")}}
+										<span></span>
+									</label>
+								</div>
+							</div>
+
+							<div class="row col-md-12 form-group">
+								<div class="m-checkbox-list">
+									<label for="Employee_social_security" class="kt-checkbox">
+										<input id="Employee_social_security" type="checkbox" name="social_security"
+											[(ngModel)]="employees.social_security">
+										{{l("Social Security")}}
+										<span></span>
+									</label>
+								</div>
+								<div class="col-md-4">
+									<input type="text" id="Employee_SSN" class="form-control form-control-sm"
+										placeholder="Social Security Number" maxlength="45"
+										[(ngModel)]="employees.sscNo" name="Employee_SSN"
+										*ngIf="employees.social_security" required="employees.social_security" />
+								</div>
+								<div class="col-md-4">
+									<input type="text" id="Employee_SSNAmt" class="form-control form-control-sm"
+										placeholder="Social Security Amount" maxlength="45"
+										[(ngModel)]="employees.sscAmt" name="Employee_SSNAmt"
+										*ngIf="employees.social_security" required="employees.social_security" />
+								</div>
+							</div>
+						</tab>
+
+						<tab heading="Salary History">
+							<div class="row col-md-12">
+								<br>
+								<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+									[rowData]="rowData" [columnDefs]="columnDefs">
+								</ag-grid-angular>
+							</div>
+							<br>
+						</tab>
+						<tab heading="Attachment">
+							<div class="form-group">
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="FileAttachment">File Attachment</label>
+										<p-fileUpload id="FileAttachment" name="FileAttachment[]" [url]="uploadUrl"
+											accept=".rar,.zip,docx,.doc,.pdf,.jpg,.jpeg" maxFileSize="1000000000"
+											(onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onUpload($event)">
+
+											<ng-template pTemplate="content">
+												<ul *ngIf="uploadedFiles.length">
+													<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+														bytes</li>
+												</ul>
+											</ng-template>
+										</p-fileUpload>
+									</div>
+									<div class="col-md-6">
+										<label for="ProfileImage">Upload Profile Picture</label>
+										<p-fileUpload id="ProfileImage" name="ProfileImage[]" [url]="profileUploadUrl"
+											accept=".jpg,.jpeg" maxFileSize="1000000"
+											(onBeforeUpload)="onBeforeProfileUpload($event)"
+											(onUpload)="onProfileUpload($event)">
+
+										</p-fileUpload>
+									</div>
+								</div>
+								<ul *ngIf="!checkImage">
+									<li>{{fileName}}</li>
+								</ul>
+								<!-- <ul *ngIf="!checkImage">
+									<li>{{fileName}} <button type="button" style="margin-left: 25px;padding: 4px;
+										padding-right: 0px;" class="btn btn-success green" *ngIf="!checkImage" (click)="downloadFile()"><i
+												class="fa fa-download" aria-hidden="true"></i></button> <button
+											type="button" style="padding: 4px;
+										padding-right: 0px;" class="btn btn-danger" *ngIf="!checkImage" (click)="removeFile()"><i class="fa fa-times"
+												aria-hidden="true"></i></button></li>
+								</ul> -->
+								<!-- <button type="button" style="margin-left: 25px;" class="btn btn-success green"
+								*ngIf="!checkImage"  (click)="downloadFile()"><span>{{l("Download")}}</span></button> -->
+								<!-- <embed *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached"
+									width="100" height="100" (click)="open()"> -->
+                                  
+								
+										<h4>Mendatory Document</h4>
+										<label>1.   Duly completed, signed Joining Report verified by line supervisor </label>
+										<input type="checkbox" [(ngModel)]="employees.joningReport" style="margin-left: 10px;width: 20px;height: 20px;"  name="joningReport"/>
+                                     <br>
+										<label>2.   Duly completed and signed Employment Form  </label>
+										<input type="checkbox" [(ngModel)]="employees.signEmplForm" name="signEmplForm" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>3.	Copies of All valid/true Academic Certificates/Transcripts/Degrees (all mandatory)  </label>
+										<input type="checkbox" [(ngModel)]="employees.academicRec" name="academicRec" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>4.	Two Recent colored passport size photographs  </label>
+										<input type="checkbox" [(ngModel)]="employees.pasPhoto" name="pasPhoto" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>5.	Acknowledgement for Awareness & Reporting of Any Harassment Complaint (Applicable for Female Employee Only) as per prescribed by the CNS Engineering.  </label>
+										<input type="checkbox" [(ngModel)]="employees.harrasmentComp" name="harrasmentComp" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>6.	Valid CNIC (check expiry date)  </label>
+										<input type="checkbox" [(ngModel)]="employees.validCnic" name="validCnic" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>7.	Updated Resume </label>
+										<input type="checkbox" [(ngModel)]="employees.cVResume" name="cVResume" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>8.	Recent Salary Slip (Last 2 months) of immediate least employer  </label>
+										<input type="checkbox" [(ngModel)]="employees.salarySlip" name="salarySlip" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     
+										<br>
+										<label>9.	Service Certificate (s) from all previous employers that has/have been mentioned in the resume</label>
+										<input type="checkbox" [(ngModel)]="employees.serviceCertificate" name="serviceCertificate" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                    
+                                     <br>
+										<h4>
+											Optional Documents
+										</h4>
+									
+										<label>10.	CNIC copies of references (Referees must be one professional & other personal)  </label>
+										<input type="checkbox" [(ngModel)]="employees.refCninc" name="refCninc" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+                                     <br>
+									 <label> 11.	Submit copy of the resignation accepted by the previous employer (if applicable)  </label>
+									 <input type="checkbox" [(ngModel)]="employees.resPrevEmp" name="resPrevEmp" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+									 <br>
+									 <label> 12.	Relationship Disclosure Form </label>
+									 <input type="checkbox" [(ngModel)]="employees.disclosureForm" name="disclosureForm" class="kt-checkbox" style="margin-left: 10px;width: 20px;height: 20px;" />
+								
+							</div>
+
+						</tab>
+						<tab heading="Other Info">
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_Reference">{{l("Reference")}}</label>
+									<input class="form-control form-control-sm" id="Employee_Reference" name="Reference"
+										[(ngModel)]="employees.reference" type="text" />
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_VisaDetails">{{l("PEC Number")}}</label>
+									<input class="form-control form-control-sm" id="Employee_VisaDetails"
+										name="VisaDetails" [(ngModel)]="employees.visa_Details" type="text" />
+								</div>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_DrivingLicence">{{l("DrivingLicence")}}</label>
+									<input class="form-control form-control-sm" id="Employee_DrivingLicence"
+										name="DrivingLicence" [(ngModel)]="employees.driving_Licence" type="text" />
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_DutyHours">{{l("DutyHours")}}</label>
+									<input class="form-control form-control-sm" id="Employee_DutyHours" name="DutyHours"
+										[(ngModel)]="employees.duty_Hours" type="number" />
+								</div>
+							</div>
+						</tab>
+
+						<tab heading="Reinstate" *ngIf="employees.active">
+
+							<div class="m-checkbox-list">
+								<label for="Employee_Reinstate" class="kt-checkbox">
+									<input id="Employee_Reinstate" type="checkbox" name="Reinstate"
+										[(ngModel)]="employees.reinstate">
+									{{l("Reinstate")}}
+									<span></span>
+								</label>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_ReinstateDate">{{l("ReinstateDate")}}</label>
+									<input class="form-control form-control-sm" id="Employee_ReinstateDate"
+										name="ReinstateDate" [(ngModel)]="reinstate_date" type="text"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker />
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_ReinstateReason">{{l("ReinstateReason")}}</label>
+									<input class="form-control form-control-sm" id="Employee_ReinstateReason"
+										name="ReinstateReason" [(ngModel)]="employees.reinstateReason" type="text" />
+								</div>
+							</div>
+						</tab>
+
+						<tab heading="Fuel Allowance">
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label for="Employee_FuelAllowance">{{l("FuelAllowance")}}</label>
+									<select class="form-control form-control-sm" (change)="uncheck()"  id="Employee_FuelAllowance"
+										name="FuelAllowance" [(ngModel)]="employees.allowanceType" type=int>
+										<option value=0>None</option>
+										<option value=1>Car</option>
+										<option value=2>Motorcycle</option>
+
+									</select>
+								</div>
+							</div>
+
+							<div class="row mt-2" *ngIf="employees.allowanceType==1" >
+								<div class="col-md-6">
+									<label for="Employee_AllowanceAmt">{{l("AllowanceAmt")}}</label>
+									<input class="form-control form-control-sm" (keyup)="Allowancereadonly()" id="Employee_AllowanceAmt"
+										name="AllowanceAmt" [(ngModel)]="employees.allowanceAmt" [disabled]="alAmtChk" type="number" />
+								</div>
+								<div class="col-md-6">
+									<label for="Employee_AllowanceQty">{{l("AllowanceQty")}}</label>
+									<input class="form-control form-control-sm" (keyup)="Allowancereadonly()" id="Employee_AllowanceQty"
+										name="AllowanceQty" [(ngModel)]="employees.allowanceQty" [disabled]="alQtyChk" type="number" />
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label for="lunchstatus">{{l("Lunch Status")}}</label>
+								<br>
+								<label for="lunchstatuss" class="kt-checkbox">
+									<input id="lunchstatuss" type="checkbox" name="lunchStatus"
+										[(ngModel)]="employees.lunchStatus">
+									<span></span>
+								</label>
+							</div>
+						</tab>
+
+					</tabset>
+				</div>
+
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="employeeForm.form.invalid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

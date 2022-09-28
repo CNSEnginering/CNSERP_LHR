@@ -1,0 +1,168 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #glconfigForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glconfig.id">{{l("EditCashAndBankConfig")}}</span>
+                        <span *ngIf="!glconfig.id">{{l("CreateCashAndBankConfig")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body" >
+                    <div class="row col-md-12">
+                        <div class="col-md-4">
+                            <label for="GLBOOKSBookName" >{{l("VoucherTypeID")}}</label>
+                            <div class="input-group">
+                                <input class="form-control" name="glconfig.BookID" [(ngModel)]="glconfig.bookID"
+                                    type="text" required disabled>
+                                <div class="input-group-append">
+                                    <button [disabled] = "glconfig.id" class="btn btn-primary btn-pick" (click)="openSelectGLBOOKSModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="GLBOOKSBookName">{{l("VoucherTypeName")}}</label>                               
+                            <input
+                            class="form-control"
+                            id="GLBOOKSBookName"
+                            name="glbooksBookName"
+                            [(ngModel)]="glbooksBookName" type="text" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="GLCONFIG_ConfigID" >{{l("Config ID")}}</label>
+                                
+                            <input type="number" id="GLCONFIG_ConfigID" class="form-control"
+                                [(ngModel)]="glconfig.configID" name="ConfigID" disabled required />
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ChartofControlAccountName"  >{{l("A/C ID")}}</label>
+                            <div class="input-group ">
+                                <input class="form-control" name="glconfig.chartofControlId"
+                                            [(ngModel)]="glconfig.accountID" type="text" required disabled>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-pick" (click)="openSelectChartofControlModal()"
+                                                type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="GLBOOKSBookName" >{{l("A/C Description")}}</label>
+                            <input class="form-control" id="ChartofControlAccountName"
+                                name="chartofControlAccountName" [(ngModel)]="chartofControlAccountName" type="text"
+                                disabled>
+
+                        </div>
+                        <div class="col-md-4">
+                            <label for="AccountSubLedgerSubAccName" >{{l("Sub Ledger ID")}}</label>
+                            <div class="input-group">
+                            <!-- <div class="form-group">
+                                        <label for="GLCONFIG_SubAccID">{{l("SubAccID")}}</label>
+                                        <input type="number" id="GLCONFIG_SubAccID" class="form-control"
+                                            [(ngModel)]="glconfig.subAccID" name="SubAccID"  disabled required/>
+                                    </div> -->
+                            <!-- <div class="form-group form-group-sm m-form__group"> -->
+
+                                <div class="input-group">
+                                    <input type="number" id="GLCONFIG_SubAccID" class="form-control"
+                                        [(ngModel)]="glconfig.subAccID" name="SubAccID" disabled  />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary  btn-pick" (click)="openSelectAccountSubLedgerModal()"
+                                            type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                    </div>
+                                    <!-- <div class="input-group-prepend">
+                                        <button class="btn btn-danger blue btn-sm btn-icon" type="button"
+                                            (click)="setAccountSubLedgerIdNull()"><i class="fa fa-times"></i></button>
+                                    </div> -->
+                                </div>
+                            <!-- </div> -->
+                            <input class="form-control" name="glconfig.accountSubLedgerId"
+                                [(ngModel)]="glconfig.accountSubLedgerId" type="text"  hidden>
+
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="GLCONFIG_SubAccID" >{{l("Sub Ledger ID Description")}}</label>
+                            <div class="input-group ">                                     
+                                        <input class="form-control" id="AccountSubLedgerSubAccName"
+                                            name="accountSubLedgerSubAccName" [(ngModel)]="accountSubLedgerSubAccName"
+                                            type="text" disabled>
+        
+                                    
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                        <!-- <div class="col-md-6"> -->
+                            <!-- <div class="form-group form-group-sm m-form__group"> -->
+                                
+                                    <!-- <div class="input-group-prepend">
+                                        <button class="btn btn-sm btn-danger btn-icon" type="button"
+                                            (click)="setGLBOOKSIdNull()"><i class="fa fa-times"></i></button>
+                                    </div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+
+
+                   
+                    
+
+
+                    <!-- <div class="row mt-3"> -->
+                            
+                                <!-- <div class="form-group form-group-sm m-form__group"> -->
+
+                                    <!-- <div class="input-group col-md-6"> -->
+                                        
+                                        <!-- <div class="input-group-prepend">
+                                            <button class="btn btn-danger btn-sm btn-icon" type="button"
+                                                (click)="setChartofControlIdNull()"><i class="fa fa-times"></i></button>
+                                        </div> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+
+                            <!-- </div> -->
+
+
+
+                        <!-- </div>
+                        <div class="row mt-3"> -->
+                            <!-- <div class="col-md-6"> -->
+                       
+                               
+                            <!-- </div> -->
+
+                      
+                    <!-- <div class="row mt-3">
+                    
+
+                    </div> -->
+
+
+
+              
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!glconfig.bookID || !glconfig.configID || !glconfig.accountID"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <glconfigGLBOOKSLookupTableModal #glconfigGLBOOKSLookupTableModal (modalSave)="getNewGLBOOKSId()">
+    </glconfigGLBOOKSLookupTableModal>
+    <glconfigChartofControlLookupTableModal #glconfigChartofControlLookupTableModal
+        (modalSave)="getNewChartofControlId()"></glconfigChartofControlLookupTableModal>
+    <glconfigAccountSubLedgerLookupTableModal #glconfigAccountSubLedgerLookupTableModal
+        (modalSave)="getNewAccountSubLedgerId()"></glconfigAccountSubLedgerLookupTableModal>
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>

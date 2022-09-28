@@ -1,0 +1,57 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #sectionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="salarylock.id">{{l("EditSalaryLock")}}</span>
+                        <span *ngIf="!salarylock.id">{{l("CreateNewSalaryLock")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                              <input type="hidden" [(ngModel)]="this.salarylock.id" />
+                    <div class="row">
+                        <label for="YearAndMonth"
+                            class="col-md-3 col-form-label">{{l("Select Year And Month")}}</label>
+                        <div class="col-md-3">
+                            <input type="text" id="YearAndMonth"
+                                class="form-control form-control-sm" bsDatepicker
+                                [(ngModel)]="this.salarylock.lockDate" name="YearAndMonth"
+                                [bsConfig]="{ dateInputFormat: 'MM/YYYY' }"
+                                (onShown)="onOpenCalendar($event)" required>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="Section_Active" class="kt-checkbox">
+                            <input id="Section_Active" type="checkbox" name="Active" [(ngModel)]="salarylock.locked">
+                            {{l("UnlockMonth")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label for="Section_Active1" class="kt-checkbox">
+                            <input id="Section_Active1" type="checkbox" name="Active1" [(ngModel)]="salarylock.jvLocked">
+                            {{l("JV Unlocked")}}
+                            <span></span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!sectionForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

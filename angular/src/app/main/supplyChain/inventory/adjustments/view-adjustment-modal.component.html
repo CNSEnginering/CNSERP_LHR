@@ -1,0 +1,82 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocNo")}} :</h6>
+                        {{ item.docNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocDate")}} :</h6>
+                        {{ item.docDate | date: 'dd/MM/yyyy'  }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Narration")}} :</h6>
+                        {{ item.narration }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LocID")}} :</h6>
+                        {{ item.locID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalQty")}} :</h6>
+                        {{ item.totalQty }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TotalAmt")}} :</h6>
+                        {{ item.totalAmt }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Posted")}} :</h6>
+                        {{ item.posted==true?"Yes":"No" }}
+                    </div>
+                    <div class="col-6 mb-3" *ngIf="item.linkDetID">
+                        <h6>{{l("LinkDetID")}} :</h6>
+                        {{ item.linkDetID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("OrdNo")}} :</h6>
+                        {{ item.ordNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Active")}} :</h6>
+                        {{ item.active==true?"Yes":"No" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.createDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.audtDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

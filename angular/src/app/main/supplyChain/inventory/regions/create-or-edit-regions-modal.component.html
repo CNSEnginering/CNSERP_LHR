@@ -1,0 +1,95 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #Form="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+                autocomplete="off"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ l("ICELocation") }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="priceList">{{
+                                l("ParentLocation")
+                            }}</label>
+                            <select
+                                id="parentId"
+                                class="form-control form-control-sm"
+                                [(ngModel)]="regionsDto.parentId"
+                                name="parentId"
+                                [disabled]="this.edit"
+                            >
+                                <!-- <option value=0>Choose Location</option> -->
+                                <option
+                                    *ngFor="let loc of locationList"
+                                    [value]="loc.parentId"
+                                    >{{ loc.locationTitle }}</option
+                                >
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="priceList">{{
+                                l("LocationTitle")
+                            }}</label>
+                            <input
+                                type="text"
+                                id="locTitle"
+                                class="form-control form-control-sm"
+                                [(ngModel)]="regionsDto.locationTitle"
+                                name="locTitle"
+                                maxlength="500"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="close()"
+                    >
+                        {{ l("Cancel") }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        (click)="save()"
+                        [disabled]="!Form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

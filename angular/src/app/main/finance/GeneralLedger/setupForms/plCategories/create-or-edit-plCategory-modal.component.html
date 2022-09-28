@@ -1,0 +1,48 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #plCategoryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="plCategory.id">{{l("EditPLCategory")}}</span>
+                        <span *ngIf="!plCategory.id">{{l("CreateNewPLCategory")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+
+								<div class="form-group">
+									<label for="PLCategory_TenantID">{{l("TenantID")}}</label>
+									<input type="number" id="PLCategory_TenantID" class="form-control" [(ngModel)]="plCategory.tenantID" name="TenantID"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="PLCategory_TypeID">{{l("TypeID")}}</label>
+									<input type="text" id="PLCategory_TypeID" class="form-control" [(ngModel)]="plCategory.typeID" name="TypeID"   minlength="0"  maxlength="50" />
+								</div>
+					
+								<div class="form-group">
+									<label for="PLCategory_HeadingText">{{l("HeadingText")}}</label>
+									<input type="text" id="PLCategory_HeadingText" class="form-control" [(ngModel)]="plCategory.headingText" name="HeadingText"   minlength="0"  maxlength="25" />
+								</div>
+					
+								<div class="form-group">
+									<label for="PLCategory_SortOrder">{{l("SortOrder")}}</label>
+									<input type="number" id="PLCategory_SortOrder" class="form-control" [(ngModel)]="plCategory.sortOrder" name="SortOrder"  />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!plCategoryForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

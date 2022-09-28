@@ -1,0 +1,234 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>Post Dated Cheque</span>
+            </h3>
+            <span class="kt-subheader__desc">
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.GlCheques.Create')" (click)="createOrEdit()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("NewPostDatedCheque")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text" />
+                                        <span class="input-group-btn">
+                                            <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label for="chequeStatus" class="col-sm-3">{{l("ChequeStatus")}}</label>
+                                <div class="col-sm-8">
+                                    <span *ngIf="typeID==0">
+                                        <select [(ngModel)]="chequeStatus" (ngModelChange)="chequeStatusChange($event)"
+                                            name="chequeStatus" id="chequeStatus" class="form-control">
+                                            <option value="0">All</option>
+                                            <option value="2">Issued</option>
+                                            <option value="4">Cleared</option>
+                                            <option value="5">Cancelled</option>
+                                            <option value="6">Holded</option>
+                                            <option value="7">Bounced</option>
+                                        </select>
+                                    </span>
+                                    <span *ngIf="typeID==1">
+                                        <select [(ngModel)]="chequeStatus" (ngModelChange)="chequeStatusChange($event)"
+                                            name="chequeStatus" id="chequeStatus" class="form-control">
+                                            <option value="0">All</option>
+                                            <option value="1">Collected</option>
+                                            <option value="3">Deposited</option>
+                                            <option value="6">Holded</option>
+                                            <option value="7">Bounced</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <!-- <label for="type" class="col-sm-2">{{l("Type")}}</label>
+								<div class=" col-sm-10">
+										<select
+										[(ngModel)] = "typeID" name="typeID" id="typeID"
+										class="form-control">
+											<option value="0">{{l("Issued")}}</option>
+											<option value="1"> {{l("Received")}}</option>
+										</select>
+									</div> -->
+                                <!-- <div class="col-sm-10">
+                                    <label for="received" class="kt-radio col-sm-4">
+                                        <input id="received" type="radio" [value]="1" name="received"
+                                            [(ngModel)]="typeID" checked disabled (change)="handleChange($event)">
+                                        {{l("Received")}}
+                                        <span></span>
+                                    </label>
+
+                                    <label for="issued" class="kt-radio col-sm-4">
+                                        <input id="issued" type="radio" [value]="0" name="issued" [(ngModel)]="typeID"
+                                            disabled (change)="handleChange($event)">
+                                        {{l("Issued")}}
+                                        <span></span>
+                                    </label>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+              
+
+                <br>
+
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.GlCheques.Edit', 'Pages.GlCheques.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="docID">
+                                        {{l('DocNo')}}
+                                        <p-sortIcon field="docID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="typeID">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="typeID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="chequeStatus">
+                                        {{l('ChequeStatus')}}
+                                        <p-sortIcon field="chequeStatus"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="partyName">
+                                        {{l('PartyName')}}
+                                        <p-sortIcon field="partyName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="entryDate">
+                                        {{l('EntryDate')}}
+                                        <p-sortIcon field="entryDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bankDesc">
+                                        {{l('BankDesc')}}
+                                        <p-sortIcon field="bankDesc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="chequeDate">
+                                        {{l('ChequeDate')}}
+                                        <p-sortIcon field="chequeDate"></p-sortIcon>
+                                    </th>
+                                    <th class="text-right" style="width: 150px" pSortableColumn="chequeAmt">
+                                        {{l('ChequeAmt')}}
+                                        <p-sortIcon field="chequeDate"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.GlCheques.Edit', 'Pages.GlCheques.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;" (click)="view(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.GlCheques.Edit')"
+                                                        (click)="createOrEdit(record.glCheque.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.GlCheques.Delete') && record.glCheque.posted==false"
+                                                        (click)="delete(record.glCheque.id)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                        {{record.glCheque.docID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Type')}}</span>
+                                        {{record.glCheque.typeID == 1 ? "Received" : "Issued"}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ChequeStatus')}}</span>
+                                        {{record.glCheque.chequeStatus}}
+
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('PartyName')}}</span>
+                                        {{record.glCheque.partyName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('EntryDate')}}</span>
+                                        {{record.glCheque.entryDate | date:'dd/MM/yyyy'}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('BankDesc')}}</span>
+                                        {{record.glCheque.bankDesc}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ChequeDate')}}</span>
+                                        {{record.glCheque.chequeDate | date:'dd/MM/yyyy'}}
+                                    </td>
+                                    <td class="text-right" style="width:150px">
+                                        <span class="ui-column-title"> {{l('ChequeAmt')}}</span>
+                                        {{record.glCheque.chequeAmt | number: '.2'}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAll($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<glCheques #glCheques (modalSave)="getAll()"></glCheques>
+<viewGlChequesModal #viewGlChequesModal></viewGlChequesModal>

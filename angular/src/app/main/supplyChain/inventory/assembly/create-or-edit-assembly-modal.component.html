@@ -1,0 +1,211 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("Assembly")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="docNo">{{l("DocNo")}}</label>
+                            <input type="text" id="docNo" class="form-control form-control-sm"
+                                [(ngModel)]="assembly.docNo" name="priceList" maxlength="10" required disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docDate">{{l("DocDate")}}</label>
+                            <input (ngModelChange)="dateChange($event)" [disabled]="checkedval" type="datetime" bsDatepicker id="docDate"
+                             (focus)="enterDate()"   
+                             (blur)="leaveDate()"   
+							class="form-control form-control-sm" 
+							[(ngModel)]="assembly.docDate" name="docDate"
+							[(bsValue)]="assembly.docDate"
+                                value="{{ assembly.docDate | date: 'dd/MM/yyyy' }}"
+                                maxlength="50" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="docDate">{{l("Loc")}}</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="locId" name="locId" disabled
+                                    [(ngModel)]="assembly.locId" type="text" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm" (click)="openlookUpModal()" type="button"><i
+                                            class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="locDesc">{{l("Desc")}}</label>
+                            <input class="form-control form-control-sm" id="fromLocDesc" name="locDesc" disabled
+                                [(ngModel)]="assembly.locDesc" type="text"/>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-4">
+                            <label for="ordNo">{{l("OrderNo")}}</label>
+                            <input type="text" id="ordNo" class="form-control form-control-sm"
+                                [(ngModel)]="assembly.ordNo" name="ordNo" maxlength="50" required
+                                [disabled]="this.OGPNo > 0" />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vehicleNo">{{l("VehicleNo")}}</label>
+                            <input type="text" id="vehicleNo" class="form-control form-control-sm"
+                                [(ngModel)]="assembly.vehicleNo" name="vehicleNo" maxlength="50" required
+                                [disabled]="this.OGPNo > 0" />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="docDate">{{l("RefNo")}}</label>
+                            <input type="text" id="referenceNo" class="form-control form-control-sm"
+                                [(ngModel)]="assembly.referenceNo" name="referenceNo" maxlength="50" required
+                                [disabled]="this.OGPNo > 0" />
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="row">
+                        <div class="col-md-4">
+                            <label for="toLocId">{{l("ToLoc")}}</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="toLocId" name="toLocId" disabled
+                                    [(ngModel)]="assembly.toLocId" type="text" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm" (click)="openlookUpModal('toLoc')"
+                                        type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="toLocDesc">{{l("Desc")}}</label>
+                            <input class="form-control form-control-sm" id="toLocDesc" name="toLocDesc" disabled
+                                [(ngModel)]="assembly.toLocDesc" type="text" (change)="checkLocValidTrasnfer()" />
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="fromLocDesc">{{l("Narration")}}</label>
+                            <input class="form-control form-control-sm" id="narration" name="narration"
+                                [(ngModel)]="assembly.narration" type="text" maxlength="100"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ordNo">{{l("OrderNo")}}</label>
+                            <input type="text" id="ordNo" class="form-control form-control-sm"
+                                [(ngModel)]="assembly.ordNo" name="ordNo" maxlength="50" required
+                                />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="overHead">{{l("OverHead")}}</label>
+                            <input type="number" id="overHead" class="form-control form-control-sm"
+                                [(ngModel)]="assembly.overHead" name="overHead" maxlength="8" required
+                                />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" type="button"
+                        (click)="removeRecordFromGrid()">Remove</button>
+
+                    <tabset (click)="setTabMode($event)">
+                        <tab heading="Finished Goods">
+                            <fieldset>
+                                <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                    [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                    [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                    [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                                    (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                    (cellValueChanged)="cellValueChanged($event)"
+                                    (cellEditingStarted)="cellEditingStarted($event)">
+                                </ag-grid-angular>
+                            </fieldset>
+                        </tab>
+                        <tab heading="Raw Materials">
+                            <fieldset>
+                                <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                    [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                    [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                    [singleClickEdit]="true" (gridReady)="onGridReady1($event)"
+                                    (cellDoubleClicked)="onRowDoubleClicked1($event)"
+                                    (cellValueChanged)="cellValueChanged1($event)"
+                                    (cellEditingStarted)="cellEditingStarted1($event)">>
+                                </ag-grid-angular>
+                            </fieldset>
+                        </tab> 
+                        <tab heading="Buy Products">
+                            <fieldset>
+                                <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                    [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                    [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                    [singleClickEdit]="true" (gridReady)="onGridReady2($event)"
+                                    (cellDoubleClicked)="onRowDoubleClicked2($event)"
+                                    (cellValueChanged)="cellValueChanged2($event)"
+                                    (cellEditingStarted)="cellEditingStarted2($event)">>
+                                </ag-grid-angular>
+                            </fieldset>
+                        </tab>
+                         <tab heading="Attachment">
+								<div class="form-group">
+										<div class="row mt-2">
+											<div class="col-md-6">
+												<label for="FileAttachment">File Attachment</label>
+												<p-fileUpload
+															  id="FileAttachment"
+															  name="FileAttachment[]"
+															  [url]="uploadUrl"
+															  accept=".jpg,.jpeg"
+															  maxFileSize="1000000"
+															  (onBeforeUpload)="onBeforeUpload($event)"
+															  (onUpload)="onUpload($event)">
+				
+													<ng-template pTemplate="content">
+														<ul *ngIf="uploadedFiles.length">
+															<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+														</ul>
+													</ng-template>
+												</p-fileUpload>
+											</div>
+										</div>
+										<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached" width="100" height="100" (click)="open()">
+				
+									</div>
+						 </tab>
+                    </tabset>
+
+                    <!-- <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label for="totalItems">{{l("Total Items")}}</label>
+                            <input type="number" [(ngModel)]="totalItems" id="totalItems" name="totalItems"
+                                class="form-control form-control-sm" disabled>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="totalQty">{{l("Total Qty")}}</label>
+                            <input type="number" [(ngModel)]="totalQty" id="totalQty" name="totalQty"
+                                class="form-control form-control-sm" disabled>
+                        </div>
+                    </div> -->
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()" [disabled]="!formValid "
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <InventoryGlLinkLookupTableModal #InventoryGlLinkLookupTableModal (modalSave)="getLookUpData()">
+</InventoryGlLinkLookupTableModal>
+<ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getLookUpData()"></ItemPricingLookupTableModal> -->
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getLookUpData()"></financeLookupTableModal>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getLookUpData()"></inventoryLookupTableModal>

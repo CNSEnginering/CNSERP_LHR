@@ -1,0 +1,11 @@
+#div2-1,
+#div2-2 {
+    height: 35%;
+}
+#div1,
+#div2 {
+    height: 195px;
+}
+#div2.col-md-6 {
+    padding: 0px !important;
+}

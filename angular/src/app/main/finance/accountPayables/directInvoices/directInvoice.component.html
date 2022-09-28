@@ -1,0 +1,279 @@
+<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{directInvoice}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{directInvoiceHeaderInfo}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown>
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        <!-- <a class="dropdown-item" id="ExportUsersToExcelButton" (click)="exportToExcel()" href="javascript:;">
+                            <i class="fa fa-download" style="font-size: 1rem;"></i>
+                            {{'ExportToExcel' | localize}}
+                        </a> -->
+                        <a href="javascript:;" *ngIf="isGranted('Pages.DirectInvoice.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true"
+                                        name="ExcelFileUpload"
+                                        #ExcelFileUpload
+                                        maxFileSize="10000000"
+                                        auto="auto"
+                                        accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)"
+                                        (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload>
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportDirectInvoiceCPRsamplefile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+				<button *ngIf="isGranted('Pages.DirectInvoice.Create')" (click)="createGLINVHeader()"
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewDirectInvoice")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getGLINVHeaders()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+                             </div>
+                             
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinDocNoFilter">{{l("InvoiceNo")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinDocNoFilter" [(ngModel)]="minDocNoFilter" placeholder="{{l('From')}}" name="minDocNoFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter" placeholder="{{l('To')}}" name="maxDocNoFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinDocDateFilter">{{l("InvoiceDate")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter" name="MinDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minDocDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter" name="MaxDocDateFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxDocDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+								<div class="form-group">
+									<label for="BankIDFilter">{{l("BankID")}}</label>
+									<input type="text" class="form-control" id="BankIDFilter" name="BankIDFilter" [(ngModel)]="bankIDFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinPostDateFilter">{{l("PostDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinPostDateFilter" name="minPostDateFilter" type="datetime" bsDatepicker  placeholder="{{l('From')}}" [(ngModel)]="minPostDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="maxPostDateFilter" name="maxPostDateFilter" type="datetime" bsDatepicker  placeholder="{{l('To')}}" [(ngModel)]="maxPostDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+								<div class="form-group">
+									<label for="PartyInvNoFilter">{{l("PartyInvNo")}}</label>
+									<input type="text" class="form-control" id="PartyInvNoFilter" name="partyInvNoFilter" [(ngModel)]="partyInvNoFilter">
+								</div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center"> 
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getGLINVHeaders($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px" [hidden]="!isGrantedAny('Pages.DirectInvoice.Edit', 'Pages.DirectInvoice.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 110px" pSortableColumn="docNo">
+                                        {{l('InvoiceNo')}}
+                                        <p-sortIcon field="glinvHeader.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 120px" pSortableColumn="docDate">
+                                        {{l('InvoiceDate')}}
+                                        <p-sortIcon field="glinvHeader.docDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="bankID">
+                                        {{l('BankID')}}
+                                        <p-sortIcon field="glinvHeader.bankID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="accountID">
+                                        {{l('AccountID')}}
+                                        <p-sortIcon field="glinvHeader.accountID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="narration">
+                                        {{l('Narration')}}
+                                        <p-sortIcon field="glinvHeader.narration"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="posted">
+                                        {{l('PostedStock')}}
+                                        <p-sortIcon field="glinvHeader.posted"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="posted">
+                                        {{l('PostedPayment')}}
+                                        <p-sortIcon field="glinvHeader.posted"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="glinvHeader.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="glinvHeader.createDate"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('Pages.DirectInvoice.Edit', 'Pages.DirectInvoice.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li hidden>
+													<a href="javascript:;"
+														(click)="viewDirectInvoiceModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.DirectInvoice.Edit')"
+														(click)="createOrEditDirectInvoiceModal.show(record.id)">{{l('Edit')}}</a>
+												</li>
+												<!-- <li *ngIf="!record.postedStock">
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.DirectInvoice.Delete')"
+														(click)="deleteGLINVHeader(record)">{{l('Delete')}}</a>
+												</li> -->
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('InvoiceNo')}}</span>
+											{{record.docNo}}
+										</td>
+                                    <td style="width:120px">
+										<span class="ui-column-title"> {{l('InvoiceDate')}}</span>
+                                        <span *ngIf="record.docDate">
+											{{record.docDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.docDate">-</span>
+                                    </td>
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('BankID')}}</span>
+											{{record.bankID}}
+                                        </td>
+                                    <td style="width:100px">
+											<span class="ui-column-title"> {{l('AccountID')}}</span>
+											{{record.accountID}}
+										</td>
+                                    <td style="width:200px" class="text_overflow">
+											<span class="ui-column-title"> {{l('Narration')}}</span>
+											{{record.narration}}
+                                        </td>
+                                        <td style="width:150px">
+                                            <span class="ui-column-title"> {{l('PostedStock')}}</span>
+                                            <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.postedStock">{{'Yes' | localize}}</span>
+                                            <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.postedStock">{{'No' | localize}}</span>
+                                        </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('PostedPayment')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.posted">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.posted">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('CreatedBy')}}</span>
+											{{record.createdBy}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('CreationDate')}}</span>
+                                        <span *ngIf="record.createDate">
+											{{record.createDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.createDate">-</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getGLINVHeaders($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditDirectInvoiceModal #createOrEditDirectInvoiceModal (modalSave)="getGLINVHeaders()"></createOrEditDirectInvoiceModal>
+    <viewDirectInvoiceModal #viewDirectInvoiceModal></viewDirectInvoiceModal>
+    
+  
+</div>

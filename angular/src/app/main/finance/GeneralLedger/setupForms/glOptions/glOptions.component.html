@@ -1,0 +1,266 @@
+<div [@routerTransition]>
+  
+    <div class="kt-subheader kt-grid__item">
+      
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("GLOptions")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("GLOptionsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.GLOptions.Create')" (click)="createGLOption()" 
+			class="btn btn-primary blue" [disabled] = "disableCreateButton"><i class="fa fa-plus"></i> {{l("CreateNewGLOption")}}</button>
+            </div>
+        </div>
+      
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getGLOptions()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <!-- <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="DEFAULTCLACCFilter">{{l("DEFAULTCLACC")}}</label>
+									<input type="text" class="form-control" id="DEFAULTCLACCFilter" name="defaultclaccFilter" [(ngModel)]="defaultclaccFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+								<div class="form-group">
+									<label for="STOCKCTRLACCFilter">{{l("STOCKCTRLACC")}}</label>
+									<input type="text" class="form-control" id="STOCKCTRLACCFilter" name=" stockctrlaccFilterFilter" [(ngModel)]=" stockctrlaccFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="Seg1NameFilter">{{l("Seg1Name")}}</label>
+									<input type="text" class="form-control" id="Seg1NameFilter" name="seg1NameFilter" [(ngModel)]="seg1NameFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="Seg2NameFilter">{{l("Seg2Name")}}</label>
+									<input type="text" class="form-control" id="Seg2NameFilter" name="seg2NameFilter" [(ngModel)]="seg2NameFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="Seg3NameFilter">{{l("Seg3Name")}}</label>
+									<input type="text" class="form-control" id="Seg3NameFilter" name="seg3NameFilter" [(ngModel)]="seg3NameFilter">
+								</div>
+                            </div>	
+							<div class="col-md-3">
+								<label for="DirectPostFilterSelect">{{l("DirectPost")}}</label>
+								<select class="form-control" name="DirectPostFilter" id="DirectPostFilterSelect" [(ngModel)]="directPostFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAUDTDATEFilter">{{l("AUDTDATERange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAUDTDATEFilter" name="MinAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minAUDTDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAUDTDATEFilter" name="MaxAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAUDTDATEFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AUDTUSERFilter">{{l("AUDTUSER")}}</label>
+									<input type="text" class="form-control" id="AUDTUSERFilter" name="audtuserFilter" [(ngModel)]="audtuserFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ChartofControlIdFilter">({{l("ChartofControl")}}) {{l("Id")}}</label>
+									<input type="text" class="form-control" id="ChartofControlIdFilter" name="chartofControlIdFilter" [(ngModel)]="chartofControlIdFilter">
+                                </div>
+                            </div>
+
+                        </div> -->
+                        <!-- <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div> -->
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getGLOptions($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 70px" [hidden]="!isGrantedAny('Pages.GLOptions.Edit', 'Pages.GLOptions.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="chartofControlFk.id" hidden>
+                                        {{l('Id')}}
+                                        <p-sortIcon field="chartofControlId"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="defaultclacc">
+                                        {{l('DEFAULTCLACC')}}
+                                        <p-sortIcon field="glOption.defaultclacc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="stockctrlacc">
+                                        {{l('STOCKCTRLACC')}}
+                                        <p-sortIcon field="glOption.stockctrlacc"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="seg1Name">
+                                        {{l('Seg1Name')}}
+                                        <p-sortIcon field="glOption.seg1Name"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="seg2Name">
+                                        {{l('Seg2Name')}}
+                                        <p-sortIcon field="glOption.seg2Name"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="seg3Name">
+                                        {{l('Seg3Name')}}
+                                        <p-sortIcon field="glOption.seg3Name"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="directPost">
+                                        {{l('Direct Approve')}}
+                                        <p-sortIcon field="glOption.directPost"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtdate">
+                                        {{l('AUDTDATE')}}
+                                        <p-sortIcon field="glOption.audtdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtuser">
+                                        {{l('AUDTUSER')}}
+                                        <p-sortIcon field="glOption.audtuser"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 70px"
+                                        [hidden]="!isGrantedAny('Pages.GLOptions.Edit', 'Pages.GLOptions.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<!-- <li>
+													<a href="javascript:;"
+														(click)="viewGLOptionModal.show(record)">{{l('View')}}</a>
+												</li> -->
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.GLOptions.Edit')"
+														(click)="createOrEditGLOptionModal.show(record.glOption.id)">{{l('Edit')}}</a>
+												</li>
+												<li hidden>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.GLOptions.Delete')"
+														(click)="deleteGLOption(record.glOption)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px" hidden>
+												<span class="ui-column-title"> {{l('Id')}}</span>
+												{{record.chartofControlId}}
+											</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('DEFAULTCLACC')}}</span>
+											{{record.glOption.defaultclacc}}
+                                        </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('STOCKCTRLACC')}}</span>
+											{{record.glOption.stockctrlacc}}
+									</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Seg1Name')}}</span>
+											{{record.glOption.seg1Name}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Seg2Name')}}</span>
+											{{record.glOption.seg2Name}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Seg3Name')}}</span>
+											{{record.glOption.seg3Name}}
+									</td>
+                                    <td style="width:100px">
+										<span class="ui-column-title"> {{l('DirectPost')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.glOption.directPost">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.glOption.directPost">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AUDTDATE')}}</span>
+                                        <span *ngIf="record.glOption.audtdate">
+											{{record.glOption.audtdate | momentFormat:'L'  | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.glOption.audtdate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AUDTUSER')}}</span>
+											{{record.glOption.audtuser}}
+										</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getGLOptions($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditGLOptionModal #createOrEditGLOptionModal (modalSave)="getGLOptions()"></createOrEditGLOptionModal>
+    <viewGLOptionModal #viewGLOptionModal></viewGLOptionModal>
+    
+  
+</div>

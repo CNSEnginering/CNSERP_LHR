@@ -1,0 +1,325 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #subControlDetailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="IsUpdate">{{GloptionSetup != '' ? ("Edit ") + GloptionSetup: l("EditLevel2")}}</span>
+                        <span *ngIf="!IsUpdate">{{GloptionSetup != '' ? ("Create ") + GloptionSetup: l("CreateLevel2")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="m-form__group">
+                                    <div class="row">
+                                        <label for="ControlDetailId" class="col-md-4">{{Gloptionlevel1 != '' ? Gloptionlevel1 + l("ID"): l("Seg1ID")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="ControlDetailId" name="controlDetailId"
+                                                    [(ngModel)]="ControlDID" type="text" required readonly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue"
+                                                        (click)="openSelectControlDetailModal()" type="button"
+                                                        [disabled]="IsUpdate"><i class="fa fa-search"></i>
+                                                        {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setControlDetailIdNull()" [disabled]="IsUpdate"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control form-control-sm" name="subControlDetail.controlDetailId"
+                                    [(ngModel)]="controlDetail" type="text" required disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <label for="SubControlDetail_Seg2ID" class="col-md-4">{{GloptionSetup != '' ? GloptionSetup + l("ID"): l("Level2ID")}} *</label>
+                                    <div class="col-md-8">
+                                        <input type="text" id="SubControlDetail_Seg2ID" class="form-control form-control-sm"
+                                            [(ngModel)]="subControlDetail.seg2ID" name="Seg2ID" pattern="^\d{3}$" [disabled]="IsUpdate" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--Old pettern  pattern="^\d{2}-\d{3}$" -->
+                    <div class="for-group form-group-md">
+                        <div class="row">
+                            <label for="SubControlDetail_SegmentName" class="col-md-2">{{GloptionSetup != '' ? GloptionSetup + l("Description"): l("Level2Description")}}</label>
+                            <div class="col-md-9">
+                                <input type="text" id="SubControlDetail_SegmentName" class="form-control form-control-sm"
+                                    [(ngModel)]="subControlDetail.segmentName" name="SegmentName" maxlength="50" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="for-group form-group-md" *ngIf="IsUpdate">
+                        <div class="row">
+                            <tabset class="col-md-12">
+                            <tab heading="PL Setting">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <div class="row">
+                                                <label for="subControlDetail_AccountType"
+                                                    class="col-md-4">{{l("Type")}}</label>
+                                                <div class="col-md-8">
+                                                    <select id=" subControlDetail_AccountType"
+                                                        name="subControlDetail_accountType" class="form-control"
+                                                        [(ngModel)]="subControlDetail.accountType"
+                                                        (change)="getHeaderList($event.target.value)">
+                                                        <option value="income">INCOME</option>
+                                                        <option value="Expenses">EXPENSES</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <div class="row">
+                                                <label for="subControlDetail_Header" class="col-md-4">{{l("Header")}}</label>
+                                                <div class="col-md-8">
+                                                        <!-- Empty Select Combo -->
+                                                        <select  *ngIf="plCategoryList == null"  class="form-control"></select>
+
+                                                    <select *ngIf="plCategoryList != null" id=" subControlDetail_Header" name="subControlDetail_header"
+                                                        class="form-control" [(ngModel)]="subControlDetail.accountHeader"
+                                                        (change)="setSortOrder($event.target.value)">
+                                                        <option *ngFor="let Group of plCategoryList" [value]="Group.id"
+                                                        [selected]="Group.isSelected == true" >
+                                                            {{Group.displayText}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label for="subControlDetail_SortOrder"
+                                                class="col-md-4">{{l("Sort Order")}}</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control form-control-sm" name="plSortOrder"
+                                                [(ngModel)]="subControlDetail.sortOrder" type="number" readonly required disabled>
+
+                                                   <!-- Empty Select Combo -->
+                                                   <!-- <select  *ngIf="plCategoryList == null"  class="form-control"></select>
+
+                                                <select *ngIf="plCategoryList!= null"
+                                                 id=" subControlDetail_SortOrder" name="subControlDetail_sortOrder"
+                                                    class="form-control" [(ngModel)]="subControlDetail.sortOrder">
+                                                    <option *ngFor="let order of plCategoryList" [value]="order.sortOrder"
+                                                    [selected]="order.isSelected == true">
+                                                        {{order.sortOrder}}
+                                                    </option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button"  class="btn btn-sm btn-danger" (click)="resetPLVals()">Reset</button>
+                                    <button type="button"  class="btn btn-sm btn-primary"  (click)="UpdateAccount('PL')">Process</button>
+                                </div>
+                            </tab>
+                            <tab heading="BS Setting">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <div class="row">
+                                                <label for="subControlDetail_AccountBSType"
+                                                    class="col-md-4">{{l("Type")}}</label>
+                                                <div class="col-md-8">
+                                                    <select id=" subControlDetail_AccountBSType"
+                                                        name="subControlDetail_accountBSType" class="form-control"
+                                                        [(ngModel)]="subControlDetail.accountBSType"
+                                                        (change)="getBSHeaderList($event.target.value)">
+                                                        <option value="Non Current Assets">Non Current Assets</option>
+                                                        <option value="Current Assets">Current Assets</option>
+                                                        <option value="Non Current Liabilities">Non Current Liabilities
+                                                        </option>
+                                                        <option value="Current Liabilities">Current Liabilities</option>
+                                                        <option value="EQUITY AND LIABILITIES">Equity And Liabilities
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <div class="row">
+                                                <label for="subControlDetail_BSHeader"
+                                                    class="col-md-4">{{l("Header")}}</label>
+                                                <div class="col-md-8">
+                                                    <!-- Empty Select Combo -->
+                                                    <select  *ngIf="plBSCategoryList == null"  class="form-control"></select>
+
+                                                    <select *ngIf="plBSCategoryList != null"
+                                                        id=" subControlDetail_BSHeader" name="subControlDetail_BSheader"
+                                                        class="form-control" [(ngModel)]="subControlDetail.accountBSHeader" (change)="setBSSortOrder($event.target.value)">
+                                                        <option *ngFor="let Group of plBSCategoryList" [value]="Group.id"
+                                                        >
+                                                            {{Group.displayText}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label for="subControlDetail_SortOrder"
+                                                class="col-md-4">{{l("Sort Order")}}</label>
+                                            <div class="col-md-8">
+
+                                                <input class="form-control form-control-sm" name="plBSSortOrder"
+                                                [(ngModel)]="subControlDetail.sortBSOrder" type="number" readonly required disabled>
+
+                                                 <!-- Empty Select Combo -->
+                                                 <!-- <select  *ngIf="plBSCategoryList == null"  class="form-control"></select>
+
+                                                <select *ngIf="plBSCategoryList != null" 
+                                                    id=" subControlDetail_SortBSOrder" name="subControlDetail_sortBSOrder"
+                                                    class="form-control" [(ngModel)]="subControlDetail.sortBSOrder">
+                                                    <option *ngFor="let order of plBSCategoryList" [selected]="order.isSelected == true"
+                                                        [value]="order.sortOrder">
+                                                        {{order.sortOrder}}
+                                                    </option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button"  class="btn btn-sm btn-danger" (click)="resetBSVals()">Reset</button>
+                                    <button type="button"  class="btn btn-sm btn-primary"  (click)="UpdateAccount('BS')">Process</button>
+                                </div>
+                            </tab>
+                            <tab heading="CF Setting">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <div class="row">
+                                                <label for="chartofControl_AccountCFType"
+                                                    class="col-md-4">{{l("Type")}}</label>
+                                                <div class="col-md-8">
+
+
+                                                    <select id=" chartofControl_AccountCFType"
+                                                        name="accountCFType" class="form-control"
+                                                        [(ngModel)]="subControlDetail.accountCFType"
+                                                        (change)="getCFHeaderList($event.target.value)">
+                                                        <option value="Income">Operation </option>
+                                                        <option value="Current Asset">Current Assets</option>
+                                                        <option value="Expense">Investing Activity</option>
+                                                        <option value="Current Liability">Current Liabilities</option>
+                                                        <option value="Capital">Financing Activity</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-group-sm">
+                                            <div class="row">
+                                                <label for="chartofControl_BSHeader"
+                                                    class="col-md-4">{{l("Header")}}</label>
+                                                <div class="col-md-8">
+                                                    <!-- <select *ngIf="chartofControl.accountBSHeader != null"
+                                                        id=" chartofControl_BSHeader" name="chartofControl_BSheader"
+                                                        class="form-control" [(ngModel)]="chartofControl.accountBSHeader">
+                                                        <option *ngFor="let Group of plBSCategoryList" [value]="Group.id">
+                                                            {{Group.displayText}}
+                                                        </option>
+                                                    </select> -->
+    
+                                                                <!-- Empty Select Combo -->
+                                                    <select  *ngIf="plCFCategoryList == null"  class="form-control"></select>
+    
+                                                    <select  *ngIf="plCFCategoryList != null" 
+                                                        id=" chartofControl_BSHeader" name="accountCFHeader"
+                                                        class="form-control" [(ngModel)]="subControlDetail.accountCFHeader"  (change)="setCFSortOrder($event)">
+                                                        <option *ngFor="let Group of plCFCategoryList" [value]="Group.sortOrder"
+                                                             >
+                                                            {{Group.displayText}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label for="chartofControl_SortOrder"
+                                                class="col-md-4">{{l("Sort Order")}}</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control form-control-sm" name="sortCFOrder"
+                                                [(ngModel)]="subControlDetail.sortCFOrder" type="number" readonly required disabled>
+                                                <!-- <select *ngIf="chartofControl.sortBSOrder != null"
+                                                    id=" chartofControl_SortBSOrder" name="chartofControl_sortBSOrder"
+                                                    class="form-control" [(ngModel)]="chartofControl.sortBSOrder">
+                                                    <option *ngFor="let order of plBSCategoryList"
+                                                        [value]="order.sortOrder">
+                                                        {{order.sortOrder}}
+                                                    </option>
+                                                </select>
+                                                <select *ngIf="chartofControl.sortBSOrder == null"
+                                                    id=" chartofControl_SortBSOrder" name="chartofControl_sortBSOrder"
+                                                    class="form-control" [(ngModel)]="chartofControl.sortBSOrder">
+                                                    <option *ngFor="let order of plBSCategoryList" [value]="order.sortOrder"
+                                                        [selected]="order.isSelected == true">
+                                                        {{order.sortOrder}}
+                                                    </option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button"  class="btn btn-sm btn-danger" (click)="resetCFVals()">Reset</button>
+                                    <button type="button"  class="btn btn-sm btn-primary"  (click)="UpdateAccount('CF')">Process</button>
+                                </div>
+                            </tab>
+                        </tabset>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!subControlDetailForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+    <!-- <subControlDetailControlDetailLookupTableModal #subControlDetailControlDetailLookupTableModal
+        (modalSave)="getNewControlDetailId()"></subControlDetailControlDetailLookupTableModal> -->
+
+</div>

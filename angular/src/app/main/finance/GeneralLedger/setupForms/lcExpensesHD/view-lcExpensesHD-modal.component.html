@@ -1,0 +1,74 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LocID")}} :</h6>
+                        {{ item.locID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DocNo")}} :</h6>
+                        {{ item.docNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TypeID")}} :</h6>
+                        {{ item.typeID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AccountID")}} :</h6>
+                        {{ item.accountID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("SubAccID")}} :</h6>
+                        {{ item.subAccID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PayableAccID")}} :</h6>
+                        {{ item.payableAccID }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("LCNumber")}} :</h6>
+                        {{ item.lcNumber }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Active")}} :</h6>
+                        {{ item.active }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtUser")}} :</h6>
+                        {{ item.audtUser }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AudtDate")}} :</h6>
+                        {{ item.audtDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreateDate")}} :</h6>
+                        {{ item.createdDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,39 @@
+<div class="n-custom-login-form" [ngClass]="{'kt-grid kt-grid--ver kt-grid--root': !useFullWidthLayout(), 'kt-content': useFullWidthLayout() }" [style.text-align]="useFullWidthLayout() ? 'center' : 'left'">
+    <div [ngClass]="{'kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v1': !useFullWidthLayout(), 'row':useFullWidthLayout()}" id="kt_login" style="background:#f1f2f8; height: 100%">
+        <div class="d-flex-custom w-75 mx-auto" [ngClass]="{'kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile': !useFullWidthLayout(), 'col-md-12': useFullWidthLayout()}">
+            <div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside login-custom-left" *ngIf="!useFullWidthLayout()">
+                <div class="" style="background: #2367b3; padding: 15px 15px 5px 15px; width:100%; height:100%;display: flex; flex-direction: column; align-items: center; justify-content: center; background-size: cover;">
+                    <div class="kt-grid__item">
+                        <a (click)="goToHome()" href="">
+                            <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/ERP-Final-logo-white.png'" alt="logo" class="login-logo-m" style="width:220px;"/>
+                            <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=light&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" />
+                        </a>
+                    </div>
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
+                        <div class="kt-grid__item kt-grid__item--middle">
+                            <!-- change by waleed -->
+                            <h3 class="kt-login__title" style="color:#fff !important;">Driving Innovation for A Sustainable Future.</h3>
+                            <hr class="login-heading-border">
+                            <h4 class="kt-login__subtitle d-none"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper d-block login-right-custom">
+                <div class="right-area-login">
+                    <!-- <div class="kt-login__head d-block mt-3 mr-auto ml-auto text-right">
+                        <language-switch></language-switch>
+                    </div> -->
+
+                    <div class="kt-login__body d-block mt-3 mr-auto ml-auto">
+                        <div *ngIf="showTenantChange()" class="kt-login__signup-label tenant-change-box text-center">
+                            <tenant-change></tenant-change>
+                        </div>
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

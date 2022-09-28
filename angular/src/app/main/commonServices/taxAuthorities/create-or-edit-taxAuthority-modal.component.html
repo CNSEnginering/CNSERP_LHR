@@ -1,0 +1,45 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #taxAuthorityForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="!flag">{{l("EditTaxAuthority")}}</span>
+                        <span *ngIf="flag">{{l("CreateNewTaxAuthority")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" name="taxAuthority.companyId" [(ngModel)]="taxAuthority.companyId"
+                        type="text" hidden>
+
+                    <div class="form-group form-group-sm">
+                        <div class="row">                           
+                            <div class="col-md-3">
+                                <label for="TaxAuthority_TAXAUTH" >{{l("TAXAUTH")}} *</label>
+                                <input type="text" id="TaxAuthority_Id" class="form-control"
+                                    (change)="onSearchChange($event.target.value)" [(ngModel)]="taxAuthority.id"
+                                    name="ID" required minlength="3" maxlength="3" [disabled]="!flag"/>
+                            </div>
+                            <div class="col-md-9">
+                                <label for="TaxAuthority_TAXAUTHDESC">{{l("TAXAUTHDESC")}} *</label>
+                                <input type="text" id="TaxAuthority_TAXAUTHDESC" class="form-control"
+                                    [(ngModel)]="taxAuthority.taxauthdesc" name="TAXAUTHDESC" required maxlength="50" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!taxAuthorityForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

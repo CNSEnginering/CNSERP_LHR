@@ -1,0 +1,112 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("ChartOfACListing")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+            </span>
+        </div>
+
+    </div>
+
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <div class="form-group">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <label for="ChartOfAccount_listing" class="col-md-1 ">Listing:</label>
+                            <div class="col-md-4">
+                                <select id="ChartOfAccount_listing" class="form-control form-control-sm"
+                                    name="chartOfAcc" [(ngModel)]="chartOfAcc" required>
+                                    <option  value="1">Chart Of A/C</option>
+                                    <option selected value="2">Sub Ledger</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <label class="col-form-label col-md-1">SL Type:</label>
+                            <div class="col-md-4">
+                                <select name="SLType" class="form-control form-control-sm" [(ngModel)]="slType">
+                                     <option [value]="0" selected>All</option>
+                                    <option *ngFor="let type of ledgerTypes" [value]="type.value">
+                                      {{type.displayText}}
+                                    </option>
+                                    <!-- <option [value]="1">Vendor</option>
+                                    <option [value]="2">Customer</option>
+                                    <option [value]="3">Employee</option> -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="chartOfAcc == 1" class="col-md-10">
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-1">From A/C:</label>
+                            <div class="col-lg-5">
+                                <div class="input-group">
+                                    <input type="text" id="accountID" class="form-control form-control-sm"
+                                        [(ngModel)]="fromAccount" name="accountID" required readonly />
+                                    <input type="text" id="accountName" class="form-control form-control-sm"
+                                        [(ngModel)]="fromAccountName" name="accountName" readonly />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary blue btn-sm" (click)="selectFromAccount()"
+                                            type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-danger btn-icon btn-sm" (click)="setToAllAccount()"
+                                            type="button"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-form-label col-lg-1">To A/C:</label>
+                            <div class="col-lg-5">
+                                <div class="input-group">
+                                    <input type="text" id="toAccountID" class="form-control form-control-sm"
+                                        [(ngModel)]="toAccount" name="toAccountID" required readonly />
+                                    <input type="text" id="toAccountName" class="form-control form-control-sm"
+                                        [(ngModel)]="toAccountName" name="toAccountName" readonly />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary blue btn-sm" (click)="selectToAccount()"
+                                            type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-danger btn-icon btn-sm" (click)="setToAllAccount()"
+                                            type="button"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <hr />
+
+                </div>
+                <div>
+                    <div class="row mb-4">
+                        <div class="col-sm-12 text-right">
+                            <button type="submit" class="btn btn-primary blue" [disabled]="!chartOfAcc"
+                                (click)="getReport()"><i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <financeLookupTableModal #fromAccountFinder (modalSave)="getFromAccount()">
+    </financeLookupTableModal>
+    <financeLookupTableModal #toAccountFinder (modalSave)="getToAccount()">
+    </financeLookupTableModal>
+    <app-reportviewr-modal #reportView  ></app-reportviewr-modal>

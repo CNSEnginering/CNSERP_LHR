@@ -1,0 +1,128 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #segmentlevel3Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="segmentlevel3.id">{{GloptionSetup != '' ? ("Edit ") + GloptionSetup: l("EditLevel3")}}</span>
+                        <span *ngIf="!segmentlevel3.id">{{GloptionSetup != '' ? ("Create ") + GloptionSetup: l("CreateLevel3")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="m-form__group">
+                                    <div class="row">
+                                        <label for="ControlDetailId" class="col-md-4">{{Gloptionlevel1 != '' ? Gloptionlevel1 : l("Seg1ID")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="ControlDetailId" name="controlDetailId"
+                                                    [(ngModel)]="controlDetailId" type="text" required readonly>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue "
+                                                        (click)="openSelectControlDetailModal()" type="button"
+                                                        [disabled]="Isupdate"><i class="fa fa-search"></i>
+                                                        {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setControlDetailIdNull()" [disabled]="Isupdate"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control form-control-sm" name="subControlDetail.controlDetailId"
+                                    [(ngModel)]="controlDetailDesc" type="text" required disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-group-md">
+                        <div class="m-form__group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label for="SubControlDetailId"
+                                            class="col-md-4">{{Gloptionlevel2 != '' ? Gloptionlevel2: l("Level2ID")}}</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input class="form-control form-control-sm" id="SubControlDetailId"
+                                                    name="subControlDetailId" [(ngModel)]="subControlDetailId"
+                                                    type="text" readonly required>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-primary blue"
+                                                        (click)="openSelectSubControlDetailModal()" type="button"
+                                                        [disabled]="controlDetailId == '' || Isupdate == true"><i
+                                                            class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-danger btn-icon" type="button"
+                                                        (click)="setSubControlDetailIdNull()" [disabled]="Isupdate"><i
+                                                            class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-sm" name="subControlDetailDesc"
+                                        [(ngModel)]="subControlDetailDesc" type="text" required disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                            <label for="Segmentlevel3_Seg3ID" class="col-md-2">{{GloptionSetup != '' ? GloptionSetup: l("Level3ID")}} *</label>
+                            <div class="col-md-3">
+                                <input type="text" id="Segmentlevel3_Seg3ID" class="form-control form-control-sm"
+                                    [(ngModel)]="segmentlevel3.seg3ID" name="Seg3ID" pattern="^\d{2}$" required [disabled]="Isupdate" />
+                                    <!-- pattern="^\d{2}-\d{3}-\d{2}$" -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-md">
+                        <label for="Segmentlevel3_SegmentName">{{GloptionSetup != '' ? GloptionSetup + l("Description"): l("Description")}}</label>
+                        <input type="text" id="Segmentlevel3_SegmentName" class="form-control form-control-sm"
+                            [(ngModel)]="segmentlevel3.segmentName" name="SegmentName" maxlength="50" required />
+                    </div>
+
+                    <!-- <div class="form-group form-group-md">
+                        <label for="Segmentlevel3_OldCode">{{l("OldCode")}}</label>
+                        <input type="text" id="Segmentlevel3_OldCode" class="form-control form-control-sm"
+                            [(ngModel)]="segmentlevel3.oldCode" name="OldCode" />
+                    </div> -->
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!segmentlevel3Form.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- <segmentlevel3ControlDetailLookupTableModal #segmentlevel3ControlDetailLookupTableModal
+        (modalSave)="getNewControlDetailId()"></segmentlevel3ControlDetailLookupTableModal>
+    <segmentlevel3SubControlDetailLookupTableModal #segmentlevel3SubControlDetailLookupTableModal
+        (modalSave)="getNewSubControlDetailId()"></segmentlevel3SubControlDetailLookupTableModal> -->
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+
+</div>

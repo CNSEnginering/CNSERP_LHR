@@ -1,0 +1,290 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("EmployeeLeavesTotals")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("EmployeeLeavesTotalsHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('PayRoll.EmployeeLeavesTotal.Setup.Create')" (click)="createEmployeeLeavesTotal()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                    {{l("CreateNewEmployeeLeavesTotal")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getEmployeeLeavesTotal()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinEmployeeLeavesTotalIDFilter">{{l("MinMax")}}
+                                        {{l("EmployeeLeavesTotalID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinEmployeeLeavesTotalIDFilter"
+                                            [(ngModel)]="minEmployeeLeavesTotalIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minEmployeeLeavesTotalIDFilter" />
+                                        <input type="number" class="form-control"
+                                            [(ngModel)]="maxEmployeeLeavesTotalIDFilter" placeholder="{{l('MaxValue')}}"
+                                            name="maxEmployeeLeavesTotalIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="EmployeeLeavesTotalFilter">{{l("EmployeeLeavesTotal")}}</label>
+                                    <input type="text" class="form-control" id="EmployeeLeavesTotalFilter"
+                                        name="EmployeeLeavesTotalFilter" [(ngModel)]="EmployeeLeavesTotalFilter">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <label for="ActiveFilterSelect">{{l("Active")}}</label>
+                                <select class="form-control" name="ActiveFilter" id="ActiveFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("False")}}</option>
+                                    <option value="1">{{l("True")}}</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div> -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+                                    </div>
+                                </div>
+
+                            </div> -->
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getEmployeeLeavesTotal($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.EmployeeLeavesTotal.Setup.Edit', 'PayRoll.EmployeeLeavesTotal.Setup.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="employeeID">
+                                        {{l('EmployeeID')}}
+                                        <p-sortIcon field="employeeLeavesTotal.employeeID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="salarYear">
+                                        {{l('SalaryYear')}}
+                                        <p-sortIcon field="employeeLeavesTotal.salarYear"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="leaves">
+                                        {{l('Leaves')}}
+                                        <p-sortIcon field="employeeLeavesTotal.leaves"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="casual">
+                                        {{l('Casual')}}
+                                        <p-sortIcon field="employeeLeavesTotal.casual"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="sick">
+                                        {{l('Sick')}}
+                                        <p-sortIcon field="employeeLeavesTotal.sick"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="annual">
+                                        {{l('Annual')}}
+                                        <p-sortIcon field="employeeLeavesTotal.annual"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="EmployeeLeavesTotal.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreatedDate')}}
+                                        <p-sortIcon field="EmployeeLeavesTotal.createDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="EmployeeLeavesTotal.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="EmployeeLeavesTotal.audtDate"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.EmployeeLeavesTotal.Setup.Edit', 'PayRoll.EmployeeLeavesTotal.Setup.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                    (click)="viewEmployeeLeaveBalanceModal.show(record);"
+                                                    >{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.EmployeeLeavesTotal.Setup.Edit')"
+                                                        (click)="createOrEditEmployeeLeavesTotalModal.show(record.employeeLeavesTotal.id);">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.EmployeeLeavesTotal.Setup.Delete')"
+                                                        (click)="deleteEmployeeLeavesTotal(record.employeeLeavesTotal)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('EmployeeID')}}</span>
+                                        {{record.employeeLeavesTotal.employeeID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('SalaryYear')}}</span>
+                                        {{record.employeeLeavesTotal.salaryYear}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Leaves')}}</span>
+                                        {{record.employeeLeavesTotal.leaves}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Casual')}}</span>
+                                        {{record.employeeLeavesTotal.casual}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Sick')}}</span>
+                                        {{record.employeeLeavesTotal.sick}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Annual')}}</span>
+                                        {{record.employeeLeavesTotal.annual}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.employeeLeavesTotal.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('createDate')}}</span>
+                                        {{record.employeeLeavesTotal.createDate | momentFormat:'DD/MM/YYYY' }}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('audtUser')}}</span>
+                                        {{record.employeeLeavesTotal.audtUser }}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('audtDate')}}</span>
+                                        {{record.employeeLeavesTotal.audtDate | momentFormat:'DD/MM/YYYY' }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getEmployeeLeavesTotal($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditEmployeeLeaveBalanceModal #createOrEditEmployeeLeaveBalanceModal
+        (modalSave)="getEmployeeLeavesTotal()">
+    </createOrEditEmployeeLeaveBalanceModal>
+    <viewEmployeeLeaveBalanceModal 
+    #viewEmployeeLeaveBalanceModal></viewEmployeeLeaveBalanceModal>
+
+
+</div>

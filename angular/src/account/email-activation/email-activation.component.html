@@ -1,0 +1,22 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title">
+        <h3>
+            {{"EmailActivation" | localize}}
+        </h3>
+
+        <form class="kt-form" #emailActivationForm="ngForm" method="post" novalidate (ngSubmit)="save()">
+            <p>
+                {{"SendEmailActivationLink_Information" | localize}}
+            </p>
+            <div class="form-group">
+                <input #emailAddressInput="ngModel" [(ngModel)]="model.emailAddress" class="form-control form-control-solid placeholder-no-fix input-ltr" type="email" autocomplete="new-password" placeholder="{{'EmailAddress' | localize}} *" name="emailAddress" required maxlength="256" email />
+                <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
+            </div>
+
+            <div class="kt-login__actions">
+                <button [disabled]="saving" routerLink="/account/login" type="button" class="btn btn-light btn-elevate kt-login__btn-secondary login-custom-btn"><i class="fa fa-arrow-left"></i> {{"Back" | localize}}</button>
+                <button type="submit" class="btn btn-primary btn-elevate kt-login__btn-primary login-custom-btn" [disabled]="!emailActivationForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-check"></i> {{"Submit" | localize}}</button>
+            </div>
+        </form>
+    </div>
+</div>

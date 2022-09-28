@@ -1,0 +1,103 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form *ngIf="active" #projectTMForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span *ngIf="OedriversDto.id">{{l("EditOEDrivers")}}</span>
+            <span *ngIf="!OedriversDto.id">{{l("CreateNewOEDrivers")}}</span>
+          </h4>
+          <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body form-group">
+
+
+          
+          <div class="row mt-2">
+            <div class="form-group col-md-4">
+              <label for="typeId">{{l("DriverID")}}<span class="require-field">*</span></label>
+              <input type="number" id="typeId" min="1" class="form-control form-control-sm"
+                [(ngModel)]="OedriversDto.driverID" name="DriverID" disabled required />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="typeId">{{l("DriverName")}}<span class="require-field">*</span></label>
+              <input type="text" maxlength="150" id="typeId" min="1" class="form-control form-control-sm"
+                [(ngModel)]="OedriversDto.driverName" name="DriverName"  />
+            </div>
+           
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-md-4">
+                  <label for="CRDRNote_AccountID">{{l("CAccID")}}<span class="require-field">*</span></label>
+                  <div class="input-group">
+                      <input type="text" id="CRDRNote_AccountID" class="form-control form-control-sm" required
+                          [(ngModel)]="OedriversDto.driverCtrlAcc" name="AccountID" />
+                      <div class="input-group-append">
+                          <button class="btn btn-primary blue btn-sm" type="button"
+                              (click)="openAccountIDModal()"><i class="fa fa-search"></i>
+                              {{l("Pick")}}</button>
+                      </div>
+                      <div class="input-group-prepend">
+                          <button class="btn btn-danger btn-icon btn-sm" type="button"
+                              (click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <label for="CRDRNote_AccDesc">{{l("ControlAccDesc")}}</label>
+                  <input class="form-control form-control-sm" id="CRDRNote_AccDesc"
+                      name="CRDRNote_AccDescription" [(ngModel)]="OedriversDto.accountDesc" type="text" disabled />
+              </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-4">
+                <label for="CRDRNote_SubAccID">{{l("CSubAccID")}}<span class="require-field">*</span></label>
+                <div class="input-group">
+                    <input type="text" id="CRDRNote_SubAccID" class="form-control form-control-sm" required
+                        [(ngModel)]="OedriversDto.driverSubAccID" name="SubAccID" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary blue btn-sm" type="button"
+                            (click)="openSubAccIDModal()"><i class="fa fa-search"></i>
+                            {{l("Pick")}}</button>
+                    </div>
+                    <div class="input-group-prepend">
+                        <button class="btn btn-danger btn-icon btn-sm" type="button"
+                            (click)="setSubAccIDNull()"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="CRDRNote_PartyDesc">{{l("ControlSubAccDesc")}}</label>
+                <input class="form-control form-control-sm" id="CRDRNote_PartyDesc"
+                    name="CRDRNote_PartyDescription" [(ngModel)]="OedriversDto.subAccountDesc" type="text" disabled />
+            </div>
+        </div>
+
+            <br>
+          <div class="m-checkbox-list">
+            <label for="Active" class="kt-checkbox">
+              <input id="Active" type="checkbox" name="active" [(ngModel)]="OedriversDto.active">
+              {{l("Active")}}
+              <span></span>
+            </label>
+          </div>
+        
+        </div>
+        <br>
+        <div class="modal-footer">
+          <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+          <button type="submit" class="btn btn-primary blue" [disabled]="!projectTMForm.form.valid"
+            [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+            <span>{{l("Save")}}</span></button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+ <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal> -->

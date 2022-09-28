@@ -1,0 +1,27 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title">
+        <h3>
+            {{'VerifySecurityCode' | localize}}
+        </h3>
+
+        <form #twoFactorForm="ngForm" class="kt-form" method="post" (ngSubmit)="submit()">
+
+            <div class="form-group">
+                <input #passwordInput="ngModel" autoFocus [(ngModel)]="code" class="form-control" type="password" autocomplete="new-password" placeholder="{{'Code' | localize}} *" name="code" required maxlength="16" />
+                <validation-messages [formCtrl]="passwordInput"></validation-messages>
+            </div>
+
+            <div class="form-group mt-4" *ngIf="s('Abp.Zero.UserManagement.TwoFactorLogin.IsRememberBrowserEnabled') === 'true'">
+                <label class="kt-checkbox">
+                    <input class="form-control" [(ngModel)]="loginService.authenticateModel.rememberClient" type="checkbox" name="rememberClient" value="true" />{{"RememberThisBrowser" | localize}}
+                    <span></span>
+                </label>
+            </div>
+
+            <div class="kt-login__actions">
+                <span class="remaining-time-counter" *ngIf="remainingSeconds >= 0">{{"RemainingTime" | localize}}: {{"SecondShort{0}" | localize:remainingSeconds}}.</span>
+                <button type="submit" class="btn btn-primary btn-elevate kt-login__btn-primary" [disabled]="!twoFactorForm.form.valid">{{"Submit" | localize}}</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,169 @@
+<div bsModal #createOrEditVoucherReversal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditVoucherReversal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #designationForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <!-- <span>{{l("EditVoucherReversal")}}</span> -->
+                        <span>{{l("CreateNewVoucherReversal")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row col-md-12">
+                        
+                            
+                        <div class="form-group col-md-2">
+                            <label for="max_id">{{l("Max DocNo")}}<span ></span></label>
+                            <input type="text" id="max_id" class="form-control form-control-sm"
+                            [(ngModel)]="revdto.maxDocNo"  name="max_id" readonly/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="doc_date">{{l("Doc Date")}}<span class="require-field"></span></label>
+                            <input 
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                            required 
+                            class="form-control m-input
+                              form-control-sm" type="text" 
+                              bsDatepicker [(ngModel)]="revdto.docDate" 
+                              id="doc_date" name="doc_date"  [(ngModel)]="revdto.docDate" disabled >
+                        </div>                        
+                    </div>
+                    <div class="borders_outsight">
+                        <div class="row col-md-12">
+                            <div class="form-group m-form__group col-md-4">
+                                <label for="detId">{{l("Doc No")}}</label>
+                                <div class="input-group">  
+                                    <input type="text" id="detId" [(ngModel)]="revdto.docNo" class="form-control form-control-sm"  name="detId" readonly/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary blue btn-sm" (click)="openVoucherTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                    </div> 
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setVoucherTypeIdNull()" ><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                <label >Book ID  </label>
+                                <div class="input-group">
+                                  <input type="text" id="bookID" required class="form-control form-control-sm"
+                                  [(ngModel)]="revdto.bookID" name="bookID" readonly />
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <label >FMTDocNo</label>
+                                <div class="input-group">
+                                  <input type="text" id="fmtDocNo" required class="form-control form-control-sm"
+                                  [(ngModel)]="revdto.fmtDocNo" name="fmtDocNo" readonly />
+                                </div> 
+                            </div>
+                            <div class="col-md-6">
+                                <label >Doc Month</label>
+                                <div class="input-group">
+                                  <input type="text" id="docMonth" required class="form-control form-control-sm"
+                                  [(ngModel)]="revdto.docMonth" name="docMonth" readonly />
+                                </div>                            
+                            </div>
+                            <div class="col-md-6">
+                                <label >Doc Year</label>
+                                <div class="input-group">
+                                  <input type="text" id="docYear" required class="form-control form-control-sm"
+                                  [(ngModel)]="DocYear" name="DocYear" readonly />
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ================================================ -->
+                      <div class="borders_outsight">
+                        <div class="row col-md-12">
+                            <div class="form-group m-form__group col-md-4">
+                                <label for="new_date">{{l("New Date")}}<span class="require-field">*</span></label>
+                                <div class="input-group">                                 
+                                    <input 
+                                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                    required 
+                                    class="form-control m-input
+                                    form-control-sm" type="text" 
+                                    bsDatepicker  [(ngModel)]="revdto.newDocDate"
+                                    id="new_date" name="new_date" (ngModelChange)="getDateParams($event)">                        
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setnewVoucherNull()" ><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                <label >Doc No</label>
+                                <div class="input-group">
+                                  <input type="text" id="newDocNo" required class="form-control form-control-sm"
+                                  [(ngModel)]="revdto.newDocNo" name="newDocNo" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label >FMTDocNo</label>
+                                <div class="input-group">
+                                  <input type="text" id="newFmtDocNo" required class="form-control form-control-sm"
+                                  [(ngModel)]="revdto.newFmtDocNo"name="newFmtDocNo" readonly />
+                                </div>  
+                            </div>
+                            <div class="col-md-6">
+                                <label >Doc Month</label>
+                                <div class="input-group">
+                                  <input type="text" id="newDocMonth" required class="form-control form-control-sm"
+                                  [(ngModel)]="revdto.newDocMonth"name="newDocMonth" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label >Doc Year</label>
+                                <div class="input-group">
+                                  <input type="text" id="newDocYear" required class="form-control form-control-sm"
+                                  [(ngModel)]="newDocYear" name="newDocYear" readonly />
+                                </div>  
+                            </div>
+                        </div>
+                      </div>
+                    
+
+                <div class="row col-md-12">
+                        <label >Narration</label>
+                        <textarea type="text" id="narration" required class="form-control form-control-sm"
+                        [(ngModel)]="revdto.narration" name="narration" readonly  rows = "5" cols = "60" style="width: 100%;">                               
+                         </textarea>
+                        <!-- <div class="input-group">
+                          <input type="text" id="narration" required class="form-control form-control-sm"
+                          [(ngModel)]="revdto.narration" name="narration" readonly />
+                        </div>     -->
+                    
+                </div>
+                </div>
+                <div class="modal-footer">
+
+                    <div class="form-group col-md-2 pull-right"  *ngIf="revdto.id && !revdto.posted && isGranted('SetupForms.VoucherReversal.Process') ">
+						<button type="button" class="btn btn-success green" style="margin-left: -400%;width: 60%;" 
+                        [disabled]="!designationForm.form.valid" [buttonBusy]="processing" (click)="process()" 
+                        [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Process  ")}}</span></button>
+					</div>
+
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button *ngIf="!revdto.posted" type="submit" class="btn btn-primary blue" [disabled]="!designationForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+
+                           
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewModal()"></financeLookupTableModal>

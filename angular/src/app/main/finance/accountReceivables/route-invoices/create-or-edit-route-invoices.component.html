@@ -1,0 +1,211 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-xl custom_model_width">
+    <div class="modal-content">
+      <form *ngIf="active" #routeForm="ngForm" (ngSubmit)="save()" autocomplete="off" _ngcontent-bmt-c20>
+        <div class="modal-header">
+          <h4 class="modal-title">
+
+            <span *ngIf="arinvoiceH.id">{{l("EditARINVH")}}</span>
+            <span *ngIf="!arinvoiceH.id">{{l("CreateNewARINVH")}}</span>
+
+          </h4>
+          <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body form-group">
+          <div>
+            <div class="row">
+              <div class="col-md-2">
+                <label for="docNo">{{l("DocNo")}}<span class="require-field">*</span></label>
+                <input type="text" id="docNo" class="form-control form-control-sm" [(ngModel)]="arinvoiceH.docNo"
+                  name="docNo" maxlength="10" required disabled />
+              </div>
+              <div class="col-md-2">
+                <label for="docDate">{{l("DocDate")}}<span class="require-field">*</span></label>
+                <input type="text" min="1" id="docDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker
+                  class="form-control form-control-sm" [(ngModel)]="this.arinvoiceH.docDate" name="docDate" />
+              </div>
+              <div class="col-md-2">
+                <label for="invDate">{{l("InvoiceDate")}}<span class="require-field">*</span></label>
+                <input type="text" min="1" id="invDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker
+                  class="form-control form-control-sm" [(ngModel)]="this.arinvoiceH.invDate" name="invDate" />
+              </div>
+
+              <div class="col-md-3">
+                <label for="routID">{{l("RoutID")}}<span class="require-field">*</span></label>
+                <div class="input-group">
+                  <input type="number" id="routID" class="form-control form-control-sm" [(ngModel)]="arinvoiceH.routID"
+                    name="routID" readonly required />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary blue btn-sm" type="button" (click)="openSelectRouteModal()"><i
+                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setRouteIDNull()"><i
+                        class="fa fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="routDesc">{{l("RoutDesc")}}</label>
+                <input class="form-control form-control-sm" id="routDesc" name="routDesc" [(ngModel)]="routDesc"
+                  type="text" readonly>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <label for="locID">{{l("LocID")}}<span class="require-field">*</span></label>
+                <div class="input-group">
+                  <input type="text" id="locID" class="form-control form-control-sm" [(ngModel)]="arinvoiceH.locID"
+                    name="locID" required />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary blue btn-sm" type="button" (click)="openLocationModal()"><i
+                        class="fa fa-search"></i>
+                      {{l("Pick")}}</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setLocationNull()"><i
+                        class="fa fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="locDesc">{{l("LocDesc")}}</label>
+                <input class="form-control form-control-sm" id="locDesc" name="locDesc" [(ngModel)]="locDesc"
+                  type="text" readonly />
+              </div>
+
+              <div class="col-md-3">
+                <label for="refNo">{{l("RefID")}}</label>
+                <div class="input-group">
+                  <input type="text" id="refNo" class="form-control form-control-sm" [(ngModel)]="arinvoiceH.refNo"
+                    name="refNo" readonly />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary blue btn-sm" type="button" (click)="openSelectReferenceModal()"><i
+                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setReferenceIDNull()"><i
+                        class="fa fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="refName">{{l("RefName")}}</label>
+                <input class="form-control form-control-sm" id="refName" name="refName" [(ngModel)]="refName"
+                  type="text" readonly>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-3">
+                <label for="saleTypeID">{{l("TransactionTypes")}}<span class="require-field">*</span></label>
+                <div class="input-group">
+                  <input type="text" id="saleTypeID" class="form-control form-control-sm"
+                    [(ngModel)]="arinvoiceH.saleTypeID" name="saleTypeID" required readonly />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary blue btn-sm" type="button" (click)="openSelectTransactionModal()"><i
+                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setTransactionIDNull()"><i
+                        class="fa fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="refName">{{l("TransTypeDesc")}}</label>
+                <input class="form-control form-control-sm" id="saleTypeDesc" name="saleTypeDesc"
+                  [(ngModel)]="saleTypeDesc" type="text" readonly>
+              </div>
+              <div class="col-md-3">
+                <label for="paymentOption">{{l("PaymentOption")}}<span class="require-field">*</span></label>
+                <select id="paymentOption" class="form-control form-control-sm" [(ngModel)]="arinvoiceH.paymentOption"
+                  name="paymentOption" (ngModelChange)="changeOption(arinvoiceH.paymentOption)"
+                  (change)="fnShowChequeNo(arinvoiceH.paymentOption)">
+                  <option value="Bank">Bank</option>
+                  <option value="Cash">Cash</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label for="bankID">{{arinvoiceH.paymentOption}}<span class="require-field">*</span></label>
+                <div class="input-group">
+                  <input type="text" id="bankID" class="form-control form-control-sm" [(ngModel)]="arinvoiceH.bankID"
+                    name="BankID" required readonly />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary blue btn-sm" type="button" (click)="openSelectBankIdModal()"><i
+                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setBankIdNull()"><i
+                        class="fa fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="accountID">{{l("AccountID")}}</label>
+                <input class="form-control form-control-sm" id="accountID" name="accountID"
+                  [(ngModel)]="arinvoiceH.accountID" type="text" readonly>
+              </div>
+
+              <div class=" m-form__group col-md-3" *ngIf="arinvoiceH.paymentOption.toLowerCase() == 'bank'" hidden>
+                <label for="chequeNo">{{l("ChequeNo")}}</label>
+                <div class="input-group">
+                  <input type="text" id="chequeNo" class="form-control form-control-sm"
+                    [(ngModel)]="arinvoiceH.chequeNo" name="chequeNo" />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary blue btn-sm" (click)="openInstrumentNo('Tab2')" type="button"><i
+                        class="fa fa-search"></i> {{l("Pick")}}</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <!-- <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setInstrumentNoNull()"><i class="fa fa-times"></i></button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <label for="narration">{{l("Narration")}}</label>
+                <input class="form-control form-control-sm" id="narration" name="narration"
+                  [(ngModel)]="arinvoiceH.narration" type="text" maxlength="100" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="btn btn-primary blue" [buttonBusy]="saving"
+              [busyText]="l('SavingWithThreeDot')" (click)="GetPostedInvoices()"><i class="fa fa-save"></i>
+              Process</button>
+          </div>
+          <div class="row com-md-12" style="margin-top:10px;">
+            <br>
+            <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [rowData]="rowData"
+              [columnDefs]="columnDefs" [animateRows]="true" [suppressDragLeaveHidesColumns]="true"
+              [rowSelection]="rowSelection" [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+              (cellClicked)="onCellClicked($event)" (cellValueChanged)="onCellValueChanged($event)"
+              (cellEditingStarted)="cellEditingStarted($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+          <button type="submit" class="btn btn-primary blue" (click)="save()" *ngIf="!this.isButtonVisible"
+            [disabled]="!routeForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
+              class="fa fa-save"></i>
+            <span>{{l("Save")}}</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getLookUpData()"></financeLookupTableModal>
+<salesLookupTableModal #SalesLookupTableModal (modalSave)="getNewSalesModal()"></salesLookupTableModal>
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>

@@ -1,0 +1,53 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #groupCodeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="IsUpdate">{{l("EditGroupCode")}}</span>
+                        <span *ngIf="!IsUpdate">{{l("CreateNewGroupCode")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group form-group-md">
+                        <div class="row">
+                           
+                            <div class="col-md-3">
+                                <label for="GroupCode_GRPCODE">{{l("GRPCODE")}}</label>
+                                <input type="number" id="GroupCode_GRPCODE" class="form-control form-control-sm"
+                                    [(ngModel)]="groupCode.grpcode" name="GRPCODE" required maxlength="2" readonly />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="GroupCategory" >{{l("Class")}}</label>
+                                <select id="GroupCategory" name="groupCategory" class="form-control form-control-sm"
+                                    [(ngModel)]="groupCode.grpctcode" required>
+                                    <option *ngFor="let Group of grgcat" [value]="Group.id">{{Group.displayName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="GroupCode_GRPDESC" >{{l("GRPDESC")}}</label>
+                                <input type="text" #GRPDESC="ngModel" id="GroupCode_GRPDESC"
+                                    class="form-control form-control-sm" [(ngModel)]="groupCode.grpdesc" name="GRPDESC"
+                                    maxlength="100" pattern="(?!^\d+$)^.+$" required />
+                                <validation-messages [formCtrl]="GRPDESC"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!groupCodeForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

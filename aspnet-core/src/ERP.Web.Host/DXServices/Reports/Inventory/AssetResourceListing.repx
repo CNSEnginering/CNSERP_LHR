@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="AssetResourceListing" Margins="20, 28, 14, 100" PageWidth="850" PageHeight="1100" Version="19.2" EventsInfo="|pictureBox1,BeforePrint,pictureBox1_BeforePrint" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Visible="false" Description="Parameter1" ValueInfo="0" Name="Address" />
+    <Item2 Ref="4" Visible="false" Description="Parameter1" ValueInfo="0" Name="Address1" />
+    <Item3 Ref="5" Visible="false" Description="Parameter1" ValueInfo="0" Name="CompanyName" />
+    <Item4 Ref="6" Visible="false" Description="Parameter1" ValueInfo="0" Name="Phone" />
+    <Item5 Ref="8" Visible="false" Description="Parameter1" ValueInfo="0" Name="TenantId" Type="#Ref-7" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="9" ControlType="TopMarginBand" Name="TopMargin" HeightF="14" />
+    <Item2 Ref="10" ControlType="BottomMarginBand" Name="BottomMargin" />
+    <Item3 Ref="11" ControlType="DetailBand" Name="Detail" HeightF="27.0833969">
+      <Controls>
+        <Item1 Ref="12" ControlType="XRTable" Name="table2" SizeF="790,25" LocationFloat="0, 0">
+          <Rows>
+            <Item1 Ref="13" ControlType="XRTableRow" Name="tableRow2" Weight="11.5" Borders="Bottom">
+              <Cells>
+                <Item1 Ref="14" ControlType="XRTableCell" Name="tableCell6" Weight="0.1126524588703504" Borders="Bottom">
+                  <ExpressionBindings>
+                    <Item1 Ref="15" EventName="BeforePrint" PropertyName="Text" Expression="[assetID]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="16" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="17" ControlType="XRTableCell" Name="tableCell7" Weight="0.13876153418402729">
+                  <ExpressionBindings>
+                    <Item1 Ref="18" EventName="BeforePrint" PropertyName="Text" Expression="[assetName]" />
+                  </ExpressionBindings>
+                </Item2>
+                <Item3 Ref="19" ControlType="XRTableCell" Name="tableCell8" Weight="0.1088973049024623">
+                  <ExpressionBindings>
+                    <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="[regDate]" />
+                  </ExpressionBindings>
+                </Item3>
+                <Item4 Ref="21" ControlType="XRTableCell" Name="tableCell12" Weight="0.20003306836130641" Multiline="true">
+                  <ExpressionBindings>
+                    <Item1 Ref="22" EventName="BeforePrint" PropertyName="Text" Expression="[assetType]" />
+                  </ExpressionBindings>
+                </Item4>
+                <Item5 Ref="23" ControlType="XRTableCell" Name="tableCell9" Weight="0.10070640246295141">
+                  <ExpressionBindings>
+                    <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="[locID]" />
+                  </ExpressionBindings>
+                </Item5>
+                <Item6 Ref="25" ControlType="XRTableCell" Name="tableCell10" Weight="0.44286952130388424">
+                  <ExpressionBindings>
+                    <Item1 Ref="26" EventName="BeforePrint" PropertyName="Text" Expression="[location]" />
+                  </ExpressionBindings>
+                </Item6>
+              </Cells>
+              <StylePriority Ref="27" UseBorders="false" />
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item3>
+    <Item4 Ref="28" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="118.750031">
+      <Controls>
+        <Item1 Ref="29" ControlType="XRLabel" Name="label11" Multiline="true" Text="label18" TextAlignment="TopCenter" SizeF="126.041656,23" LocationFloat="336.9191, 55.9999962" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="?Phone" />
+          </ExpressionBindings>
+          <StylePriority Ref="31" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="32" ControlType="XRLabel" Name="label13" Multiline="true" Text="label15" TextAlignment="TopCenter" SizeF="360.165527,23" LocationFloat="223.084183, 32.9999924" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="?Address +'-'+ ?Address2" />
+          </ExpressionBindings>
+          <StylePriority Ref="34" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="35" ControlType="XRLabel" Name="label49" Multiline="true" Text="label10" TextAlignment="TopCenter" SizeF="239.583282,22.9999847" LocationFloat="280.124725, 10.0000067" Font="Segoe UI, 14pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="?CompanyName" />
+          </ExpressionBindings>
+          <StylePriority Ref="37" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="38" ControlType="XRPictureBox" Name="pictureBox1" Sizing="Squeeze" SizeF="119.041634,79.24997" LocationFloat="0, 0">
+          <Scripts Ref="39" OnBeforePrint="pictureBox1_BeforePrint" />
+        </Item4>
+        <Item5 Ref="40" ControlType="XRLabel" Name="label1" Text="Asset Registration Listing" SizeF="230.083328,24.1943321" LocationFloat="0, 94.5557" Font="Arial, 12pt, style=Bold, charSet=0">
+          <StylePriority Ref="41" UseFont="false" />
+        </Item5>
+      </Controls>
+    </Item4>
+    <Item5 Ref="42" ControlType="ReportFooterBand" Name="ReportFooter">
+      <Controls>
+        <Item1 Ref="43" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" SizeF="383,23" LocationFloat="0, 0" />
+        <Item2 Ref="44" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="Page {0} of {1}" TextAlignment="TopRight" SizeF="383,23" LocationFloat="395, 0" />
+      </Controls>
+    </Item5>
+    <Item6 Ref="45" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="28.7082672">
+      <Controls>
+        <Item1 Ref="46" ControlType="XRTable" Name="table1" SizeF="790,28" LocationFloat="0, 0" Borders="Bottom">
+          <Rows>
+            <Item1 Ref="47" ControlType="XRTableRow" Name="tableRow1" Weight="1" Font="Arial, 9.75pt, style=Bold">
+              <Cells>
+                <Item1 Ref="48" ControlType="XRTableCell" Name="tableCell1" Weight="0.11321592721970955" Text="Asset ID" Borders="Bottom">
+                  <StylePriority Ref="49" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="50" ControlType="XRTableCell" Name="tableCell2" Weight="0.13945559062507862" Text="Asset Name" />
+                <Item3 Ref="51" ControlType="XRTableCell" Name="tableCell3" Weight="0.10944199293893334" Text="Reg Date" />
+                <Item4 Ref="52" ControlType="XRTableCell" Name="tableCell11" Weight="0.20103362215545637" Multiline="true" Text="Asset Type" />
+                <Item5 Ref="53" ControlType="XRTableCell" Name="tableCell4" Weight="0.10121003425767693" Text="Loc ID" />
+                <Item6 Ref="54" ControlType="XRTableCell" Name="tableCell5" Weight="0.44508472916746417" Text="Location" />
+              </Cells>
+              <StylePriority Ref="55" UseFont="false" />
+            </Item1>
+          </Rows>
+          <StylePriority Ref="56" UseBorders="false" />
+        </Item1>
+      </Controls>
+    </Item6>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Json.JsonDataSource,DevExpress.DataAccess.v19.2" Name="jsonDataSource1" Base64="PEpzb25EYXRhU291cmNlIE5hbWU9Impzb25EYXRhU291cmNlMSI+PFNvdXJjZSBTb3VyY2VUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuSnNvbi5DdXN0b21Kc29uU291cmNlIiBKc29uPSJbeyZxdW90O0Fzc2V0SUQmcXVvdDs6JnF1b3Q7RkEtMDAxJnF1b3Q7LCZxdW90O0Fzc2V0TmFtZSZxdW90OzomcXVvdDt0ZXN0JnF1b3Q7LCZxdW90O1JlZ0RhdGUmcXVvdDs6JnF1b3Q7MjQvMDIvMjAyMCZxdW90OywmcXVvdDtBc3NldFR5cGUmcXVvdDs6JnF1b3Q7Q29tcHV0ZXIgRXF1aXBtZW50JnF1b3Q7LCZxdW90O0xvY0lEJnF1b3Q7OiZxdW90OzEmcXVvdDssJnF1b3Q7TG9jYXRpb24mcXVvdDs6JnF1b3Q7Q05TIEVuZ2luZWVyaW5nICZxdW90OywmcXVvdDtXYXJyYW50eSZxdW90OzomcXVvdDtZZXMmcXVvdDssJnF1b3Q7RXhwaXJ5RGF0ZSZxdW90OzomcXVvdDsyNy8wMi8yMDIwJnF1b3Q7LCZxdW90O0luc3VyYW5jZSZxdW90OzomcXVvdDtObyZxdW90OywmcXVvdDtGaW5hbmNlJnF1b3Q7OiZxdW90O05vJnF1b3Q7LCZxdW90O1B1cmNoYXNlRGF0ZSZxdW90OzomcXVvdDsyNS8wMi8yMDIwJnF1b3Q7LCZxdW90O1B1cmNoYXNlUHJpY2UmcXVvdDs6bnVsbCwmcXVvdDtTZXJpYWxObyZxdW90OzpudWxsLCZxdW90O0l0ZW1JRCZxdW90OzomcXVvdDswMS0wMDEtMDEtMDAwMSZxdW90OywmcXVvdDtJdGVtJnF1b3Q7OiZxdW90O2tFWUJPQVJEICBVU0IgQlJBTkRFRCBERUxMJnF1b3Q7LCZxdW90O0Fzc2V0QWNjSUQmcXVvdDs6JnF1b3Q7MDEtMDAxLTAxLTAwMDEmcXVvdDssJnF1b3Q7QXNzZXRBY2NOYW1lJnF1b3Q7OiZxdW90O0dPT0RTIFNBTEVTIERJU1RSTyZxdW90OywmcXVvdDtBY2NEZXBySUQmcXVvdDs6JnF1b3Q7MDEtMDAxLTAxLTAwMDEmcXVvdDssJnF1b3Q7QWNjRGVwck5hbWUmcXVvdDs6JnF1b3Q7R09PRFMgU0FMRVMgRElTVFJPJnF1b3Q7LCZxdW90O0RlcEV4cEFjY0lEJnF1b3Q7OiZxdW90OzAxLTAwMS0wMS0wMDAxJnF1b3Q7LCZxdW90O0RlcEV4cEFjY05hbWUmcXVvdDs6JnF1b3Q7R09PRFMgU0FMRVMgRElTVFJPJnF1b3Q7LCZxdW90O0RlcFJhdGUmcXVvdDs6JnF1b3Q7MS4wMDAwMCZxdW90OywmcXVvdDtOYXJyYXRpb24mcXVvdDs6JnF1b3Q7dGVzdCZxdW90OywmcXVvdDtEZXBTdGFydERhdGUmcXVvdDs6JnF1b3Q7MjQvMDEvMjAyMCZxdW90OywmcXVvdDtEZXBNZXRob2QmcXVvdDs6JnF1b3Q7U3RyYWlnaHQgTGluZSBNZXRob2RzJnF1b3Q7LCZxdW90O0VmZmVjdGl2ZUxpZmUmcXVvdDs6JnF1b3Q7MS4wMDAwMCZxdW90OywmcXVvdDtCb29rVmFsdWUmcXVvdDs6JnF1b3Q7MC45OTAwMCBZZWFycyZxdW90OywmcXVvdDtMYXN0RGVwQW1vdW50JnF1b3Q7OiZxdW90OzAuMDEwMDAmcXVvdDssJnF1b3Q7TGFzdERlcERhdGUmcXVvdDs6JnF1b3Q7MTMvMDgvMjAyMCZxdW90OywmcXVvdDtBY2N1bW9sYXRlZERlcCZxdW90OzomcXVvdDswJnF1b3Q7fSx7JnF1b3Q7QXNzZXRJRCZxdW90OzomcXVvdDtGQS0wMDImcXVvdDssJnF1b3Q7QXNzZXROYW1lJnF1b3Q7OiZxdW90O3Rlc3QmcXVvdDssJnF1b3Q7UmVnRGF0ZSZxdW90OzomcXVvdDsyNS8wMi8yMDIwJnF1b3Q7LCZxdW90O0Fzc2V0VHlwZSZxdW90OzomcXVvdDtDb21wdXRlciBFcXVpcG1lbnQmcXVvdDssJnF1b3Q7TG9jSUQmcXVvdDs6JnF1b3Q7MiZxdW90OywmcXVvdDtMb2NhdGlvbiZxdW90OzomcXVvdDtZb3VzYWYgU2FlZWQmcXVvdDssJnF1b3Q7V2FycmFudHkmcXVvdDs6JnF1b3Q7WWVzJnF1b3Q7LCZxdW90O0V4cGlyeURhdGUmcXVvdDs6JnF1b3Q7MjgvMDIvMjAyMCZxdW90OywmcXVvdDtJbnN1cmFuY2UmcXVvdDs6JnF1b3Q7Tm8mcXVvdDssJnF1b3Q7RmluYW5jZSZxdW90OzomcXVvdDtObyZxdW90OywmcXVvdDtQdXJjaGFzZURhdGUmcXVvdDs6JnF1b3Q7MzEvMTIvMjAxOSZxdW90OywmcXVvdDtQdXJjaGFzZVByaWNlJnF1b3Q7OiZxdW90OzE0LjAwMDAwJnF1b3Q7LCZxdW90O1NlcmlhbE5vJnF1b3Q7OiZxdW90OzEmcXVvdDssJnF1b3Q7SXRlbUlEJnF1b3Q7OiZxdW90OzAxLTAwMS0wMS0wMDAxJnF1b3Q7LCZxdW90O0l0ZW0mcXVvdDs6JnF1b3Q7a0VZQk9BUkQgIFVTQiBCUkFOREVEIERFTEwmcXVvdDssJnF1b3Q7QXNzZXRBY2NJRCZxdW90OzomcXVvdDswMS0wMDEtMDEtMDAwMSZxdW90OywmcXVvdDtBc3NldEFjY05hbWUmcXVvdDs6JnF1b3Q7R09PRFMgU0FMRVMgRElTVFJPJnF1b3Q7LCZxdW90O0FjY0RlcHJJRCZxdW90OzomcXVvdDswMi0wMDEtMDEtMDAwMSZxdW90OywmcXVvdDtBY2NEZXByTmFtZSZxdW90OzomcXVvdDtMT0NBTCBQVVJDSEFTRSBESVNUUk8mcXVvdDssJnF1b3Q7RGVwRXhwQWNjSUQmcXVvdDs6JnF1b3Q7MDItMDAxLTAxLTAwMDEmcXVvdDssJnF1b3Q7RGVwRXhwQWNjTmFtZSZxdW90OzomcXVvdDtMT0NBTCBQVVJDSEFTRSBESVNUUk8mcXVvdDssJnF1b3Q7RGVwUmF0ZSZxdW90OzpudWxsLCZxdW90O05hcnJhdGlvbiZxdW90OzpudWxsLCZxdW90O0RlcFN0YXJ0RGF0ZSZxdW90OzpudWxsLCZxdW90O0RlcE1ldGhvZCZxdW90OzomcXVvdDtTdHJhaWdodCBMaW5lIE1ldGhvZHMmcXVvdDssJnF1b3Q7RWZmZWN0aXZlTGlmZSZxdW90OzpudWxsLCZxdW90O0Jvb2tWYWx1ZSZxdW90OzomcXVvdDsxNC4wMDAwMCBZZWFycyZxdW90OywmcXVvdDtMYXN0RGVwQW1vdW50JnF1b3Q7Om51bGwsJnF1b3Q7TGFzdERlcERhdGUmcXVvdDs6bnVsbCwmcXVvdDtBY2N1bW9sYXRlZERlcCZxdW90OzpudWxsfV0iIC8+PFNjaGVtYT48Tm9kZSBOYW1lPSJyb290IiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IkFycmF5Ij48Tm9kZSBOYW1lPSJBc3NldElEIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkFzc2V0TmFtZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJSZWdEYXRlIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkFzc2V0VHlwZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJMb2NJRCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJMb2NhdGlvbiIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJXYXJyYW50eSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJFeHBpcnlEYXRlIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9Ikluc3VyYW5jZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJGaW5hbmNlIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IlB1cmNoYXNlRGF0ZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJQdXJjaGFzZVByaWNlIiBUeXBlPSJTeXN0ZW0uT2JqZWN0IiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IlNlcmlhbE5vIiBUeXBlPSJTeXN0ZW0uT2JqZWN0IiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9Ikl0ZW1JRCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJJdGVtIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkFzc2V0QWNjSUQiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iQXNzZXRBY2NOYW1lIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkFjY0RlcHJJRCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJBY2NEZXByTmFtZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJEZXBFeHBBY2NJRCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJEZXBFeHBBY2NOYW1lIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRlcFJhdGUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iTmFycmF0aW9uIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRlcFN0YXJ0RGF0ZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJEZXBNZXRob2QiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iRWZmZWN0aXZlTGlmZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJCb29rVmFsdWUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iTGFzdERlcEFtb3VudCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJMYXN0RGVwRGF0ZSIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJBY2N1bW9sYXRlZERlcCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48L05vZGU+PC9TY2hlbWE+PC9Kc29uRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="7" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

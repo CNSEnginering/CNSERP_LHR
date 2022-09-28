@@ -1,0 +1,379 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<form *ngIf="active" #receiptEntryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="porecHeader.id">{{l("Edit Good Received Note")}}</span>
+						<span *ngIf="!porecHeader.id">{{l("CreateNewGoodReceivedNote")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+
+					<div class="row col-md-12">
+						<div class="form-group col-md-3">
+							<label for="ReceiptEntry_LocID">{{l("Location")}}<span
+									class="require-field">*</span></label>
+							<select id="ReceiptEntry_LocID" class="form-control form-control-sm"
+								[(ngModel)]="porecHeader.locID" name="LocID" [disabled]="LocCheckVal" [disabled]="porecHeader.id" required>
+								<option value=0>Choose Location</option>
+								<option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+							</select>
+						</div>
+						<div class="form-group m-form__group col-md-3 col-xs-12">
+							<label for="ReceiptEntry_poDocNo">{{l("PONo")}}</label>
+							<div class="input-group">
+								<input type="number" min="1" id="ReceiptEntry_poDocNo"
+									class="form-control form-control-sm" [(ngModel)]="porecHeader.poDocNo"
+									name="PODocNo" [disabled]="porecHeader.id" />
+								<div class="input-group-append" *ngIf="!porecHeader.id">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectPONoModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!porecHeader.id">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setPONoNull()"><i class="fa fa-times"></i></button>
+								</div>
+								<div class="input-group-append" *ngIf="!porecHeader.id">
+									<button class="btn btn-primary blue btn-sm" *ngIf="permission.isGranted('Purchase.ReceiptEntry.Edit')" (click)="getPONoRecord()"
+									type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group col-md-2" *ngIf="!porecHeader.id">
+							<button class="btn btn-primary green btn-sm  col-md-8" style="margin-top: 25px;"
+								*ngIf="permission.isGranted('Purchase.ReceiptEntry.Edit')" (click)="getPONoRecord()"
+								type="button"><i class="fa fa-search"></i> {{l("Filter")}}</button>
+						</div> -->
+
+						<div class="form-group col-md-2" *ngIf="porecHeader.id">
+							<label for="ReceiptEntry_PostedDate">{{l("PostedDate")}}<span
+									class="require-field">*</span></label>
+							<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+								class="form-control m-input  form-control-sm" type="text" bsDatepicker
+								[(ngModel)]="porecHeader.postedDate._d" id="ReceiptEntry_PostedDate"
+								name="ReceiptEntry_PostedDate"
+								style="  font-weight: bold; background-color:#f4f4f4 !important; color: white; text-align: center; ">
+						</div>
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_DocNo">{{l("DOCNO")}}<span class="require-field">*</span></label>
+							<input type="number" id="ReceiptEntry_DocNo" class="form-control form-control-sm"
+								[(ngModel)]="porecHeader.docNo" name="DocNo" required  disabled/>
+						</div>
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_DocDate">{{l("DOCDATE")}}<span
+									class="require-field">*</span></label>
+							<input required class="form-control m-input  
+							form-control-sm" type="text" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+								[(ngModel)]="porecHeader.docDate._d" [disabled]="checkedval" id="ReceiptEntry_DocDate"
+								name="ReceiptEntry_DocDate">
+						</div>
+						<!-- <div class="form-group col-sm-4" *ngIf="porecHeader.posted">
+							
+							<label for="ReceiptEntry_Gl">{{l("GL Invoice No")}}</label>
+							<input class="form-control m-input  form-control-sm" type="text"
+								[(ngModel)]="porecHeader.glNo" id="GlNo" name="GlNo">
+						</div> -->
+						
+					</div>
+
+					<div class="row col-md-12">
+
+						
+
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_billDate">{{l("InvoiceDate")}}<span
+									class="require-field">*</span></label>
+							<input [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required
+								class="form-control m-input  form-control-sm" type="text" bsDatepicker
+								[(ngModel)]="porecHeader.billDate._d" id="ReceiptEntry_billDate" name="billDate">
+						</div>
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="ReceiptEntry_ACCode">{{l("AccountID")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="ReceiptEntry_ACCode" class="form-control form-control-sm"
+									[(ngModel)]="porecHeader.accountID" name="accountID" readonly required />
+								<div class="input-group-append" *ngIf="!porecHeader.poDocNo">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectChartofACModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!porecHeader.poDocNo">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setAccountIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<label for="ChartofAccDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="ChartofAccDesc" name="ChartofAccDesc"
+								[(ngModel)]="chartofAccDesc" type="text" readonly>
+						</div>
+
+						<div class="form-group m-form__group col-md-3">
+							<label for="ReceiptEntry_SubAccID">{{l("VenderID")}}<span class="require-field"
+									*ngIf="IsVenderID">*</span></label>
+							<div class="input-group">
+								<input type="number" id="ReceiptEntry_SubAccID" class="form-control form-control-sm"
+									[(ngModel)]="porecHeader.subAccID" name="subAccID"
+									[required]="IsVenderID ? 'required' : null" readonly />
+								<div class="input-group-append" *ngIf="!porecHeader.poDocNo">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectSubAccModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!porecHeader.poDocNo">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setSubAccIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="SubAccDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="SubAccDesc" name="subAccDesc"
+								[(ngModel)]="subAccDesc" type="text" readonly>
+						</div>
+
+						<!-- <div class="form-group m-form__group col-md-3">
+							<label for="ReceiptEntry_CCID">{{l("CostCenter")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" id="ReceiptEntry_CCID" class="form-control form-control-sm"
+									[(ngModel)]="porecHeader.ccid" name="ccID" readonly required />
+								<div class="input-group-append">
+									<button class="btn btn-primary blue btn-sm" (click)="openSelectCostCenterModal()"
+										type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setCostCenterIDNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="CostCenterDesc">{{l("")}}&nbsp;</label>
+							<input class="form-control form-control-sm" id="CostCenterDesc" name="costCenterDesc"
+								[(ngModel)]="costCenterDesc" type="text" readonly>
+						</div> -->
+
+						<div class="form-group col-md-3">
+							<label for="ReceiptEntry_billNo">{{l("InvoiceNo")}}</label>
+							<input type="text" id="ReceiptEntry_billNo" class="form-control form-control-sm"
+								[(ngModel)]="porecHeader.billNo" name="billNo" />
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="ReceiptEntry_OrdNo">{{l("Reference No.")}}</label>
+							<input type="text" id="ReceiptEntry_OrdNo" class="form-control form-control-sm"
+								[(ngModel)]="porecHeader.ordNo" name="OrdNo" />
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="ReceiptEntry_Narration">{{l("Narration")}}</label>
+							<input type="text" id="ReceiptEntry_Narration" class="form-control form-control-sm"
+								[(ngModel)]="porecHeader.narration" name="Narration" />
+						</div>
+						
+						<div class="form-group col-sm-2">
+							<label for="showAmounts">{{l("Show Amounts")}}<span class="require-field"></span></label>
+							<input class="form-control m-input form-control-sm" type="checkbox" [disabled]="!permission.isGranted('Purchase.ReceiptEntry.ShowAmounts')"
+								[(ngModel)]="showAmounts"  id="showAmounts" (change)="fnShowAmounts(showAmounts)" name="showAmounts">
+						</div>
+
+						<div class="m-checkbox-list col-md-1" style="padding-top: 30px;">
+							<label for="ReceiptEntry_active" class="kt-checkbox">
+								<input id="ReceiptEntry_active" type="checkbox" name="Active"
+									[(ngModel)]="porecHeader.active">
+								{{l("Active")}}<span class="require-field"></span>
+							</label>
+						</div>
+						<!-- <div class="form-group col-md-2" *ngIf="porecHeader.id">
+							<label for="ReceiptEntry_Status">{{l("Status")}}</label>
+							<input type="text" id="ReceiptEntry_Status" class="form-control form-control-sm" name="Staus" [(ngModel)]="status" style="background-color: black !important;color: white;text-align: center;font-weight: bold;"  disabled/>
+						</div> -->
+
+					</div>
+
+
+					<br>
+					<tabset class="tab-container tabbable-line">
+						<tab heading="{{'Details' | localize}}">
+							<div class="row col-md-12">
+								<br>
+								<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRow()" *ngIf="!porecHeader.poDocNo">Add Row</button>
+								<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelected()" *ngIf="!porecHeader.poDocNo">Remove
+									Row</button>
+								<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+									[rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+									[suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+									[singleClickEdit]="true" (cellClicked)="cellClicked($event)"
+									(cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)">
+								</ag-grid-angular>
+							</div>
+						</tab>
+						<tab heading="{{'AdditionalExp' | localize}}">
+							<div class="row col-md-12">
+								<br>
+								<button type="button" class="btn btn-primary blue btn-sm" (click)="onAddRowA()">Add Row</button>
+								<button type="button" class="btn btn-primary blue btn-sm" (click)="onRemoveSelectedA()">Remove Row</button>
+								<ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+									[rowData]="rowDataA" [columnDefs]="columnDefsA" [animateRows]="true"
+									[suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelectionA"
+									[singleClickEdit]="true" (cellClicked)="cellClickedA($event)"
+									(cellValueChanged)="onCellValueChangedA($event)" (gridReady)="onGridReadyA($event)">
+								</ag-grid-angular>
+							</div>
+						</tab>
+						<tab heading="Attachment">
+							<div class="form-group">
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label for="FileAttachment">File Attachment</label>
+										<p-fileUpload id="FileAttachment" name="FileAttachment[]" [url]="uploadUrl"
+											accept=".jpg,.jpeg" maxFileSize="1000000"
+											(onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onUpload($event)">
+
+											<ng-template pTemplate="content">
+												<ul *ngIf="uploadedFiles.length">
+													<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}}
+														bytes</li>
+												</ul>
+											</ng-template>
+										</p-fileUpload>
+									</div>
+								</div>
+								<div class="row">
+									<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached"
+									width="100" height="100" (click)="open()">
+									<button type="button" style="margin-left: 25px;padding: 4px;height:35px;
+									padding-right: 0px;" class="btn btn-success green" *ngIf="!checkImage" (click)="downloadFile()"><i
+											class="fa fa-download" aria-hidden="true"></i></button> <button
+										type="button" style="padding: 4px;
+									padding-right: 0px;height:35px;" class="btn btn-danger" *ngIf="!checkImage && !porecHeader.approved" (click)="removeFile()"><i class="fa fa-times"
+											aria-hidden="true"></i></button>
+								</div>
+
+							</div>
+
+						</tab>
+					</tabset>
+					<br>
+
+					<div class="row col-md-12">
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_TotalItems">{{l("TotalItems")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_TotalItems" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="totalItems" name="TotalItems" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_TotalQty">{{l("TotalQty")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_TotalQty" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="porecHeader.totalQty" name="TotalQty" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2" *ngIf="showAmounts">
+							<label for="ReceiptEntry_billAmt">{{l("TotalAmt")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_billAmt" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="porecHeader.billAmt" name="billAmt" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2" *ngIf="showAmounts">
+							<label for="ReceiptEntry_TotalTax">{{l("TotalTax")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_TotalTax" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="taxAmount" name="TotalTax" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_addFreight">{{l("Freight")}}<span class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_addFreight" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="porecHeader.addFreight" name="addFreight" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_addLeak">{{l("Leakage")}}<span class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_addLeak" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="porecHeader.addLeak" name="addLeak" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<div class="form-group col-md-2">
+							<label for="ReceiptEntry_addDisc">{{l("Discount")}}<span class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_addDisc" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="porecHeader.addDisc" name="addDisc" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+						<!-- <div class="form-group col-md-1">
+							<label for="ReceiptEntry_AdditionalExp">{{l("AdditionalExp")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_AdditionalExp" class="form-control form-control-sm"
+								[(ngModel)]="porecHeader.addExp" name="AdditionalExp" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div> -->
+						<div class="form-group col-md-2" *ngIf="showAmounts">
+							<label for="ReceiptEntry_NetAmt">{{l("NetAmt")}}<span class="require-field">*</span></label>
+							<input type="text" id="ReceiptEntry_NetAmt" class="form-control form-control-sm inputFormBoldSize"
+								[(ngModel)]="porecHeader.totalAmt" name="NetAmt" required readonly currencyMask
+								[options]="{ prefix: ' ', thousands: ',' }" />
+						</div>
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<!-- <div class=" col-md-2 pull-right"  *ngIf="porecHeader.id"> -->
+						<button type="button" class="btn btn-success green col-md-1" *ngIf="porecHeader.id" [disabled]="!receiptEntryForm.form.valid" [buttonBusy]="processing" (click)="OpenLog()" [busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					<!-- </div> -->
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="button"
+						*ngIf="porecHeader.id && !porecHeader.posted && porecHeader.approved && isGranted('Purchase.ReceiptEntry.Process')"
+						class="btn btn-success green" [buttonBusy]="processing" (click)="processReceiptEntry()"
+						[busyText]="l('ProcessingWithThreeDot')"><i class="fa fa-spinner"></i>
+						<span>{{l("Process")}}</span></button>
+					<button type="button"
+						*ngIf="porecHeader.id && !porecHeader.approved && !porecHeader.posted && isGranted('Purchase.ReceiptEntry.Approve')"
+						class="btn btn-success green" [disabled]="!receiptEntryForm.form.valid"
+						[buttonBusy]="processing" (click)="approveDoc(porecHeader.docNo,'Approval',true)"
+						[busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-check"></i>
+						<span>{{l("Approve")}}</span></button>
+					<button type="button"
+						*ngIf="porecHeader.id && porecHeader.approved && !porecHeader.posted && isGranted('Purchase.ReceiptEntry.UnApprove')"
+						class="btn btn-danger" [disabled]="!receiptEntryForm.form.valid" [buttonBusy]="processing"
+						(click)="approveDoc(porecHeader.docNo,'UnApproval',false)"
+						[busyText]="l('ApprovingWithThreeDot')"><i class="fa fa-times"></i>
+						<span>{{l("Unapprove")}}</span></button>
+					<button type="submit" class="btn btn-primary blue"
+						*ngIf="!porecHeader.approved && !porecHeader.posted" [disabled]="!receiptEntryForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+<commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>
+<purchaseLookupTableModal #PurchaseLookupTableModal (modalSave)="getNewPurchaseModal()"></purchaseLookupTableModal>
+<app-log #LogTableModal ></app-log>
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+
+	.modal-dialog.modal-xl {
+		max-width: 90%;
+	}
+</style>

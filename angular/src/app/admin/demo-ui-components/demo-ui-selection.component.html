@@ -1,0 +1,52 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                Prime NG Autocomplete
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <form role="form" class="kt-form">
+            <div class="form-group row">
+                <label for="SingleSelectInput" class="col-lg-12">Single select</label>
+                <div class="col-lg-10 col-md-9 col-sm-8">
+                    <p-autoComplete [(ngModel)]="country"
+                                    id="SingleSelectInput"
+                                    [suggestions]="filteredCountries"
+                                    (completeMethod)="filterCountries($event)"
+                                    field="name"
+                                    placeholder="Country"
+                                    [minLength]="1"
+                                    name="SingleSelectInput"
+                                    inputStyleClass="form-control"
+                                    styleClass="width-percent-100">
+                    </p-autoComplete>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <button class="btn btn-primary" (click)="submitSelectedCountry()" type="button">{{"Submit" | localize}}</button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="MultiSelectInput" class="col-lg-12">Multi select</label>
+                <div class="col-lg-10 col-md-9 col-sm-8">
+                    <p-autoComplete [(ngModel)]="countries"
+                                    [suggestions]="filteredCountries"
+                                    (completeMethod)="filterCountries($event)"
+                                    field="name"
+                                    placeholder="Countries"
+                                    [minLength]="1"
+                                    name="MultiSelectInput"
+                                    id="MultiSelectInput"
+                                    [multiple]="true"
+                                    inputStyleClass="form-control"
+                                    styleClass="width-percent-100">
+                    </p-autoComplete>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <button class="btn btn-primary" (click)="submitSelectedCountries()" type="button">{{"Submit" | localize}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

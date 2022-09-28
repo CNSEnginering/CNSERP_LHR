@@ -1,0 +1,72 @@
+<div [@routerTransition]>
+    <div id="kt_header_mobile" class="kt-header-mobile">
+        <div class="kt-header-mobile__logo">
+            <a routerLink="/" target="_blank">
+                <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" src="/assets/common/images/app-logo-on-dark.svg" alt="logo" height="28" />
+                <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="28" />
+            </a>
+        </div>
+        <div class="kt-header-mobile__toolbar">
+            <button class="kt-header-mobile__toolbar-toggler" id="kt_header_mobile_toggler">
+                <span></span>
+            </button>
+            <button ktToggle [options]="userMenuToggleOptions" class="kt-header-mobile__toolbar-topbar-toggler" id="kt_header_mobile_topbar_toggler">
+                <i class="flaticon-more-1"></i>
+            </button>
+        </div>
+    </div>
+    <div class="kt-grid kt-grid--hor kt-grid--root">
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+                    <div id="kt_header" ktHeader #ktHeader class="kt-header kt-grid__item" data-ktheader-minimize="1">
+                        <div class="kt-header__top">
+                            <div class="kt-container">
+
+                                <!-- begin:: Brand -->
+                                <theme8-brand></theme8-brand>
+                                <!-- end:: Brand -->
+                                <!-- begin:: Header Topbar -->
+                                <topbar></topbar>
+                                <!-- end:: Header Topbar -->
+                            </div>
+                        </div>
+                        <div class="kt-header__bottom">
+                            <div class="kt-container">
+                                <!-- begin: Header Menu -->
+                                <top-bar-menu [isTabMenuUsed]="true"></top-bar-menu>
+                                <!-- end: Header Menu -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- end:: Header -->
+                    <div class="d-lg-none p-3 mobile-subscription-warning">
+                        <div *ngIf="subscriptionStatusBarVisible()"
+                             [ngClass]="{'hidden': !subscriptionStatusBarVisible()}" class="d-inline-block d-sm-none m-3">
+                            <span *ngIf="tenant.isInTrialPeriod && !subscriptionIsExpiringSoon()" [innerHTML]="getTrialSubscriptionNotification()"></span>
+                            <a *ngIf="subscriptionIsExpiringSoon()" routerLink="/app/admin/subscription-management">
+                                <span *ngIf="subscriptionIsExpiringSoon() && tenant.isInTrialPeriod"><i class="fa fa-exclamation-circle"></i> {{getExpireNotification("TrialExpireNotification")}}</span>
+                                <span *ngIf="subscriptionIsExpiringSoon() && !tenant.isInTrialPeriod"><i class="fa fa-exclamation-circle"></i> {{getExpireNotification("SubscriptionExpireNotification")}}</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-grid--stretch">
+                        <div class="kt-container kt-body  kt-grid kt-grid--ver" id="kt_body">
+                            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+                                <router-outlet></router-outlet>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    <footer-bar></footer-bar>
+                    <!-- end:: Footer -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

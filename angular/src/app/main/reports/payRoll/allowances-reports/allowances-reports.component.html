@@ -1,0 +1,323 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("EmpAllrep")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("EmployeeReportsHeaderInfo")}}
+            </span> -->
+        </div>
+
+    </div>
+
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body parentSection">
+                        <div class="row row-col-separator-xl">
+                            <div class="col-lg-4">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group row">
+
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="reportCheck" [(ngModel)]="reportCheck"
+                                                            value="Allowance" [checked]='valchk' (change)="RadioChange('Allowance')" >
+                                                       Fuel Allowance Report
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="reportCheck" [(ngModel)]="reportCheck"
+                                                            value="FixedAllowance" (change)="RadioChange('FixedAllowance')" >
+                                                       Fixed Allowance Report
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="reportCheck" [(ngModel)]="reportCheck"
+                                                            value="AllowanceBank" (change)="RadioChange('AllowanceBank')">
+                                                       Allowance Bank Adivce
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="reportCheck" [(ngModel)]="reportCheck"
+                                                            value="AllowanceDisbursement" (change)="RadioChange('AllowanceDisbursement')">
+                                                       Allowance Disbursement
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="kt-radio-list">
+                                                    <label class="kt-radio kt-radio--solid">
+                                                        <input type="radio" name="reportCheck" [(ngModel)]="reportCheck"
+                                                            value="AllowanceSummary" (change)="RadioChange('AllowanceSummary')">
+                                                       Allowance Summary Report
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="YearAndMonth" class="col-md-3 col-form-label">{{l("Select Year And Month")}}</label>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="YearAndMonth" class="form-control form-control-sm" bsDatepicker [(ngModel)]="yearAndMonth" name="YearAndMonth" [bsConfig]="{ dateInputFormat: 'MM/YYYY' }" (onShown)="onOpenCalendar($event)" required>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for="FromEmpID" class="col-md-3 col-form-label">{{l("From Employee")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="FromEmpID" class="form-control form-control-sm" [(ngModel)]="fromEmpID" name="fromEmpID" defaultValue="1" required />
+                                                        <input type="text" id="FromDeptName" class="form-control form-control-sm" [(ngModel)]="fromEmpName" name="fromEmpName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" (click)="openEmployeeModal('fromEmp')" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                                {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setEmployeeNull('fromEmp')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="ToEmpID" class="col-md-3 col-form-label">{{l("To Employee")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="ToEmpID" class="form-control form-control-sm" [(ngModel)]="toEmpID" name="toEmpID" value="99999" required />
+                                                        <input type="text" id="ToEmpName" class="form-control form-control-sm" [(ngModel)]="toEmpName" name="toEmpName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" (click)="openEmployeeModal('toEmp')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setEmployeeNull('toEmp')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- //// -->
+                                            <div class="row">
+                                                <label for="FromDeptID" class="col-md-3 col-form-label">{{l("From Department")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="FromDeptID" class="form-control form-control-sm" [(ngModel)]="fromDeptID" name="fromDeptID" required />
+                                                        <input type="text" id="FromDeptName" class="form-control form-control-sm" [(ngModel)]="fromDeptName" name="fromDeptName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" (click)="openDepartmentModal('fromDept')" type="button"><i class="fa fa-search"></i>
+                                                                {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setDepartmentNull('fromDept')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="ToDeptID" class="col-md-3 col-form-label">{{l("To Department")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="ToDeptID" class="form-control form-control-sm" [(ngModel)]="toDeptID" name="toDeptID" required />
+                                                        <input type="text" id="ToDeptName" class="form-control form-control-sm" [(ngModel)]="toDeptName" name="toDeptName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" (click)="openDepartmentModal('toDept')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setDepartmentNull('toDept')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- //// -->
+
+                                            <div class="row">
+                                                <label for="FromSecID" class="col-md-3 col-form-label">{{l("From Section")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="FromSecID" class="form-control form-control-sm" [(ngModel)]="fromSecID" name="fromSecID" required />
+                                                        <input type="text" id="FromSecName" class="form-control form-control-sm" [(ngModel)]="fromSecName" name="fromSecName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" (click)="openSectionModal('fromSec')" type="button"><i
+                                                                    class="fa fa-search"></i>
+                                                                {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setSectionNull('fromSec')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="ToSecID" class="col-md-3 col-form-label">{{l("To Section")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="ToSecID" class="form-control form-control-sm" [(ngModel)]="toSecID" name="toSecID" required />
+                                                        <input type="text" id="ToSecName" class="form-control form-control-sm" [(ngModel)]="toSecName" name="toSecName" readonly />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" (click)="openSectionModal('toSec')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setSectionNull('toSec')"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label for="Employee_LocID"  class="col-md-3 col-form-label">From Location</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="Employee_LocID" class="form-control form-control-sm"
+                                                        [(ngModel)]="locID" name="LocID" required />
+                                                    <input class="form-control form-control-sm" id="Employee_LocName" name="LocName"
+                                                        [(ngModel)]="locationName" type="text" disabled />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                                (click)="openLocationModal('fromLoc')"><i class="fa fa-search"></i>
+                                                                {{l("Pick")}}</button>
+                                                        </div>
+                                                        
+                                                        
+                                                        
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setLocationNull('fromLoc')"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+
+                                               
+                
+                                            </div>
+                                            <div class="row">
+                                                <label for="Employee_LocID"  class="col-md-3 col-form-label">To Location</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="Employee_LocID" class="form-control form-control-sm"
+                                                        [(ngModel)]="TlocID" name="TLocID" required />
+                                                    <input class="form-control form-control-sm" id="Employee_LocName" name="TLocName"
+                                                        [(ngModel)]="TlocationName" type="text" disabled />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                                (click)="openLocationModal('ToLoc')"><i class="fa fa-search"></i>
+                                                                {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setLocationNull('ToLoc')"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+
+                                               
+                
+                                            </div>
+                                            <div class="row">
+                                                <label for="Employee_LocID"  class="col-md-3 col-form-label">Allowance Type</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="AllowancetypeID" class="form-control form-control-sm"
+                                                        [(ngModel)]="AllowancetypeID" name="AllowancetypeID" required />
+                                                    <input class="form-control form-control-sm" id="AllowancetypeName" name="AllowancetypeName"
+                                                        [(ngModel)]="AllowancetypeName" type="text" disabled />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                                (click)="openAllTypeModal('Allowancetype')"><i class="fa fa-search"></i>
+                                                                {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                                (click)="setAllTypeNull('Allowancetype')"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+
+                                                   
+                
+                                            </div>
+                                            <div class="row">
+                                                        
+                                                <label for="Employee_TypeID" class="col-md-3 col-form-label">{{l("EmploymentType")}}</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" id="Employee_TypeID" class="form-control form-control-sm"
+                                                        [(ngModel)]="this.typeID" name="TypeID" required  />
+                                                        <input class="form-control form-control-sm" id="Employee_EmpTypeName"
+                                                        name="EmpTypeName" [(ngModel)]="this.empTypeName" type="text" disabled />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm" type="button"
+                                                            (click)="openEmpTypeModal('EmpType')"><i class="fa fa-search"></i>
+                                                            {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                                            (click)="setEmpTypeNull()"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+
+                                               
+                
+                                            </div>
+                                            <!-- //// -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot footerSection">
+                                    <div class="col-lg-12" style="text-align: right">
+                                        <button type="submit" class="btn btn-primary blue" (click)="getReport()">
+                                            <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-reportviewr-modal #reportView></app-reportviewr-modal>
+
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>

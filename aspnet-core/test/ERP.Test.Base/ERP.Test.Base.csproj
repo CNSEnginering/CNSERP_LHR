@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>ERP.GraphQL.Test.Base</AssemblyName>
+    <PackageId>ERP.GraphQL.Test.Base</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ERP.Application\ERP.Application.csproj" />
+    <ProjectReference Include="..\..\src\ERP.EntityFrameworkCore\ERP.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="4.6.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="4.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.3" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Shouldly" Version="3.0.2" />
+    <PackageReference Include="NSubstitute" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.TestBase" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

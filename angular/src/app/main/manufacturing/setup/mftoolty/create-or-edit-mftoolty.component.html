@@ -1,0 +1,88 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("MFTOOLTY")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="TypeID">{{l("ToolTypeID")}} <span class="text-danger">*</span> </label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="TypeID" name="TypeID"
+                                    [(ngModel)]="dto.tooltyid" type="text" required maxlength="10">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="ToolDesc">{{l("ToolDesc")}}<span class="text-danger">*</span> </label>
+                            <input type="text" required class="form-control form-control-md" id="ToolDesc"
+                                name="ToolDesc" [(ngModel)]="dto.tooltydesc">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="ToolUOM">{{l("ToolUOM")}}</label>
+                            <!-- <select id="ToolUOM" class="form-control form-control-sm" [(ngModel)]="dto.unit"
+                                name="ToolUOM" required>
+                                <option [value]="null" selected>Select Type</option>
+                                <option [value]="0">Internal</option>
+                                <option [value]="1">Subcontract</option>
+                            </select> -->
+                            <select type="text" id="ToolUOM"
+                                                class="form-control form-control-sm" 
+                                                [(ngModel)]="dto.unit" name="ToolUOM" >
+                                                <option [value]="0" disabled>Choose Units</option>
+                                                <option *ngFor="let unit of unitOfmeasure" [value]="unit.value">
+                                                    {{unit.displayText}}</option>
+                              </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ToolStatus">{{l("ToolStatus")}}</label>
+                            <select id="ToolStatus" class="form-control form-control-sm" [(ngModel)]="dto.status" name="active" >
+                                <option [value]="true">Active</option>
+                                <option [value]="false">InActive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="ToolComment">{{l("ToolComment")}} <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="ToolComment" name="ToolComment" [(ngModel)]="dto.comments"
+                                type="text" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="CostPerUnit">{{l("CostPerUnit")}}<span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" id="CostPerUnit" name="CostPerUnit"
+                                [(ngModel)]="dto.unitcost" type="text" required>
+                        </div>
+                       
+                    </div>
+                   
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="Form.invalid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- <inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewLocation()"></inventoryLookupTableModal> -->

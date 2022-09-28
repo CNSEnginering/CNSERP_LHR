@@ -1,0 +1,472 @@
+﻿<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("EmployeeLeaves")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("EmployeeLeavesHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('PayRoll.EmployeeLeaves.Transactions.Create')" (click)="createEmployeeLeaves()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewEmployeeLeaves")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getEmployeeLeaves()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinEmployeeIDFilter">{{l("MinMax")}} {{l("EmployeeID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinEmployeeIDFilter"
+                                            [(ngModel)]="minEmployeeIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minEmployeeIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxEmployeeIDFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxEmployeeIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinLeaveIDFilter">{{l("MinMax")}} {{l("LeaveID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinLeaveIDFilter"
+                                            [(ngModel)]="minLeaveIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minLeaveIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLeaveIDFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxLeaveIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSalaryYearFilter">{{l("MinMax")}} {{l("SalaryYear")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSalaryYearFilter"
+                                            [(ngModel)]="minSalaryYearFilter" placeholder="{{l('MinValue')}}"
+                                            name="minSalaryYearFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSalaryYearFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxSalaryYearFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSalaryMonthFilter">{{l("MinMax")}} {{l("SalaryMonth")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSalaryMonthFilter"
+                                            [(ngModel)]="minSalaryMonthFilter" placeholder="{{l('MinValue')}}"
+                                            name="minSalaryMonthFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSalaryMonthFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxSalaryMonthFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinStartDateFilter">{{l("StartDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinStartDateFilter"
+                                            name="MinStartDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minStartDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxStartDateFilter"
+                                            name="MaxStartDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxStartDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinLeaveTypeFilter">{{l("MinMax")}} {{l("LeaveType")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinLeaveTypeFilter"
+                                            [(ngModel)]="minLeaveTypeFilter" placeholder="{{l('MinValue')}}"
+                                            name="minLeaveTypeFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLeaveTypeFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxLeaveTypeFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCasualFilter">{{l("MinMax")}} {{l("Casual")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinCasualFilter"
+                                            [(ngModel)]="minCasualFilter" placeholder="{{l('MinValue')}}"
+                                            name="minCasualFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxCasualFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxCasualFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinSickFilter">{{l("MinMax")}} {{l("Sick")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinSickFilter"
+                                            [(ngModel)]="minSickFilter" placeholder="{{l('MinValue')}}"
+                                            name="minSickFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxSickFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxSickFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAnnualFilter">{{l("MinMax")}} {{l("Annual")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinAnnualFilter"
+                                            [(ngModel)]="minAnnualFilter" placeholder="{{l('MinValue')}}"
+                                            name="minAnnualFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxAnnualFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxAnnualFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="PayTypeFilter">{{l("PayType")}}</label>
+                                    <input type="text" class="form-control" id="PayTypeFilter" name="payTypeFilter"
+                                        [(ngModel)]="payTypeFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="RemarksFilter">{{l("Remarks")}}</label>
+                                    <input type="text" class="form-control" id="RemarksFilter" name="remarksFilter"
+                                        [(ngModel)]="remarksFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getEmployeeLeaves($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.EmployeeLeaves.Transactions.Edit', 'PayRoll.EmployeeLeaves.Transactions.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="employeeID">
+                                        {{l('EmployeeID')}}
+                                        <p-sortIcon field="employeeLeaves.employeeID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 160px" pSortableColumn="employeeName">
+                                        {{l('Employee Name')}}
+                                        <p-sortIcon field="employeeLeaves.employeeName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 170px" pSortableColumn="deptName">
+                                        {{l('Department Name')}}
+                                        <p-sortIcon field="employeeLeaves.deptName"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 150px" pSortableColumn="leaveID">
+                                        {{l('LeaveID')}}
+                                        <p-sortIcon field="employeeLeaves.leaveID"></p-sortIcon>
+                                    </th> -->
+                                    <th style="width: 150px" pSortableColumn="salaryYear">
+                                        {{l('SalaryYear')}}
+                                        <p-sortIcon field="employeeLeaves.salaryYear"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="salaryMonth">
+                                        {{l('SalaryMonth')}}
+                                        <p-sortIcon field="employeeLeaves.salaryMonth"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="startDate">
+                                        {{l('StartDate')}}
+                                        <p-sortIcon field="employeeLeaves.startDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="leaveType">
+                                        {{l('LeaveType')}}
+                                        <p-sortIcon field="employeeLeaves.leaveType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="casual">
+                                        {{l('Casual')}}
+                                        <p-sortIcon field="employeeLeaves.casual"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="sick">
+                                        {{l('Sick')}}
+                                        <p-sortIcon field="employeeLeaves.sick"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 100px" pSortableColumn="annual">
+                                        {{l('Annual')}}
+                                        <p-sortIcon field="employeeLeaves.annual"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 150px" pSortableColumn="payType">
+                                        {{l('PayType')}}
+                                        <p-sortIcon field="employeeLeaves.payType"></p-sortIcon>
+                                    </th> -->
+                                    <th style="width: 150px" pSortableColumn="remarks">
+                                        {{l('Remarks')}}
+                                        <p-sortIcon field="employeeLeaves.remarks"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="employeeLeaves.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="employeeLeaves.audtDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="employeeLeaves.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="employeeLeaves.createDate"></p-sortIcon>
+                                    </th> -->
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('PayRoll.EmployeeLeaves.Transactions.Edit', 'PayRoll.EmployeeLeaves.Transactions.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewEmployeeLeavesModal.show(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.EmployeeLeaves.Transactions.Edit')"
+                                                        (click)="createOrEditEmployeeLeavesModal.show(record.employeeLeaves.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('PayRoll.EmployeeLeaves.Transactions.Delete')"
+                                                        (click)="deleteEmployeeLeaves(record.employeeLeaves)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('EmployeeID')}}</span>
+                                        {{record.employeeLeaves.employeeID}}
+                                    </td>
+                                    <td style="width:160px">
+                                        <span class="ui-column-title"> {{l('Employee Name')}}</span>
+                                        {{record.employeeLeaves.employeeName}}
+                                    </td>
+                                    <td style="width:170px">
+                                        <span class="ui-column-title"> {{l('Department Name')}}</span>
+                                        {{record.employeeLeaves.deptName}}
+                                    <!-- </td><td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Leave ID')}}</span>
+                                        {{record.employeeLeaves.leaveID}}
+                                    </td> -->
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('SalaryYear')}}</span>
+                                        {{record.employeeLeaves.salaryYear}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('SalaryMonth')}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==1">{{'January'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==2">{{'February '}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==3">{{'March'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==4">{{'April'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==5">{{'May'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==6">{{'June'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==7">{{'July'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==8">{{'August'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==9">{{'September'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==10">{{'October'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==11">{{'November'}}</span>
+                                        <span *ngIf="record.employeeLeaves.salaryMonth==12">{{'December'}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('StartDate')}}</span>
+                                        <span *ngIf="record.employeeLeaves.startDate">
+                                            {{record.employeeLeaves.startDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employeeLeaves.startDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Leave Type')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.employeeLeaves.leaveType==1">{{'Full Leave' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="record.employeeLeaves.leaveType==0.5">{{'Half Leave' | localize}}</span>
+                                    </td>
+                                    <td style="width:100px; ">
+                                        <span class="ui-column-title"> {{l('Casual')}}</span>
+                                        <div style="color:green;" *ngIf="record.employeeLeaves.casual"
+                                            class="text-center"><i class="fa fa-check-circle kt--font-success"
+                                                title="True"></i></div>
+                                        <div style="color:red;" *ngIf="!record.employeeLeaves.casual"
+                                            class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                    </td>
+                                    <td style="width:100px; ">
+                                        <span class="ui-column-title"> {{l('Sick')}}</span>
+                                        <div style="color:green;" *ngIf="record.employeeLeaves.sick"
+                                            class="text-center"><i class="fa fa-check-circle kt--font-success"
+                                                title="True"></i></div>
+                                        <div style="color:red;" *ngIf="!record.employeeLeaves.sick" class="text-center">
+                                            <i class="fa fa-times-circle" title="False"></i></div>
+                                    </td>
+                                    <td style="width:100px; ">
+                                        <span class="ui-column-title"> {{l('Annual')}}</span>
+                                        <div style="color:green;" *ngIf="record.employeeLeaves.annual"
+                                            class="text-center"><i class="fa fa-check-circle kt--font-success"
+                                                title="True"></i></div>
+                                        <div style="color:red;" *ngIf="!record.employeeLeaves.annual"
+                                            class="text-center"><i class="fa fa-times-circle" title="False"></i></div>
+                                    </td>
+                                    <!-- <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('PayType')}}</span>
+                                        {{record.employeeLeaves.payType}}
+                                    </td> -->
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Remarks')}}</span>
+                                        {{record.employeeLeaves.remarks}}
+                                    </td>
+                                    <!-- <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.employeeLeaves.audtUser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.employeeLeaves.audtDate">
+                                            {{record.employeeLeaves.audtDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employeeLeaves.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.employeeLeaves.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.employeeLeaves.createDate">
+                                            {{record.employeeLeaves.createDate | momentFormat:'DD/MM/YYYY'}}
+                                        </span>
+                                        <span *ngIf="!record.employeeLeaves.createDate">-</span>
+                                    </td> -->
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getEmployeeLeaves($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditEmployeeLeavesModal #createOrEditEmployeeLeavesModal (modalSave)="getEmployeeLeaves()">
+    </createOrEditEmployeeLeavesModal>
+    <viewEmployeeLeavesModal #viewEmployeeLeavesModal></viewEmployeeLeavesModal>
+
+
+</div>

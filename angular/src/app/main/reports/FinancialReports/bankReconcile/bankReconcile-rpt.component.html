@@ -1,0 +1,209 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{ l("BankReconcilation") }}</span>
+            </h3>
+            <span
+                class="kt-subheader__separator kt-subheader__separator--v"
+            ></span>
+            <span class="kt-subheader__desc">
+                <!-- {{l("BankReconcileHeaderInfo")}} -->
+            </span>
+        </div>
+    </div>
+        <div class="kt-content kt-grid__item kt-grid__item--fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="kt-portlet kt-portlet--mobile">
+                        <div class="kt-portlet__body parentSection">
+                            <div class="row row-col-separator-xl">
+                                <div class="col-lg-4">
+                                    <div class="kt-portlet kt-portlet--mobile boxShade">
+                                        <div class="kt-portlet__body radioSection">
+                                            <div class="form-group row">
+                                                <div class="col-lg-12">
+                                                    <div class="kt-radio-list">
+                                                        <label class="kt-radio kt-radio--solid">
+                                                            <input type="radio" name="bankRecon" [(ngModel)]="bankRecon"
+                                                                value="reconcileListing" (ngModelChange)="hideFields()">
+                                                            Bank Reconcile Listing
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="kt-radio kt-radio--solid">
+                                                            <input type="radio" name="bankRecon" [(ngModel)]="bankRecon"
+                                                                value="reconcilation" (ngModelChange)="hideFields()">
+                                                            Reconciliation Report                                      
+                                                            <span></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="kt-portlet kt-portlet--mobile boxShade">
+                                        <div class="kt-portlet__body radioSection">
+                                            <div class="form-group">
+
+                                                <div class="row" *ngIf="showBankID">
+                                                    <label for="BankID" class="col-md-3 col-form-label">{{
+                                                        l("BankID")
+                                                    }}</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="FromBankID"
+                                                            class="form-control form-control-sm"
+                                                            bsBankIDpicker
+                                                            [(ngModel)]="bankID"
+                                                            name="bankID"
+                                                            required
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            id="BankName"
+                                                            class="form-control form-control-sm"
+                                                            bsBankIDpicker
+                                                            [(ngModel)]="bankName"
+                                                            name="bankName"
+                                                            required
+                                                        />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openBankIDModal()" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setBankIDNull()" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               
+                                                <div class="row" *ngIf="showFromDocID">
+                                                    <label for="FromDocID" class="col-md-3 col-form-label">{{
+                                                        l("FROMDOCID")
+                                                    }}</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="FromDocID"
+                                                            class="form-control form-control-sm"
+                                                            bsBankIDpicker
+                                                            [(ngModel)]="fromDocID"
+                                                            name="FromDocID"
+                                                            readonly
+                                                            required
+                                                        />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openDocIDModal('fromDoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setDocIDNull('fromDoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" *ngIf="showToDocID"> 
+                                                    <label for="ToDocID" class="col-md-3 col-form-label">{{
+                                                        l("TODOCID")
+                                                    }}</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="ToDocID"
+                                                            class="form-control form-control-sm"
+                                                            bsBankIDpicker
+                                                            name="ToDocID"
+                                                            required
+                                                            readonly
+                                                            [(ngModel)]="toDocID"
+                                                        />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary blue btn-sm"
+                                                                (click)="openDocIDModal('toDoc')" type="button"><i
+                                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-danger btn-icon btn-sm"
+                                                                (click)="setDocIDNull('toDoc')" type="button"><i
+                                                                    class="fa fa-times"></i></button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" *ngIf="showFromDate"> 
+                                                    <label for="ToDocID" class="col-md-3 col-form-label">{{
+                                                        l("FROMDATE")
+                                                    }}</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="fromDate"
+                                                            class="form-control form-control-sm"
+                                                            bsBankIDpicker
+                                                            name="fromDate"
+                                                            required
+                                                            readonly
+                                                            [(ngModel)]="fromDate"
+                                                            bsDatepicker
+                                                            [(bsValue)]="fromDate"
+                                                            value="{{ fromDate | date: 'dd/MM/yyyy' }}"
+                                                        />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" *ngIf="showToDate"> 
+                                                    <label for="ToDate" class="col-md-3 col-form-label">{{
+                                                        l("TODATE")
+                                                    }}</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            id="toDate"
+                                                            class="form-control form-control-sm"
+                                                            bsBankIDpicker
+                                                            name="toDate"
+                                                            required
+                                                            readonly
+                                                            [(ngModel)]="toDate"
+                                                            bsDatepicker 
+                                                            [(bsValue)]="toDate"
+                                                            value="{{ toDate | date: 'dd/MM/yyyy' }}"
+                                                        />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-portlet__foot footerSection">
+                                        <div class="col-lg-12" style="text-align: right">
+                                            <button type="submit" class="btn btn-primary blue" (click)="getReport()">
+                                                <i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<app-reportviewr-modal #reportView  ></app-reportviewr-modal>

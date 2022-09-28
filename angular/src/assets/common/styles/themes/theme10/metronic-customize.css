@@ -1,0 +1,40 @@
+.kt-header-mobile .kt-header__brand-logo-default {
+  height: 52px !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.cc-window {
+  background-color: #282a3a;
+}
+.cc-btn {
+  background-color: #5867dd;
+  border-color: #5867dd;
+  color: #ffffff;
+}
+.cc-message {
+  color: #fefefe;
+}
+.kt-header__topbar-user span.kt-header__topbar-username {
+  display: none !important;
+}
+.kt-user-card .kt-user-card__name {
+  color: #6c7293 !important;
+}
+.kt-header__topbar-item h3.kt-head__title {
+  color: #6c7293 !important;
+}
+.kt-header__topbar .subscription-warning {
+  padding-top: 27px;
+}
+@media (max-width: 1024px) {
+  .kt-header-mobile--fixed .kt-wrapper {
+    padding-top: 22px;
+  }
+}
+.mobile-subscription-warning {
+  background-color: transparent;
+}
+
+theme10-brand {
+    display: flex !important;
+}

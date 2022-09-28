@@ -1,0 +1,24 @@
+<div class="kt-login__form" [@routerTransition]>
+    <div class="kt-login__title">
+        <h3>
+            {{'SendSecurityCode' | localize}}
+        </h3>
+
+        <form #twoFactorForm="ngForm" class="kt-form" method="post" (ngSubmit)="submit()" *ngIf="loginService.authenticateResult">
+            <p>{{"SendSecurityCode_Information" | localize}}</p>
+            <div class="form-group">
+                <select autoFocus
+                        size="1"
+                        class="form-control"
+                        [(ngModel)]="selectedTwoFactorProvider"
+                        name="selectedTwoFactorProvider">
+                    <option *ngFor="let provider of loginService.authenticateResult.twoFactorAuthProviders" [value]="provider">{{provider}}</option>
+                </select>
+            </div>
+
+            <div class="kt-form__actions">
+                <button type="submit" class="btn btn-primary btn-elevate kt-login__btn-primary">{{"Submit" | localize}}</button>
+            </div>
+        </form>
+    </div>
+</div>

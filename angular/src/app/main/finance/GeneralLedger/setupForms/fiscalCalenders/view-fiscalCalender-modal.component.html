@@ -1,0 +1,90 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Period")}} :</h6>
+                        {{ item.fiscalCalender.period }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("StartDate")}} :</h6>
+                        {{ item.fiscalCalender.startDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EndDate")}} :</h6>
+                        {{ item.fiscalCalender.endDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("GL")}} :</h6>
+                        {{ item.fiscalCalender.gl }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AP")}} :</h6>
+                        {{ item.fiscalCalender.ap }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AR")}} :</h6>
+                        {{ item.fiscalCalender.ar }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IN")}} :</h6>
+                        {{ item.fiscalCalender.in }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PO")}} :</h6>
+                        {{ item.fiscalCalender.po }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("OE")}} :</h6>
+                        {{ item.fiscalCalender.oe }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BK")}} :</h6>
+                        {{ item.fiscalCalender.bk }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("HR")}} :</h6>
+                        {{ item.fiscalCalender.hr }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PR")}} :</h6>
+                        {{ item.fiscalCalender.pr }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedBy")}} :</h6>
+                        {{ item.fiscalCalender.createdBy }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CreatedDate")}} :</h6>
+                        {{ item.fiscalCalender.createdDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EditDate")}} :</h6>
+                        {{ item.fiscalCalender.editDate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("EditUser")}} :</h6>
+                        {{ item.fiscalCalender.editUser }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

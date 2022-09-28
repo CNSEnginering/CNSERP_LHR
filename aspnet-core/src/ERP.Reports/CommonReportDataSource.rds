@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="CommonReportDataSource">
+  <ConnectionProperties>
+    <Extension>XML</Extension>
+    <ConnectString>http://svc-cnserp-dev.e-resourceplanning.com/api/services/app/CommonReport/GetCommonReportData</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>465280af-7c66-4eae-8620-71bc91f2eed4</DataSourceID>
+</RptDataSource>

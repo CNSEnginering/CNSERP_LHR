@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [ "es6", "dom" ],
+    "mapRoot": "./",
+    "module": "esnext",
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "outDir": "../dist/out-tsc",
+    "sourceMap": true,
+    "target": "es6",
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@abp/*": [ "../node_modules/abp-ng2-module/dist/src/*" ],
+      "@app/*": [ "./app/*" ],
+      "@account/*": [ "./account/*" ],
+      "@shared/*": [ "./shared/*" ],
+      "@node_modules/*": [ "../node_modules/*" ],
+      "@angular/*": [ "../node_modules/@angular/*" ],
+      "@metronic/*": [ "./assets/metronic/*" ]
+    }
+  },
+  "exclude": [ "node_modules" ]
+}

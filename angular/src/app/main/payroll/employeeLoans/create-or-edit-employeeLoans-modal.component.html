@@ -1,0 +1,165 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #employeeLoansForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="employeeLoans.id">{{l("EditEmployeeLoans")}}</span>
+						<span *ngIf="!employeeLoans.id">{{l("CreateNewEmployeeLoans")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row mt-2">
+						<div class="col-md-2">
+							<label for="EmployeeSalary_LoanDate">{{l("LoanDate")}}<span
+									class="require-field">*</span></label>
+							<input type="text" name="EmployeeSalary_LoanDate" id="EmployeeSalary_LoanDate"
+								[disabled]="employeeLoans.id" class="form-control form-control-sm" bsDatepicker
+								[(ngModel)]="loanDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" />
+						</div>
+						<div class="col-md-4">
+							<label for="EmployeeLoans_EmployeeID">{{l("EmployeeID")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" style="background-color:#F4F4F4;" id="EmployeeLoans_EmployeeID"
+									class="form-control form-control-sm" [(ngModel)]="employeeLoans.EmployeeID"
+									name="EmployeeID" readonly required />
+								<div class="input-group-append" *ngIf="!this.employeeLoans.id">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openEmployeeModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!this.employeeLoans.id">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setEmployeeNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label for="EmployeeLoans_EmployeeName">{{l("EmployeeName")}}</label>
+							<input class="form-control form-control-sm" id="EmployeeSalary_EmployeeName"
+								name="employeeName" [(ngModel)]="employeeName" type="text" disabled />
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-6">
+							<label for="EmployeeLoansType_LoanID">{{l("EmployeeLoansType")}}<span
+									class="require-field">*</span></label>
+							<div class="input-group">
+								<input type="text" style="background-color:#F4F4F4;" id="EmployeeLoansType_LoanTypeId"
+									class="form-control form-control-sm" [(ngModel)]="employeeLoans.loanTypeID"
+									name="LoanTypeId" readonly required />
+								<div class="input-group-append" *ngIf="!this.employeeLoans.id">
+									<button class="btn btn-primary blue btn-sm" type="button"
+										(click)="openEmployeeLoansTypeModal()"><i class="fa fa-search"></i>
+										{{l("Pick")}}</button>
+								</div>
+								<div class="input-group-prepend" *ngIf="!this.employeeLoans.id">
+									<button class="btn btn-danger btn-icon btn-sm" type="button"
+										(click)="setEmployeeLoansTypeNull()"><i class="fa fa-times"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label for="EmployeeLoans_EmployeeLoansTypeName">{{l("EmployeeLoansTypeName")}}</label>
+							<input class="form-control form-control-sm" id="EmployeeSalary_EmployeeLoansTypeName"
+								name="EmployeeLoansTypeName" [(ngModel)]="employeeLoansTypeName" type="text" disabled />
+						</div>
+					</div>
+
+					<div class="row mt-2">
+						<div class="col-md-4">
+							<label for="EmployeeLoans_Amount">{{l("Amount")}}<span
+									class="require-field">*</span></label>
+							<input type="number" id="EmployeeLoans_Amount" (keyup)="MakeInstAmt()"
+								class="form-control form-control-sm" [(ngModel)]="employeeLoans.Amount" name="Amount"
+								required />
+						</div>
+						<div class="col-md-4">
+							<label for="EmployeeLoans_InstAmt">{{l("InstAmt")}}<span
+									class="require-field">*</span></label>
+							<input type="text" id="EmployeeLoans_InstAmt" class="form-control form-control-sm"
+								[(ngModel)]="employeeLoans.insAmt" name="InstAmt" required (keyup)="MakeInstAmt()" />
+						</div>
+						<div class="col-md-4">
+							<label for="EmployeeLoans_NOI">{{l("NOI")}}<span class="require-field">*</span></label>
+							<input type="number" style="background-color:#F4F4F4;" id="EmployeeLoans_NOI"
+								class="form-control form-control-sm" [(ngModel)]="employeeLoans.NOI" name="NOI" required
+								readonly />
+						</div>
+
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-12">
+							<label for="EmployeeLoans_Remarks">{{l("Remarks")}}</label>
+							<input type="text" id="EmployeeLoans_Remarks" class="form-control form-control-sm"
+								[(ngModel)]="employeeLoans.remarks" name="Remarks" />
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-6">
+							<label for="employeeLoans.cancelledData">{{l("Cancelled Date")}}<span
+									class="require-field"></span></label>
+							<input type="text" name="employeeLoans.cancelledData" id="employeeLoans.cancelledData"
+								class="form-control form-control-sm" bsDatepicker [(ngModel)]="canceledDate"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (ngModelChange)="onChange($event)" />
+						</div>
+						<div class="m-checkbox-list mr-4">
+							<div class="col-md-12" style="margin-top: 30px !important;">
+								<label for="EmployeeLoans_Cancelled" class="kt-checkbox">
+									<input id="EmployeeLoans_Cancelled" type="checkbox" name="Cancelled"
+										[(ngModel)]="employeeLoans.cancelled">
+									{{l("Cancelled")}}
+									<span></span>
+								</label>
+							</div>
+						</div>
+					</div>
+					
+					<!-- <div class="row mt-2">
+						<div class="col-md-12">	
+							<label for="EmployeeLoans_Cancelled">
+								<input type="text" id="EmployeeLoans_Cancelled" class="form-control form-control-sm"
+                                [(ngModel)]="employeeLoans.cancelledData" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                name="CancelledData" (ngModelChange)="onChange($event)" />
+								{{l("Cancelled Date")}}
+								<span></span>
+							</label>
+						</div>
+					</div> -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success green" *ngIf="employeeLoans.id"
+						[buttonBusy]="processing" (click)="OpenLog()"
+						[busyText]="l('ApprovingWithThreeDot')"><span>{{l("Open Log")}}</span></button>
+					<button type="button" class="btn btn-primary green" [disabled]="!employeeLoansForm.form.valid"
+						*ngIf="employeeLoans.id && !employeeLoans.approved" (click)="setApprove(employeeLoans.id,1)">
+						<span>{{l("Approve")}}</span></button>
+					<button type="button" class="btn btn-danger" [disabled]="!employeeLoansForm.form.valid"
+						*ngIf="employeeLoans.id && employeeLoans.approved  && !employeeLoans.posted"
+						(click)="setApprove(employeeLoans.id,0)">
+						<span>{{l("Unapprove")}}</span></button>
+					<button type="button" class="btn btn-primary" [disabled]="!employeeLoansForm.form.valid"
+						*ngIf="employeeLoans.id && employeeLoans.approved && !employeeLoans.posted"
+						(click)="CreateJV()">
+						<span>{{l("Process")}}</span></button>
+					<button type="submit" *ngIf="!employeeLoans.posted && !employeeLoans.approved"
+						class="btn btn-primary blue" [disabled]="!employeeLoansForm.form.valid ||
+						(loanDate === null) || (loanDate === undefined)" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
+							class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+<payRollLookupTableModal #PayRollLookupTableModal (modalSave)="getNewPayRollModal()"></payRollLookupTableModal>
+<app-log #LogTableModal></app-log>

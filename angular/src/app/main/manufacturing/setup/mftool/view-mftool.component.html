@@ -1,0 +1,56 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #Form="ngForm" novalidate autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("MFTOOL")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="TypeID">{{l("TypeIDF")}} <span class="text-danger">*</span> </label>
+                            <div class="input-group">
+                              {{dto.toolid}}
+                            </div>
+                        </div>
+                        <div class="row form-group col-md-8">
+                            <label for="TypeID">{{l("ToolTypeID")}} <span class="text-danger">*</span> </label>
+                            <div class="input-group">
+                                {{dto.tooltyid}}
+                                   
+                                </div>
+                         
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                        <div class="form-group col-md-4">
+                            <label for="ToolStatus">{{l("ToolStatus")}}</label>
+                           {{dto.status}}
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label for="ToolDesc">{{l("ToolDesc")}}<span class="text-danger">*</span> </label>
+                            {{dto.tooldesc}}
+                        </div>
+                    </div>
+                   
+                   
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                  
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,31 @@
+.cc-window {
+    background-color: #282a3a;
+}
+
+.cc-btn {
+    background-color: #5867dd;
+    border-color: #5867dd;
+    color: #ffffff;
+}
+
+.cc-message {
+    color: #fefefe;
+}
+
+.kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs {
+    margin-right: 0;
+}
+
+.kt-header__topbar .subscription-warning {
+    padding-top: 13px;
+}
+
+.kt-header__topbar-item--user .dropdown-menu.show {
+    top: 50% !important;
+}
+
+@media (max-width: 1024px) {
+    #kt_header {
+        margin-top: -40px;
+    }
+}

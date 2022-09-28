@@ -1,0 +1,41 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{"OrganizationUnits" | localize}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{"OrganizationUnitsHeaderInfo" | localize}}
+            </span>
+        </div>
+    </div>
+    <div class="kt-content">
+        <div class="row">
+            <div class="col-lg-6">
+                <organization-tree #ouTree (ouSelected)="ouSelected($event)"></organization-tree>
+            </div>
+            <div class="col-lg-6">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    <span *ngIf="organizationUnit">{{organizationUnit.displayName}}</span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                        <tabset class="tab-container">
+                            <tab heading="{{'Members' | localize}}" [active]="true">
+                                <organization-unit-members #ouMembers (membersAdded)="ouTree.membersAdded($event)" (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
+                            </tab>
+                            <tab heading="{{'Roles' | localize}}">
+                                <organization-unit-roles #ouRoles (rolesAdded)="ouTree.rolesAdded($event)" (roleRemoved)="ouTree.roleRemoved($event)"></organization-unit-roles>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

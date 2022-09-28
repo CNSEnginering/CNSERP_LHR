@@ -1,0 +1,264 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #priceListForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mode == 'Inward'">{{l("InwardGatePass")}}</span>
+                        <span *ngIf="mode == 'Outward'">{{l("OutwardGatePass")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="type">{{l("Gate Type")}}</label>
+                            <select class="form-control form-control-sm" [(ngModel)]="gatePass.typeId" name="typeId"
+                                disabled required (change)="getDocNo()">
+                                <option value="1">In Ward</option>
+                                <option value="2">Out Ward</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <!-- <label for="type">{{l("Type")}}</label>
+                            <select class="form-control form-control-sm" 
+                            [disabled]="gatePass.typeId == 1 || editMode"
+                                [(ngModel)]="gatePass.gpType" name="gpType" required>
+                                <option value="0">Non returnable</option>
+                                <option value="1">Returnable</option>
+                            </select> -->
+                            <label for="type">{{l("Type")}}</label>
+                            <select class="form-control form-control-sm" [disabled]="this.IGPNo > 0 || this.OGPNo > 0"
+                                [(ngModel)]="gatePass.gpType" name="gpType" required>
+                                <option value="0">Non returnable</option>
+                                <option value="1">Returnable</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="docNo">{{l("DocNo")}}</label>
+                            <input type="text" id="docNo" class="form-control form-control-sm"
+                                [(ngModel)]="gatePass.docNo" name="priceList" maxlength="10" required disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="" *ngIf="mode == 'Outward'">{{l("IGPNo")}}</label>
+                            <label for="" *ngIf="mode == 'Inward'">{{l("OGPNo")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="" class="form-control form-control-sm" name="gpDocNo"
+                                    [(ngModel)]="gatePass.gpDocNo" maxlength="10" required disabled />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openModalOGPNo()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="docDate">{{l("DocDate")}}</label>
+                            <input type="datetime" (ngModelChange)="dateChange($event)" bsDatepicker id="docDate"
+                                class="form-control form-control-sm" [disabled]="CheckDocDate" [(ngModel)]="gatePass.docDate" name="docDate"
+								maxlength="50" required 
+								[(bsValue)]="gatePass.docDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                value="{{ gatePass.docDate | date: 'dd/MM/yyyy' }}"/>
+                        </div>
+                    </div>
+                    <div class="row mt-1">                        
+                        <div class="col-md-3">
+                            <label for="dCNO">{{l("DC NO")}}</label>
+                            <input type="text" id="dCNO" class="form-control form-control-sm"
+                                [(ngModel)]="gatePass.dcNo" name="dcNo" maxlength="50" required
+                                />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="docDate">{{l("PO No")}}</label>
+                            <input type="text" id="orderNo" class="form-control form-control-sm"
+                                [(ngModel)]="gatePass.orderNo" name="orderNo" maxlength="50" required
+                                [disabled]="this.OGPNo > 0" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="driverName">{{l("Driver Name")}}</label>
+                            <input [disabled]="this.OGPNo > 0" type="text" id="driverName"
+                                class="form-control form-control-sm" [(ngModel)]="gatePass.driverName" name="driverName"
+                                maxlength="50" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vehicleNo">{{l("Vehicle No")}}</label>
+                            <input [disabled]="this.OGPNo > 0" type="text" id="vehicleNo"
+                                class="form-control form-control-sm" [(ngModel)]="gatePass.vehicleNo" name="vehicleNo"
+                                maxlength="50" required />
+                        </div>
+                    </div>
+
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <label for="accountId">{{l("Account")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="accountId" class="form-control form-control-sm"
+                                    [(ngModel)]="gatePass.accountId" name="accountId" maxlength="10" required
+                                    disabled />
+                                <div class="input-group-append">
+                                    <button [disabled]="this.OGPNo > 0" class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openModal('ChartOfAccount')" type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="accountName">{{l("AccountName")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="accountName" class="form-control form-control-sm"
+                                    [(ngModel)]="gatePass.accountName" name="accountName" maxlength="50" required
+                                    disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <label for="partyId">{{l("Party")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="partyId" class="form-control form-control-sm"
+                                    [(ngModel)]="gatePass.partyId" name="partyId" maxlength="10" required disabled />
+                                <div class="input-group-append">
+                                    <button [disabled]="this.OGPNo > 0" class="btn btn-primary blue btn-sm btn-pick"
+                                        (click)="openModal('SubAccount')" type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="partyName">{{l("PartyName")}}</label>
+                            <div class="input-group">
+                                <input type="text" id="partyName" class="form-control form-control-sm"
+                                    [(ngModel)]="gatePass.partyName" name="partyName" maxlength="50" required
+                                    disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <label for="docNo">{{l("Narration")}}</label>
+                            <input type="text" id="narration" class="form-control form-control-sm"
+                                [(ngModel)]="gatePass.narration" name="narration" maxlength="100" required />
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                       
+                    </div>
+
+                    <!-- <div class="row mt-1">
+                        <div class="col-md-6">
+                            <label for="item">{{l("Item")}}</label>
+                            <input type="text" id="item" class="form-control form-control-sm"
+                                [(ngModel)]="gatePassDetail.itemId" name="driverName" maxlength="50" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="uom">{{l("UOM")}}</label>
+                            <input type="text" id="uom" class="form-control form-control-sm"
+                                [(ngModel)]="gatePassDetail.unit" name="uom" maxlength="50" required />
+                        </div>
+                    </div>
+
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <label for="item">{{l("Conver")}}</label>
+                            <input type="text" id="conver" class="form-control form-control-sm"
+                                [(ngModel)]="gatePassDetail.conver" name="conver" maxlength="50" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="uom">{{l("Qty")}}</label>
+                            <input type="text" id="qty" class="form-control form-control-sm"
+                                [(ngModel)]="gatePassDetail.qty" name="qty" maxlength="50" required />
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <label for="uom">{{l("Description")}}</label>
+                            <input type="text" id="desc" class="form-control form-control-sm"
+                                [(ngModel)]="gatePassDetail.description" name="desc" maxlength="50" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="comments">{{l("Comments")}}</label>
+                            <input type="text" id="comments" class="form-control form-control-sm"
+                                [(ngModel)]="gatePassDetail.comments" name="comments" maxlength="50" required />
+                        </div>
+                    </div> -->
+
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" [disabled]="this.OGPNo > 0" type="button"
+                        (click)="addRecordToGrid()">Add</button>
+                    <button class="btn btn-primary mt-4 mb-3 btn-sm" [disabled]="this.OGPNo > 0" type="button"
+                        (click)="removeRecordFromGrid()">Remove</button>
+						<tabset>
+					    <tab heading="GatPass">
+						<div class="row">
+                        <div class="col-md-12">
+                            <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham"
+                                [rowData]="rowData" [columnDefs]="columnDefs" [animateRows]="true"
+                                [suppressDragLeaveHidesColumns]="true" [rowSelection]="rowSelection"
+                                [singleClickEdit]="true" (gridReady)="onGridReady($event)"
+                                (cellDoubleClicked)="onRowDoubleClicked($event)"
+                                (cellValueChanged)="cellValueChanged($event)">
+                                (cellEditingStarted)="cellEditingStarted($event)">
+                            </ag-grid-angular>
+                        </div>
+					</div>
+					 </tab>
+					 <tab heading="Attachment">
+							<div class="form-group">
+									<div class="row mt-2">
+										<div class="col-md-6">
+											<label for="FileAttachment">File Attachment</label>
+											<p-fileUpload
+														  id="FileAttachment"
+														  name="FileAttachment[]"
+														  [url]="uploadUrl"
+														  accept=".jpg,.jpeg"
+														  maxFileSize="1000000"
+														  (onBeforeUpload)="onBeforeUpload($event)"
+														  (onUpload)="onUpload($event)">
+			
+												<ng-template pTemplate="content">
+													<ul *ngIf="uploadedFiles.length">
+														<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+													</ul>
+												</ng-template>
+											</p-fileUpload>
+										</div>
+									</div>
+									<img *ngIf="!checkImage" style="cursor: pointer;" [src]="url" alt="No image attached" width="100" height="100" (click)="open()">
+			
+								</div>
+					 </tab>
+					</tabset>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label for="totalItems">{{l("Total Items")}}</label>
+                            <input type="text" [(ngModel)]="totalItems" id="totalItems" name="totalItems"
+                            currencyMask
+                            [options]="{ prefix: ' ', thousands: ',', decimal: '.' }" class="form-control form-control-sm inputFormBoldSize" disabled>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="totalQty">{{l("Total Qty")}}</label>
+                            <input type="text" [(ngModel)]="totalQty" id="totalQty" name="totalQty"
+                            currencyMask
+                            [options]="{ prefix: ' ', thousands: ',', decimal: '.' }"
+                            class="form-control form-control-sm inputFormBoldSize" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="save()" [disabled]="!formValid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<ItemPricingLookupTableModal #ItemPricingLookupTableModal (modalSave)="getLookUpData()"></ItemPricingLookupTableModal>
+<CostCenterLookupTableModal #CostCenterLookupTableModal (modalSave)="getAccLookUpData()"></CostCenterLookupTableModal>
+<GatePassLookupTableModal #GatePassLookupTableModal (modalSave)="getOGPLookUpData()"></GatePassLookupTableModal>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getAccLookUpData()"></financeLookupTableModal>
+<inventoryLookupTableModal #inventoryLookupTableModal (modalSave)="getLookUpData()"></inventoryLookupTableModal>

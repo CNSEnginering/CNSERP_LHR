@@ -1,0 +1,70 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form *ngIf="active" #icuomForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+				<div class="modal-header">
+					<h4 class="modal-title">
+						<span *ngIf="icuom.id">{{l("EditICUOM")}}</span>
+						<span *ngIf="!icuom.id">{{l("CreateNewICUOM")}}</span>
+					</h4>
+					<button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="row">
+						<div class="form-group col-md-3">
+							<label for="ICUOM_Unit">{{l("Unit")}} <span class="require-field">*</span></label>
+							<input type="text" id="ICUOM_Unit" class="form-control form-control-sm"
+								[(ngModel)]="icuom.unit" onkeypress="return /[a-z]/i.test(event.key)" 
+								(keyup)="checkUnitValue()"
+								name="Unit" required />
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="ICUOM_UNITDESC">{{l("UNITDESC")}}</label>
+							<input type="text" id="ICUOM_UNITDESC" class="form-control form-control-sm"
+								[(ngModel)]="icuom.unitdesc" name="UNITDESC" />
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="ICUOM_Conver">{{l("Conver")}}</label>
+							<input type="number" id="ICUOM_Conver" min="1" class="form-control form-control-sm"
+									 oninput="validity.valid||(value='');" 
+									[(ngModel)]="icuom.conver" name="Conver" />
+						</div>
+					</div>
+					<br />
+					<div class="m-checkbox-list">
+						<label for="ICUOM_Active" class="kt-checkbox">
+							<input id="ICUOM_Active" type="checkbox" name="Active" [(ngModel)]="icuom.active">
+							{{l("Active")}}
+							<span></span>
+						</label>
+					</div>
+
+
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button [disabled]="saving" type="button" class="btn btn-default"
+						(click)="close()">{{l("Cancel")}}</button>
+					<button type="submit" class="btn btn-primary blue" [disabled]="!icuomForm.form.valid"
+						[buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+						<span>{{l("Save")}}</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<style>
+	.form-group {
+		margin-bottom: 0.8rem;
+	}
+</style>

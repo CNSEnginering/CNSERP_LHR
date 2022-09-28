@@ -1,0 +1,759 @@
+<div [@routerTransition]>
+    <div class="kt-subheader kt-grid__item">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("FiscalCalendars")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("FiscalCalendarsHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('SetupForms.FiscalCalendars.Create')" (click)="createFiscalCalendar()" 
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewFiscalCalendar")}}</button>
+            </div>
+        </div> 
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+			
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getFiscalCalendars()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAUDTDATEFilter">{{l("AUDTDATERange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAUDTDATEFilter" name="MinAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minAUDTDATEFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAUDTDATEFilter" name="MaxAUDTDATEFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAUDTDATEFilter">
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AUDTUSERFilter">{{l("AUDTUSER")}}</label>
+									<input type="text" class="form-control" id="AUDTUSERFilter" name="audtuserFilter" [(ngModel)]="audtuserFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinPERIODSFilter">{{l("MinMax")}} {{l("PERIODS")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinPERIODSFilter" [(ngModel)]="minPERIODSFilter" placeholder="{{l('MinValue')}}" name="minPERIODSFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxPERIODSFilter" placeholder="{{l('MaxValue')}}" name="maxPERIODSFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinQTR4PERDFilter">{{l("MinMax")}} {{l("QTR4PERD")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinQTR4PERDFilter" [(ngModel)]="minQTR4PERDFilter" placeholder="{{l('MinValue')}}" name="minQTR4PERDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxQTR4PERDFilter" placeholder="{{l('MaxValue')}}" name="maxQTR4PERDFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinACTIVEFilter">{{l("MinMax")}} {{l("ACTIVE")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinACTIVEFilter" [(ngModel)]="minACTIVEFilter" placeholder="{{l('MinValue')}}" name="minACTIVEFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxACTIVEFilter" placeholder="{{l('MaxValue')}}" name="maxACTIVEFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE1Filter">{{l("BGNDATE1Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE1Filter" name="MinBGNDATE1Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE1Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE1Filter" name="MaxBGNDATE1Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE1Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE2Filter">{{l("BGNDATE2Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE2Filter" name="MinBGNDATE2Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE2Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE2Filter" name="MaxBGNDATE2Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE2Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE3Filter">{{l("BGNDATE3Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE3Filter" name="MinBGNDATE3Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE3Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE3Filter" name="MaxBGNDATE3Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE3Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE4Filter">{{l("BGNDATE4Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE4Filter" name="MinBGNDATE4Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE4Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE4Filter" name="MaxBGNDATE4Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE4Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE5Filter">{{l("BGNDATE5Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE5Filter" name="MinBGNDATE5Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE5Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE5Filter" name="MaxBGNDATE5Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE5Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE6Filter">{{l("BGNDATE6Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE6Filter" name="MinBGNDATE6Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE6Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE6Filter" name="MaxBGNDATE6Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE6Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE7Filter">{{l("BGNDATE7Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE7Filter" name="MinBGNDATE7Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE7Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE7Filter" name="MaxBGNDATE7Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE7Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE8Filter">{{l("BGNDATE8Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE8Filter" name="MinBGNDATE8Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE8Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE8Filter" name="MaxBGNDATE8Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE8Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE9Filter">{{l("BGNDATE9Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE9Filter" name="MinBGNDATE9Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE9Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE9Filter" name="MaxBGNDATE9Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE9Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE10Filter">{{l("BGNDATE10Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE10Filter" name="MinBGNDATE10Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE10Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE10Filter" name="MaxBGNDATE10Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE10Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE11Filter">{{l("BGNDATE11Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE11Filter" name="MinBGNDATE11Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE11Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE11Filter" name="MaxBGNDATE11Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE11Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE12Filter">{{l("BGNDATE12Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE12Filter" name="MinBGNDATE12Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE12Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE12Filter" name="MaxBGNDATE12Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE12Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinBGNDATE13Filter">{{l("BGNDATE13Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinBGNDATE13Filter" name="MinBGNDATE13Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minBGNDATE13Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxBGNDATE13Filter" name="MaxBGNDATE13Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxBGNDATE13Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE1Filter">{{l("ENDDATE1Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE1Filter" name="MinENDDATE1Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE1Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE1Filter" name="MaxENDDATE1Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE1Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE2Filter">{{l("ENDDATE2Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE2Filter" name="MinENDDATE2Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE2Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE2Filter" name="MaxENDDATE2Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE2Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE3Filter">{{l("ENDDATE3Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE3Filter" name="MinENDDATE3Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE3Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE3Filter" name="MaxENDDATE3Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE3Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE4Filter">{{l("ENDDATE4Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE4Filter" name="MinENDDATE4Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE4Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE4Filter" name="MaxENDDATE4Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE4Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE5Filter">{{l("ENDDATE5Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE5Filter" name="MinENDDATE5Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE5Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE5Filter" name="MaxENDDATE5Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE5Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE6Filter">{{l("ENDDATE6Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE6Filter" name="MinENDDATE6Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE6Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE6Filter" name="MaxENDDATE6Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE6Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE7Filter">{{l("ENDDATE7Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE7Filter" name="MinENDDATE7Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE7Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE7Filter" name="MaxENDDATE7Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE7Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE8Filter">{{l("ENDDATE8Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE8Filter" name="MinENDDATE8Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE8Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE8Filter" name="MaxENDDATE8Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE8Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE9Filter">{{l("ENDDATE9Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE9Filter" name="MinENDDATE9Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE9Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE9Filter" name="MaxENDDATE9Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE9Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE10Filter">{{l("ENDDATE10Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE10Filter" name="MinENDDATE10Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE10Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE10Filter" name="MaxENDDATE10Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE10Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE11Filter">{{l("ENDDATE11Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE11Filter" name="MinENDDATE11Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE11Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE11Filter" name="MaxENDDATE11Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE11Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE12Filter">{{l("ENDDATE12Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE12Filter" name="MinENDDATE12Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE12Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE12Filter" name="MaxENDDATE12Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE12Filter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinENDDATE13Filter">{{l("ENDDATE13Range")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinENDDATE13Filter" name="MinENDDATE13Filter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minENDDATE13Filter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxENDDATE13Filter" name="MaxENDDATE13Filter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxENDDATE13Filter">
+									</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getFiscalCalendars($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('SetupForms.FiscalCalendars.Edit', 'SetupForms.FiscalCalendars.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="audtdate">
+                                        {{l('AUDTDATE')}}
+                                        <p-sortIcon field="fiscalCalendar.audtdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtuser">
+                                        {{l('AUDTUSER')}}
+                                        <p-sortIcon field="fiscalCalendar.audtuser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="periods">
+                                        {{l('PERIODS')}}
+                                        <p-sortIcon field="fiscalCalendar.periods"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="qtR4PERD">
+                                        {{l('QTR4PERD')}}
+                                        <p-sortIcon field="fiscalCalendar.qtR4PERD"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('ACTIVE')}}
+                                        <p-sortIcon field="fiscalCalendar.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE1">
+                                        {{l('BGNDATE1')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE1"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE2">
+                                        {{l('BGNDATE2')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE2"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE3">
+                                        {{l('BGNDATE3')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE3"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE4">
+                                        {{l('BGNDATE4')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE4"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE5">
+                                        {{l('BGNDATE5')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE5"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE6">
+                                        {{l('BGNDATE6')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE6"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE7">
+                                        {{l('BGNDATE7')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE7"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE8">
+                                        {{l('BGNDATE8')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE8"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE9">
+                                        {{l('BGNDATE9')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE9"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE10">
+                                        {{l('BGNDATE10')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE10"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE11">
+                                        {{l('BGNDATE11')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE11"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE12">
+                                        {{l('BGNDATE12')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE12"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bgndatE13">
+                                        {{l('BGNDATE13')}}
+                                        <p-sortIcon field="fiscalCalendar.bgndatE13"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE1">
+                                        {{l('ENDDATE1')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE1"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE2">
+                                        {{l('ENDDATE2')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE2"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE3">
+                                        {{l('ENDDATE3')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE3"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE4">
+                                        {{l('ENDDATE4')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE4"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE5">
+                                        {{l('ENDDATE5')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE5"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE6">
+                                        {{l('ENDDATE6')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE6"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE7">
+                                        {{l('ENDDATE7')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE7"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE8">
+                                        {{l('ENDDATE8')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE8"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE9">
+                                        {{l('ENDDATE9')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE9"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE10">
+                                        {{l('ENDDATE10')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE10"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE11">
+                                        {{l('ENDDATE11')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE11"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE12">
+                                        {{l('ENDDATE12')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE12"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="enddatE13">
+                                        {{l('ENDDATE13')}}
+                                        <p-sortIcon field="fiscalCalendar.enddatE13"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('SetupForms.FiscalCalendars.Edit', 'SetupForms.FiscalCalendars.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewFiscalCalendarModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('SetupForms.FiscalCalendars.Edit')"
+														(click)="createOrEditFiscalCalendarModal.show(record.fiscalCalendar.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('SetupForms.FiscalCalendars.Delete')"
+														(click)="deleteFiscalCalendar(record.fiscalCalendar)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('AUDTDATE')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.audtdate">
+											{{record.fiscalCalendar.audtdate | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.audtdate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AUDTUSER')}}</span>
+											{{record.fiscalCalendar.audtuser}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('PERIODS')}}</span>
+											{{record.fiscalCalendar.periods}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('QTR4PERD')}}</span>
+											{{record.fiscalCalendar.qtR4PERD}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('ACTIVE')}}</span>
+											{{record.fiscalCalendar.active}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE1')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE1">
+											{{record.fiscalCalendar.bgndatE1 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE1">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE2')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE2">
+											{{record.fiscalCalendar.bgndatE2 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE2">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE3')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE3">
+											{{record.fiscalCalendar.bgndatE3 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE3">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE4')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE4">
+											{{record.fiscalCalendar.bgndatE4 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE4">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE5')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE5">
+											{{record.fiscalCalendar.bgndatE5 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE5">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE6')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE6">
+											{{record.fiscalCalendar.bgndatE6 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE6">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE7')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE7">
+											{{record.fiscalCalendar.bgndatE7 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE7">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE8')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE8">
+											{{record.fiscalCalendar.bgndatE8 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE8">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE9')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE9">
+											{{record.fiscalCalendar.bgndatE9 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE9">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE10')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE10">
+											{{record.fiscalCalendar.bgndatE10 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE10">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE11')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE11">
+											{{record.fiscalCalendar.bgndatE11 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE11">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE12')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE12">
+											{{record.fiscalCalendar.bgndatE12 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE12">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('BGNDATE13')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.bgndatE13">
+											{{record.fiscalCalendar.bgndatE13 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.bgndatE13">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE1')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE1">
+											{{record.fiscalCalendar.enddatE1 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE1">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE2')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE2">
+											{{record.fiscalCalendar.enddatE2 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE2">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE3')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE3">
+											{{record.fiscalCalendar.enddatE3 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE3">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE4')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE4">
+											{{record.fiscalCalendar.enddatE4 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE4">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE5')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE5">
+											{{record.fiscalCalendar.enddatE5 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE5">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE6')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE6">
+											{{record.fiscalCalendar.enddatE6 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE6">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE7')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE7">
+											{{record.fiscalCalendar.enddatE7 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE7">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE8')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE8">
+											{{record.fiscalCalendar.enddatE8 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE8">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE9')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE9">
+											{{record.fiscalCalendar.enddatE9 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE9">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE10')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE10">
+											{{record.fiscalCalendar.enddatE10 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE10">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE11')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE11">
+											{{record.fiscalCalendar.enddatE11 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE11">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE12')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE12">
+											{{record.fiscalCalendar.enddatE12 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE12">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ENDDATE13')}}</span>
+                                        <span *ngIf="record.fiscalCalendar.enddatE13">
+											{{record.fiscalCalendar.enddatE13 | momentFormat:'L'}}
+                                        </span>
+                                        <span *ngIf="!record.fiscalCalendar.enddatE13">-</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="getFiscalCalendars($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditFiscalCalendarModal #createOrEditFiscalCalendarModal (modalSave)="getFiscalCalendars()"></createOrEditFiscalCalendarModal>
+    <viewFiscalCalendarModal #viewFiscalCalendarModal></viewFiscalCalendarModal>
+    
+</div>

@@ -1,0 +1,122 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3" hidden>
+                        <h6>{{l("CMPID")}} :</h6>
+                        {{ item.bank.cmpid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BANKID")}} :</h6>
+                        {{ item.bank.bankid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BANKNAME")}} :</h6>
+                        {{ item.bank.bankname }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BranchName")}} :</h6>
+                        {{ item.bank.branchName }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ADDR1")}} :</h6>
+                        {{ item.bank.addR1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ADDR2")}} :</h6>
+                        {{ item.bank.addR2 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ADDR3")}} :</h6>
+                        {{ item.bank.addR3 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ADDR4")}} :</h6>
+                        {{ item.bank.addR4 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CITY")}} :</h6>
+                        {{ item.bank.city }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("STATE")}} :</h6>
+                        {{ item.bank.state }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("COUNTRY")}} :</h6>
+                        {{ item.bank.country }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("POSTAL")}} :</h6>
+                        {{ item.bank.postal }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("CONTACT")}} :</h6>
+                        {{ item.bank.contact }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PHONE")}} :</h6>
+                        {{ item.bank.phone }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("FAX")}} :</h6>
+                        {{ item.bank.fax }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("INACTIVE")}} :</h6>
+                        {{ item.bank.inactive==true?'Yes':'No' }}
+                    </div>
+                    <div class="col-6 mb-3" hidden>
+                        <h6>{{l("INACTDATE")}} :</h6>
+                        {{ item.bank.inactdate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("BKACCTNUMBER")}} :</h6>
+                        {{ item.bank.bkacctnumber }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IDACCTBANK")}} :</h6>
+                        {{ item.bank.idacctbank }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IDACCTWOFF")}} :</h6>
+                        {{ item.bank.idacctwoff }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("IDACCTCRCARD")}} :</h6>
+                        {{ item.bank.idacctcrcard }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTDATE")}} :</h6>
+                        {{ item.bank.audtdate | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTUSER")}} :</h6>
+                        {{ item.bank.audtuser }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("ChartofControl")}}) {{l("Id")}} :</h6>
+                        {{item.chartofControlId}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

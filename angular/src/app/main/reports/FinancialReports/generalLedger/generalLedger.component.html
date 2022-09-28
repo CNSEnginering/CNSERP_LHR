@@ -1,0 +1,40 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("GeneralLedgerReport")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+            </span>
+        </div>
+
+    </div>
+
+    <div class="kt-content" style="width:60%">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body" style="
+        padding-bottom: 0px;
+    ">
+                <div class="form-group">
+                    <div class="row">
+                        <!-- <label for="ChartOfAccount_listing" class="col-md-2 col-form-label">Listing:</label> -->
+                        <div class="col-md-4">
+                            <select id="ChartOfAccount_listing" class="form-control form-control-sm" name="chartOfAcc" [(ngModel)]="chartOfAcc" required>
+                                <option value="1">Chart Of A/C</option>
+                                <option value="2">Sub Ledgers</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <hr />
+                        <button type="submit" class="btn btn-primary blue" [disabled]="!chartOfAcc" (click)="getReport()"><i class="fa fa-save"></i> <span>{{l("Preview")}}</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   

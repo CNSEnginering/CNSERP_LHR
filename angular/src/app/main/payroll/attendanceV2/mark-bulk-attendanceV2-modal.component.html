@@ -1,0 +1,66 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #bulkAttendanceMark="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("Mark Bulk Attendance")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="BulkAttendance_AttendanceDate">{{l("AttendanceDate")}}</label>
+                            <input type="text" id="BulkAttendance_AttendanceDate" class="form-control form-control-sm"
+                                bsDatepicker [(ngModel)]="attendanceDate" name="AttendanceDate"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success green" [busyText]="l('ProcessingWithThreeDot')"
+                                [buttonBusy]="processing" (click)="processBulkAttendance()">
+                                <i class="fa fa-spinner"></i> <span>{{l("Process")}}</span></button>
+                        </div>
+                    </div>
+
+
+                    <div class="row col-md-12">
+                        <br>
+                        <ag-grid-angular style="width: 100%; height: 200px;" class="ag-theme-balham" [rowData]="rowData"
+                            [columnDefs]="columnDefs" (gridReady)="onGridReady($event)">
+                        </ag-grid-angular>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+
+    .modal-dialog.modal-xl {
+        max-width: 90%;
+    }
+</style>

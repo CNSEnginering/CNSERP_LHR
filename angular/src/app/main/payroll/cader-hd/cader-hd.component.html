@@ -1,0 +1,153 @@
+<div [@routerTransition]>
+
+  <div class="kt-subheader kt-grid__item">
+
+      <div class="kt-subheader__main">
+          <h3 class="kt-subheader__title">
+              GL Link
+          </h3>
+          <span class="kt-subheader__desc">
+          </span>
+      </div>
+      <div class="kt-subheader__toolbar">
+          <div class="kt-subheader__wrapper">
+            
+              <button *ngIf="isGranted('Pages.Cader_link_D.Create')" [disabled]="primengTableHelper.totalRecordsCount>0" (click)="createOrEdit()"
+                  class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("Create New Gl Link")}}</button>
+          </div>
+      </div>
+
+  </div>
+  <div class="kt-content">
+      <div class="kt-portlet kt-portlet--mobile">
+          <div class="kt-portlet__body">
+              <form class="kt-form" autocomplete="off">
+                  <div>
+                      <div class="row align-items-center">
+                          <div class="col-xl-12">
+                              <div class="form-group m-form__group align-items-center">
+                                  <div class="input-group">
+                                      <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                          class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                          type="text">
+                                      <span class="input-group-btn">
+                                          <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                  class="flaticon-search-1"></i></button>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+
+              <div class="row align-items-center">
+                  <!--<Primeng-Datatable-Start>-->
+                  <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                      <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                          rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                          [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                          [resizableColumns]="primengTableHelper.resizableColumns">
+                          <ng-template pTemplate="header">
+                              <tr>
+                                  <th style="width: 130px"
+                                      [hidden]="!isGrantedAny('PayRoll.Cader_link_H.Edit', 'PayRoll.Cader_link_H.Delete')">
+                                      {{l('Actions')}}</th>
+                                  <th style="width: 150px" pSortableColumn="id">
+                                      {{l('ID')}}
+                                      <p-sortIcon field="id"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="createdBy">
+                                      {{l('CreatedBy')}}
+                                      <p-sortIcon field="createdBy"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="createDate">
+                                      {{l('CreateDate')}}
+                                      <p-sortIcon field="createDate"></p-sortIcon>
+                                  </th>
+                                  <!-- <th style="width: 150px" pSortableColumn="accountID">
+                                      {{l('AccountID')}}
+                                      <p-sortIcon field="accountID"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="type">
+                                      {{l('Type')}}
+                                      <p-sortIcon field="Type"></p-sortIcon>
+                                  </th>
+                                  <th style="width: 150px" pSortableColumn="payType">
+                                      {{l('PayType')}}
+                                      <p-sortIcon field="payType"></p-sortIcon>
+                                  </th> -->
+                              </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-record="$implicit">
+                              <tr>
+                                  <td style="width: 130px"
+                                      [hidden]="!isGrantedAny('Inventory.Assemblies.Edit', 'Inventory.Assemblies.Delete')">
+                                      <div class="btn-group dropdown" dropdown container="body">
+                                          <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                              <i class="fa fa-bars"></i><span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" *dropdownMenu>
+                                            
+                                              <li>
+                                                  <a href="javascript:;"
+                                                      *ngIf="permission.isGranted('Pages.Cader_link_D.Edit')"
+                                                      (click)="createOrEdit(record.cader_link_H.id)">{{l('Edit')}}</a>
+                                              </li>
+                                              <!-- <li>
+                                                  <a href="javascript:;"
+                                                      *ngIf="permission.isGranted('PayRoll.Cader_link_H.Delete')"
+                                                      (click)="delete(record.cader_link_H.id)">{{l('Delete')}}</a>
+                                              </li> -->
+                                          </ul>
+                                      </div>
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('CaderID')}}</span>
+                                      {{record.cader_link_H.id}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                      {{record.cader_link_H.createdby}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                      <span *ngIf="record.cader_link_H.createdDate">
+                                          {{record.cader_link_H.createdDate | momentFormat:'DD/MM/YYYY'}}
+                                      </span>
+                                      <span *ngIf="!record.cader_link_H.createdDate">-</span>
+                                  </td>
+                                  <!-- <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('AccountID')}}</span>
+                                      {{record.cader_link_D.accountID }}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('Type')}}</span>
+                                      {{record.cader_link_D.type}}
+                                  </td>
+                                  <td style="width:150px">
+                                      <span class="ui-column-title"> {{l('PayType')}}</span>
+                                      {{record.cader_link_D.payType}}
+                                  </td> -->
+                              </tr>
+                          </ng-template>
+                      </p-table>
+                      <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                          {{l('NoData')}}
+                      </div>
+                      <div class="primeng-paging-container">
+                          <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                              (onPageChange)="getAll($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                          </p-paginator>
+                          <span class="total-records-count">
+                              {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<app-cader-hd-createor-edit #CaderHdModel (modalSave)="getAll()"></app-cader-hd-createor-edit>

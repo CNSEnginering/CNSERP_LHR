@@ -1,0 +1,130 @@
+<div [@routerTransition]>
+    <div class="content col-lg-12">
+        <div class="kt-content mt-4">
+            <div class="kt-portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <span class="kt-portlet__head-icon kt-hidden">
+                            <i class="la la-gear"></i>
+                        </span>
+                        <h3 class="kt-portlet__head-title">
+                            ERP Installation
+                        </h3>
+                    </div>
+                </div>
+                <form id="installForm" class="kt-form kt-form--fit">
+                    <div class="kt-portlet__body">
+                        <div class="kt-form__section">
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    Connection String
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" class="form-control" placeholder="Connection String" [(ngModel)]="setupSettings.connectionString" name="connectionString" value="{{setupSettings.connectionString}}" autocomplete="new-password">
+                            </div>
+                            <div class="kt-form__seperator kt-form__seperator--dashed"></div>
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    Admin Password
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="password" class="form-control" placeholder="Admin Password" [(ngModel)]="setupSettings.adminPassword" name="adminPassword" autocomplete="new-password">
+                            </div>
+                            <div class="kt-form__seperator kt-form__seperator--dashed"></div>
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    Client Side URL
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" class="form-control" placeholder="Client Side URL" [(ngModel)]="setupSettings.webSiteUrl" name="webSiteUrl" value="{{setupSettings.webSiteUrl}}">
+                            </div>
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    Server Side URL
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" class="form-control" placeholder="Server Side URL" [(ngModel)]="setupSettings.serverUrl" name="serverUrl" value="{{setupSettings.serverUrl}}">
+                            </div>
+                            <div class="kt-form__seperator kt-form__seperator--dashed"></div>
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    Default Language
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <select class="form-control" [(ngModel)]="setupSettings.defaultLanguage" name="defaultLanguage">
+                                    <option *ngFor="let language of languages" value="{{language.value}}">
+                                        {{language.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="kt-form__seperator kt-form__seperator--dashed"></div>
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    SMTP Settings
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="email" placeholder="Default from address" class="form-control" [(ngModel)]="setupSettings.smtpSettings.defaultFromAddress" name="defaultFromAddress">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" placeholder="Default from displayName" class="form-control" [(ngModel)]="setupSettings.smtpSettings.defaultFromDisplayName" name="defaultFromDisplayName">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" placeholder="SMTP host" class="form-control" [(ngModel)]="setupSettings.smtpSettings.smtpHost" name="smtpHost">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="number" placeholder="SMTP port" class="form-control" [(ngModel)]="setupSettings.smtpSettings.smtpPort" name="smtpPort">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <label class="control-label col-md-12"></label>
+                                <div class="kt-checkbox-list">
+                                    <label class="kt-checkbox">
+                                        <input id="Settings_SmtpEnableSsl" type="checkbox" [(ngModel)]="setupSettings.smtpSettings.smtpEnableSsl" name="smtpEnableSsl" value="true">
+                                        UseSsl
+                                        <span></span>
+                                    </label>
+                                    <label class="kt-checkbox">
+                                        <input id="Settings_SmtpUseDefaultCredentials" type="checkbox" [(ngModel)]="setupSettings.smtpSettings.smtpUseDefaultCredentials" name="smtpUseDefaultCredentials" value="true">
+                                        Use Default Credentials
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" placeholder="Domain name" class="form-control" [(ngModel)]="setupSettings.smtpSettings.smtpDomain" name="smtpDomain">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" placeholder="User name" class="form-control" [(ngModel)]="setupSettings.smtpSettings.smtpUserName" name="smtpUserName">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="password" placeholder="Password" class="form-control" [(ngModel)]="setupSettings.smtpSettings.smtpPassword" name="smtpPassword" id="SmtpPassword">
+                            </div>
+                            <div class="kt-form__seperator kt-form__seperator--dashed"></div>
+                            <div class="kt-form__heading">
+                                <h5 class="kt-form__heading-title">
+                                    Invoice Info
+                                </h5>
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <input type="text" class="form-control" name="legalName" [(ngModel)]="setupSettings.billInfo.legalName" placeholder="Legal name">
+                            </div>
+                            <div class="form-group kt-form__group">
+                                <textarea class="form-control" name="billAddress" rows="5" [(ngModel)]="setupSettings.billInfo.address" placeholder="Address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions kt-form__actions--solid">
+                            <button id="SaveButton" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="saveAll()">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

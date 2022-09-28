@@ -1,0 +1,365 @@
+﻿<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("ChequeBooks")}}</span>
+            </h3>
+            <!-- <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("ChequeBooksHeaderInfo")}}
+            </span> -->
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.ChequeBooks.Create')" (click)="createChequeBook()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewChequeBook")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getChequeBooks()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocNoFilter">{{l("DocNo")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinDocNoFilter"
+                                            [(ngModel)]="minDocNoFilter" placeholder="{{l('From')}}"
+                                            name="minDocNoFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDocNoFilter"
+                                            placeholder="{{l('To')}}" name="maxDocNoFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDocDateFilter">{{l("DocDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinDocDateFilter"
+                                            name="MinDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('From')}}" [(ngModel)]="minDocDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDocDateFilter"
+                                            name="MaxDocDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('To')}}" [(ngModel)]="maxDocDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="BANKIDFilter">{{l("BANKID")}}</label>
+                                    <input type="text" class="form-control" id="BANKIDFilter" name="bankidFilter"
+                                        [(ngModel)]="bankidFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="BankAccNoFilter">{{l("BankAccNo")}}</label>
+                                    <input type="text" class="form-control" id="BankAccNoFilter" name="bankAccNoFilter"
+                                        [(ngModel)]="bankAccNoFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="FromChNoFilter">{{l("FromChNo")}}</label>
+                                    <input type="text" class="form-control" id="FromChNoFilter" name="fromChNoFilter"
+                                        [(ngModel)]="fromChNoFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ToChNoFilter">{{l("ToChNo")}}</label>
+                                    <input type="text" class="form-control" id="ToChNoFilter" name="toChNoFilter"
+                                        [(ngModel)]="toChNoFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinNoofChFilter">{{l("NoofCh")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinNoofChFilter"
+                                            [(ngModel)]="minNoofChFilter" placeholder="{{l('From')}}"
+                                            name="minNoofChFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxNoofChFilter"
+                                            placeholder="{{l('To')}}" name="maxNoofChFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ActiveFilterSelect">{{l("Active")}}</label>
+                                <select class="form-control" name="ActiveFilter" id="ActiveFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("No")}}</option>
+                                    <option value="1">{{l("Yes")}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AudtUserFilter">{{l("AudtUser")}}</label>
+                                    <input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter"
+                                        [(ngModel)]="audtUserFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter"
+                                            name="MinAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('From')}}" [(ngModel)]="minAudtDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter"
+                                            name="MaxAudtDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('To')}}" [(ngModel)]="maxAudtDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+                                    <input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter"
+                                        [(ngModel)]="createdByFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter"
+                                            name="MinCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('From')}}" [(ngModel)]="minCreateDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter"
+                                            name="MaxCreateDateFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('To')}}" [(ngModel)]="maxCreateDateFilter"
+                                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getChequeBooks($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.ChequeBooks.Edit', 'Pages.ChequeBooks.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="docNo">
+                                        {{l('DocNo')}}
+                                        <p-sortIcon field="chequeBook.docNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="docDate">
+                                        {{l('DocDate')}}
+                                        <p-sortIcon field="chequeBook.docDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bankid">
+                                        {{l('BANKID')}}
+                                        <p-sortIcon field="chequeBook.bankid"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 160px" pSortableColumn="bankAccNo">
+                                        {{l('BankAccNo')}}
+                                        <p-sortIcon field="chequeBook.bankAccNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 155px" pSortableColumn="fromChNo">
+                                        {{l('FromChNo')}}
+                                        <p-sortIcon field="chequeBook.fromChNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="toChNo">
+                                        {{l('ToChNo')}}
+                                        <p-sortIcon field="chequeBook.toChNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="noofCh">
+                                        {{l('NoofCh')}}
+                                        <p-sortIcon field="chequeBook.noofCh"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('Active')}}
+                                        <p-sortIcon field="chequeBook.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtUser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="chequeBook.audtUser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtDate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="chequeBook.audtDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdBy">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="chequeBook.createdBy"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createDate">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="chequeBook.createDate"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.ChequeBooks.Edit', 'Pages.ChequeBooks.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <!-- <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewChequeBookModal.show(record)">{{l('View')}}</a>
+                                                </li> -->
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.ChequeBooks.Edit')"
+                                                        (click)="createOrEditChequeBookModal.show(true,record.chequeBook.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.ChequeBooks.Delete')"
+                                                        (click)="deleteChequeBook(record.chequeBook)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                        {{record.chequeBook.docNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('DocDate')}}</span>
+                                        <span *ngIf="record.chequeBook.docDate">
+                                            {{record.chequeBook.docDate | date: 'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.chequeBook.docDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('BANKID')}}</span>
+                                        {{record.chequeBook.bankid}}
+                                    </td>
+                                    <td style="width:160px">
+                                        <span class="ui-column-title"> {{l('BankAccNo')}}</span>
+                                        {{record.chequeBook.bankAccNo}}
+                                    </td>
+                                    <td style="width:155px">
+                                        <span class="ui-column-title"> {{l('FromChNo')}}</span>
+                                        {{record.chequeBook.fromChNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('ToChNo')}}</span>
+                                        {{record.chequeBook.toChNo}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('NoofCh')}}</span>
+                                        {{record.chequeBook.noofCh}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.chequeBook.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.chequeBook.active">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.chequeBook.audtUser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.chequeBook.audtDate">
+                                            {{record.chequeBook.audtDate | date: 'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.chequeBook.audtDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.chequeBook.createdBy}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.chequeBook.createDate">
+                                            {{record.chequeBook.createDate | date: 'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.chequeBook.createDate">-</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getChequeBooks($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditChequeBookModal #createOrEditChequeBookModal (modalSave)="getChequeBooks()">
+    </createOrEditChequeBookModal>
+    <viewChequeBookModal #viewChequeBookModal></viewChequeBookModal>
+
+
+</div>

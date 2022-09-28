@@ -1,0 +1,292 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <div class="row">
+                            <h6 class="col-md-3">{{l("AccountID")}} :</h6>
+                            <div class="col-md-9">
+                                {{ item.accountSubLedger.accountID }}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-6 mb-3">
+                        <div class="row">
+                            <h6 class="col-md-3"> {{l("AccountName")}} :</h6>
+                            <div class="col-md-9">
+                                {{item.chartofControlAccountName}}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-6 mb-3">
+                        <div class="row">
+                            <h6 class="col-md-3">{{l("SubAccID")}} :</h6>
+                            <div class="col-md-9">
+                                {{ item.accountSubLedger.id }}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <div class="row">
+                            <h6 class="col-md-3">{{l("SubAccName")}} :</h6>
+                            <div class="col-md-9">
+                                {{ item.accountSubLedger.subAccName }}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-6 mb-3">
+                        <div class="row">
+                            <h6 class="col-md-3">{{l("Last Payment")}} :</h6>
+                            <div class="col-md-9">
+                                {{ (lasPayment < 0 ? lasPayment * -1 :lasPayment)  | number:''}}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <div class="row">
+                            <h6 class="col-md-3">{{l("Outstanding Balance")}}:</h6>
+                            <div class="col-md-9">
+                                {{ outstandingBal * -1 | number:'' }} {{outstandingBal > 0 ? "Dr":"Cr" }}  
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-6 mb-3">
+                        <h6>{{l("Address1")}} :</h6>
+                        {{ item.accountSubLedger.address1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Address2")}} :</h6>
+                        {{ item.accountSubLedger.address2 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("City")}} :</h6>
+                        {{ item.accountSubLedger.city }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Phone")}} :</h6>
+                        {{ item.accountSubLedger.phone }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Contact")}} :</h6>
+                        {{ item.accountSubLedger.contact }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("RegNo")}} :</h6>
+                        {{ item.accountSubLedger.regNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("TAXAUTH")}} :</h6>
+                        {{ item.accountSubLedger.taxauth }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ClassID")}} :</h6>
+                        {{ item.accountSubLedger.classID }}
+                    </div>
+                    
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Sub Ledger Type")}} :</h6>
+                        {{ item.accountSubLedger.slType }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Agreement1")}} :</h6>
+                        {{ item.accountSubLedger.agreement1 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Agreement2")}} :</h6>
+                        {{ item.accountSubLedger.agreement2 }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("PayTerm")}} :</h6>
+                        {{ item.accountSubLedger.payTerm }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("OtherCondition")}} :</h6>
+                        {{ item.accountSubLedger.otherCondition }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Reference")}} :</h6>
+                        {{ item.accountSubLedger.reference }}
+                    </div>
+                   
+                </div> -->
+
+
+
+                    <div class="col-md-12 align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <!-- <th style="width: 130px" [hidden]="!isGrantedAny('Pages.BatchListPreviews.Edit', 'Pages.BatchListPreviews.Delete')">{{l('Actions')}}</th> -->
+                                        <th style="width: 80px">
+                                            {{l('Date')}}
+                                            <!-- <p-sortIcon field="venderActivity.docDate"></p-sortIcon> -->
+                                        </th>
+
+                                        <th style="width: 50px">
+                                            {{l('Type')}}
+                                            <!-- <p-sortIcon field="venderActivity.type"></p-sortIcon> -->
+                                        </th>
+                                        <th style="width: 50px">
+                                            {{l('Doc No')}}
+                                            <!-- <p-sortIcon field="venderActivity.docNo"></p-sortIcon> -->
+                                        </th>
+                                        <th style="width: 300px">
+                                            {{l('Description')}}
+                                            <!-- <p-sortIcon field="venderActivity.narration"></p-sortIcon> -->
+                                        </th>
+                                        <th style="width: 80px" class="text-right">
+                                            {{l('Debit')}}
+                                            <!-- <p-sortIcon field="venderActivity.debit"></p-sortIcon> -->
+                                        </th>
+                                        <th style="width: 80px" class="text-right">
+                                            {{l('Credit')}}
+                                            <!-- <p-sortIcon field="venderActivity.credit"></p-sortIcon> -->
+                                        </th>
+
+                                        <!-- <th style="width: 80px" class="text-right">
+                                            {{l('Running Total')}}
+                                            <p-sortIcon field="venderActivity.runningTotal">
+                                                            </p-sortIcon>
+                                        </th> -->
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <!-- <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.BatchListPreviews.Edit', 'Pages.BatchListPreviews.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewBatchListPreviewModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.BatchListPreviews.Edit')"
+														(click)="createOrEditBatchListPreviewModal.show(record.batchListPreview.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.BatchListPreviews.Delete')"
+														(click)="deleteBatchListPreview(record.batchListPreview)">{{l('Delete')}}</a>
+												</li> 
+                                            </ul>
+                                        </div>
+                                    </td> -->
+
+
+                                        <td style="width:80px">
+                                            <span class="ui-column-title"> {{l('DocDate')}}</span>
+                                            {{record.venderActivity.docDate  | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td style="width:50px">
+                                            <span class="ui-column-title"> {{l('Type')}}</span>
+                                            {{record.venderActivity.type}}
+                                        </td>
+                                        <td style="width:50px">
+                                            <span class="ui-column-title"> {{l('DocNo')}}</span>
+                                            {{record.venderActivity.docNo}}
+                                        </td>
+                                        <td style="width:300px">
+                                            <span class="ui-column-title"> {{l('Narration')}}</span>
+                                            {{  record.venderActivity.narration  }}
+                                        </td>
+                                        <td style="width:80px" class="text-right">
+                                            <span class="ui-column-title"> {{l('Debit')}}</span>
+                                            {{ record.venderActivity.debit | number:''  }}
+                                        </td>
+                                        <td style="width:80px" class="text-right">
+                                            <span class="ui-column-title"> {{l('Credit')}}</span>
+                                            {{  record.venderActivity.credit * -1  | number:''  }}
+                                        </td>
+                                        <!-- <td style="width:80px" class="text-right">
+                                            <span class="ui-column-title">
+                                                {{l('Running Total')}}</span>
+                                            {{ record.venderActivity.runningTotal   }}
+                                        </td> -->
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+
+
+
+                            <!-- <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div> -->
+                            <!-- <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getBatchListPreviews($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div> -->
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <!-- <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="row float-right">
+                                <label for="Total" class="col-md-2">Total</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="Total" [(ngModel)] ="RunningTotalSum" class="form-control form-control-sm text-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-primary blue"
+                        (click)="close()">{{l("Close")}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

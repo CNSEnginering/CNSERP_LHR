@@ -1,0 +1,298 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form *ngIf="active" #glTransferForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glTransfer.id">{{l("EditGLTransfer")}}</span>
+                        <span *ngIf="!glTransfer.id">{{l("CreateNewGLTransfer")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group">
+
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label for="GLTransfer_DocID">{{l("DOCID")}}<span class="require-field">*</span></label>
+                            <input class="form-control form-control-sm" id="GLTransfer_DocID" name="GLTransfer_DocID"
+                                [(ngModel)]="glTransfer.docid" type="text" disabled required />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="GLTransfer_DocDate">{{l("DocDate")}}<span class="require-field">*</span></label>
+                            <input class="form-control form-control-sm" id="GLTransfer_DocDate"
+                                name="GLTransfer_DocDate" [(ngModel)]="docDate" type="text"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="GLTransfer_Description">{{l("Description")}}<span
+                                    class="require-field">*</span></label>
+                            <input class="form-control form-control-sm" id="GLTransfer_Description"
+                                name="GLTransfer_Description" [(ngModel)]="glTransfer.description" type="text"
+                                required />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="GLTransfer_TRANSFERDATE">{{l("TRANSFERDATE")}}<span
+                                    class="require-field">*</span></label>
+                            <input class="form-control form-control-sm" id="GLTransfer_TRANSFERDATE"
+                                name="GLTransfer_TRANSFERDATE" [(ngModel)]="transferDate" type="text"
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" bsDatepicker required />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3" *ngIf="glTransfer.frombankid != 'cash'">
+                            <!-- <label  for="GLTRDetail_ChequeType">{{l("ChequeType")}} -->
+                            <label for="GLTRDetail_ChequeType">{{l("InstrumentType")}}
+                            </label>
+                            <select type="text" id="GLTRDetail_ChequeType" style="color:black"
+                                class="form-control form-control-sm" [(ngModel)]="glTransfer.chType" name="chequeType"
+                                >
+                                <!-- <option value="1">Cash</option>
+                         <option value="2">Cross</option> -->
+                                <option value="1">Cheque-Cash</option>
+                                <option value="2">Cheque-Cross</option>
+                                <option value="3">P.O.</option>
+                                <option value="4">Online</option>
+                                <option value="5">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3" *ngIf="glTransfer.frombankid != 'cash'">
+                            <label for="InstrumentNo">{{l("InstrumentNo")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="InstrumentNo" style="color:black"
+                                    class="form-control form-control-sm" [(ngModel)]="glTransfer.chNumber"
+                                    name="InstrumentNo"/>
+                                <div class="input-group-append">
+                                    <button *ngIf="gltrHeader.bookID != 'BR'" class="btn btn-primary blue btn-sm"
+                                        (click)="openInstrumentNo()" type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <!-- <button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setInstrumentNoNull()"><i class="fa fa-times"></i></button> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_FromLocID">{{l("FROMLOC")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="GLTransfer_FromLocID" class="form-control form-control-sm"
+                                    [(ngModel)]="glTransfer.fromlocid" name="FromLocID" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openLocationModal('FromLoc')"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setLocationNull('FromLoc')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_ToLocID">{{l("TOLOC")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="GLTransfer_ToLocID" class="form-control form-control-sm"
+                                    [(ngModel)]="glTransfer.tolocid" name="ToLocID" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openLocationModal('ToLoc')"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setLocationNull('ToLoc')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="GLTransfer_FromLocDesc">{{l("LocationDesc")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_FromLocDesc"
+                                name="GLTransfer_FromLocDesccription" [(ngModel)]="fromLocDesc" type="text" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="GLTransfer_ToLocDesc">{{l("LocationDesc")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_ToLocDesc"
+                                name="GLTransfer_ToLocDesccription" [(ngModel)]="toLocDesc" type="text" disabled />
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="GLTransfer_FromBank">{{l("FROMBANK")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="GLTransfer_FromBank" class="form-control form-control-sm"
+                                    [(ngModel)]="glTransfer.frombankid" name="FromBank" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openBankModal('FromBank')"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setBankNull('FromBank')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_FromBankName">{{l("BANKNAME")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_FromBankName"
+                                name="GLTransfer_FromBankName" [(ngModel)]="fromBankName" type="text" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_ToBank">{{l("TOBANK")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="GLTransfer_ToBank" class="form-control form-control-sm"
+                                    [(ngModel)]="glTransfer.tobankid" name="ToBank" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openBankModal('ToBank')"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setBankNull('ToBank')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_ToBankName">{{l("BANKNAME")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_ToBankName"
+                                name="GLTransfer_ToBankName" [(ngModel)]="toBankName" type="text" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <label for="GLTransfer_FromBankAccId">{{l("FromBankAccount")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_FromBankAccId"
+                                name="GLTransfer_FromBankAccId" [(ngModel)]="glTransfer.frombankaccid" type="text"
+                                disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_FromBankDesc">{{l("BankDesc")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_FromBankDesc"
+                                name="GLTransfer_FromBankDesc" [(ngModel)]="fromBankDesc" type="text" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_ToBankAccId">{{l("ToBankAccount")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_ToBankAccId"
+                                name="GLTransfer_ToBankAccId" [(ngModel)]="glTransfer.tobankaccid" type="text" disabled
+                                required />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="GLTransfer_ToBankDesc">{{l("BankDesc")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_ToBankDesc"
+                                name="GLTransfer_ToBankDesc" [(ngModel)]="toBankDesc" type="text" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="GLTransfer_FromAcc">{{l("FromAccount")}}<span
+                                    class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="GLTransfer_FromAcc" class="form-control form-control-sm"
+                                    [(ngModel)]="glTransfer.fromaccid" name="FromAcc" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openAccountModal('FromAcc')"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountNull('FromAcc')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="GLTransfer_ToAcc">{{l("ToAccount")}}<span class="require-field">*</span></label>
+                            <div class="input-group">
+                                <input type="text" id="GLTransfer_ToAcc" class="form-control form-control-sm"
+                                    [(ngModel)]="glTransfer.toaccid" name="ToAcc" required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm" type="button"
+                                        (click)="openAccountModal('ToAcc')"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon btn-sm" type="button"
+                                        (click)="setAccountNull('ToAcc')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="GLTransfer_FromAccountDesc">{{l("FromAccountDesc")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_FromAccountDesc"
+                                name="GLTransfer_FromAccountDesc" [(ngModel)]="fromAccDesc" type="text" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="GLTransfer_ToAccountDesc">{{l("ToAccountDesc")}}</label>
+                            <input class="form-control form-control-sm" id="GLTransfer_ToAccountDesc"
+                                name="GLTransfer_ToAccountDesc" [(ngModel)]="toAccDesc" type="text" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label for="GLTransfer_TransferAmount">{{l("Amount")}}<span
+                                    class="require-field">*</span></label>
+                            <input style="font-size: 15px;" class="form-control form-control-sm"
+                                id="GLTransfer_TransferAmount" name="GLTransfer_TransferAmount"
+                                [(ngModel)]="glTransfer.transferamount" type="text" currencyMask
+                                [options]="{ prefix: ' ', thousands: ',' }" required />
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="button" (click)="approve('BP')"
+                        *ngIf="glTransfer.linkDetIDBP == null && editMode == true && glTransfer.frombankid != 'cash'" class="btn btn-success green"
+                        [buttonBusy]="processing" [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i> <span>{{l("ProcessBP")}}</span>
+                    </button>
+
+                    <button type="button" (click)="approve('BR')"
+                        *ngIf="glTransfer.linkDetIDBR == null && editMode == true && glTransfer.frombankid != 'cash'" class="btn btn-success green"
+                        [buttonBusy]="processing" [busyText]="l('ApprovingWithThreeDot')">
+                        <i class="fa fa-check"></i> <span>{{l("ProcessBR")}}</span>
+                    </button>
+
+                    <button type="button" (click)="approve('CP')"
+                    *ngIf="glTransfer.linkDetIDCP == null && editMode == true && glTransfer.frombankid == 'cash'" class="btn btn-success green"
+                    [buttonBusy]="processing" [busyText]="l('ApprovingWithThreeDot')">
+                    <i class="fa fa-check"></i> <span>{{l("ProcessCP")}}</span>
+                </button>
+
+                <button type="button" (click)="approve('CR')"
+                    *ngIf="glTransfer.linkDetIDCR == null && editMode == true && glTransfer.frombankid == 'cash'" class="btn btn-success green"
+                    [buttonBusy]="processing" [busyText]="l('ApprovingWithThreeDot')">
+                    <i class="fa fa-check"></i> <span>{{l("ProcessCR")}}</span>
+                </button>
+
+
+                    <button type="submit" class="btn btn-primary blue" 
+                    *ngIf="glTransfer.linkDetIDBR == null && glTransfer.linkDetIDBP == null
+                    && glTransfer.linkDetIDCP == null && glTransfer.linkDetIDCR == null
+                    "
+                    [disabled]="!glTransferForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+<commonServiceLookupTableModal #commonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()">
+</commonServiceLookupTableModal>

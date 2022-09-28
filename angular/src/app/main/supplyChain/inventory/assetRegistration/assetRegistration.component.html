@@ -1,0 +1,631 @@
+﻿<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l("AssetRegistration")}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l("AssetRegistrationHeaderInfo")}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+				<button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.AssetRegistration.Create')" (click)="createAssetRegistration()"
+			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewAssetRegistration")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAssetRegistration()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinAssetIDFilter">{{l("MinMax")}} {{l("AssetID")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinAssetIDFilter" [(ngModel)]="minAssetIDFilter" placeholder="{{l('MinValue')}}" name="minAssetIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxAssetIDFilter" placeholder="{{l('MaxValue')}}" name="maxAssetIDFilter" />
+									</div>
+                                </div>
+                            </div> -->
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="FmtAssetIDFilter">{{l("FmtAssetID")}}</label>
+									<input type="text" class="form-control" id="FmtAssetIDFilter" name="fmtAssetIDFilter" [(ngModel)]="fmtAssetIDFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AssetNameFilter">{{l("AssetName")}}</label>
+									<input type="text" class="form-control" id="AssetNameFilter" name="assetNameFilter" [(ngModel)]="assetNameFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ItemIDFilter">{{l("ItemID")}}</label>
+									<input type="text" class="form-control" id="ItemIDFilter" name="itemIDFilter" [(ngModel)]="itemIDFilter">
+								</div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinLocIDFilter">{{l("MinMax")}} {{l("Locations")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinLocIDFilter" [(ngModel)]="minLocIDFilter" placeholder="{{l('MinValue')}}" name="minLocIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLocIDFilter" placeholder="{{l('MaxValue')}}" name="maxLocIDFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinRegDateFilter">{{l("RegDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinRegDateFilter" name="MinRegDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minRegDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxRegDateFilter" name="MaxRegDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxRegDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinPurchaseDateFilter">{{l("PurchaseDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinPurchaseDateFilter" name="MinPurchaseDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minPurchaseDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxPurchaseDateFilter" name="MaxPurchaseDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxPurchaseDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinExpiryDateFilter">{{l("ExpiryDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinExpiryDateFilter" name="MinExpiryDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minExpiryDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxExpiryDateFilter" name="MaxExpiryDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxExpiryDateFilter">
+									</div>
+                                </div>
+                            </div>	 -->
+							<div class="col-md-3">
+								<label for="WarrantyFilterSelect">{{l("Warranty")}}</label>
+								<select class="form-control" name="WarrantyFilter" id="WarrantyFilterSelect" [(ngModel)]="warrantyFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="ReceiptEntry_LocID">{{l("Location")}}</label>
+                                <select id="ReceiptEntry_LocID" class="form-control form-control-sm"
+                                    [(ngModel)]="minLocIDFilter" name="LocID" >
+                                    <option value="">Choose Location</option>
+                                    <option *ngFor="let loc of locations" [value]="loc.id">{{loc.displayName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="ReceiptEntry_Users">{{l("Create By")}}</label>
+                                <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                    [(ngModel)]="createdByFilter" name="createdByFilter" >
+                                    <option value=''>Choose User</option>
+                                    <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}</option>
+                                </select>
+                            </div>
+                            <!-- <div class="form-group col-md-3">
+                                <label for="ReceiptEntry_Users">{{l("Approved By")}}</label>
+                                <select id="ReceiptEntry_Users" class="form-control form-control-sm"
+                                    [(ngModel)]="audtUserFilter" name="audtUserFilter" >
+                                    <option value=''>Choose User</option>
+                                    <option *ngFor="let loc of users" [value]="loc.displayName">{{loc.displayName}}</option>
+                                </select>
+                            </div> 
+
+
+                            <div class="col-md-3">
+								<label for="activeFilter">{{l("Voucher Status")}}</label>
+								<select class="form-control" name="activeFilter" id="activeFilter" [(ngModel)]="activeFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="1">{{l("Approved")}}</option>
+								<option value="0">{{l("UnApproved")}}</option>
+								</select>
+                            </div>
+							<div class="col-md-3">
+								<label for="PostedFilterSelect">{{l("Posted")}}</label>
+								<select class="form-control" name="PostedFilter" id="PostedFilterSelect" [(ngModel)]="postedFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div> -->
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AssetRegistration_AssetType">{{l("AssetType")}}</label>
+                                    <select type="number" id="AssetRegistration_AssetType"
+											Class="form-control form-control-sm"
+											[(ngModel)]="AssetTypeFilter" name="AssetType">
+											<option value="1">Computer Equipment</option>
+											<option value="2">Office Equipment</option>
+											<option value="3">Plant/Machine</option>
+									</select>
+                                </div>
+                            </div>
+									<!-- <div class="input-group">
+                                        <input type="number" class="form-control" id="MinAssetTypeFilter" [(ngModel)]="minAssetTypeFilter" placeholder="{{l('MinValue')}}" name="minAssetTypeFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxAssetTypeFilter" placeholder="{{l('MaxValue')}}" name="maxAssetTypeFilter" />
+									</div> 
+                                </div>
+                            </div>
+                             <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinDepRateFilter">{{l("MinMax")}} {{l("DepRate")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinDepRateFilter" [(ngModel)]="minDepRateFilter" placeholder="{{l('MinValue')}}" name="minDepRateFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDepRateFilter" placeholder="{{l('MaxValue')}}" name="maxDepRateFilter" />
+									</div>
+                                </div>
+                            </div> 
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AssetRegistration_DepMethod">{{l("DepMethod")}}</label>
+                                    <select type="number" id="AssetRegistration_DepMethod"
+											class="form-control form-control-sm"
+											[(ngModel)]="DepMethodFilter" name="DepMethod">
+											<option value="1">Straight Line Methods</option>
+											<option value="2">Declining Methods</option>
+											<option value="3">Declining Balance</option>
+										</select>
+									 <div class="input-group">
+                                        <input type="number" class="form-control" id="MinDepMethodFilter" [(ngModel)]="minDepMethodFilter" placeholder="{{l('MinValue')}}" name="minDepMethodFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDepMethodFilter" placeholder="{{l('MaxValue')}}" name="maxDepMethodFilter" />
+									</div> 
+                                </div>
+                            </div> 
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="SerialNumberFilter">{{l("SerialNumber")}}</label>
+									<input type="text" class="form-control" id="SerialNumberFilter" name="serialNumberFilter" [(ngModel)]="serialNumberFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinPurchasePriceFilter">{{l("MinMax")}} {{l("PurchasePrice")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinPurchasePriceFilter" [(ngModel)]="minPurchasePriceFilter" placeholder="{{l('MinValue')}}" name="minPurchasePriceFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxPurchasePriceFilter" placeholder="{{l('MaxValue')}}" name="maxPurchasePriceFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="NarrationFilter">{{l("Narration")}}</label>
+									<input type="text" class="form-control" id="NarrationFilter" name="narrationFilter" [(ngModel)]="narrationFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AccAssetFilter">{{l("AccAsset")}}</label>
+									<input type="text" class="form-control" id="AccAssetFilter" name="accAssetFilter" [(ngModel)]="accAssetFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AccDeprFilter">{{l("AccDepr")}}</label>
+									<input type="text" class="form-control" id="AccDeprFilter" name="accDeprFilter" [(ngModel)]="accDeprFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AccExpFilter">{{l("AccExp")}}</label>
+									<input type="text" class="form-control" id="AccExpFilter" name="accExpFilter" [(ngModel)]="accExpFilter">
+								</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinDepStartDateFilter">{{l("DepStartDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinDepStartDateFilter" name="MinDepStartDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minDepStartDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDepStartDateFilter" name="MaxDepStartDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDepStartDateFilter">
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinAssetLifeFilter">{{l("MinMax")}} {{l("AssetLife")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinAssetLifeFilter" [(ngModel)]="minAssetLifeFilter" placeholder="{{l('MinValue')}}" name="minAssetLifeFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxAssetLifeFilter" placeholder="{{l('MaxValue')}}" name="maxAssetLifeFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinBookValueFilter">{{l("MinMax")}} {{l("BookValue")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinBookValueFilter" [(ngModel)]="minBookValueFilter" placeholder="{{l('MinValue')}}" name="minBookValueFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxBookValueFilter" placeholder="{{l('MaxValue')}}" name="maxBookValueFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinLastDepAmountFilter">{{l("MinMax")}} {{l("LastDepAmount")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinLastDepAmountFilter" [(ngModel)]="minLastDepAmountFilter" placeholder="{{l('MinValue')}}" name="minLastDepAmountFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxLastDepAmountFilter" placeholder="{{l('MaxValue')}}" name="maxLastDepAmountFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinLastDepDateFilter">{{l("LastDepDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinLastDepDateFilter" name="MinLastDepDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minLastDepDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxLastDepDateFilter" name="MaxLastDepDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxLastDepDateFilter">
+									</div>
+                                </div>
+                            </div> 
+							 <div class="col-md-3">
+								<label for="DisolvedFilterSelect">{{l("Disolved")}}</label>
+								<select class="form-control" name="DisolvedFilter" id="DisolvedFilterSelect" [(ngModel)]="disolvedFilter">
+								<option value="-1">{{l("All")}}</option>
+								<option value="0">{{l("False")}}</option>
+								<option value="1">{{l("True")}}</option>
+								</select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinActiveFilter">{{l("MinMax")}} {{l("Active")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinActiveFilter" [(ngModel)]="minActiveFilter" placeholder="{{l('MinValue')}}" name="minActiveFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxActiveFilter" placeholder="{{l('MaxValue')}}" name="maxActiveFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="AudtUserFilter">{{l("AudtUser")}}</label>
+									<input type="text" class="form-control" id="AudtUserFilter" name="audtUserFilter" [(ngModel)]="audtUserFilter">
+								</div>
+                            </div> 
+                             <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinAudtDateFilter">{{l("AudtDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinAudtDateFilter" name="MinAudtDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minAudtDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAudtDateFilter" name="MaxAudtDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAudtDateFilter">
+									</div>
+                                </div>
+                            </div> 
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CreatedByFilter">{{l("CreatedBy")}}</label>
+									<input type="text" class="form-control" id="CreatedByFilter" name="createdByFilter" [(ngModel)]="createdByFilter">
+								</div>
+                            </div> 
+                             <div class="col-md-3">
+                                <div class="form-group">
+									<label  for="MinCreateDateFilter">{{l("CreateDateRange")}}</label>
+									<div class="input-group">
+                                        <input class="form-control m-input" id="MinCreateDateFilter" name="MinCreateDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MinValue')}}" [(ngModel)]="minCreateDateFilter">
+			                            <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreateDateFilter" name="MaxCreateDateFilter" type="datetime" bsDatepicker  placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreateDateFilter">
+									</div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getAssetRegistration($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 80px" [hidden]="!isGrantedAny('Pages.AssetRegistration.Edit', 'Pages.AssetRegistration.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="fmtAssetID">
+                                        {{l('FmtAssetID')}}
+                                        <p-sortIcon field="assetRegistration.fmtAssetID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetName">
+                                        {{l('AssetName')}}
+                                        <p-sortIcon field="assetRegistration.assetName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="itemID">
+                                        {{l('ItemID')}}
+                                        <p-sortIcon field="assetRegistration.itemID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="locID">
+                                        {{l('Locations')}}
+                                        <p-sortIcon field="assetRegistration.locID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="regDate">
+                                        {{l('RegDate')}}
+                                        <p-sortIcon field="assetRegistration.regDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="purchaseDate">
+                                        {{l('PurchaseDate')}}
+                                        <p-sortIcon field="assetRegistration.purchaseDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="expiryDate">
+                                        {{l('ExpiryDate')}}
+                                        <p-sortIcon field="assetRegistration.expiryDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="warranty">
+                                        {{l('Warranty')}}
+                                        <p-sortIcon field="assetRegistration.warranty"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetType">
+                                        {{l('AssetType')}}
+                                        <p-sortIcon field="assetRegistration.assetType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="depRate">
+                                        {{l('DepRate')}}
+                                        <p-sortIcon field="assetRegistration.depRate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="depMethod">
+                                        {{l('DepMethod')}}
+                                        <p-sortIcon field="assetRegistration.depMethod"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="serialNumber">
+                                        {{l('SerialNumber')}}
+                                        <p-sortIcon field="assetRegistration.serialNumber"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="purchasePrice">
+                                        {{l('PurchasePrice')}}
+                                        <p-sortIcon field="assetRegistration.purchasePrice"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="narration">
+                                        {{l('Narration')}}
+                                        <p-sortIcon field="assetRegistration.narration"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="accAsset">
+                                        {{l('AccAsset')}}
+                                        <p-sortIcon field="assetRegistration.accAsset"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="accDepr">
+                                        {{l('AccDepr')}}
+                                        <p-sortIcon field="assetRegistration.accDepr"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="accExp">
+                                        {{l('AccExp')}}
+                                        <p-sortIcon field="assetRegistration.accExp"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="depStartDate">
+                                        {{l('DepStartDate')}}
+                                        <p-sortIcon field="assetRegistration.depStartDate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="assetLife">
+                                        {{l('AssetLife')}}
+                                        <p-sortIcon field="assetRegistration.assetLife"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="bookValue">
+                                        {{l('BookValue')}}
+                                        <p-sortIcon field="assetRegistration.bookValue"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="lastDepAmount">
+                                        {{l('LastDepAmount')}}
+                                        <p-sortIcon field="assetRegistration.lastDepAmount"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="lastDepDate">
+                                        {{l('LastDepDate')}}
+                                        <p-sortIcon field="assetRegistration.lastDepDate"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+							<ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 80px"
+                                        [hidden]="!isGrantedAny('Pages.AssetRegistration.Edit', 'Pages.AssetRegistration.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;"
+														(click)="viewAssetRegistrationModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+													<a href="javascript:;" *ngIf="permission.isGranted('Pages.AssetRegistration.Edit')"
+														(click)="createOrEditAssetRegistrationModal.show(record.assetRegistration.id)">{{l('Edit')}}</a>
+												</li>
+												<li>
+											        <a href="javascript:;" *ngIf="permission.isGranted('Pages.AssetRegistration.Delete')"
+														(click)="deleteAssetRegistration(record.assetRegistration)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <!-- <td style="width:150px">
+											<span class="ui-column-title"> {{l('AssetID')}}</span>
+											{{record.assetRegistration.assetID}}
+										</td> -->
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('FmtAssetID')}}</span>
+											{{record.assetRegistration.fmtAssetID}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AssetName')}}</span>
+											{{record.assetRegistration.assetName}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('ItemID')}}</span>
+											{{record.assetRegistration.itemID}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Locations')}}</span>
+											{{record.assetRegistration.locID}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('RegDate')}}</span>
+                                        <span *ngIf="record.assetRegistration.regDate">
+											{{record.assetRegistration.regDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.assetRegistration.regDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('PurchaseDate')}}</span>
+                                        <span *ngIf="record.assetRegistration.purchaseDate">
+											{{record.assetRegistration.purchaseDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.assetRegistration.purchaseDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('ExpiryDate')}}</span>
+                                        <span *ngIf="record.assetRegistration.expiryDate">
+											{{record.assetRegistration.expiryDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.assetRegistration.expiryDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('Warranty')}}</span>
+                                        <!-- <div *ngIf="record.assetRegistration.warranty" class="text-center"><i class="kt-badge kt-badge--success kt-badge--inline" title="True"></i></div>
+                                        <div *ngIf="!record.assetRegistration.warranty" class="text-center"><i class="kt-badge kt-badge--danger kt-badge--inline" title="False"></i></div>
+                                         -->
+                                        <span class="kt-badge kt-badge--success kt-badge--inline" *ngIf="record.assetRegistration.warranty">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!record.assetRegistration.warranty">{{'No' | localize}}</span>
+
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AssetType')}}</span>
+                                            <!-- {{record.assetRegistration.assetType}} -->
+                                            <span *ngIf="record.assetRegistration.assetType ==1">{{'Computer Equipment' | localize}}</span>
+                                            <span *ngIf="record.assetRegistration.assetType ==2">{{'Office Equipment' | localize}}</span>
+                                            <span *ngIf="record.assetRegistration.assetType ==3">{{'Plant/Machine' | localize}}</span>
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('DepRate')}}</span>
+											{{record.assetRegistration.depRate}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('DepMethod')}}</span>
+                                            <!-- {{record.assetRegistration.depMethod}} -->
+                                            <span *ngIf="record.assetRegistration.depMethod ==1">{{'Straight Line Method' | localize}}</span>
+                                            <span *ngIf="record.assetRegistration.depMethod ==2">{{'Declining Method' | localize}}</span>
+                                            <span *ngIf="record.assetRegistration.depMethod ==3">{{'Declining Balance' | localize}}</span>
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('SerialNumber')}}</span>
+											{{record.assetRegistration.serialNumber}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('PurchasePrice')}}</span>
+											{{record.assetRegistration.purchasePrice}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Narration')}}</span>
+											{{record.assetRegistration.narration}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AccAsset')}}</span>
+											{{record.assetRegistration.accAsset}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AccDepr')}}</span>
+											{{record.assetRegistration.accDepr}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AccExp')}}</span>
+											{{record.assetRegistration.accExp}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('DepStartDate')}}</span>
+                                        <span *ngIf="record.assetRegistration.depStartDate">
+											{{record.assetRegistration.depStartDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.assetRegistration.depStartDate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('AssetLife')}}</span>
+											{{record.assetRegistration.assetLife}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('BookValue')}}</span>
+											{{record.assetRegistration.bookValue}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('LastDepAmount')}}</span>
+											{{record.assetRegistration.lastDepAmount}}
+										</td>
+                                    <td style="width:150px">
+										<span class="ui-column-title"> {{l('LastDepDate')}}</span>
+                                        <span *ngIf="record.assetRegistration.lastDepDate">
+											{{record.assetRegistration.lastDepDate | momentFormat:'L' | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.assetRegistration.lastDepDate">-</span>
+                                    </td>
+
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getAssetRegistration($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditAssetRegistrationModal #createOrEditAssetRegistrationModal (modalSave)="getAssetRegistration()"></createOrEditAssetRegistrationModal>
+    <viewAssetRegistrationModal #viewAssetRegistrationModal></viewAssetRegistrationModal>
+
+
+</div>

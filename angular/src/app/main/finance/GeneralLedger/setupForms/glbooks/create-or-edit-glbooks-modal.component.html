@@ -1,0 +1,88 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #glbooksForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="glbooks.id">{{l("EditVoucherType")}}</span>
+                        <span *ngIf="!glbooks.id">{{l("CreateNewVoucherType")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+				</div>
+				<!-- //(change)="onSearchChange($event.target.value)" -->
+                <div class="modal-body">
+                  <div class="row">
+					  <div class="col-md-6">
+						<div class="form-group">
+							<label for="GLBOOKS_BookID">{{l("VoucherTypeID")}} *</label>
+							<input type="text"
+							 id="GLBOOKS_BookID"
+							  class="form-control form-control-sm"
+							   [(ngModel)]="glbooks.bookID" name="BookID"
+							   required ng-maxlength="2" maxlength="2"
+							   (change)="onSearchChange($event.target.value)"
+							    [disabled] = "glbooks.id"
+								   >
+						</div>
+					  </div>
+					  <div class="col-md-6">
+						<div class="form-group">
+							<label for="GLBOOKS_BookName">{{l("VoucherTypeName")}} *</label>
+							<input type="text" id="GLBOOKS_BookName" class="form-control form-control-sm" [(ngModel)]="glbooks.bookName" name="BookName"    required/>
+						</div>
+
+					</div>
+				  </div>
+
+				  <div class="row">
+					<div class="col-md-6">
+
+						<div class="form-group">
+							<label for="GLBOOKS_NormalEntry">{{l("NormalEntry")}}</label>
+
+							<select id="GLBOOKS_NormalEntry" class="form-control form-control-sm" [(ngModel)]="glbooks.normalEntry" name="NormalEntry" required >
+								<option value="1">Credit</option>
+								<option value="2">Debit</option>
+								<option value="3">Open Transaction</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row" *ngIf="glbooks.id">
+						<div class="col-md-3">
+						<div class="form-check form-check-inline">
+									<input type="checkbox"
+									 class="form-check-input"
+									  [(ngModel)]="glbooks.integrated"
+									   [ngModelOptions]="{standalone: true}"/>
+
+									<label for="GLBOOKS_IANCTIVE"  class="form-check-label">
+											{{l("Integrated")}}
+										</label>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-check form-check-inline">
+									<input type="checkbox"
+									class="form-check-input"
+									 [(ngModel)]="glbooks.inactive"
+									 [ngModelOptions]="{standalone: true}"/>
+
+									<label for="GLBOOKS_IANCTIVE"  class="form-check-label">
+											{{l("INACTIVE")}}
+							</label>
+					</div>
+				</div>
+			</div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!glbooksForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

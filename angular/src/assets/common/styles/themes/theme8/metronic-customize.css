@@ -1,0 +1,48 @@
+.cc-window {
+    background-color: #282a3a;
+}
+
+.cc-btn {
+    background-color: #5867dd;
+    border-color: #5867dd;
+    color: #ffffff;
+}
+
+.cc-message {
+    color: #fefefe;
+}
+
+body {
+    background-image: url(/assets/metronic/themes/theme8/images/bg/bg-2.jpg);
+}
+
+    body .kt-header__topbar .subscription-warning {
+        padding-top: 14px;
+    }
+
+        body .kt-header__topbar .subscription-warning span {
+            color: #fff;
+        }
+
+    body.kt-header--minimize .kt-header__topbar .subscription-warning span {
+        color: #000;
+    }
+
+@media (max-width: 1024px) {
+    body .kt-body {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+}
+
+.kt-user-card .kt-user-card__name {
+    color: #6c7293 !important;
+}
+
+.kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs {
+    margin-right: 0;
+}
+
+.kt-footer .kt-footer__copyright {
+    color: #fff;
+}

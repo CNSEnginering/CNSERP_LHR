@@ -1,0 +1,62 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DEFBANKID")}} :</h6>
+                        {{ item.apOption.defbankid }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DEFPAYCODE")}} :</h6>
+                        {{ item.apOption.defpaycode==1? 'Bank' : 'Cash' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DEFVENCTRLACC")}} :</h6>
+                        {{ item.apOption.defvenctrlacc }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("DEFCURRCODE")}} :</h6>
+                        {{ item.apOption.defcurrcode }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTDATE")}} :</h6>
+                        {{ item.apOption.audtdate | date:'dd/MM/yyyy' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("AUDTUSER")}} :</h6>
+                        {{ item.apOption.audtuser }}
+                    </div>
+
+                    <div class="col-6 mb-3" hidden>
+                        <h6>({{l("CurrencyRate")}}) {{l("Id")}} :</h6>
+                        {{item.currencyRateId}}
+                    </div>
+                    <div class="col-6 mb-3" hidden>
+                        <h6>({{l("Bank")}}) {{l("BANKID")}} :</h6>
+                        {{item.bankBANKID}}
+                    </div>
+                    <div class="col-6 mb-3" hidden>
+                        <h6>({{l("ChartofControl")}}) {{l("Id")}} :</h6>
+                        {{item.chartofControlId}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

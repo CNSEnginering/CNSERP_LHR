@@ -1,0 +1,83 @@
+/*Stlye for Chat Buttons */
+.dropdown-excel-operations .ui-button {
+    display: block;
+    margin: 0;
+    text-align: left;
+    border-radius: 0;
+    transition: none !important;
+    margin-left: -11px;
+}
+
+.ui-fileupload-choose.ui-button,
+.ui-fileupload-choose.ui-button .ui-widget,
+.ui-fileupload-choose.ui-button .ui-state-default {
+    background-color: #fff !important;
+    color: #b2b1c5 !important;
+}
+
+.ui-button-text {
+    color: #575962;
+    font-size: 13px;
+    margin-left: 9px;
+}
+
+.dropdown-excel-operations .ui-fileupload-choose.ui-button.ui-state-hover,
+.ui-fileupload-choose.ui-button.ui-state-focus,
+.ui-fileupload-choose.ui-button.ui-state-active {
+    background-color: #eee;
+}
+
+.dropdown-excel-operations {
+    a:hover {
+        span.ui-button,
+        div.ui-fileupload-buttonbar.ui-widget-header.ui-corner-top {
+            background-color: #f4f5f8 !important;
+        }
+    }
+
+    a.no-padding {
+        padding: 0px !important;
+    }
+}
+
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled) {
+    border: none;
+}
+
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled):hover,
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled):focus,
+.dropdown-excel-operations
+    .ui-fileupload-choose:not(.ui-state-disabled):active {
+    background-color: #f4f5f8 !important;
+    color: #b2b1c5;
+    box-shadow: none !important;
+    border: none;
+}
+
+body .ui-fileupload .ui-fileupload-buttonbar {
+    border: none !important;
+    background-color: #fff !important;
+}
+
+.dropdown-excel-operations {
+    div.ui-fileupload-buttonbar {
+        &.ui-widget-header.ui-corner-top {
+            border: none;
+            background: #fff;
+            padding-bottom: 3px !important;
+            padding-top: 3px !important;
+
+            &:hover {
+                background-color: #f4f5f8 !important;
+            }
+        }
+    }
+
+    div.ui-fileupload-content.ui-widget-content.ui-corner-bottom {
+        display: none;
+    }
+
+    div.ui-fileupload-buttonbar.ui-widget-header.ui-corner-top:hover {
+        background-color: #f4f5f8 !important;
+    }
+}

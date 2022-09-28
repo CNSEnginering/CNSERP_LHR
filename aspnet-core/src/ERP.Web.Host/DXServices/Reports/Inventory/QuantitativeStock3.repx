@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="20.1.3.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="QuantitativeStock" VerticalContentSplitting="Smart" HorizontalContentSplitting="Smart" Landscape="true" Margins="100, 100, 0, 0" PaperKind="Legal" PageWidth="1400" PageHeight="850" Version="20.1" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Visible="false" Description="FromItem" Name="FromItem" />
+    <Item2 Ref="4" Visible="false" Description="ToItem" Name="ToItem" />
+    <Item3 Ref="5" Visible="false" Description="CompanyName" Name="CompanyName" />
+    <Item4 Ref="6" Visible="false" Name="Address" />
+    <Item5 Ref="7" Visible="false" Name="Address2" />
+    <Item6 Ref="8" Visible="false" Name="Phone" />
+    <Item7 Ref="9" Visible="false" Name="TenantId" />
+    <Item8 Ref="10" Visible="false" Description="Parameter1" Name="InventoryPoint" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="11" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="215.958328">
+      <Controls>
+        <Item1 Ref="12" ControlType="XRLabel" Name="label15" Multiline="true" Text="label1" TextAlignment="TopCenter" SizeF="374.791565,23.0000019" LocationFloat="275.208435,28.0000057" Font="Segoe UI, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="'From  '+?FromItem+'  To  '+&#xA;?ToItem" />
+          </ExpressionBindings>
+          <StylePriority Ref="14" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="15" ControlType="XRPictureBox" Name="pictureBox1" Sizing="Squeeze" SizeF="119.041634,79.24997" LocationFloat="0,5.00000334" />
+        <Item3 Ref="16" ControlType="XRLabel" Name="label49" Multiline="true" Text="label10" TextAlignment="TopCenter" SizeF="304.1667,22.9999847" LocationFloat="318.583038,5.00000334" Font="Segoe UI, 14pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="17" EventName="BeforePrint" PropertyName="Text" Expression="?CompanyName" />
+          </ExpressionBindings>
+          <StylePriority Ref="18" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="19" ControlType="XRCrossTab" Name="crossTab1" GeneralStyleName="crossTabGeneralStyle1" DataAreaStyleName="crossTabDataStyle1" HeaderAreaStyleName="crossTabHeaderStyle1" TotalAreaStyleName="crossTabTotalStyle1" DataSource="#Ref-0" SizeF="400,100" LocationFloat="0,115.958328">
+          <LayoutOptions Ref="20" />
+          <PrintOptions Ref="21" />
+          <RowFields>
+            <Item1 Ref="22" FieldName="ItemId" />
+            <Item2 Ref="23" FieldName="ItemDescp" />
+          </RowFields>
+          <ColumnFields>
+            <Item1 Ref="24" FieldName="locDesc" />
+          </ColumnFields>
+          <DataFields>
+            <Item1 Ref="25" FieldName="Qty" />
+          </DataFields>
+          <ColumnDefinitions>
+            <Item1 Ref="26" AutoWidthMode="ShrinkAndGrow" />
+            <Item2 Ref="27" AutoWidthMode="ShrinkAndGrow" />
+            <Item3 Ref="28" AutoWidthMode="ShrinkAndGrow" />
+            <Item4 Ref="29" />
+          </ColumnDefinitions>
+          <RowDefinitions>
+            <Item1 Ref="30" Height="25" />
+            <Item2 Ref="31" Height="25" />
+            <Item3 Ref="32" Height="25" Visible="false" />
+            <Item4 Ref="33" Height="25" />
+          </RowDefinitions>
+          <Cells>
+            <Item1 Ref="34" ControlType="XRCrossTabCell" Name="crossTabHeaderCell1" ColumnIndex="0" RowIndex="0" Text="Segment 3 ID" Font="Segoe UI, 8pt, style=Bold" />
+            <Item2 Ref="35" ControlType="XRCrossTabCell" Name="crossTabDataCell1" TextFormatString="{0:#.00}" ColumnIndex="2" RowIndex="1" TextAlignment="MiddleRight" Font="Segoe UI, 8pt" />
+            <Item3 Ref="36" ControlType="XRCrossTabCell" Name="crossTabHeaderCell2" ColumnIndex="2" RowIndex="0" TextAlignment="MiddleRight" Font="Segoe UI, 8pt, style=Bold" />
+            <Item4 Ref="37" ControlType="XRCrossTabCell" Name="crossTabHeaderCell3" ColumnIndex="0" RowIndex="1" Font="Segoe UI, 8pt, style=Bold" />
+            <Item5 Ref="38" ControlType="XRCrossTabCell" Name="crossTabHeaderCell4" ColumnIndex="0" RowIndex="3" ColumnSpan="2" Text="Grand Total" Font="Segoe UI, 8pt, style=Bold" />
+            <Item6 Ref="39" ControlType="XRCrossTabCell" Name="crossTabTotalCell1" ColumnIndex="2" RowIndex="3" Font="Arial, 8pt" />
+            <Item7 Ref="40" ControlType="XRCrossTabCell" Name="crossTabHeaderCell5" ColumnIndex="3" RowIndex="0" Text="Grand Total" TextAlignment="MiddleRight" Font="Segoe UI, 8pt, style=Bold" />
+            <Item8 Ref="41" ControlType="XRCrossTabCell" Name="crossTabTotalCell2" ColumnIndex="3" RowIndex="1" TextAlignment="MiddleRight" Font="Arial, 8pt" />
+            <Item9 Ref="42" ControlType="XRCrossTabCell" Name="crossTabTotalCell3" ColumnIndex="3" RowIndex="3" Font="Arial, 8pt" />
+            <Item10 Ref="43" ControlType="XRCrossTabCell" Name="crossTabHeaderCell6" ColumnIndex="1" RowIndex="0" Text="Description" Font="Segoe UI, 8pt, style=Bold" />
+            <Item11 Ref="44" ControlType="XRCrossTabCell" Name="crossTabHeaderCell7" ColumnIndex="1" RowIndex="1" Font="Segoe UI, 8pt, style=Bold" />
+            <Item12 Ref="45" ControlType="XRCrossTabCell" Name="crossTabHeaderCell8" TextFormatString="Total {0}" ColumnIndex="0" RowIndex="2" ColumnSpan="2" />
+            <Item13 Ref="46" ControlType="XRCrossTabCell" Name="crossTabTotalCell4" ColumnIndex="2" RowIndex="2" Font="Arial, 8pt" />
+            <Item14 Ref="47" ControlType="XRCrossTabCell" Name="crossTabTotalCell5" ColumnIndex="3" RowIndex="2" Font="Arial, 8pt" />
+          </Cells>
+        </Item4>
+        <Item5 Ref="48" ControlType="XRRichText" Name="richText1" SerializableRtfString="ewBcAHIAdABmADEAXABkAGUAZgBmADAAewBcAGYAbwBuAHQAdABiAGwAewBcAGYAMAAgAEMAYQBsAGkAYgByAGkAOwB9AHsAXABmADEAIABUAGkAbQBlAHMAIABOAGUAdwAgAFIAbwBtAGEAbgA7AH0AewBcAGYAMgAgAFMAZQBnAG8AZQAgAFUASQA7AH0AfQB7AFwAYwBvAGwAbwByAHQAYgBsACAAOwBcAHIAZQBkADAAXABnAHIAZQBlAG4AMABcAGIAbAB1AGUAMAAgADsAXAByAGUAZAAwAFwAZwByAGUAZQBuADAAXABiAGwAdQBlADIANQA1ACAAOwB9AHsAXAAqAFwAZABlAGYAYwBoAHAAIABcAGYAMQBcAGYAcwAyADQAfQB7AFwAcwB0AHkAbABlAHMAaABlAGUAdAAgAHsAXABxAGwAXABmADEAXABmAHMAMgA0ACAATgBvAHIAbQBhAGwAOwB9AHsAXAAqAFwAYwBzADEAXABmADEAXABmAHMAMgA0AFwAYwBmADEAIABEAGUAZgBhAHUAbAB0ACAAUABhAHIAYQBnAHIAYQBwAGgAIABGAG8AbgB0ADsAfQB7AFwAKgBcAGMAcwAyAFwAcwBiAGEAcwBlAGQAbwBuADEAXABmADEAXABmAHMAMgA0AFwAYwBmADEAIABMAGkAbgBlACAATgB1AG0AYgBlAHIAOwB9AHsAXAAqAFwAYwBzADMAXABmADEAXABmAHMAMgA0AFwAdQBsAFwAYwBmADIAIABIAHkAcABlAHIAbABpAG4AawA7AH0AewBcACoAXAB0AHMANABcAHQAcwByAG8AdwBkAFwAZgAxAFwAZgBzADIANABcAHEAbABcAHQAcwBjAGUAbABsAHAAYQBkAGQAZgBsADMAXAB0AHMAYwBlAGwAbABwAGEAZABkAGwAMQAwADgAXAB0AHMAYwBlAGwAbABwAGEAZABkAGYAYgAzAFwAdABzAGMAZQBsAGwAcABhAGQAZABmAHIAMwBcAHQAcwBjAGUAbABsAHAAYQBkAGQAcgAxADAAOABcAHQAcwBjAGUAbABsAHAAYQBkAGQAZgB0ADMAXAB0AHMAdgBlAHIAdABhAGwAdABcAGMAbAB0AHgAbAByAHQAYgAgAE4AbwByAG0AYQBsACAAVABhAGIAbABlADsAfQB7AFwAKgBcAHQAcwA1AFwAdABzAHIAbwB3AGQAXABzAGIAYQBzAGUAZABvAG4ANABcAGYAMQBcAGYAcwAyADQAXABxAGwAXAB0AHIAYgByAGQAcgB0AFwAYgByAGQAcgBzAFwAYgByAGQAcgB3ADEAMABcAHQAcgBiAHIAZAByAGwAXABiAHIAZAByAHMAXABiAHIAZAByAHcAMQAwAFwAdAByAGIAcgBkAHIAYgBcAGIAcgBkAHIAcwBcAGIAcgBkAHIAdwAxADAAXAB0AHIAYgByAGQAcgByAFwAYgByAGQAcgBzAFwAYgByAGQAcgB3ADEAMABcAHQAcgBiAHIAZAByAGgAXABiAHIAZAByAHMAXABiAHIAZAByAHcAMQAwAFwAdAByAGIAcgBkAHIAdgBcAGIAcgBkAHIAcwBcAGIAcgBkAHIAdwAxADAAXAB0AHMAYwBlAGwAbABwAGEAZABkAGYAbAAzAFwAdABzAGMAZQBsAGwAcABhAGQAZABsADEAMAA4AFwAdABzAGMAZQBsAGwAcABhAGQAZABmAHIAMwBcAHQAcwBjAGUAbABsAHAAYQBkAGQAcgAxADAAOABcAHQAcwB2AGUAcgB0AGEAbAB0AFwAYwBsAHQAeABsAHIAdABiACAAVABhAGIAbABlACAAUwBpAG0AcABsAGUAIAAxADsAfQB9AHsAXAAqAFwAbABpAHMAdABvAHYAZQByAHIAaQBkAGUAdABhAGIAbABlAH0AXABuAG8AdQBpAGMAbwBtAHAAYQB0AFwAcwBwAGwAeQB0AHcAbgBpAG4AZQBcAGgAdABtAGEAdQB0AHMAcABcAGEAbABuAHQAYgBsAGkAbgBkAFwAZQB4AHAAcwBoAHIAdABuAFwAcwBwAGwAdABwAGcAcABhAHIAXAB1AHQAaQBuAGwAXABwAGEAcgBkAFwAcABsAGEAaQBuAFwAcQBsAHsAXABsAGEAbgBnADEAMAAzADMAXABsAGEAbgBnAGYAZQAxADAAMwAzAFwAZgAyAFwAZgBzADIANABcAGIAXABjAGYAMQAgAEMAbwBuAHMAbwBsAGkAZABhAHQAZQBkACAAUwB0AG8AYwBrACAAUgBlAHAAbwByAHQAIAAoAFMAZQBnAG0AZQBuAHQAIAB9AHsAXABsAGEAbgBnADEAMAAzADMAXABsAGEAbgBnAGYAZQAxADAAMwAzAFwAZgAyAFwAZgBzADIANABcAGIAXABjAGYAMQAgAC0ASQBJAEkAfQB7AFwAbABhAG4AZwAxADAAMwAzAFwAbABhAG4AZwBmAGUAMQAwADMAMwBcAGYAMgBcAGYAcwAyADQAXABiAFwAYwBmADEAIAApAH0AXABmADEAXABmAHMAMgA0AFwAYwBmADEAXABwAGEAcgB9AA==" SizeF="471.875,22.916666" LocationFloat="0,88.24997">
+          <StylePriority Ref="49" UseFont="false" />
+        </Item5>
+      </Controls>
+    </Item1>
+    <Item2 Ref="50" ControlType="DetailBand" Name="Detail" HeightF="199.653656" />
+    <Item3 Ref="51" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" />
+    <Item4 Ref="52" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" />
+    <Item5 Ref="53" ControlType="PageFooterBand" Name="PageFooter">
+      <Controls>
+        <Item1 Ref="54" ControlType="XRPageInfo" Name="pageInfo2" PageInfo="DateTime" SizeF="350.7353,23.0000076" LocationFloat="0,76.08331" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="55" UseFont="false" />
+        </Item1>
+        <Item2 Ref="56" ControlType="XRPageInfo" Name="pageInfo1" SizeF="60.38916,23.0000076" LocationFloat="1139.6106,76.08331" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="57" UseFont="false" />
+        </Item2>
+        <Item3 Ref="58" ControlType="XRLine" Name="line1" SizeF="1200,22.9999924" LocationFloat="0,53.08338" />
+      </Controls>
+    </Item5>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="59" Name="TitleStyle" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 18pt" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Ref="60" Name="Style1" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 18pt" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item3 Ref="61" Name="Style2" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 18pt" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item4 Ref="62" Name="crossTabGeneralStyle1" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 9.75pt" ForeColor="Black" BackColor="White" BorderColor="255,160,160,160" Sides="All" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item5 Ref="63" Name="crossTabHeaderStyle1" BorderStyle="Inset" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item6 Ref="64" Name="crossTabDataStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item7 Ref="65" Name="crossTabTotalStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Json.JsonDataSource,DevExpress.DataAccess.v20.1" Name="jsonDataSource1" Base64="PEpzb25EYXRhU291cmNlIE5hbWU9Impzb25EYXRhU291cmNlMSI+PFNvdXJjZSBTb3VyY2VUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuSnNvbi5DdXN0b21Kc29uU291cmNlIiBKc29uPSJbeyYjeEQ7JiN4QTsmcXVvdDtEb2NUeXBlJnF1b3Q7OiZxdW90OyZxdW90OywmI3hEOyYjeEE7JnF1b3Q7bG9jSWQmcXVvdDs6JnF1b3Q7JnF1b3Q7LCYjeEQ7JiN4QTsmcXVvdDtsb2NEZXNjJnF1b3Q7OiZxdW90OyZxdW90OywmI3hEOyYjeEE7JnF1b3Q7SXRlbUlkJnF1b3Q7OiZxdW90OyZxdW90OywmI3hEOyYjeEE7JnF1b3Q7SXRlbURlc2NwJnF1b3Q7OiZxdW90OyZxdW90OywmI3hEOyYjeEE7JnF1b3Q7RG9jRGF0ZSZxdW90OzomcXVvdDsmcXVvdDssJiN4RDsmI3hBOyZxdW90O0RvY05vJnF1b3Q7OiZxdW90OyZxdW90OywmI3hEOyYjeEE7JnF1b3Q7RGVzYyZxdW90OzomcXVvdDsmcXVvdDssJiN4RDsmI3hBOyZxdW90O1NyTm8mcXVvdDs6JnF1b3Q7JnF1b3Q7LCYjeEQ7JiN4QTsmcXVvdDtRdHkmcXVvdDs6MCwmI3hEOyYjeEE7JnF1b3Q7VW5pdCZxdW90OzomcXVvdDsmcXVvdDsmI3hEOyYjeEE7fV0iIC8+PFNjaGVtYT48Tm9kZSBOYW1lPSJyb290IiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IkFycmF5Ij48Tm9kZSBOYW1lPSJEb2NUeXBlIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9ImxvY0lkIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9ImxvY0Rlc2MiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iSXRlbUlkIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9Ikl0ZW1EZXNjcCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJEb2NEYXRlIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRvY05vIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRlc2MiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iU3JObyIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48Tm9kZSBOYW1lPSJRdHkiIFR5cGU9IlN5c3RlbS5OdWxsYWJsZWAxW1N5c3RlbS5JbnQ2NF0iIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iVW5pdCIgVHlwZT0iU3lzdGVtLlN0cmluZyIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJQcm9wZXJ0eSIgLz48L05vZGU+PC9TY2hlbWE+PC9Kc29uRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

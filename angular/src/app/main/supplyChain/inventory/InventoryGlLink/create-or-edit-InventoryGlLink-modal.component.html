@@ -1,0 +1,213 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #invGlLinForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="inventoryGlLink.id">{{l("InventoryGlLink")}}</span>
+                        <span *ngIf="!inventoryGlLink.id">{{l("InventoryGlLink")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body form-group ">
+                    <div class="row">
+                        <label for="GLlocId" class="col-sm-2 col-form-label">{{l("GLLocation")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" readonly = true  class="form-control form-control-sm" id="GLlocId"
+                                    name="GLlocId" [(ngModel)]="inventoryGlLink.glLocId"  required />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick"  (click)="openGlLocation()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('GLLocation')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="glLocDesc" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled  class="form-control form-control-sm" id="glLocDesc"
+                                name="glLocDesc" [(ngModel)]="inventoryGlLink.glLocDesc" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <label for="locId" class="col-sm-2 col-form-label">{{l("Loc")}}</label>
+                        <div class=" col-sm-4">
+                            <div class="input-group">
+                                <input type="text" readonly = true  class="form-control form-control-sm" id="locId"
+                                    name="locId" [(ngModel)]="inventoryGlLink.locId" required/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openLocationModal()"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('Loc')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled class="form-control form-control-sm" id="locDesc"
+                                name="locDesc" [(ngModel)]="inventoryGlLink.locDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="segId" class="col-sm-2 col-form-label">{{l("SEGID")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ">
+                                <input class="form-control form-control-sm" id="segId" name="segId"
+                                    [(ngModel)]="inventoryGlLink.segId" type="text"  readonly = true required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSegment1Modal()"
+                                        type="button"><i class="fa fa-search"></i>
+                                        {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('SEGID')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled class="form-control form-control-sm" id="segDesc"
+                                name="segDesc" [(ngModel)]="inventoryGlLink.segDesc" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <label for="locId" class="col-sm-2 col-form-label">{{l("AccRec")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accRec" name="accRec"
+                                    [(ngModel)]="inventoryGlLink.accRec" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('accRec')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('AccRec')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="accRecDesc" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled  class="form-control form-control-sm" id="accRecDesc"
+                                name="accRecDesc" [(ngModel)]="inventoryGlLink.accRecDesc" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="accRet" class="col-sm-2 col-form-label">{{l("AccRet")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ">
+                                <input class="form-control form-control-sm" id="AccRet" name="AccRet"
+                                    [(ngModel)]="inventoryGlLink.accRet" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('accRet')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('AccRet')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="accRetDesc" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled  class="form-control form-control-sm" id="accRetDesc"
+                                name="accRetDesc" [(ngModel)]="inventoryGlLink.accRetDesc" />
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <label for="accAdj" class="col-sm-2 col-form-label">{{l("AccAdj")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="AccAdj" name="AccAdj"
+                                    [(ngModel)]="inventoryGlLink.accAdj" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('accAdj')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('AccAdj')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled  class="form-control form-control-sm" id="accAdjDesc"
+                                name="accAdjDesc" [(ngModel)]="inventoryGlLink.accAdjDesc" />
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <label for="accCgs" class="col-sm-2 col-form-label">{{l("AccCGS")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accCgs" name="accCgs"
+                                    [(ngModel)]="inventoryGlLink.accCgs" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('accCgs')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('AccCGS')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled  class="form-control form-control-sm" id="accCgsDesc"
+                                name="accCgsDesc" [(ngModel)]="inventoryGlLink.accCgsDesc" />
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <label for="accWip" class="col-sm-2 col-form-label">{{l("AccWIP")}}</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" id="accWip" name="accWip"
+                                    [(ngModel)]="inventoryGlLink.accWip" type="text" disabled >
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary blue btn-sm btn-pick" (click)="openSelectChartofACModal('accWip')"
+                                        type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger btn-icon" type="button" (click)="setPickerNull('AccWIP')"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="Description" class="col-sm-2 col-form-label">{{l("Description")}}</label>
+                        <div class=" col-sm-4">
+                            <input type="text" disabled  class="form-control form-control-sm" id="accWipDesc"
+                                name="accWipDesc" [(ngModel)]="inventoryGlLink.accWipDesc" />
+                        </div>
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="segmentCheck || !invGlLinForm.form.valid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- <InventoryGlLinkLookupTableModal #InventoryGlLinkLookupTableModal (modalSave)="getLookUpData()">
+    </InventoryGlLinkLookupTableModal> -->
+    <financeLookupTableModal #FinanceLookupTableModal (modalSave)="getNewFinanceModal()"></financeLookupTableModal>
+    <inventoryLookupTableModal #InventoryLookupTableModal (modalSave)="getNewInventoryModal()"></inventoryLookupTableModal>
+</div>

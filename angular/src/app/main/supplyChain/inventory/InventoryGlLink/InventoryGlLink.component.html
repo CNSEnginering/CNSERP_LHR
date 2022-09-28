@@ -1,0 +1,229 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>Inventory GL Link</span>
+            </h3>
+            <span class="kt-subheader__desc">
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <div class="btn-group" dropdown>
+                    <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-excel"></i> {{"ExcelOperations" | localize}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                        <a class="dropdown-item" id="ExportICItemToExcelButton" (click)="exportToExcel()" href="javascript:;">
+                            <i class="fa fa-download" style="font-size: 1rem;"></i>
+                            {{'ExportToExcel' | localize}}
+                        </a>
+                        <a href="javascript:;" *ngIf="isGranted('Inventory.InventoryGlLinks.Create')" class="no-padding">
+                            <span class="fileinput-button">
+                                <p-fileUpload customUpload="true"
+                                        name="ExcelFileUpload"
+                                        #ExcelFileUpload
+                                        maxFileSize="10000000"
+                                        auto="auto"
+                                        accept=".csv,.xls,.xlsx"
+                                        (uploadHandler)="uploadExcel($event)"
+                                        (onError)="onUploadExcelError()"
+                                        chooseLabel="{{'ImportFromExcel' | localize}}">
+                                </p-fileUpload> 
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-item-text text-muted pl-3" href="#">
+                            <small [innerHTML]="l('ImportToExcelSampleFileDownloadInfo', '<a href=/assets/sampleFiles/ImportInventoryGLLinkSampleFile.xlsx>' + l('ClickHere') + '</a>')"></small>
+                        </span>
+                    </div>
+                </div>
+ 
+                <button *ngIf="isGranted('Inventory.InventoryGlLinks.Create')" (click)="create()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewInventoryGlLink")}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAll()" class="btn btn-primary" type="submit"><i
+                                                    class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDOCIDFilter">{{l("MinMax")}} {{l("DOCID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinDOCIDFilter"
+                                            [(ngModel)]="minDOCIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minDOCIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxDOCIDFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxDOCIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinDOCDATEFilter">{{l("DOCDATERange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinDOCDATEFilter"
+                                            name="MinDOCDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minDOCDATEFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxDOCDATEFilter"
+                                            name="MaxDOCDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxDOCDATEFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinTRANSFERDATEFilter">{{l("TRANSFERDATERange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinTRANSFERDATEFilter"
+                                            name="MinTRANSFERDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minTRANSFERDATEFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxTRANSFERDATEFilter"
+                                            name="MaxTRANSFERDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxTRANSFERDATEFilter">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="DESCRIPTIONFilter">{{l("DESCRIPTION")}}</label>
+                                    <input type="text" class="form-control" id="DESCRIPTIONFilter"
+                                        name="descriptionFilter" [(ngModel)]="descriptionFilter">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAll($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Inventory.InventoryGlLinks.Edit', 'Inventory.InventoryGlLinks.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="segID">
+                                        {{l('SEGID')}}
+                                        <p-sortIcon field="inventoryGlLink.segID"></p-sortIcon>
+                                    </th>
+                                    <!-- <th style="width: 150px" pSortableColumn="segName">
+                                        {{l('SEGNAME')}}
+                                        <p-sortIcon field="inventoryGlLink.segName"></p-sortIcon>
+                                    </th> -->
+                                    <th style="width: 150px" pSortableColumn="locID">
+                                        {{l('LOCID')}}
+                                        <p-sortIcon field="inventoryGlLink.locID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="locName">
+                                        {{l('LOCNAME')}}
+                                        <p-sortIcon field="inventoryGlLink.locName"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Inventory.InventoryGlLinks.Edit', 'Inventory.InventoryGlLinks.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;" (click)="view(record)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.BkTransfers.Edit')"
+                                                        (click)="create(record.inventoryGlLink.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Pages.BkTransfers.Delete')"
+                                                        (click)="delete(record.inventoryGlLink.id)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('SEGID')}}</span>
+                                        {{record.inventoryGlLink.segID}}
+                                    </td>
+                                    <!-- <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('SEGNAME')}}</span>
+                                        {{record.inventoryGlLink.segName}}
+                                    </td> -->
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('LOCID')}}</span>
+                                        {{record.inventoryGlLink.locID}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('LOCNAME')}}</span>
+                                        {{record.inventoryGlLink.locName}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getAll($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<InventoryGlLinkModal #InventoryGlLinkModal (modalSave)="getAll()"></InventoryGlLinkModal>
+<viewInventoryGlLinkModal #ViewInventoryGlLinkModal></viewInventoryGlLinkModal>

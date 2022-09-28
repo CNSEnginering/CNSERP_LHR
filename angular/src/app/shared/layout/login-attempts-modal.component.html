@@ -1,0 +1,64 @@
+<div bsModal #loginAttemptsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span>{{"LoginAttempts" | localize}}</span>
+                </h5>
+                <button type="button" class="close" [attr.aria-label]="l('Close')" (click)="close()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="loginAttemptsModalForm" class="form-horizontal">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-sm-12" *ngFor="let userLoginAttempt of userLoginAttempts">
+                                <div class="alert" [ngClass]="userLoginAttempt.result == 'Success' ? 'alert-outline-success' : 'alert-outline-danger'" role="alert">
+                                    <div class="alert__text">
+                                        <div class="row" *ngIf="userLoginAttempt.clientIpAddress">
+                                            <label class="kt-font-bolder col-sm-3 text-right">{{"IpAddress" | localize}}</label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    {{userLoginAttempt.clientIpAddress}}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="userLoginAttempt.clientName">
+                                            <label class="kt-font-bolder col-sm-3 text-right">{{"Client" | localize}}</label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    {{userLoginAttempt.clientName}}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="userLoginAttempt.browserInfo">
+                                            <label class="kt-font-bolder col-sm-3 text-right">{{"Browser" | localize}}</label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    {{userLoginAttempt.browserInfo}}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label class="kt-font-bolder col-sm-3 text-right">{{"Time" | localize}}</label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static login-attempt-date">
+                                                    {{getLoginAttemptTime(userLoginAttempt)}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

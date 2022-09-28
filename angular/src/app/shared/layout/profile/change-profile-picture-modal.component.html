@@ -1,0 +1,34 @@
+<div bsModal #changeProfilePictureModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #changeProfilePictureModalForm="ngForm" (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{"ChangeProfilePicture" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" [attr.aria-label]="l('Close')" (click)="close()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="file" (change)="fileChangeEvent($event)" />
+                        <span class="help-block m-b-none">{{"ProfilePicture_Change_Info" | localize:maxProfilPictureBytesUserFriendlyValue}}</span>
+                    </div>
+                    <image-cropper
+                        [imageChangedEvent]="imageChangedEvent"
+                        [maintainAspectRatio]="true"
+                        [aspectRatio]="4 / 4"
+                        [resizeToWidth]="128"
+                        format="png"
+                        (imageCroppedFile)="imageCroppedFile($event)"
+                    ></image-cropper>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!changeProfilePictureModalForm.form.valid || saving"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

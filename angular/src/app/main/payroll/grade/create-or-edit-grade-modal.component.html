@@ -1,0 +1,56 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #gradeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="grade.id">{{l("EditGrade")}}</span>
+                        <span *ngIf="!grade.id">{{l("CreateNewGrade")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-3">
+                            <label for="Grade_GradeID">{{l("GradeID")}}<span class="require-field">*</span></label>
+                            <input type="number" id="Grade_GradeID" min="1" class="form-control form-control-sm"  [(ngModel)]="grade.gradeID" 
+                            name="GradeID"  disabled required/>
+                        </div> 
+                        <div class="form-group col-md-6">
+                            <label for="Grade_GradeName">{{l("GradeName")}}<span class="require-field">*</span></label>
+                            <input type="text" id="Grade_GradeName" class="form-control form-control-sm"
+                                [(ngModel)]="grade.gradeName" name="GradeName" required/>
+                        </div>
+                        <div class="form-group col-md-3">
+                                <label for="Grade_Type">{{l("GradeType")}}<span class="require-field">*</span></label>
+                                <input type="number" id="Grade_Type" min="1" class="form-control form-control-sm"  [(ngModel)]="grade.type" 
+                                name="Type"  required/>
+                            </div> 
+                        
+
+                    </div>
+                
+                    <div class="m-checkbox-list">
+                        <label for="Grade_Active" class="kt-checkbox">
+                            <input id="Grade_Active" type="checkbox" name="Active" [(ngModel)]="grade.active"> 
+                            {{l("Active")}}
+                            <span></span>
+                        </label>
+                    </div>
+                    
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!gradeForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

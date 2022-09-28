@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="CustAnalysisReport" Landscape="true" Margins="31, 202, 179, 102" PageWidth="1100" PageHeight="850" Version="20.1" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Visible="false" ValueInfo="2020-05-08" Name="fromDate" Type="#Ref-2" />
+    <Item2 Ref="4" Visible="false" ValueInfo="2020-05-08" Name="toDate" Type="#Ref-2" />
+    <Item3 Ref="6" Visible="false" Name="Phone" />
+    <Item4 Ref="7" Visible="false" Name="Address" />
+    <Item5 Ref="8" Visible="false" Name="Address2" />
+    <Item6 Ref="9" Visible="false" Name="CompanyName" />
+    <Item7 Ref="10" Visible="false" Name="TenantId" />
+    <Item8 Ref="11" Visible="false" Name="FromAcc" />
+    <Item9 Ref="12" Visible="false" Name="ToAcc" />
+    <Item10 Ref="13" Visible="false" Name="LocId" />
+    <Item11 Ref="14" Visible="false" Name="cur" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="15" ControlType="TopMarginBand" Name="TopMargin" HeightF="179" Borders="Bottom">
+      <Controls>
+        <Item1 Ref="16" ControlType="XRLabel" Name="label9" Multiline="true" Text="label9" SizeF="100,23" LocationFloat="198.541641, 113.249969" Padding="2,2,0,0,96">
+          <ExpressionBindings>
+            <Item1 Ref="17" EventName="BeforePrint" PropertyName="Text" Expression="[FormName]" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="18" ControlType="XRLabel" Name="label8" Multiline="true" Text="label8" TextAlignment="MiddleCenter" SizeF="148.958313,22.9999962" LocationFloat="350.25, 63.6250038" Padding="2,2,0,0,96">
+          <ExpressionBindings>
+            <Item1 Ref="19" EventName="BeforePrint" PropertyName="Text" Expression="?Phone" />
+          </ExpressionBindings>
+          <StylePriority Ref="20" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="21" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" TextAlignment="MiddleCenter" SizeF="348.6698,30.5833359" LocationFloat="252.357422, 33.0416679" Font="Segoe UI, 14.25pt, style=Bold, charSet=0" Padding="2,2,0,0,96">
+          <ExpressionBindings>
+            <Item1 Ref="22" EventName="BeforePrint" PropertyName="Text" Expression="?Address" />
+          </ExpressionBindings>
+          <StylePriority Ref="23" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="24" ControlType="XRPictureBox" Name="pictureBox2" Sizing="Squeeze" SizeF="120,80" LocationFloat="22.6666679, 20.5416679">
+          <Scripts Ref="25" OnBeforePrint="pictureBox1_BeforePrint" />
+        </Item4>
+        <Item5 Ref="26" ControlType="XRLabel" Name="label1" Multiline="true" Text="Delete Logs of" TextAlignment="TopCenter" SizeF="188.541641,23" LocationFloat="10.0000067, 113.249969" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100" Borders="Bottom" BorderWidth="2">
+          <StylePriority Ref="27" UseFont="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="28" ControlType="XRTable" Name="table1" SizeF="475.2616,25" LocationFloat="10.0000067, 144.291656" Font="Arial, 9.75pt, style=Bold" Padding="2,2,0,0,96">
+          <Rows>
+            <Item1 Ref="29" ControlType="XRTableRow" Name="tableRow1" Weight="1">
+              <Cells>
+                <Item1 Ref="30" ControlType="XRTableCell" Name="tableCell8" Weight="1.0088528063053888" Multiline="true" Text="Doc No" TextAlignment="MiddleLeft" Borders="All">
+                  <StylePriority Ref="31" UseBorders="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="32" ControlType="XRTableCell" Name="tableCell7" Weight="1.0278136045784454" Multiline="true" Text="Action" TextAlignment="MiddleLeft" Borders="All">
+                  <StylePriority Ref="33" UseBorders="false" UseTextAlignment="false" />
+                </Item2>
+                <Item3 Ref="34" ControlType="XRTableCell" Name="tableCell1" Weight="1.1853573999016289" Multiline="true" Text="Delete By" TextAlignment="MiddleLeft" Borders="All">
+                  <StylePriority Ref="35" UseBorders="false" UseTextAlignment="false" />
+                </Item3>
+                <Item4 Ref="36" ControlType="XRTableCell" Name="tableCell2" Weight="1.5726659430131327" Multiline="true" Text="Delete Date&amp;Time" TextAlignment="MiddleLeft" Borders="All">
+                  <StylePriority Ref="37" UseBorders="false" UseTextAlignment="false" />
+                </Item4>
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="38" UseFont="false" />
+        </Item6>
+        <Item7 Ref="39" ControlType="XRPageInfo" Name="pageInfo3" PageInfo="DateTime" SizeF="197.360352,23" LocationFloat="650.6668, 113.249969" Padding="2,2,0,0,100" />
+        <Item8 Ref="40" ControlType="XRLabel" Name="label7" Multiline="true" Text="label7" TextAlignment="TopCenter" SizeF="348.6698,24.0416679" LocationFloat="252.357422, 8.999999" Font="Segoe UI, 14pt, style=Bold" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="41" EventName="BeforePrint" PropertyName="Text" Expression="?CompanyName" />
+          </ExpressionBindings>
+          <StylePriority Ref="42" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item8>
+      </Controls>
+      <StylePriority Ref="43" UseBorders="false" />
+    </Item1>
+    <Item2 Ref="44" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="102.208328">
+      <Controls>
+        <Item1 Ref="45" ControlType="XRPageInfo" Name="pageInfo2" PageInfo="DateTime" TextAlignment="TopRight" SizeF="124.5,23" LocationFloat="943.750061, 76.9999847" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="46" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="47" ControlType="XRLabel" Name="label28" Multiline="true" Text="Print Date:" TextAlignment="TopRight" SizeF="73.31421,23" LocationFloat="870.4585, 76.9999847" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="48" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="49" ControlType="XRPageInfo" Name="pageInfo1" TextFormatString="Page {0} of {1}" SizeF="141.666672,23" LocationFloat="1.00000668, 77.0000153" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="50" UseFont="false" />
+        </Item3>
+        <Item4 Ref="51" ControlType="XRLine" Name="line1" SizeF="1069.00024,4.33324432" LocationFloat="0, 72.66674" />
+      </Controls>
+    </Item2>
+    <Item3 Ref="52" ControlType="DetailBand" Name="Detail" HeightF="33.20834">
+      <Controls>
+        <Item1 Ref="53" ControlType="XRLabel" Name="label5" Multiline="true" Text="label5" SizeF="155.886627,32.7916451" LocationFloat="329.374969, 0.208346054" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="54" EventName="BeforePrint" PropertyName="Text" Expression="[DeleteDate]" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="55" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" SizeF="117.49556,32.7916451" LocationFloat="211.87944, 0.208346054" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="56" EventName="BeforePrint" PropertyName="Text" Expression="[DeleteBy]" />
+          </ExpressionBindings>
+        </Item2>
+        <Item3 Ref="57" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="101.879425,32.9999924" LocationFloat="110.000015, 0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="58" EventName="BeforePrint" PropertyName="Text" Expression="[Action]" />
+          </ExpressionBindings>
+        </Item3>
+        <Item4 Ref="59" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" SizeF="100,32.9999924" LocationFloat="10.0000067, 0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="60" EventName="BeforePrint" PropertyName="Text" Expression="[DocNo]" />
+          </ExpressionBindings>
+        </Item4>
+      </Controls>
+    </Item3>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Json.JsonDataSource,DevExpress.DataAccess.v19.2" Name="jsonDataSource1" Base64="PEpzb25EYXRhU291cmNlIE5hbWU9Impzb25EYXRhU291cmNlMSI+PFNvdXJjZSBTb3VyY2VUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuSnNvbi5DdXN0b21Kc29uU291cmNlIiBKc29uPSJbeyZxdW90O0RvY05vJnF1b3Q7OjEsJnF1b3Q7QWN0aW9uJnF1b3Q7OiZxdW90O0RlbGV0ZSZxdW90OywmcXVvdDtEZWxldGVCeSZxdW90OzomcXVvdDthZG1pbiZxdW90OywmcXVvdDtEZWxldGVEYXRlJnF1b3Q7OiZxdW90OzIwMjItMDEtMjBUMTY6NDQ6MDguMjEmcXVvdDssJnF1b3Q7Rm9ybU5hbWUmcXVvdDs6JnF1b3Q7QWRqdXN0bWVudCZxdW90O31dIiAvPjxTY2hlbWE+PE5vZGUgTmFtZT0icm9vdCIgU2VsZWN0ZWQ9InRydWUiIE5vZGVUeXBlPSJBcnJheSI+PE5vZGUgTmFtZT0iRG9jTm8iIFR5cGU9IlN5c3RlbS5OdWxsYWJsZWAxW1N5c3RlbS5JbnQ2NF0iIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iQWN0aW9uIiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRlbGV0ZUJ5IiBUeXBlPSJTeXN0ZW0uU3RyaW5nIiBTZWxlY3RlZD0idHJ1ZSIgTm9kZVR5cGU9IlByb3BlcnR5IiAvPjxOb2RlIE5hbWU9IkRlbGV0ZURhdGUiIFR5cGU9IlN5c3RlbS5OdWxsYWJsZWAxW1N5c3RlbS5EYXRlVGltZV0iIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PE5vZGUgTmFtZT0iRm9ybU5hbWUiIFR5cGU9IlN5c3RlbS5TdHJpbmciIFNlbGVjdGVkPSJ0cnVlIiBOb2RlVHlwZT0iUHJvcGVydHkiIC8+PC9Ob2RlPjwvU2NoZW1hPjwvSnNvbkRhdGFTb3VyY2U+" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="2" Content="System.DateTime" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

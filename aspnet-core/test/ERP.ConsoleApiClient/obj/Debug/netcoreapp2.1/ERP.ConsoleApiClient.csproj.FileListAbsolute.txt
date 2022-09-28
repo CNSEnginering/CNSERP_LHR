@@ -1,0 +1,16 @@
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.ConsoleApiClient.deps.json
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.ConsoleApiClient.runtimeconfig.json
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.ConsoleApiClient.runtimeconfig.dev.json
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.ConsoleApiClient.dll
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.ConsoleApiClient.pdb
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.Application.Shared.dll
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.Core.Shared.dll
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.Application.Shared.pdb
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\bin\Debug\netcoreapp2.1\ERP.Core.Shared.pdb
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.csprojAssemblyReference.cache
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.csproj.CoreCompileInputs.cache
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.AssemblyInfoInputs.cache
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.AssemblyInfo.cs
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.csproj.CopyComplete
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.dll
+D:\CNS_ERP\trunk\Application\Source\aspnet-core\test\ERP.ConsoleApiClient\obj\Debug\netcoreapp2.1\ERP.ConsoleApiClient.pdb

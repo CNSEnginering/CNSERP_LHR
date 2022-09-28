@@ -1,0 +1,193 @@
+<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>Voucher Printing</span>
+            </h3>
+
+        </div>
+
+
+    </div>
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body parentSection">
+                        <div class="row row-col-separator-xl">
+
+                            <!-- (change)="getMonthListRecord($event)" -->
+                            <div class="col-lg-12">
+                                <div class="kt-portlet kt-portlet--mobile boxShade">
+                                    <div class="kt-portlet__body radioSection">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">{{l("VoucherType")}}:</label>
+                                            <div class="col-lg-4">
+                                                <select id="BookId"  class="form-control form-control-sm"  name="BookId"  [(ngModel)]="voucherprintDto.bookId" (change)="getMonthListRecord($event.target.value)"  >
+                                                    <option value="All">All</option>
+                                                    <option *ngFor="let Group of bookDto"  [value]="Group.bookId"  >{{Group.bookName}}</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Status:</label>
+                                            <div class="col-lg-4">
+                                                <select id="status"  class="form-control form-control-sm"
+                                                  name="status"  [(ngModel)]="status">
+                                                    <option  value="Approved"  >Approved</option>
+                                                    <option  value="Posted"  >Posted</option>
+                                                    <option  value="Both"  >Both</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Year:</label>
+                                            <div class="col-lg-4">
+                                                <!-- <select id="Book" class="form-control form-control-sm" [(ngModel)]="voucherprintDto.year" [value]="2019"  >
+                                                               
+                                                    <option value="2019" [selected]="2019"> 2019</option>
+                                                    
+                                              
+                                                </select> -->
+
+                                                <select id="" name="" class="form-control form-control-sm"  name="year" [(ngModel)]="voucherprintDto.year"  >
+                                                    <option *ngFor="let Group of yearListdto" [value]="Group.years">{{Group.years}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Month:</label>
+                                            <div class="col-lg-4">
+                                                  
+                                                <select id="" name="" class="form-control form-control-sm"  name="month" [(ngModel)]="voucherprintDto.month"  >
+                                                    <option *ngFor="let Group of monthlistdto" [value]="Group.monthId">{{Group.monthName}}
+                                                    </option>
+                                                </select>
+
+                                                            <!-- <select id="month" class="form-control form-control-sm"  [(ngModel)]="voucherprintDto.month" >
+                                                                <option value="9" > September</option>
+                                                                <option value="10" [selected]="10"> October</option>
+                                                          
+                                                            </select> -->
+                                                        
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Location:</label>
+                                            <div class="col-lg-4">
+                                                  
+                                                <select id="location" class="form-control form-control-sm"  name="location" [(ngModel)]="voucherprintDto.location"  >
+                                                    <option value=0>All</option>
+                                                    <option *ngFor="let loc of locationList" [value]="loc.locId">{{loc.locDesc}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+
+                                            <label class="col-form-label col-lg-2">From Config:</label>
+                                            <div class="col-lg-4">
+                                                <input type="text"  class="form-control" id="fromDate" [(ngModel)]="voucherprintDto.fromConfig">
+                                            </div>
+                                            <label class="col-form-label col-lg-2">To Config:</label>
+                                            <div class="col-lg-4">
+                                                <input type="text"  class="form-control" id="toDate" [(ngModel)]="voucherprintDto.toConfig">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+
+                                            <label class="col-form-label col-lg-2">{{l("FromVoucherNo")}}:</label>
+                                            <div class="col-lg-4">
+                                                <input type="text" class="form-control" id="fromDate"[(ngModel)]="voucherprintDto.fromDoc">
+                                            </div>
+                                            <label class="col-form-label col-lg-2">{{l("ToVoucherNo")}}:</label>
+                                            <div class="col-lg-4">
+                                                <input type="text"  class="form-control" id="toDate"[(ngModel)]="voucherprintDto.toDoc">
+
+                                            </div>
+										</div>
+
+										<div class="form-group row col-md-6">
+												<label for="GLTRHeader_CurrencyRate">{{l("Currency")}}</label>
+												<div class="input-group">
+													<input type="text" id="GLTRHeader_CurrencyRate" class="form-control form-control-sm" [(ngModel)]="voucherprintDto.curid" name="curid"  required readonly/>
+													<div class="input-group-append">
+														<button class="btn btn-primary blue btn-sm" (click)="openSelectCurrencyRateModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+													</div> <div class="input-group-prepend">
+														<button class="btn btn-danger btn-icon btn-sm" type="button" (click)="setCurrencyRateIdNull()"><i class="fa fa-times"></i></button>
+													</div>
+												</div>
+											</div>
+
+                                        <div class="form-group row" hidden>
+                                                                               
+                                                <label class="col-form-label col-lg-1">From A/C:</label>
+                                                <div class="col-lg-5">
+
+                                                        
+                                                                
+                                                                <div class="input-group">
+                                                                    <input type="text" id="accountID" class="form-control form-control-sm" [(ngModel)]="voucherprintDto.fromAccount" name="accountID"  required readonly/>
+                                                                    <input type="text" id="accountName" class="form-control form-control-sm" [(ngModel)]="voucherprintDto.fromAccountName" name="accountName"   />
+                                                                    <div class="input-group-append">
+                                                                        <button class="btn btn-primary blue btn-sm" (click)="selectFromAccount()"  type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                                    </div> <div class="input-group-prepend">
+                                                                        <button class="btn btn-danger btn-icon btn-sm" (click)="setFromAccount()" type="button" ><i class="fa fa-times"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                           
+                                              
+                                                <!-- <select id="fromAccount" name="fromAccount" class="form-control" (change)="getSubLedger()"    [(ngModel)]="ledgerFilters.fromAccount" >
+                                                        <option *ngFor="let account of chartOfAccountList" [value]="account.accountID">{{account.accountName}}
+                                                            </option>
+                                                        </select>     -->
+                                                                                                                 
+                                            </div>                                                                
+                                                <label class="col-form-label col-lg-1">To A/C:</label>
+                                                <div class="col-lg-5">
+
+                                                        <div class="input-group">
+                                                                <input type="text" id="toAccountID" class="form-control form-control-sm" [(ngModel)]="voucherprintDto.toAccount" name="toAccountID"  required readonly/>
+                                                                <input type="text" id="toAccountName" class="form-control form-control-sm" [(ngModel)]="voucherprintDto.toAccountName" name="toAccountName"   />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary blue btn-sm" (click)="selectToAccount()"  type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                                                </div> <div class="input-group-prepend">
+                                                                    <button class="btn btn-danger btn-icon btn-sm" (click)="setToAccount()" type="button" ><i class="fa fa-times"></i></button>
+                                                                </div>
+                                                            </div> 
+                                             
+                                               
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="kt-portlet__foot footerSection">
+                                        <div class="col-lg-12" style="text-align: right">
+                                            <button type="button" (click)="getReport()"
+                                                class="btn btn-primary">Preview</button>
+                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+   
+</div>
+<commonServiceLookupTableModal #CommonServiceLookupTableModal (modalSave)="getNewCommonServiceModal()"></commonServiceLookupTableModal>
+<appchartofcontrollookupfinder #appchartofcontrollookupfinder (modalSave)="getFromAndToAccount()"></appchartofcontrollookupfinder>
+<app-reportviewr-modal #reportView  ></app-reportviewr-modal>

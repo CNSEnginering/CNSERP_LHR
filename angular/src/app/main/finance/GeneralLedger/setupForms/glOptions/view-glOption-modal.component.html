@@ -1,0 +1,103 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l("Details") }}</span>
+                </h4>
+                <button
+                    type="button"
+                    class="close"
+                    (click)="close()"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DEFAULTCLACC") }} :</h6>
+                        {{ item.glOption.defaultclacc }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("STOCKCTRLACC") }} :</h6>
+                        {{ item.glOption.stockctrlacc }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Seg1Name") }} :</h6>
+                        {{ item.glOption.seg1Name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Seg2Name") }} :</h6>
+                        {{ item.glOption.seg2Name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("Seg3Name") }} :</h6>
+                        {{ item.glOption.seg3Name }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("FirstSignature") }} :</h6>
+                        {{ item.glOption.firstSignature }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("SecondSignature") }} :</h6>
+                        {{ item.glOption.secondSignature }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("ThirdSignature") }} :</h6>
+                        {{ item.glOption.thirdSignature }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("FourthSignature") }} :</h6>
+                        {{ item.glOption.fourthSignature }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("FifthSignature") }} :</h6>
+                        {{ item.glOption.fifthSignature }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("SixthSignature") }} :</h6>
+                        {{ item.glOption.sixthSignature }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("DirectPost") }} :</h6>
+                        {{ item.glOption.directPost == 1 ? "Yes" : "No" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AUDTDATE") }} :</h6>
+                        {{ item.glOption.audtdate | date: "dd/MM/yyyy" }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l("AUDTUSER") }} :</h6>
+                        {{ item.glOption.audtuser }}
+                    </div>
+
+                    <div class="col-6 mb-3" hidden>
+                        <h6>({{ l("ChartofControl") }}) {{ l("Id") }} :</h6>
+                        {{ item.chartofControlId }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-primary blue"
+                    (click)="close()"
+                >
+                    {{ l("Close") }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

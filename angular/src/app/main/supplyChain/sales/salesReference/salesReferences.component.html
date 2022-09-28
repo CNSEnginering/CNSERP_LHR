@@ -1,0 +1,272 @@
+﻿<div [@routerTransition]>
+
+    <div class="kt-subheader kt-grid__item">
+
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+                <span>{{l(refType == 'OE' ? "SalesReferences":'AssetRsrc')}}</span>
+            </h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <span class="kt-subheader__desc">
+                {{l(refType == 'OE' ? "SalesReferencesHeaderInfo" : '')}}
+            </span>
+        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <button (click)="exportToExcel()" class="btn btn-outline-success"><i class="fa fa-file-excel"></i>
+                    {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Sales.SalesReferences.Create')" (click)="createSalesReference()"
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l(refType == 'OE' ?"CreateNewSalesReference":'CreateAssetRsrc')}}</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="kt-content">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" [placeholder]="l('SearchWithThreeDot')"
+                                            type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getSalesReferences()" class="btn btn-primary"
+                                                type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                            <div class="col-md-12">
+                                <div class="kt-separator kt-separator--border-dashed"></div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinRefIDFilter">{{l("MinMax")}} {{l("RefID")}}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="MinRefIDFilter"
+                                            [(ngModel)]="minRefIDFilter" placeholder="{{l('MinValue')}}"
+                                            name="minRefIDFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxRefIDFilter"
+                                            placeholder="{{l('MaxValue')}}" name="maxRefIDFilter" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="RefNameFilter">{{l("RefName")}}</label>
+                                    <input type="text" class="form-control" id="RefNameFilter" name="refNameFilter"
+                                        [(ngModel)]="refNameFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ACTIVEFilterSelect">{{l("ACTIVE")}}</label>
+                                <select class="form-control" name="ACTIVEFilter" id="ACTIVEFilterSelect"
+                                    [(ngModel)]="activeFilter">
+                                    <option value="-1">{{l("All")}}</option>
+                                    <option value="0">{{l("False")}}</option>
+                                    <option value="1">{{l("True")}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinAUDTDATEFilter">{{l("AUDTDATERange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinAUDTDATEFilter"
+                                            name="MinAUDTDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minAUDTDATEFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxAUDTDATEFilter"
+                                            name="MaxAUDTDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxAUDTDATEFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="AUDTUSERFilter">{{l("AUDTUSER")}}</label>
+                                    <input type="text" class="form-control" id="AUDTUSERFilter" name="audtuserFilter"
+                                        [(ngModel)]="audtuserFilter">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="MinCreatedDATEFilter">{{l("CreatedDATERange")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control m-input" id="MinCreatedDATEFilter"
+                                            name="MinCreatedDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MinValue')}}" [(ngModel)]="minCreatedDATEFilter">
+                                        <span style="line-height: 40px;padding: 0 15px 0 15px;"> &mdash; </span>
+                                        <input class="form-control m-input" id="MaxCreatedDATEFilter"
+                                            name="MaxCreatedDATEFilter" type="datetime" bsDatepicker
+                                            placeholder="{{l('MaxValue')}}" [(ngModel)]="maxCreatedDATEFilter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="CreatedUSERFilter">{{l("CreatedUSER")}}</label>
+                                    <input type="text" class="form-control" id="CreatedUSERFilter"
+                                        name="createdUSERFilter" [(ngModel)]="createdUSERFilter">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getSalesReferences($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px"
+                                        [hidden]="!isGrantedAny('Sales.SalesReferences.Edit', 'Sales.SalesReferences.Delete')">
+                                        {{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="refID">
+                                        {{l('RefID')}}
+                                        <p-sortIcon field="salesReference.refID"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 160px" pSortableColumn="refName">
+                                        {{l('RefName')}}
+                                        <p-sortIcon field="salesReference.refName"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="active">
+                                        {{l('ACTIVE')}}
+                                        <p-sortIcon field="salesReference.active"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtuser">
+                                        {{l('AudtUser')}}
+                                        <p-sortIcon field="salesReference.audtuser"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="audtdate">
+                                        {{l('AudtDate')}}
+                                        <p-sortIcon field="salesReference.audtdate"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdUSER">
+                                        {{l('CreatedBy')}}
+                                        <p-sortIcon field="salesReference.createdUSER"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="createdDATE">
+                                        {{l('CreateDate')}}
+                                        <p-sortIcon field="salesReference.createdDATE"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Sales.SalesReferences.Edit', 'Sales.SalesReferences.Delete')">
+                                        <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-bars"></i><span class="caret"></span> {{l("")}}
+                                            </button>
+                                            <ul class="dropdown-menu" *dropdownMenu>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        (click)="viewSalesReferenceModal.show(record,refType)">{{l('View')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Sales.SalesReferences.Edit')"
+                                                        (click)="createOrEditSalesReferenceModal.show(refType,record.salesReference.id)">{{l('Edit')}}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;"
+                                                        *ngIf="permission.isGranted('Sales.SalesReferences.Delete')"
+                                                        (click)="deleteSalesReference(record.salesReference)">{{l('Delete')}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('RefID')}}</span>
+                                        {{record.salesReference.refID}}
+                                    </td>
+                                    <td style="width:160px">
+                                        <span class="ui-column-title"> {{l('RefName')}}</span>
+                                        {{record.salesReference.refName}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('Active')}}</span>
+                                        <span class="kt-badge kt-badge--success kt-badge--inline"
+                                            *ngIf="record.salesReference.active">{{'Yes' | localize}}</span>
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                            *ngIf="!record.salesReference.active">{{'No' | localize}}</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtUser')}}</span>
+                                        {{record.salesReference.audtuser}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('AudtDate')}}</span>
+                                        <span *ngIf="record.salesReference.audtdate">
+                                            {{record.salesReference.audtdate | momentFormat:'L'
+                                            | date:'dd/MM/yyyy'
+                                            }}
+                                        </span>
+                                        <span *ngIf="!record.salesReference.audtdate">-</span>
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreatedBy')}}</span>
+                                        {{record.salesReference.createdUSER}}
+                                    </td>
+                                    <td style="width:150px">
+                                        <span class="ui-column-title"> {{l('CreateDate')}}</span>
+                                        <span *ngIf="record.salesReference.createdDATE">
+                                            {{record.salesReference.createdDATE | momentFormat:'L'
+                                            | date:'dd/MM/yyyy'}}
+                                        </span>
+                                        <span *ngIf="!record.salesReference.createdDATE">-</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="getSalesReferences($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createOrEditSalesReferenceModal #createOrEditSalesReferenceModal (modalSave)="getSalesReferences()">
+    </createOrEditSalesReferenceModal>
+    <viewSalesReferenceModal #viewSalesReferenceModal></viewSalesReferenceModal>
+
+
+</div>
