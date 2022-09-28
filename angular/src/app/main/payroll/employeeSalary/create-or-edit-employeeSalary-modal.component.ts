@@ -70,11 +70,11 @@ export class CreateOrEditEmployeeSalaryModalComponent extends AppComponentBase {
             this.active = true;
             this.modal.show();
         } else {
-            this._employeeSalaryServiceProxy.getEmployeeSalaryForEdit(employeeSalaryId).subscribe(result => {
-                this.employeeSalary = result.employeeSalary;
-                this.startDate=moment(this.employeeSalary.startDate).toDate();
-                this.active = true;
-                this.modal.show();
+            //this._employeeSalaryServiceProxy.getEmployeeSalaryForEdit(employeeSalaryId).subscribe(result => {
+            //this.employeeSalary = result.employeeSalary;
+            //this.startDate=moment(this.employeeSalary.startDate).toDate();
+            //this.active = true;
+           //this.modal.show();
             });
         }
     }
