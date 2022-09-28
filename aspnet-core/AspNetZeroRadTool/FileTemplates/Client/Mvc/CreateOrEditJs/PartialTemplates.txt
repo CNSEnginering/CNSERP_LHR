@@ -1,0 +1,180 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{File_Uploading_Init_Here}}",
+			"condition" : "",
+			"templates" : [
+					{
+					"type" : "file",
+					"preventDuplicate":true,
+					"content" : "        var _fileUploading = [];"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{File_Property_Init_Here}}",
+			"condition" : "",
+			"templates" : [
+					{
+					"type" : "file",
+					"content" : "        var _{{property_Name_Here}}Token;"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Check_If_Uploading_Before_Save_Here}}",
+			"condition" : "",
+			"templates" : [
+					{
+					"type" : "file",
+                    "preventDuplicate":true,
+					"content" : "
+                        if (_fileUploading != null && _fileUploading.length > 0) {
+                            abp.notify.info(app.localize('WaitingForFileUpload'));
+                            return;
+                        }
+					"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Set_File_Prop_Token_To_Save_Here}}",
+			"condition" : "",
+			"templates" : [
+					{
+					"type" : "file",
+                    "preventDuplicate":true,
+					"content" : "            {{entity_Name_Here}}.{{property_Name_Here}}Token = _{{property_Name_Here}}Token;
+					"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{File_Prop_Functions_Here}}",
+			"condition" : "",
+			"templates" : [
+					{
+					"type" : "file",
+					"content" : "
+                            $(\"#{{Entity_Name_Here}}_{{Property_Name_Here}}\").change(function () {
+                                var file = $(this)[0].files[0];
+                                if (!file) {
+                                    _{{property_Name_Here}}Token = null;
+                                    return;
+                                }
+                    
+                                var formData = new FormData();
+                                formData.append('file', file);
+                                _fileUploading.push(true);
+                    
+                                $.ajax({
+                                    url: '/App/{{Entity_Name_Plural_Here}}/Upload{{Property_Name_Here}}File',
+                                    type: 'POST',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false
+                                }).done(function (resp) {
+                                    if (resp.success && resp.result.fileToken) {
+                                        _{{property_Name_Here}}Token = resp.result.fileToken;
+                                    } else {
+                                        this.message.error(resp.result.message);
+                                    }
+                                }).always(function () {
+                                    _fileUploading.pop();
+                                });
+                            });
+                    
+                            $(\"#{{Entity_Name_Here}}_{{Property_Name_Here}}_Remove\").click(function () {
+                                abp.message.confirm(
+                                    app.localize('DoYouWantToRemoveTheFile'),
+                                    app.localize('AreYouSure'),
+                                    function (isConfirmed) {
+                                        if (isConfirmed) {
+                                            var {{Entity_Name_Here}} = _${{entity_Name_Here}}InformationForm.serializeFormToObject();
+                                            _{{entity_Name_Plural_Here}}Service.remove{{Property_Name_Here}}File({
+                                                id: {{Entity_Name_Here}}.id
+                                            }).done(function () {
+                                                abp.notify.success(app.localize('SuccessfullyDeleted'));
+                                                _${{entity_Name_Here}}InformationForm.find(\"#div_current_file\").css(\"display\", \"none\");
+                                            });
+                                        }
+                                    }
+                                );
+                            });
+                            
+                            $('#{{Entity_Name_Here}}_{{Property_Name_Here}}').change(function () {
+                                var fileName = app.localize('ChooseAFile');
+                                if (this.files && this.files[0]) {
+                                    fileName = this.files[0].name;
+                                }
+                                $('#{{Entity_Name_Here}}_{{Property_Name_Here}}Label').text(fileName);
+                            });	
+					"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Modal_Init_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate":true,
+					"content" : "        var _{{Entity_Name_Here}}{{nP_Foreign_Entity_Name_Here}}LookupTableModal = new app.ModalManager({
+            viewUrl: abp.appPath + '{{App_Area_Name_Here}}/{{Master_Detail_Child_Prefix_Here}}{{Entity_Name_Plural_Here}}/{{NP_Foreign_Entity_Name_Here}}LookupTableModal',
+            scriptUrl: abp.appPath + 'view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Master_Detail_Child_Prefix_Here}}{{Entity_Name_Plural_Here}}/_{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal.js',
+            modalClass: '{{Master_Detail_Child_Prefix_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal'
+        });"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Modal_Open_Clear_Here}}",
+			"viewType":"LookupTable",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "        $('#Open{{NP_Foreign_Entity_Name_Here}}{{NP_Duplication_Number_Here}}LookupTableButton').click(function () {
+
+            var {{entity_Name_Here}} = _${{entity_Name_Here}}InformationForm.serializeFormToObject();
+
+            _{{Entity_Name_Here}}{{nP_Foreign_Entity_Name_Here}}LookupTableModal.open({ id: {{entity_Name_Here}}.{{nP_Name_Here}}, displayName: {{entity_Name_Here}}.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} }, function (data) {
+                _${{entity_Name_Here}}InformationForm.find('input[name={{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}]').val(data.displayName); 
+                _${{entity_Name_Here}}InformationForm.find('input[name={{nP_Name_Here}}]').val(data.id); 
+            });
+        });
+		
+		$('#Clear{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Button').click(function () {
+                _${{entity_Name_Here}}InformationForm.find('input[name={{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}]').val(''); 
+                _${{entity_Name_Here}}InformationForm.find('input[name={{nP_Name_Here}}]').val(''); 
+        });
+		
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Required_Validation_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+            if ($('#{{Entity_Name_Here}}_{{NP_Name_Here}}').prop('required') && $('#{{Entity_Name_Here}}_{{NP_Name_Here}}').val() == '') {
+                abp.message.error(app.localize('{0}IsRequired', app.localize('{{NP_Foreign_Entity_Name_Here}}')));
+                return;
+            }"
+					}
+				]
+		}
+	],
+	"conditionalTemplates":[
+	    {
+	        "placeholder" : "{{Master_Detail_Child_Base_Property_Here}}",
+	        "condition": "{{Is_Master_Detail_Page_Child_Here}} == true",
+	        "content" : "
+	            {{entity_Name_Here}}.{{master_Detail_Child_Foreign_Property_Name_Here}} = $('#{{Master_Detail_Child_Prefix_Here}}{{Entity_Name_Plural_Here}}Id').val();
+	        "
+	    }
+	]
+}

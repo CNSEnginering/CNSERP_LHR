@@ -1,0 +1,10 @@
+{
+    "conditionalTemplates":[
+        {
+            "placeholder": "{{Master_Detail_Child_Base_Property_Here}}",
+            "condition": "{{Is_Master_Detail_Page_Child_Here}} == true",
+            "content": "
+        public {{Master_Detail_Child_Base_Entity_Type_Here}} {{Master_Detail_Child_Foreign_Property_Name_Here}} { get; set; } "
+        }
+    ]
+}

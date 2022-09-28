@@ -1,0 +1,54 @@
+﻿(function ($) {
+    app.modals.{{Master_Detail_Child_Prefix_Here}}CreateOrEdit{{Entity_Name_Here}}Modal = function () {
+
+        var _{{entity_Name_Plural_Here}}Service = abp.services.app.{{entity_Name_Plural_Here}};
+
+        var _modalManager;
+        var _${{entity_Name_Here}}InformationForm = null;
+
+		{{NP_Modal_Init_Here}}
+		{{File_Uploading_Init_Here}}
+		{{File_Property_Init_Here}}
+
+        this.init = function (modalManager) {
+            _modalManager = modalManager;
+
+			var modal = _modalManager.getModal();
+            modal.find('.date-picker').datetimepicker({
+                locale: abp.localization.currentLanguage.name,
+                format: 'L'
+            });
+
+            _${{entity_Name_Here}}InformationForm = _modalManager.getModal().find('form[name={{Entity_Name_Here}}InformationsForm]');
+            _${{entity_Name_Here}}InformationForm.validate();
+        };
+
+		  {{NP_Modal_Open_Clear_Here}}
+
+        this.save = function () {
+            if (!_${{entity_Name_Here}}InformationForm.valid()) {
+                return;
+            }{{NP_Required_Validation_Here}}
+
+            {{Check_If_Uploading_Before_Save_Here}}
+
+            var {{entity_Name_Here}} = _${{entity_Name_Here}}InformationForm.serializeFormToObject();
+            
+            {{Set_File_Prop_Token_To_Save_Here}}
+            
+			{{Master_Detail_Child_Base_Property_Here}}
+			 _modalManager.setBusy(true);
+			 _{{entity_Name_Plural_Here}}Service.createOrEdit(
+				{{entity_Name_Here}}
+			 ).done(function () {
+               abp.notify.info(app.localize('SavedSuccessfully'));
+               _modalManager.close();
+               abp.event.trigger('app.createOrEdit{{Entity_Name_Here}}ModalSaved');
+			 }).always(function () {
+               _modalManager.setBusy(false);
+			});
+        };
+        
+        {{File_Prop_Functions_Here}}
+    };
+})(jQuery);

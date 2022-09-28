@@ -17,6 +17,7 @@ using Abp.Extensions;
 using Abp.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ERP.Authorization.Users;
+using ERP.CommonServices;
 
 namespace ERP.GeneralLedger.SetupForms
 {
@@ -26,6 +27,7 @@ namespace ERP.GeneralLedger.SetupForms
         private readonly IRepository<GLCONFIG> _glconfigRepository;
         private readonly IGLCONFIGExcelExporter _glconfigExcelExporter;
         private readonly IRepository<GLBOOKS> _lookup_glbooksRepository;
+        private readonly IRepository<Bank> _bankRepository;
         private readonly IRepository<ChartofControl, string> _lookup_chartofControlRepository;
         private readonly IRepository<AccountSubLedger, int> _lookup_accountSubLedgerRepository;
         private readonly IRepository<User, long> _userRepository;
@@ -33,7 +35,8 @@ namespace ERP.GeneralLedger.SetupForms
         public GLCONFIGAppService(IRepository<GLCONFIG> glconfigRepository, IGLCONFIGExcelExporter glconfigExcelExporter,
             IRepository<GLBOOKS> lookup_glbooksRepository, IRepository<ChartofControl, string> lookup_chartofControlRepository,
             IRepository<AccountSubLedger, int> lookup_accountSubLedgerRepository,
-            IRepository<User, long> userRepository
+            IRepository<User, long> userRepository,
+            IRepository<Bank> bankRepository
             )
         {
             _glconfigRepository = glconfigRepository;
@@ -42,6 +45,7 @@ namespace ERP.GeneralLedger.SetupForms
             _lookup_chartofControlRepository = lookup_chartofControlRepository;
             _lookup_accountSubLedgerRepository = lookup_accountSubLedgerRepository;
             _userRepository = userRepository;
+            _bankRepository = bankRepository;
         }
 
         public async Task<PagedResultDto<GetGLCONFIGForViewDto>> GetAll(GetAllGLCONFIGInput input)
@@ -86,15 +90,18 @@ namespace ERP.GeneralLedger.SetupForms
                                    PostingOn = o.PostingOn,
                                    AUDTDATE = o.AUDTDATE,
                                    AUDTUSER = o.AUDTUSER,
+                                   BANKID = o.BANKID,
                                    Id = o.Id,
                                    BookName = o.BookID != "" ? _lookup_glbooksRepository.GetAll().Where(a => a.BookID == o.BookID && a.TenantId == o.TenantId).SingleOrDefault().BookName : "",
                                    AccountName = o.AccountID != "" ? _lookup_chartofControlRepository.GetAll().Where(a => a.Id == o.AccountID && a.TenantId == o.TenantId).SingleOrDefault().AccountName : "",
+                                  
                                },
 
 
                            };
 
-            var totalCount = await filteredGLCONFIG.CountAsync();
+
+        var totalCount = await filteredGLCONFIG.CountAsync();
 
             return new PagedResultDto<GetGLCONFIGForViewDto>(
                 totalCount,
@@ -170,6 +177,12 @@ namespace ERP.GeneralLedger.SetupForms
                 output.AccountSubLedgerSubAccName = _lookupAccountSubLedger.SubAccName.ToString();
             }
 
+
+            if (output.GLCONFIG.BANKID != null)
+            {
+                var _bankName = await _bankRepository.FirstOrDefaultAsync(o => o.BANKID ==(string)output.GLCONFIG.BANKID);
+                output.BankName = _bankName.BANKNAME.ToString();
+            }
             return output;
         }
 

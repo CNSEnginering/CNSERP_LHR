@@ -35,10 +35,13 @@ namespace ERP.GeneralLedger.SetupForms.Dtos
 		
 		 public string GLBOOKSId { get; set; }
 		 
-		 		 public string ChartofControlId { get; set; }
+		public string ChartofControlId { get; set; }
 		 
-		 		 public int AccountSubLedgerId { get; set; }
-		 
-		 
+		public int AccountSubLedgerId { get; set; }
+
+        public string BANKID { get; set; }
+
+      
+
     }
 }
