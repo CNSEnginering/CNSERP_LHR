@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "ERP.Reports", "src\ERP.Reports\ERP.Reports.rptproj", "{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.Debug|Default.ActiveCfg = Debug
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.Debug|Default.Build.0 = Debug
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.Debug|Default.Deploy.0 = Debug
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.DebugLocal|Default.Build.0 = DebugLocal
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.Release|Default.ActiveCfg = Release
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.Release|Default.Build.0 = Release
+		{4771431E-E50C-42B7-BEAB-EDAACFB5D2F1}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DDD5B45-CD8A-400F-AD4C-DB7160ECBBA8}
+	EndGlobalSection
+EndGlobal

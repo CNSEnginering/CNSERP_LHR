@@ -30,6 +30,7 @@ using ERP.CommonServices.UserLoc.CSUserLocD;
 using ERP.GeneralLedger.SetupForms.GLDocRev;
 using ERP.SupplyChain.Sales.OERoutes;
 using ERP.SupplyChain.Sales.OEDrivers;
+using ERP.CommonServices;
 
 namespace ERP.Finders.Finance
 {
@@ -62,6 +63,7 @@ namespace ERP.Finders.Finance
         private readonly IRepository<GLDocRev> _glDocRev;
         private readonly IRepository<OERoutes> _oeRoutesRepository;
         private readonly IRepository<OEDrivers> _oeDriversRepository;
+        private readonly IRepository<Bank> _bankRepository;
 
         public FinanceFindersAppService(
             IRepository<ARTerm> arTermRepository,
@@ -86,7 +88,8 @@ namespace ERP.Finders.Finance
             IRepository<APINVH> apinvhRepository,
              IRepository<GLDocRev> glDocRev,
              IRepository<OERoutes> oeRoutesRepository,
-             IRepository<OEDrivers> oeDriversRepository
+             IRepository<OEDrivers> oeDriversRepository,
+             IRepository<Bank> bankRepository
             )
         {
             _porecHeaderRepository = porecHeaderRepository;
@@ -114,6 +117,7 @@ namespace ERP.Finders.Finance
             _glDocRev = glDocRev;
             _oeRoutesRepository = oeRoutesRepository;
             _oeDriversRepository = oeDriversRepository;
+            _bankRepository = bankRepository;
 
         }
 
@@ -198,6 +202,9 @@ namespace ERP.Finders.Finance
                 case "Drivers":
                     resultDtos = await GetAllDrivers(input);
                     break;
+                case "Bank":
+                    resultDtos = await GetAllBanks(input);
+                    break;
                 default:
                     break;
 
@@ -230,6 +237,28 @@ namespace ERP.Finders.Finance
 
             return getData;
         }
+
+        private async Task<LookupDto<FinanceFindersDto>> GetAllBanks(GetAllForLookupTableInput input)
+        {
+            var query = _bankRepository.GetAll().Where(o => o.TenantId == AbpSession.TenantId);
+
+            var lookupTableDto = from o in query
+                                 select new FinanceFindersDto
+                                 {
+                                     Id = o.BANKID,
+                                     DisplayName = o.BANKNAME
+                                 };
+            lookupTableDto = input.Sorting == "id DESC" ? lookupTableDto.OrderByDescending(o => o.Id) : lookupTableDto.OrderBy(o => o.Id);
+            var pageData = lookupTableDto.PageBy(input);
+            var lookupTableDtoList = await pageData.ToListAsync();
+            var getData = new LookupDto<FinanceFindersDto>(
+                query.Count(),
+                lookupTableDtoList
+            );
+
+            return getData;
+        }
+
         //Function For Drivers
         private async Task<LookupDto<FinanceFindersDto>> GetAllDrivers(GetAllForLookupTableInput input)
         {

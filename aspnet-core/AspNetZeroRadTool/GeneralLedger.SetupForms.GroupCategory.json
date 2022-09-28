@@ -1,0 +1,43 @@
+{
+  "IsRegenerate": false,
+  "MenuPosition": "main",
+  "RelativeNamespace": "GeneralLedger.SetupForms",
+  "EntityName": "GroupCategory",
+  "EntityNamePlural": "GroupCategories",
+  "TableName": "GLGRPCAT",
+  "PrimaryKeyType": "int",
+  "BaseClass": "Entity",
+  "EntityHistory": false,
+  "AutoMigration": true,
+  "UpdateDatabase": false,
+  "CreateUserInterface": true,
+  "CreateViewOnly": true,
+  "CreateExcelExport": true,
+  "PagePermission": {
+    "Host": true,
+    "Tenant": true
+  },
+  "Properties": [
+    {
+      "Name": "GRPCTDESC",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": true,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    }
+  ],
+  "NavigationProperties": [],
+  "EnumDefinitions": []
+}

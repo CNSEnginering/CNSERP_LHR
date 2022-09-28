@@ -14,6 +14,7 @@ namespace ERP.GeneralLedger.SetupForms.Dtos
 
 		public string AccountSubLedgerSubAccName { get; set;}
 
+        public string BankName { get; set; }
 
     }
 }

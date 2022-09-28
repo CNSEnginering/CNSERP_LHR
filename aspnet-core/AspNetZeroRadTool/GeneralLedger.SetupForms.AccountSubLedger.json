@@ -1,0 +1,444 @@
+{
+  "IsRegenerate": true,
+  "MenuPosition": "main",
+  "RelativeNamespace": "GeneralLedger.SetupForms",
+  "EntityName": "AccountSubLedger",
+  "EntityNamePlural": "AccountSubLedgers",
+  "TableName": "GLAMFSL",
+  "PrimaryKeyType": "int",
+  "BaseClass": "Entity",
+  "EntityHistory": false,
+  "AutoMigration": true,
+  "UpdateDatabase": false,
+  "CreateUserInterface": true,
+  "CreateViewOnly": true,
+  "CreateExcelExport": true,
+  "PagePermission": {
+    "Host": true,
+    "Tenant": true
+  },
+  "Properties": [
+    {
+      "Name": "AccountID",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "SubAccID",
+      "Type": "int",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "SubAccName",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Address1",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Address2",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "City",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Phone",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Contact",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "RegNo",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "TAXAUTH",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "ClassID",
+      "Type": "int",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": true,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "OldSL",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "LedgerType",
+      "Type": "short",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": true,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Agreement1",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Agreement2",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "PayTerm",
+      "Type": "int",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": true,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "OtherCondition",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "Reference",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "AUDTDATE",
+      "Type": "DateTime",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": true,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "AUDTUSER",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": false,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "TenantID",
+      "Type": "int",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    }
+  ],
+  "NavigationProperties": [
+    {
+      "Namespace": "ERP.GeneralLedger.SetupForms",
+      "ForeignEntityName": "ChartofControl",
+      "IdType": "string",
+      "IsNullable": false,
+      "PropertyName": "ChartofControlId",
+      "DisplayPropertyName": "AccountName",
+      "DuplicationNumber": 0,
+      "RelationType": "single"
+    },
+    {
+      "Namespace": "ERP.GeneralLedger.SetupForms",
+      "ForeignEntityName": "TaxAuthority",
+      "IdType": "string",
+      "IsNullable": true,
+      "PropertyName": "TaxAuthorityId",
+      "DisplayPropertyName": "TAXAUTHDESC",
+      "DuplicationNumber": 0,
+      "RelationType": "single"
+    }
+  ],
+  "EnumDefinitions": []
+}

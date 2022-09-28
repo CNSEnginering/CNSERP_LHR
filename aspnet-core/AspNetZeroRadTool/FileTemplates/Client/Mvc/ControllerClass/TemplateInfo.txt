@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Web.Mvc\\Areas\\{{App_Area_Name_Here}}\\Controllers\\{{Entity_Name_Plural_Here}}Controller.cs",
+	"condition": "{{Is_Master_Detail_Page_Child_Here}} == false"
+}

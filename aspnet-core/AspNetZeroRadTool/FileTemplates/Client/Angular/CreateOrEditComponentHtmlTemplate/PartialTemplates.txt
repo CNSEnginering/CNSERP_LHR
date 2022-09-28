@@ -1,0 +1,236 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_CreateOrEdit_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "
+								<div class=\"form-group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">{{l(\"{{Property_Name_Here}}\")}}</label>
+									<select class=\"form-control\" #{{Entity_Name_Here}}_{{Property_Name_Here}}=\"ngModel\" name=\"{{Property_Name_Here}}\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" [(ngModel)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\" {{Required}}>
+{{Enum_Option_Looped_Template_Here}}
+									</select>
+									<validation-messages [formCtrl]=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"></validation-messages>
+								</div>
+					"
+					},
+					{
+					"type" : "numeric",
+					"content" : "
+								<div class=\"form-group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">{{l(\"{{Property_Name_Here}}\")}}</label>
+									<input type=\"number\" #{{Entity_Name_Here}}_{{Property_Name_Here}}=\"ngModel\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" class=\"form-control\" [(ngModel)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\" name=\"{{Property_Name_Here}}\" {{MinValue}} {{MaxValue}} {{Required}}/>
+									<validation-messages [formCtrl]=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"></validation-messages>
+								</div>
+					"
+					},
+					{
+					"type" : "bool",
+					"content" : "
+								<br/><div class=\"m-checkbox-list\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" class=\"kt-checkbox\">
+										<input id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" #{{Entity_Name_Here}}_{{Property_Name_Here}}=\"ngModel\" type=\"checkbox\" name=\"{{Property_Name_Here}}\" [(ngModel)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\"> 
+										{{l(\"{{Property_Name_Here}}\")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"></validation-messages>
+								</div>
+					"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+								<div class=\"form-group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">{{l(\"{{Property_Name_Here}}\")}}</label>
+									{{DateTimePicker_Before_V6}}{{DateTimePicker_After_V6}}
+									<validation-messages [formCtrl]=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"></validation-messages>
+								</div>
+					"
+					},
+					{
+					"type" : "file",
+					"content" : "
+                                <div class=\"form-group\">
+                                    <div class=\"input-group mb-3\">
+                                        <div class=\"input-group-prepend\">
+                                            <span class=\"input-group-text\" id=\"inputGroupFileAddon01\">{{ l('{{Property_Name_Here}}') }}</span>
+                                        </div>
+                                        <div class=\"custom-file\">
+                                            <input type=\"file\" class=\"custom-file-input\"
+                                                   id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"
+                                                   name=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"
+                                                   aria-describedby=\"inputGroupFileAddon01\"
+                                                  (change)=\"onSelect{{Property_Name_Here}}File($event)\" 
+                                                  [accept]=\"{{property_Name_Here}}FileAcceptedTypes\"
+                                            />
+                                            <label class=\"custom-file-label\" #{{Entity_Name_Here}}_{{Property_Name_Here}}Label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">{{ l('ChooseAFile') }}</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div *ngIf=\"{{property_Name_Here}}FileName\" style=\"background-color:#e5e5e5; padding:5px\">
+                                        <span class=\"font-weight-bold\">{{\'CurrentFile\' |localize}} :</span>
+                                        <div class=\"alert alert-custom alert-white alert-bold m-1\" role=\"alert\">
+                                            <div class=\"alert-text\">
+                                                <a href=\"{{getDownloadUrl({{entity_Name_Here}}.{{property_Name_Here}})}}\" target=\"_blank\">{{{{property_Name_Here}}FileName}}</a>
+                                            </div>
+                                            <div class=\"alert-close\">
+                                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                                    <span aria-hidden=\"true\" (click)=\"remove{{Property_Name_Here}}File()\"><i class=\"la la-close fa-1x\"></i></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+					"
+					},
+					{
+					"type" : "default",
+					"content" : "
+								<div class=\"form-group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">{{l(\"{{Property_Name_Here}}\")}}{{Required_Symbol}}</label>
+									<input type=\"text\" #{{Entity_Name_Here}}_{{Property_Name_Here}}=\"ngModel\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" class=\"form-control\" [(ngModel)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\" name=\"{{Property_Name_Here}}\" {{Regex}} {{MinLengthHere}} {{MaxLengthHere}} {{Required}}/>
+								    <validation-messages [formCtrl]=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\"></validation-messages>
+								</div>
+					"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",					
+					"viewType": "LookupTable",
+					"content" : "
+					<div class=\"form-group m-form__group\">
+                        <label for=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\">{{l(\"{{NP_Foreign_Entity_Name_Here}}\")}}</label>
+                        <div class=\"input-group\">
+                            <input class=\"form-control\" id=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" name=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" [(ngModel)]=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" type=\"text\" disabled>     
+                            <div class=\"input-group-append\">
+                                <button class=\"btn btn-primary blue\" (click)=\"openSelect{{NP_Foreign_Entity_Name_Here}}Modal{{NP_Duplication_Number_Here}}()\" type=\"button\"><i class=\"fa fa-search\"></i> {{l(\"Pick\")}}</button>
+                            </div> <div class=\"input-group-prepend\">
+                                <button class=\"btn btn-danger btn-icon\" type=\"button\" (click)=\"set{{NP_Name_Here}}Null()\"><i class=\"fa fa-times\"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class=\"form-control\" name=\"{{entity_Name_Here}}.{{nP_Name_Here}}\" [(ngModel)]=\"{{entity_Name_Here}}.{{nP_Name_Here}}\" type=\"text\" {{NP_IsNullable_Required_Here}} hidden>
+		 "
+					},
+					{
+					"relation" : "single",					
+					"viewType": "Dropdown",
+					"content" : "
+					<div class=\"form-group m-form__group\">
+						<label for=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\">{{l(\"{{NP_Foreign_Entity_Name_Here}}\")}}</label>
+						<select name=\"{{entity_Name_Here}}.{{nP_Name_Here}}\" [(ngModel)]=\"{{entity_Name_Here}}.{{nP_Name_Here}}\" class=\"form-control\" {{NP_IsNullable_Required_Here}}>
+							<option value=\"\">{{l(\"SelectA{{NP_Foreign_Entity_Name_Here}}\")}}</option>
+							<option *ngFor=\"let item of all{{NP_Foreign_Entity_Name_Here}}s\" value=\"{{item.id}}\">{{item.displayName}}</option>
+						</select>
+					</div>
+					 "
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Modal_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "LookupTable",	
+					"preventDuplicate":true,
+					"content" : "<{{master_Detail_Child_Prefix_Here}}{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal #{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}} (modalSave)=\"getNew{{NP_Name_Here}}()\"></{{master_Detail_Child_Prefix_Here}}{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal>
+		 "
+					}
+				]
+		}
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Option_Looped_Template_Here}}",
+			"content" : "									<option value=\"{{Enum_Property_Value_Here}}\">{{l(\'{{Enum_Property_Name_Here}}\')}}</option>
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Required}}",
+			"condition": "{{Property_Required_Here}} == true",
+			"content": " required"
+		},
+		{
+			"placeholder": "{{Required_Symbol}}",
+			"condition": "{{Property_Required_Here}} == true",
+			"content": " *"
+		},
+		{
+			"placeholder": "{{Regex}}",
+			"condition": "{{Property_Regex_Here}} != ''",
+			"content": " pattern=\"{{Property_Regex_Here}}\""
+		},
+		{
+			"placeholder": "{{MaxLengthHere}}",
+			"condition": "{{Property_MaxLength_Here}} > -1",
+			"content": " maxlength=\"{{Property_MaxLength_Here}}\""
+		},
+		{
+			"placeholder": "{{MinLengthHere}}",
+			"condition": "{{Property_MinLength_Here}} > -1",
+			"content": " minlength=\"{{Property_MinLength_Here}}\""
+		},
+		{
+			"placeholder": "{{MaxValue}}",
+			"condition": "{{Property_Is_Range_Set_Here}} == true",
+			"content": " max=\"{{Property_RangeMax_Here}}\""
+		},
+		{
+			"placeholder": "{{MinValue}}",
+			"condition": "{{Property_Is_Range_Set_Here}} == true",
+			"content": " min=\"{{Property_RangeMin_Here}}\""
+		},
+		{
+			"placeholder": "{{DateTimePicker_Before_V6}}",
+			"condition": "{{Project_Version_Here}} < 060000",
+			"content": "<input class=\"form-control m-input\" #{{Entity_Name_Here}}_{{Property_Name_Here}} type=\"datetime\" datePicker [(selectedDate)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">"
+		},
+		{
+			"placeholder": "{{DateTimePicker_After_V6}}",
+			"condition": "{{Project_Version_Here}} >= 060000",
+			"content": "{{Datetime_Nullable_Input}}{{Datetime_NotNullable_Input}}"
+		},
+		{
+			"placeholder": "{{Datetime_Nullable_Input}}",
+			"condition": "{{Property_Is_Nullable_Here}} == true && {{Project_Version_Here}} < 070200",
+			"content": " <input class=\"form-control m-input\" #{{Entity_Name_Here}}_{{Property_Name_Here}} type=\"datetime\" bsDatepicker [(ngModel)]=\"{{property_Name_Here}}\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" name=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">"
+		},
+		{
+			"placeholder": "{{Datetime_Nullable_Input}}",
+			"condition": "{{Property_Is_Nullable_Here}} == true && {{Project_Version_Here}} >= 070200",
+			"content": " <input class=\"form-control m-input\" #{{Entity_Name_Here}}_{{Property_Name_Here}} type=\"datetime\" bsDatepicker {{Date_Picker_Modifier_Pipe_Here}} [(date)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" name=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">"
+		},
+		{
+			"placeholder": "{{Datetime_NotNullable_Input}}",
+			"condition": "{{Property_Is_Nullable_Here}} == false && {{Project_Version_Here}} < 070200",
+			"content": " <input required class=\"form-control m-input\" #{{Entity_Name_Here}}_{{Property_Name_Here}} type=\"datetime\" bsDatepicker [(ngModel)]=\"{{entity_Name_Here}}.{{property_Name_Here}}._d\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" name=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">"
+		},
+		{
+			"placeholder": "{{Datetime_NotNullable_Input}}",
+			"condition": "{{Property_Is_Nullable_Here}} == false && {{Project_Version_Here}} >= 070200",
+			"content": " <input required class=\"form-control m-input\" #{{Entity_Name_Here}}_{{Property_Name_Here}} type=\"datetime\" bsDatepicker {{Date_Picker_Modifier_Pipe_Here}} [(date)]=\"{{entity_Name_Here}}.{{property_Name_Here}}\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" name=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">"
+		},
+        {
+             "placeholder": "{{Date_Picker_Modifier_Pipe_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content": " datePickerLuxonModifier "
+        },
+        {
+             "placeholder": "{{Date_Picker_Modifier_Pipe_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content": " datePickerMomentModifier "
+        }
+
+	]
+}

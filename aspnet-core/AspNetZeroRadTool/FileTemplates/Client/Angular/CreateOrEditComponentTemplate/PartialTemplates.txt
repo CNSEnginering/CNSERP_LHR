@@ -1,0 +1,513 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Datetime_Init_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == false",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+            this.{{entity_Name_Here}}.{{property_Name_Here}} = {{Start_Of_Day_Here}};"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Datetime_Init_Looped_Template_Here_After_070200}}",
+			"condition" : "{{Project_Version_Here}} >= 070200 && {{Property_CreateOrEdit_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+            this.{{entity_Name_Here}}.{{property_Name_Here}} = {{Start_Of_Day_Here}};"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_SetNull_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "    this.{{property_Name_Here}} = null;
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_Dec_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+    {{property_Name_Here}}: Date;"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_Init_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+                if (this.{{entity_Name_Here}}.{{property_Name_Here}}) {
+					this.{{property_Name_Here}} = this.{{entity_Name_Here}}.{{property_Name_Here}}.toDate();
+                }"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_GetValue_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+        if (this.{{property_Name_Here}}) {
+            if (!this.{{entity_Name_Here}}.{{property_Name_Here}}) {
+                this.{{entity_Name_Here}}.{{property_Name_Here}} = {{DateTime_Start_Of_Day_From_Property_Here}};
+            }
+            else {
+                this.{{entity_Name_Here}}.{{property_Name_Here}} = {{DateTime_From_Property_Here}};
+            }
+        }
+        else {
+            this.{{entity_Name_Here}}.{{property_Name_Here}} = null;
+        }"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{File_Property_Looped_Definition_Here}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                           {{property_Name_Here}}FileUploader: FileUploader;
+                           {{property_Name_Here}}FileToken: string;
+                           {{property_Name_Here}}FileName: string;
+                           {{property_Name_Here}}FileAcceptedTypes: string = '';
+                           @ViewChild('{{Entity_Name_Here}}_{{property_Name_Here}}Label') {{entity_Name_Here}}_{{property_Name_Here}}Label: ElementRef;
+
+                    "
+                }
+            ]
+		},
+		{
+			"placeholder" : "{{Set_File_Property_Null_Here}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                        this.{{property_Name_Here}}FileName = null;
+                           
+                    "
+                }
+            ]
+		},
+		{
+			"placeholder" : "{{Set_File_Property_Here}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                        this.{{property_Name_Here}}FileName = result.{{property_Name_Here}}FileName;
+                           
+                    "
+                }
+            ]
+		},
+		{
+			"placeholder" : "{{Init_File_Uploader_Here}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                        this.{{property_Name_Here}}FileUploader = this.initializeUploader(AppConsts.remoteServiceBaseUrl + '/{{Entity_Name_Plural_Here}}/Upload{{property_Name_Here}}File',
+                        fileToken => this.{{property_Name_Here}}FileToken = fileToken);                        
+                    "
+                }
+            ]
+		},
+		{
+			"placeholder" : "{{Init_File_Properties_Functions_Here}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                                  
+                       onSelect{{Property_Name_Here}}File(fileInput: any): void {
+                           let selectedFile = <File>fileInput.target.files[0];
+                           if(!selectedFile){
+                               this.{{entity_Name_Here}}_{{property_Name_Here}}Label.nativeElement.innerText = this.l('ChooseAFile');
+                                return;
+                           }
+                           this.{{entity_Name_Here}}_{{property_Name_Here}}Label.nativeElement.innerText = selectedFile.name;
+                           this.{{property_Name_Here}}FileUploader.clearQueue();
+                           this.{{property_Name_Here}}FileUploader.addToQueue([selectedFile]);
+                           this.{{property_Name_Here}}FileUploader.uploadAll();
+                       }
+                   
+                       remove{{Property_Name_Here}}File(): void {
+                           this.message.confirm(
+                               this.l('DoYouWantToRemoveTheFile'),
+                               this.l('AreYouSure'),
+                               isConfirmed => {
+                                   if (isConfirmed) {
+                                       this._{{entity_Name_Plural_Here}}ServiceProxy.remove{{Property_Name_Here}}File(this.{{entity_Name_Here}}.id).subscribe(() => {
+                                           abp.notify.success(this.l('SuccessfullyDeleted'));
+                                           this.{{property_Name_Here}}FileName = null;
+                                       });
+                                   }
+                               }
+                           );
+                       }                     
+                    "
+                }
+            ]
+		},
+		{
+			"placeholder" : "{{Save_Set_File_Prop_Here}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                       this.{{entity_Name_Here}}.{{property_Name_Here}}Token = this.{{property_Name_Here}}FileToken;    
+                    "
+                }
+            ]
+		},
+		{
+			"placeholder" : "{{Get_File_Prop_Accepted_Types_On_Init}}",
+			"templates" : [
+                {
+                    "type" : "file",
+                    "content" : "
+                    
+                        this._http.get(AppConsts.remoteServiceBaseUrl + '/{{entity_Name_Plural_Here}}/Get{{Property_Name_Here}}FileAllowedTypes')
+                            .subscribe((data: any) => {
+                                if (!data || !data.result) {
+                                    return;
+                                }
+                
+                                let list = data.result as string[];
+                                if (list.length == 0) {
+                                    return;
+                                }
+                
+                                for (let i = 0; i < list.length; i++) {
+                                    this.{{property_Name_Here}}FileAcceptedTypes += '.' + list[i] + ',';
+                                }
+                            });                     
+                    "
+                }
+            ]
+		},
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Display_Declaration_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "    {{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Display_Init_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "            this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Edit_Bind_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "                this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = result.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}};
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Lookup_Component_Import_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "LookupTable",
+					"preventDuplicate":true,
+					"content" : "
+import { {{Master_Detail_Child_Prefix_Here}}{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModalComponent } from './{{master_Detail_Child_Prefix_Here}}{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component';"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_ViewChild_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "LookupTable",
+					"content" : "    @ViewChild('{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}', { static: true }) {{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}: {{Master_Detail_Child_Prefix_Here}}{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModalComponent;
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_OpenModal_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",					
+					"viewType": "LookupTable",
+					"content" : "    openSelect{{NP_Foreign_Entity_Name_Here}}Modal{{NP_Duplication_Number_Here}}() {
+        this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.id = this.{{entity_Name_Here}}.{{nP_Name_Here}};
+        this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.displayName = this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}};
+        this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.show();
+    }
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_SetNull_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType":"LookupTable",
+					"content" : "    set{{NP_Name_Here}}Null() {
+        this.{{entity_Name_Here}}.{{nP_Name_Here}} = null;
+        this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = '';
+    }
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_GetNew_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType":"LookupTable",
+					"content" : "    getNew{{NP_Name_Here}}() {
+        this.{{entity_Name_Here}}.{{nP_Name_Here}} = this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.id;
+        this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.displayName;
+    }
+"
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{NP_Looped_Dropdown_GetAll_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType" : "Dropdown",
+					"content" : "this._{{entity_Name_Plural_Here}}ServiceProxy.getAll{{NP_Foreign_Entity_Name_Here}}ForTableDropdown().subscribe(result => {						
+						this.all{{NP_Foreign_Entity_Name_Here}}s = result;
+					});
+					"
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{NP_Looped_Dropdown_Property_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate":true,
+					"viewType" : "Dropdown",
+					"content" : "	all{{NP_Foreign_Entity_Name_Here}}s: {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto[];
+					"
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{NP_Looped_Import_Dropdown_LookupTableDto_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType" : "Dropdown",
+					"preventDuplicate":true,
+					"content" : ",{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto
+					"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'Guid'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'Guid'",
+			"content": "number"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap/modal';"
+		},
+		{
+            "placeholder" : "{{Master_Detail_Child_Base_Property_Here}}",
+            "condition": "{{Is_Master_Detail_Page_Child_Here}} == true",
+            "content" : "
+                this.{{entity_Name_Here}}.{{master_Detail_Child_Foreign_Property_Name_Here}} = this.{{master_Detail_Child_Foreign_Property_Name_Here}};
+            "
+        },
+        {
+             "placeholder" : "{{Master_Detail_Child_Base_Property_Id_Here}}",
+             "condition": "{{Is_Master_Detail_Page_Child_Here}} == true",
+             "content" : "
+                 {{master_Detail_Child_Foreign_Property_Name_Here}}: any;
+             "
+        },
+        {
+             "placeholder" : "{{Master_Detail_Child_Base_Property_Parameter_Here}}",
+             "condition": "{{Is_Master_Detail_Page_Child_Here}} == true",
+             "content" : "
+                 {{master_Detail_Child_Foreign_Property_Name_Here}}: any,
+             "
+        },
+        {
+             "placeholder" : "{{Master_Detail_Child_Base_Property_Parameter_Load_Here}}",
+             "condition": "{{Is_Master_Detail_Page_Child_Here}} == true",
+             "content" : "
+                 this.{{master_Detail_Child_Foreign_Property_Name_Here}} = {{master_Detail_Child_Foreign_Property_Name_Here}};
+             "
+        },
+        {
+             "placeholder" : "{{Import_Datetime_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "import * as moment from 'moment';"
+        },
+        {
+             "placeholder" : "{{Import_Datetime_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "import { DateTime } from 'luxon';"
+        },
+        {
+             "placeholder" : "{{Start_Of_Day_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "moment().startOf('day')"
+        },
+        {
+             "placeholder" : "{{Start_Of_Day_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "this._dateTimeService.getStartOfDay()"
+        },
+        {
+             "placeholder" : "{{Import_DateTime_Service_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "
+             import { DateTimeService } from '@app/shared/common/timing/date-time.service';"
+        },
+        {
+             "placeholder" : "{{Get_DateTime_Service_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : ",
+             private _dateTimeService: DateTimeService"
+        },
+        {
+             "placeholder" : "{{DateTime_From_Property_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "moment(this.{{property_Name_Here}})"
+        },
+        {
+             "placeholder" : "{{DateTime_From_Property_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "this._dateTimeService.fromJSDate(this.{{property_Name_Here}})"
+        },
+        {
+             "placeholder" : "{{DateTime_Start_Of_Day_From_Property_Here}}",
+             "condition": "{{Project_Version_Here}} < 100000",
+             "content" : "moment(this.{{property_Name_Here}}).startOf('day')"
+        },
+        {
+             "placeholder" : "{{DateTime_Start_Of_Day_From_Property_Here}}",
+             "condition": "{{Project_Version_Here}} >= 100000",
+             "content" : "this._dateTimeService.getStartOfDayForDate(this.{{property_Name_Here}})"
+        },
+        {
+             "placeholder" : "{{File_Upload_Initializer_Func_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "
+                     initializeUploader(url: string, onSuccess: (fileToken: string) => void): FileUploader {
+                         let uploader = new FileUploader({url: url});
+                 
+                         let _uploaderOptions: FileUploaderOptions = {};
+                         _uploaderOptions.autoUpload = false;
+                         _uploaderOptions.authToken = 'Bearer ' + this._tokenService.getToken();
+                         _uploaderOptions.removeAfterUpload = true;
+                 
+                         uploader.onAfterAddingFile = (file) => {
+                             file.withCredentials = false;
+                         };
+                 
+                         uploader.onSuccessItem = (item, response, status) => {
+                             const resp = <IAjaxResponse>JSON.parse(response);
+                             if (resp.success && resp.result.fileToken) {
+                                 onSuccess(resp.result.fileToken);
+                             } else {
+                                 this.message.error(resp.result.message);
+                             }
+                         };
+                 
+                         uploader.setOptions(_uploaderOptions);
+                         return uploader;
+                     }
+             "
+        },
+        {
+             "placeholder" : "{{Import_File_Uploader_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "import {FileUploader, FileUploaderOptions} from \"@node_modules/ng2-file-upload\";
+                          import {IAjaxResponse, TokenService} from \"@node_modules/abp-ng2-module\";
+                          import {AppConsts} from \"@shared/AppConsts\"; 
+             "
+        },
+        {
+             "placeholder" : "{{Add_Token_Service_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : ", private _tokenService: TokenService  
+             "
+        },
+        {
+             "placeholder" : "{{Get_Download_Url_Here}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "
+                 getDownloadUrl(id: string): string {
+                     return AppConsts.remoteServiceBaseUrl + '/File/DownloadBinaryFile?id=' + id;
+                 }
+             "
+        },
+        {
+             "placeholder" : "{{Import_HttpClient}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : "import {HttpClient} from '@angular/common/http';"
+        },
+        {
+             "placeholder" : "{{Define_HttpClient_In_Constructor}}",
+             "condition": "{{Has_File_Prop}} == true && {{Project_Version_Here}} >= 100300",
+             "content" : ",private _http: HttpClient"
+        },
+	]
+}

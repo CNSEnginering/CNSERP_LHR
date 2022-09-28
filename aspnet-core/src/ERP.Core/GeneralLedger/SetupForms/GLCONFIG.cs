@@ -31,13 +31,9 @@ namespace ERP.GeneralLedger.SetupForms
 		public virtual DateTime? AUDTDATE { get; set; }
 		
 		public virtual string AUDTUSER { get; set; }
-		
 
-	
-		
+        public virtual string BANKID { get; set; }
 
-		
-       
-		
+
     }
 }

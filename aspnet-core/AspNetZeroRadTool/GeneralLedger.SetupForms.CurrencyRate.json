@@ -1,0 +1,187 @@
+{
+  "IsRegenerate": false,
+  "MenuPosition": "main",
+  "RelativeNamespace": "GeneralLedger.SetupForms",
+  "EntityName": "CurrencyRate",
+  "EntityNamePlural": "CurrencyRates",
+  "TableName": "CSCURRATE",
+  "PrimaryKeyType": "string",
+  "BaseClass": "Entity",
+  "EntityHistory": false,
+  "AutoMigration": true,
+  "UpdateDatabase": false,
+  "CreateUserInterface": true,
+  "CreateViewOnly": true,
+  "CreateExcelExport": true,
+  "PagePermission": {
+    "Host": true,
+    "Tenant": true
+  },
+  "Properties": [
+    {
+      "Name": "CMPID",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "CURID",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "AUDTDATE",
+      "Type": "DateTime",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "AUDTUSER",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "CURNAME",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "SYMBOL",
+      "Type": "string",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "RATEDATE",
+      "Type": "DateTime",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    },
+    {
+      "Name": "CURRATE",
+      "Type": "double",
+      "MaxLength": -1,
+      "MinLength": -1,
+      "Range": {
+        "IsRangeSet": false,
+        "MinimumValue": 0,
+        "MaximumValue": 0
+      },
+      "Required": true,
+      "Nullable": false,
+      "Regex": "",
+      "UserInterface": {
+        "AdvancedFilter": true,
+        "List": true,
+        "CreateOrUpdate": true
+      }
+    }
+  ],
+  "NavigationProperties": [
+    {
+      "Namespace": "ERP.CommonServices",
+      "ForeignEntityName": "CompanyProfile",
+      "IdType": "string",
+      "IsNullable": false,
+      "PropertyName": "CompanyProfileId",
+      "DisplayPropertyName": "CompanyName",
+      "DuplicationNumber": 0,
+      "RelationType": "single"
+    }
+  ],
+  "EnumDefinitions": []
+}

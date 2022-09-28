@@ -1,0 +1,16 @@
+﻿using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+{{Navigation_Property_Dropdown_Using}}
+using Abp.Extensions;
+
+namespace {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+{
+    public class {{Master_Detail_Child_Prefix_Here}}{{Create_Or_Edit_View_Model_Class_Name_Here}}
+    {
+       public CreateOrEdit{{Entity_Name_Here}}Dto {{Entity_Name_Here}} { get; set; }
+
+	   {{Navigation_Property_Looped_Template_Here}}
+       {{Navigation_Property_Table_Dropdown_Looped_Template_Here}}
+       {{File_Typed_Prop_File_Name_Property_Here}}
+	   public bool IsEditMode => {{IsEditMode_Value_Here}};
+    }
+}

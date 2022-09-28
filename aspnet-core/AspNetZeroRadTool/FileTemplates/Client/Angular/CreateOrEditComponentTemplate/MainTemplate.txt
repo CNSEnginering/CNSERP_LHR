@@ -1,0 +1,94 @@
+﻿import { Component, ViewChild, Injector, Output, EventEmitter, OnInit, ElementRef} from '@angular/core';
+{{Import_Modal_Directive_Here}}
+import { finalize } from 'rxjs/operators';
+import { {{Entity_Name_Plural_Here}}ServiceProxy, CreateOrEdit{{Entity_Name_Here}}Dto {{NP_Looped_Import_Dropdown_LookupTableDto_Here}}} from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+{{Import_Datetime_Here}}
+{{Import_DateTime_Service_Here}}{{NP_Looped_Lookup_Component_Import_Here}}
+{{Import_File_Uploader_Here}}
+{{Import_HttpClient}}
+
+@Component({
+    selector: '{{master_Detail_Child_Prefix_Here}}createOrEdit{{Entity_Name_Here}}Modal',
+    templateUrl: './{{master_Detail_Child_Prefix_Here}}create-or-edit-{{entity_Name_Here}}-modal.component.html'
+})
+export class {{Master_Detail_Child_Prefix_Here}}CreateOrEdit{{Entity_Name_Here}}ModalComponent extends AppComponentBase implements OnInit{
+   
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+{{NP_Looped_ViewChild_Here}}
+    @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+
+    active = false;
+    saving = false;
+
+    {{entity_Name_Here}}: CreateOrEdit{{Entity_Name_Here}}Dto = new CreateOrEdit{{Entity_Name_Here}}Dto();
+{{Property_Nullable_Datetime_Dec_Looped_Template_Here}}
+{{NP_Looped_Display_Declaration_Here}}
+{{NP_Looped_Dropdown_Property_Here}}
+{{File_Property_Looped_Definition_Here}}
+    constructor(
+        injector: Injector,
+        private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy{{Get_DateTime_Service_Here}}{{Add_Token_Service_Here}}{{Define_HttpClient_In_Constructor}}
+    ) {
+        super(injector);
+    }
+    {{Master_Detail_Child_Base_Property_Id_Here}}
+    show({{Master_Detail_Child_Base_Property_Parameter_Here}}{{entity_Name_Here}}Id?: {{Primary_Key_Type_Here}}): void {
+    {{Master_Detail_Child_Base_Property_Parameter_Load_Here}}
+{{Property_Nullable_Datetime_SetNull_Looped_Template_Here}}
+        if (!{{entity_Name_Here}}Id) {
+            this.{{entity_Name_Here}} = new CreateOrEdit{{Entity_Name_Here}}Dto();
+            this.{{entity_Name_Here}}.id = {{entity_Name_Here}}Id;{{Property_Datetime_Init_Looped_Template_Here}}{{Property_Datetime_Init_Looped_Template_Here_After_070200}}
+{{NP_Looped_Display_Init_Here}}
+{{Set_File_Property_Null_Here}}
+            this.active = true;
+            this.modal.show();
+        } else {
+            this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Here}}ForEdit({{entity_Name_Here}}Id).subscribe(result => {
+                this.{{entity_Name_Here}} = result.{{entity_Name_Here}};
+{{Property_Nullable_Datetime_Init_Looped_Template_Here}}
+{{NP_Looped_Edit_Bind_Here}}
+{{Set_File_Property_Here}}
+                this.active = true;
+                this.modal.show();
+            });
+        }
+        {{NP_Looped_Dropdown_GetAll_Here}}
+        {{Init_File_Uploader_Here}}
+    }
+
+    save(): void {
+            this.saving = true;
+            {{Save_Set_File_Prop_Here}}
+			{{Property_Nullable_Datetime_GetValue_Looped_Template_Here}}
+			{{Master_Detail_Child_Base_Property_Here}}
+            this._{{entity_Name_Plural_Here}}ServiceProxy.createOrEdit(this.{{entity_Name_Here}})
+             .pipe(finalize(() => { this.saving = false;}))
+             .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+                this.modalSave.emit(null);
+             });
+    }
+
+{{NP_Looped_OpenModal_Here}}
+
+{{NP_Looped_SetNull_Here}}
+
+{{NP_Looped_GetNew_Here}}
+
+{{Init_File_Properties_Functions_Here}}
+
+{{File_Upload_Initializer_Func_Here}}
+
+{{Get_Download_Url_Here}}
+
+    close(): void {
+        this.active = false;
+        this.modal.hide();
+    }
+    
+     ngOnInit(): void {
+        {{Get_File_Prop_Accepted_Types_On_Init}}
+     }    
+}
